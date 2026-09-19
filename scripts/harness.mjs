@@ -40,9 +40,12 @@ export async function startSite() {
 // Line lengths and pictures measured in a fallback font would be wrong, so a
 // page whose body face failed to load (offline, or the font service down)
 // stops the run instead of producing figures.
-export async function openPage(site, file, { width = 1440, height = 900, errors = [] } = {}) {
+// beforeLoad(page) runs before the board is requested, for a check that has to
+// watch the load itself or seed the page's storage.
+export async function openPage(site, file, { width = 1440, height = 900, errors = [], beforeLoad } = {}) {
   const page = await site.browser.newPage({ viewport: { width, height } });
   page.on('pageerror', (e) => errors.push(e.message));
+  if (beforeLoad) await beforeLoad(page);
   await page.goto(site.url(file));
   await page.waitForSelector('.reader', { timeout: 15000 });
   await page.evaluate(() => document.fonts.ready);
