@@ -23,7 +23,8 @@ Artifact tool, and save it here as `design-runtime.js`. Then check it:
 The checks' baselines were set with this copy:
 
 - Source: `artifact-type/dc-runtime.js` of the Design artifact type, release
-  `1789741258-1fa0`, read from the canvas on 18 September 2026.
+  `1789741258-1fa0`, read from the canvas on 18 September 2026, and unchanged
+  in release `1789760555-6fa8` (checked 19 September 2026).
 - SHA-256: `82ab863dabf94f79db1b4ced13046a03425dcd255e97a5e42c60b6e8035fea34`
 
 A different hash means the canvas has moved to a newer release. Run

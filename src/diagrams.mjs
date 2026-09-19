@@ -125,12 +125,12 @@ function renderFlow(d, id) {
     })
     .join('');
   const inputs = d.inputs
-    ? `<div class="flow-inputs"><p class="flow-inputs-label">${esc(d.inputs.label)}</p><ul class="flow-input-list" role="list">${d.inputs.items
+    ? `<div class="flow-inputs"><p class="flow-inputs-label label">${esc(d.inputs.label)}</p><ul class="flow-input-list" role="list">${d.inputs.items
         .map((t) => `<li class="flow-box is-input"><span class="flow-text">${esc(t)}</span></li>`)
         .join('')}</ul>${arrow()}</div>`
     : '';
   const loop = d.loop ? `<p class="flow-loop">${ICONS.loop}<span>${esc(d.loop)}</span></p>` : '';
-  return `<figure class="figure flow flow-${d.layout}" aria-labelledby="${id}-cap"><figcaption class="figure-cap" id="${id}-cap">${esc(d.caption)}</figcaption>${inputs}<ol class="flow-steps" role="list">${steps}</ol>${loop}</figure>`;
+  return `<figure class="figure flow flow-${d.layout}" aria-labelledby="${id}-cap"><figcaption class="figure-cap label" id="${id}-cap">${esc(d.caption)}</figcaption>${inputs}<ol class="flow-steps" role="list">${steps}</ol>${loop}</figure>`;
 }
 
 function renderLanes(d, id) {
@@ -142,10 +142,10 @@ function renderLanes(d, id) {
           return `<li class="flow-step"><span class="flow-box"><span class="flow-n" aria-hidden="true">${i + 1}</span><span class="flow-text">${esc(s)}</span></span>${last ? '' : arrow()}</li>`;
         })
         .join('');
-      return `<div class="lane"><p class="lane-label" id="${id}-lane${li + 1}">${esc(lane.label)}</p><ol class="flow-steps" role="list" aria-labelledby="${id}-lane${li + 1}">${steps}</ol></div>`;
+      return `<div class="lane"><p class="lane-label label" id="${id}-lane${li + 1}">${esc(lane.label)}</p><ol class="flow-steps" role="list" aria-labelledby="${id}-lane${li + 1}">${steps}</ol></div>`;
     })
     .join('');
-  return `<figure class="figure flow flow-column lanes" aria-labelledby="${id}-cap"><figcaption class="figure-cap" id="${id}-cap">${esc(d.caption)}</figcaption>${lanes}</figure>`;
+  return `<figure class="figure flow flow-column lanes" aria-labelledby="${id}-cap"><figcaption class="figure-cap label" id="${id}-cap">${esc(d.caption)}</figcaption>${lanes}</figure>`;
 }
 
 function renderSequence(d, id) {
@@ -155,12 +155,12 @@ function renderSequence(d, id) {
       const lo = Math.min(m.from, m.to);
       const hi = Math.max(m.from, m.to);
       const dir = m.to > m.from ? 'right' : 'left';
-      return `<li class="seq-step span-${lo + 1}-${hi + 1} to-${dir}"><span class="seq-route"><span class="seq-n">${i + 1}.</span> ${esc(d.participants[m.from])}<span class="seq-arrow" aria-hidden="true"> ${dir === 'right' ? '→' : '←'} </span><span class="sr-only"> to </span>${esc(
+      return `<li class="seq-step span-${lo + 1}-${hi + 1} to-${dir}"><span class="seq-route label"><span class="seq-n">${i + 1}.</span> ${esc(d.participants[m.from])}<span class="seq-arrow" aria-hidden="true"> ${dir === 'right' ? '→' : '←'} </span><span class="sr-only"> to </span>${esc(
         d.participants[m.to],
       )}<span class="sr-only">:</span></span><span class="seq-msg">${esc(m.text)}</span></li>`;
     })
     .join('');
-  return `<figure class="figure seq" aria-labelledby="${id}-cap"><figcaption class="figure-cap" id="${id}-cap">${esc(d.caption)}</figcaption><div class="seq-heads" aria-hidden="true">${heads}</div><ol class="seq-steps" role="list">${msgs}</ol></figure>`;
+  return `<figure class="figure seq" aria-labelledby="${id}-cap"><figcaption class="figure-cap label" id="${id}-cap">${esc(d.caption)}</figcaption><div class="seq-heads" aria-hidden="true">${heads}</div><ol class="seq-steps" role="list">${msgs}</ol></figure>`;
 }
 
 export function renderDiagram(key) {

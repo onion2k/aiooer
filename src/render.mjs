@@ -98,11 +98,11 @@ function renderCode(block) {
   const lang = block.lang === 'python' ? 'Python' : null;
   const body = block.lang === 'python' ? highlightPython(block.text) : esc(block.text);
   const label = lang ? `${lang} code` : 'Formula';
-  return `<div class="code-block"><p class="code-cap" aria-hidden="true">${esc(label)}</p><pre class="code" tabindex="0" role="region" aria-label="${esc(label)}"><code>${body}</code></pre></div>`;
+  return `<div class="code-block"><p class="code-cap label" aria-hidden="true">${esc(label)}</p><pre class="code" tabindex="0" role="region" aria-label="${esc(label)}"><code>${body}</code></pre></div>`;
 }
 
 function renderPlain(block) {
-  return `<div class="plain"><p class="plain-label">${ICONS.plain}<span>In plain terms</span></p><p class="plain-summary">${renderInline(
+  return `<div class="plain"><p class="plain-label label">${ICONS.plain}<span>In plain terms</span></p><p class="plain-summary">${renderInline(
     block.summary,
   )}</p><p class="plain-who"><strong>Who should read it:</strong> ${renderInline(block.who)}</p></div>`;
 }
@@ -122,7 +122,7 @@ function capitaliseTokens(tokens) {
 function renderDeep(block, ctx) {
   const inner = renderBlocks(block.blocks, { ...ctx, headingId: block.id + '-title' });
   const k = block.key;
-  return `<div class="deep" id="${block.id}"><h3 class="deep-heading" id="${block.id}-title"><button type="button" class="deep-toggle" aria-expanded="{{dd.${k}.expanded}}" aria-controls="${block.id}-body" onClick="{{dd.${k}.toggle}}"><span class="deep-kicker">${ICONS.deep}<span>Deep dive <span class="deep-optional">(optional)</span></span></span><span class="sr-only">: </span><span class="deep-title">${esc(
+  return `<div class="deep" id="${block.id}"><h3 class="deep-heading" id="${block.id}-title"><button type="button" class="deep-toggle" aria-expanded="{{dd.${k}.expanded}}" aria-controls="${block.id}-body" onClick="{{dd.${k}.toggle}}"><span class="deep-kicker label">${ICONS.deep}<span>Deep dive <span class="deep-optional">(optional)</span></span></span><span class="sr-only">: </span><span class="deep-title">${esc(
     smartPlain(capitalise(block.title)),
   )}</span><span class="deep-state" aria-hidden="true"><span class="when-closed">Show</span><span class="when-open">Hide</span>${ICONS.chevron}</span></button></h3><div class="deep-body" id="${block.id}-body" hidden="{{dd.${k}.hidden}}">${inner}</div></div>`;
 }
@@ -137,7 +137,7 @@ function renderMyth(block) {
   const parts = block.parts
     .map((p) => {
       const meta = MYTH_PARTS[p.label];
-      return `<div class="myth-part ${meta.cls}"><dt>${meta.icon}<span>${esc(p.label)}</span></dt><dd>${renderInline(capitaliseTokens(p.tokens))}</dd></div>`;
+      return `<div class="myth-part ${meta.cls}"><dt class="label">${meta.icon}<span>${esc(p.label)}</span></dt><dd>${renderInline(capitaliseTokens(p.tokens))}</dd></div>`;
     })
     .join('');
   return `<div class="myth"><h3 class="myth-claim" id="${block.id}">${esc(smartPlain(block.claim))}</h3><dl class="myth-parts">${parts}</dl></div>`;
@@ -206,7 +206,11 @@ export function renderBlocks(blocks, ctx) {
 }
 
 export function sectionHeading(section) {
-  const num = section.number !== null ? `<span class="sec-num">${section.number}.</span> ` : '';
+  // The number shows as two digits; a screen reader hears "1.", not "zero one".
+  const num =
+    section.number !== null
+      ? `<span class="sec-num" aria-hidden="true">${String(section.number).padStart(2, '0')}</span><span class="sr-only">${section.number}. </span>`
+      : '';
   return `<h2 class="sec-title" id="${section.id}">${num}${esc(smartPlain(section.heading))}</h2>`;
 }
 

@@ -4,13 +4,12 @@
 // differ per page (its deep dives, and for the showcase boards a fixed start).
 // Without it the settings panel would be a picture of a settings panel.
 
+import { THEMES, THEME_ORDER } from './tokens.mjs';
+
+// The theme's stored value is its key in tokens.mjs, which never changes; its
+// label is whatever tokens.mjs calls it now.
 export const SETTINGS = {
-  theme: [
-    ['paper', 'Paper'],
-    ['white', 'White'],
-    ['dark', 'Dark'],
-    ['contrast', 'High contrast'],
-  ],
+  theme: THEME_ORDER.map((key) => [key, THEMES[key].label]),
   size: [
     ['standard', 'Standard'],
     ['large', 'Large'],
@@ -36,6 +35,10 @@ export const SETTINGS = {
     ['open', 'Open'],
   ],
 };
+
+// Where a reader's choices are kept between pages. The shape stored under it
+// must go on loading as the settings grow, which the audit's storage check holds.
+export const STORE_KEY = 'how-frontier-llms-work/reading-settings/v1';
 
 export const DEFAULTS = {
   theme: 'paper',
@@ -79,7 +82,7 @@ const OPEN_AT_START = ${JSON.stringify(constants.OPEN_AT_START)};
 const DEEP_OPEN_AT_START = ${JSON.stringify(constants.DEEP_OPEN_AT_START)};
 const TOC_OPEN_AT_START = ${JSON.stringify(constants.TOC_OPEN_AT_START)};
 const REMEMBER = ${JSON.stringify(constants.REMEMBER)};
-const STORE_KEY = 'how-frontier-llms-work/reading-settings/v1';
+const STORE_KEY = ${JSON.stringify(STORE_KEY)};
 
 function isOption(key, value) {
   return SETTINGS[key].some((o) => o[0] === value);

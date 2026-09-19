@@ -4,10 +4,13 @@ The course is the seven markdown files at the top of this folder. The code
 here builds them into a website on a Claude Design canvas, at
 https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
-easy to read as possible. Plain JavaScript modules, marked for the
-markdown, Playwright and axe-core for the checks. The house rules in
-`~/.claude/CLAUDE.md` apply too. This file was written on 19 September 2026
-from what the code does at that date.
+easy to read as possible. The look is Brutalist graphic design: a pale grey
+ground, near-black type and heavy rules, International Klein Blue and a
+signal yellow, Archivo 900 for titles over Atkinson Hyperlegible Next for
+reading, IBM Carbon icons, square blocks, and a twelve-column grid. Plain
+JavaScript modules, marked for the markdown, Playwright and axe-core for
+the checks. The house rules in `~/.claude/CLAUDE.md` apply too. This file
+was written on 19 September 2026 from what the code does at that date.
 
 ## What the site promises, and what holds it
 
@@ -25,8 +28,14 @@ from what the code does at that date.
 - **Operable.** Every control outside a sentence is 44 by 44 or larger
   (2.5.5); every Tab stop has a ring and is never covered (2.4.7, 2.4.11 to
   2.4.13); one h1 and no skipped heading levels. `audit`.
+- **On the grid.** At desktop width the page lays out on twelve equal
+  columns, stepping to six and then one; every grid of blocks is one height
+  at every width; no corner is rounder than 2px. `audit` holds it.
+- **Saved settings keep loading.** Every shape of a reader's saved settings
+  still loads as the settings grow. `audit` holds it.
 - **True to the markdown.** Every section, block, inline token and diagram
-  the parser meets is one it knows; anything else stops the build. `build`.
+  the parser meets is one it knows, and every icon exists in Carbon; anything
+  else stops the build. `build`.
 
 ## Gates and baselines
 
@@ -34,7 +43,7 @@ Baselines as of 19 September 2026, on this machine:
 
 | Gate               | Holds                                   | Baseline                                    | Tolerance      |
 | ------------------ | --------------------------------------- | ------------------------------------------- | -------------- |
-| `contrast`         | 188 colour pairs, four themes           | lowest text pair 7.14:1, lowest edge 3.53:1 | none           |
+| `contrast`         | 184 colour pairs, four themes           | lowest text pair 7.33:1, lowest edge 8.38:1 | none           |
 | `audit`, axe       | 93 runs                                 | 0 violations, 0 needing review              | none           |
 | `audit`, measure   | 42 runs: 7 pages × 6 setting mixes      | longest line 78 characters                  | up to 80       |
 | `audit`, targets   | 7 pages × desktop and phone             | all 44 × 44 or larger                       | none           |
@@ -42,8 +51,11 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, spacing   | 7 pages × desktop and phone             | nothing clipped                             | none           |
 | `audit`, keyboard  | 7 pages × desktop and phone             | 114 to 119 stops, all ringed, none covered  | none           |
 | `audit`, headings  | 7 pages × desktop and phone             | one h1, no skipped level                    | none           |
+| `audit`, corners   | 7 pages, every panel and deep dive open | none rounder than 2px                       | none           |
+| `audit`, grids     | 7 pages × desktop and phone             | blocks equal; 15 or 5 containers on 12 cols | 1px on heights |
+| `audit`, storage   | 5 saved shapes                          | every one loads                             | none           |
 | `look`             | 16 boards                               | no errors; recorded heights match           | 2px on heights |
-| `perf`, not a gate | render with fonts; repaint on a setting | 290 to 350 ms; theme 30 to 40 ms            | not held       |
+| `perf`, not a gate | render, fonts, repaint on a setting     | 263 to 323 ms; fonts 85 KB; theme 32-39 ms  | not held       |
 
 A gate that is red is fixed before anything else lands. `perf` prints
 figures for the before-and-after in a report; nothing holds them yet, so a
@@ -59,13 +71,14 @@ slowdown is only caught by reading them.
     npm run audit          the accessibility audit; report in test-results/audit-report.md
     npm run audit:quick    two themes and shorter keyboard walks (~1.5 min; line length takes most of it)
     npm run look           every board rendered: errors and stale heights fail it; pictures in test-results/shots
-    npm run heights        record the showcase boards' natural heights, then build again
+    npm run heights        build, record the showcase boards' natural heights, then build again
     npm run perf           render and repaint times, five runs each, medians
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage`,
 `--pages Part1.dc.html,...` and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `reflow`,
-`spacing`, `headings`) to prove the check that should catch it still does.
+`spacing`, `headings`, `corners`, `grids`, `twelve`) to prove the check that
+should catch it still does.
 `node scripts/look-parts.mjs <width> <File.dc.html> <selector>...` takes
 pictures of single elements, with `--theme`, `--size` and the other
 settings; `node scripts/tile.mjs <in.png> <out.png>` lays a tall phone
@@ -94,8 +107,16 @@ canvas is private until it is shared from its Share menu.
 - `src/render.mjs` draws blocks, `src/diagrams.mjs` holds the six Mermaid
   diagrams redrawn as HTML figures, `src/chrome.mjs` the parts every page
   shares, and `src/pages.mjs` assembles each page and wraps it as a board.
-- `src/styles.mjs` is the stylesheet. `src/tokens.mjs` is the only place a
-  colour lives, with the pairs `contrast` checks.
+- `src/styles.mjs` is the stylesheet, and holds the grid: a `grid-12`
+  container lays its children on twelve columns, each child placing itself
+  with `--start` and `--span` (and `--start-md` and `--span-md` out of six),
+  and every grid of blocks sizes its rows with `grid-auto-rows: 1fr`.
+  `GRID_GUIDE` gives the canvas's desktop boards matching column guides.
+- `src/tokens.mjs` is the only place a colour lives, with the pairs
+  `contrast` checks. A theme's key is what a reader's saved settings hold, so
+  it never changes; its label and colours can.
+- `src/icons.mjs` inlines IBM Carbon's 32px icons from `@carbon/icons` by
+  name when the site builds, and stops the build if a name is missing.
 - `src/logic.mjs` writes the page's logic class: the reading settings, the
   header's panels and the deep dives.
 - `src/build.mjs` is the one place that wires everything together and knows
@@ -119,13 +140,17 @@ What to copy the shape of, when building something new:
 - **Something a reader sees:** the In plain terms panel. `splitPlain` in
   `content.mjs` recognises it, `renderPlain` in `render.mjs` draws it,
   `.plain` in `styles.mjs` styles it, its colours are `plainBg`,
-  `plainEdge` and `plainLabel` in `tokens.mjs` with their pairs in
+  `plainEdge`, `plainInk`, `plainLink` and `plainFocus` in `tokens.mjs` with their pairs in
   `TEXT_PAIRS`, and the home page's legend shows it (`SPECIMENS` in
   `pages.mjs`).
 - **A reading setting:** line length. Its options are in `SETTINGS` in
   `logic.mjs`, its classes are `.measure-*` in `styles.mjs`, its legend is
   in `chrome.mjs`, and the audit's measure check holds every option under
   80 characters in both typefaces.
+- **A grid of blocks:** the six part cards on the home page. An `ol` with
+  `grid-12`, each card `--span: 4` and `--span-md: 3`, rows at
+  `grid-auto-rows: 1fr`, and the list named in `GRIDS` and `TWELVE` in
+  `audit.mjs` so the grids check holds it.
 - **A tool that measures:** the measure check, `longestLine` in
   `audit.mjs`, with its mutation `--mutate measure`.
 
@@ -133,8 +158,10 @@ What to copy the shape of, when building something new:
 
 `scripts/harness.mjs`: `startSite()` serves `test-results/site` beside the
 canvas runtime and launches Chromium; `openPage(site, file, { width,
-height, errors })` opens a board and stops the run if its typeface did not
-load, since nothing measured in a fallback font can be trusted;
+height, errors, beforeLoad })` opens a board and stops the run if its
+typeface did not load, since nothing measured in a fallback font can be
+trusted, and `beforeLoad(page)` runs first, to watch the load or seed the
+page's storage;
 `setSetting(page, key, value)` chooses a reading setting through the panel,
 as a reader would (`theme`, `size`, `spacing`, `measure`, `font`, `deep`);
 `togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel.
@@ -152,6 +179,11 @@ reader's saved settings.
   the checks can rely on it everywhere it appears.
 - **Colours come only from `tokens.mjs`,** and every new pairing goes into
   `TEXT_PAIRS` or `UI_PAIRS`.
+- **Everything sits on the grid.** A new layout is a `grid-12` whose
+  children place themselves with `--start` and `--span`; a new grid of
+  blocks uses `grid-auto-rows: 1fr` and goes into the audit's `GRIDS`, and
+  into `TWELVE` if it spans the page.
+- **Corners are square,** or 2px on a control; icons come only from Carbon.
 - **Sizes are in em, and layout switches are container queries in em,** so
   the text size setting and the reader's zoom reflow the page as well as a
   narrow window does.
@@ -177,13 +209,18 @@ types written as comments.
 
 For anything new on a page, check what it does:
 
-- **every theme:** paper, white, dark and high contrast
+- **every theme:** light grey (its key is `paper`), white, dark and high
+  contrast
 - **every setting:** text size up to largest, line spacing up to widest,
   each line length, the serif typeface, deep dives folded and open
 - **every width:** desktop, tablet, phone at 390px, 320px, and 200% zoom of
   a 1280px window; tables stack below 44em, the header wraps below 40em
 - **every board:** home, each part, and the showcase boards, which are
   trimmed pages at fixed sizes
+- **every grid:** twelve columns at desktop, six on a tablet, one on a
+  phone, and its blocks one height at each
+- **saved settings:** a new setting adds its shape to `SAVED_SHAPES` in
+  `audit.mjs`, and every older shape stays
 - **inside a deep dive,** hidden until opened, as well as outside one
 - **the keyboard:** reached by Tab, a visible ring, and Escape closing a
   panel back to the button that opened it
@@ -207,6 +244,6 @@ chooses it through the panel.
 
 ## Commits
 
-Commit only when asked, in the house style. This folder is not a git
-repository yet; once it is, `npm install` points git at `.githooks`, and
-the pre-commit hook runs `check:quick`.
+Commit only when asked, in the house style. The repository is public at
+https://github.com/onion2k/aiooer; `npm install` points git at `.githooks`,
+and the pre-commit hook runs `check:quick`.

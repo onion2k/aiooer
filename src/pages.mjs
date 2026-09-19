@@ -34,10 +34,6 @@ function minutes(time) {
   return time.replace(/\bmin\b/, 'minutes');
 }
 
-function lowerFirst(s) {
-  return s.charAt(0).toLowerCase() + s.slice(1);
-}
-
 function sentences(text) {
   return text.match(/[^.]+\.(\s|$)/g).map((s) => s.trim());
 }
@@ -56,10 +52,10 @@ function partHero(part, meta) {
   const title = part.subtitle
     ? `${esc(part.title)}<span class="sr-only">: </span><span class="title-sub">${esc(part.subtitle)}</span>`
     : esc(part.title);
-  return `<div class="hero">${crumbs(part.n, meta.shortTitle)}<p class="eyebrow">Part ${part.n} of 6</p><h1 class="title">${title}</h1><ul class="hero-meta" role="list"><li>${ICONS.clock}<span>About ${esc(
+  return `<div class="hero">${crumbs(part.n, meta.shortTitle)}<p class="eyebrow label">Part ${part.n} of 6</p><h1 class="title">${title}</h1><ul class="hero-meta label" role="list"><li>${ICONS.clock}<span>About ${esc(
     minutes(meta.time),
-  )}</span></li><li>${ICONS.calendar}<span>Written ${longDate(part.date)}</span></li></ul><div class="outcome">${ICONS.outcome}<p><strong>After this part you can</strong> ${esc(
-    lowerFirst(smartPlain(meta.outcome)),
+  )}</span></li><li>${ICONS.calendar}<span>Written ${longDate(part.date)}</span></li></ul><div class="outcome"><p class="outcome-label label">${ICONS.outcome}<span>After this part you can</span></p><p class="outcome-text">${esc(
+    smartPlain(meta.outcome),
   )}.</p></div></div>`;
 }
 
@@ -77,25 +73,29 @@ function partArticle(part, parts, maxSections) {
     .join('');
 }
 
+// The part's number, set huge in the three left columns above the contents.
+// It repeats "Part 3 of 6" for the eye only, so it is hidden from screen readers.
 export function partMain(part, parts, opts = {}) {
   const meta = parts.find((p) => p.n === part.n);
-  return `<main id="main" tabindex="-1"><div class="shell layout">${partHero(part, meta)}${toc(part.sections)}<div class="article">${partArticle(
+  const number = String(part.n).padStart(2, '0');
+  return `<main id="main" tabindex="-1"><div class="shell layout grid-12"><div class="hero-num" aria-hidden="true">${number}</div>${partHero(
     part,
-    parts,
-    opts.maxSections,
-  )}${opts.maxSections ? '' : pager(part.n, parts)}</div></div></main>`;
+    meta,
+  )}${toc(part.sections)}<div class="article">${partArticle(part, parts, opts.maxSections)}${
+    opts.maxSections ? '' : pager(part.n, parts)
+  }</div></div></main>`;
 }
 
 // ------------------------------------------------------------------ home page
 
 const SPECIMENS = {
-  'In plain terms': `<span class="specimen is-plain" aria-hidden="true"><span class="spec-row">${ICONS.plain}<span>In plain terms</span></span></span>`,
+  'In plain terms': `<span class="specimen label is-plain" aria-hidden="true"><span class="spec-row">${ICONS.plain}<span>In plain terms</span></span></span>`,
   'Main text': `<span class="specimen is-text" aria-hidden="true">Aa</span>`,
-  'Deep dive (optional)': `<span class="specimen is-deep" aria-hidden="true"><span class="spec-row">${ICONS.deep}<span>Deep dive</span></span></span>`,
-  'Say it two ways': `<span class="specimen" aria-hidden="true"><span class="spec-row">${ICONS.twoWays}<span>Two ways</span></span></span>`,
-  'Misconceptions to correct': `<span class="specimen" aria-hidden="true"><span class="spec-row spec-true">${ICONS.isTrue}<span>True</span></span><span class="spec-row spec-false">${ICONS.misleading}<span>Misleading</span></span><span class="spec-row spec-say">${ICONS.say}<span>What to say</span></span></span>`,
-  Glossary: `<span class="specimen" aria-hidden="true"><span class="spec-row">${ICONS.glossary}<span>Glossary</span></span></span>`,
-  Sources: `<span class="specimen" aria-hidden="true"><span class="spec-row">${ICONS.source}<span>Sources</span></span></span>`,
+  'Deep dive (optional)': `<span class="specimen label is-deep" aria-hidden="true"><span class="spec-row">${ICONS.deep}<span>Deep dive</span></span></span>`,
+  'Say it two ways': `<span class="specimen label" aria-hidden="true"><span class="spec-row">${ICONS.twoWays}<span>Two ways</span></span></span>`,
+  'Misconceptions to correct': `<span class="specimen label" aria-hidden="true"><span class="spec-row spec-true">${ICONS.isTrue}<span>True</span></span><span class="spec-row spec-false">${ICONS.misleading}<span>Misleading</span></span><span class="spec-row spec-say">${ICONS.say}<span>What to say</span></span></span>`,
+  Glossary: `<span class="specimen label" aria-hidden="true"><span class="spec-row">${ICONS.glossary}<span>Glossary</span></span></span>`,
+  Sources: `<span class="specimen label" aria-hidden="true"><span class="spec-row">${ICONS.source}<span>Sources</span></span></span>`,
 };
 
 function listItemTokens(item) {
@@ -103,6 +103,15 @@ function listItemTokens(item) {
   return t.tokens || [{ type: 'text', text: t.text }];
 }
 
+const paragraphs = (blocks) =>
+  blocks
+    .filter((b) => b.type === 'paragraph')
+    .map((p) => `<p>${renderInline(p.tokens)}</p>`)
+    .join('');
+
+// The home page on the twelve-column grid: every section is a grid-12, and
+// every set of blocks (the six parts, the four ideas, the legend, the routes)
+// is a grid-12 of its own whose rows size to the tallest block.
 function homeMain(intro, parts) {
   const S = intro.sections;
   const purpose = S['What this course is for'].blocks.filter((b) => b.type === 'paragraph');
@@ -112,20 +121,12 @@ function homeMain(intro, parts) {
     .map((p) => `<p>${renderInline(p.tokens)}</p>`)
     .join('');
 
-  const sixIntro = S['The six parts'].blocks
-    .filter((b) => b.type === 'paragraph')
-    .map((p) => `<p>${renderInline(p.tokens)}</p>`)
-    .join('');
+  // One list of all six, three to a row: parts 1 to 3 (how the technology
+  // works) above parts 4 to 6 (how to use it), as the introduction says.
   const card = (p) =>
-    `<li class="part-card"><span class="part-num" aria-hidden="true">${p.n}</span><h4 class="part-title"><a href="Part${p.n}.dc.html"><span class="sr-only">Part ${p.n}: </span>${esc(
+    `<li class="part-card"><span class="part-num" aria-hidden="true">${String(p.n).padStart(2, '0')}</span><h3 class="part-title"><a href="Part${p.n}.dc.html"><span class="sr-only">Part ${p.n}: </span>${esc(
       p.shortTitle,
-    )}</a></h4><p class="part-outcome"><span class="sr-only">After it you can: </span>${esc(smartPlain(p.outcome))}</p><p class="part-time">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
-  const halves = `<div class="halves"><div><h3 class="half-title">How the technology works</h3><ol class="part-cards" role="list">${parts
-    .slice(0, 3)
-    .map(card)
-    .join(
-      '',
-    )}</ol></div><div><h3 class="half-title">How to use it</h3><ol class="part-cards" role="list" start="4">${parts.slice(3).map(card).join('')}</ol></div></div>`;
+    )}</a></h3><p class="part-outcome"><span class="sr-only">After it you can: </span>${esc(smartPlain(p.outcome))}</p><p class="part-time label">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
 
   const layoutBlocks = S['How each part is laid out'].blocks;
   const legendList = layoutBlocks.find((b) => b.type === 'list');
@@ -137,10 +138,6 @@ function homeMain(intro, parts) {
       if (!specimen) throw new Error('No specimen for ' + label);
       return `<li>${specimen}<p>${renderInline(toks)}</p></li>`;
     })
-    .join('');
-  const legendAfter = layoutBlocks
-    .filter((b) => b.type === 'paragraph')
-    .map((p) => `<p>${renderInline(p.tokens)}</p>`)
     .join('');
 
   const routesTable = S['Suggested routes'].blocks.find((b) => b.type === 'table');
@@ -156,27 +153,28 @@ function homeMain(intro, parts) {
     .map((item, i) => {
       const toks = listItemTokens(item);
       const [lead, ...rest] = toks;
-      return `<li class="idea"><span class="idea-num" aria-hidden="true">${i + 1}</span><p><strong class="idea-lead">${renderInline(lead.tokens)}</strong>${renderInline(rest)}</p></li>`;
+      return `<li class="idea"><span class="idea-num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><p><strong class="idea-lead">${renderInline(lead.tokens)}</strong>${renderInline(rest)}</p></li>`;
     })
     .join('');
 
-  const currency = S['A note on currency'].blocks
-    .filter((b) => b.type === 'paragraph')
-    .map((p) => `<p>${renderInline(p.tokens)}</p>`)
-    .join('');
-
   const kicker = intro.pageTitle.charAt(0) + intro.pageTitle.slice(1).toLowerCase();
-  return `<main id="main" tabindex="-1"><div class="shell home-hero"><p class="home-kicker">${esc(kicker)}</p><h1 class="home-title">${esc(
+  return `<main id="main" tabindex="-1"><div class="shell home-hero grid-12"><p class="home-kicker label">${esc(kicker)}</p><h1 class="home-title">${esc(
     intro.courseTitle,
-  )}</h1><div class="hero-grid"><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta" role="list"><li>${ICONS.book}<span>Six parts</span></li><li>${ICONS.clock}<span>About four hours of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026</span></li></ul><div class="cta-row"><a class="btn-primary" href="Part1.dc.html"><span>Start with Part 1: ${esc(
+  )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>Six parts</span></li><li>${ICONS.clock}<span>About four hours of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026</span></li></ul><div class="cta-row"><a class="btn-primary" href="Part1.dc.html"><span>Start with Part 1: ${esc(
     parts[0].shortTitle,
-  )}</span>${ICONS.arrowRight}</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div></div>
-<section class="home-section"><div class="shell split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div>${purposeRest}</div></div></section>
-<section class="home-section"><div class="shell"><h2 class="home-h2" id="the-six-parts">The six parts</h2>${sixIntro}${halves}</div></section>
-<section class="home-section"><div class="shell"><h2 class="home-h2" id="four-ideas">Four ideas that run through everything</h2><ol class="ideas" role="list">${ideas}</ol></div></section>
-<section class="home-section"><div class="shell"><h2 class="home-h2" id="how-each-part-is-laid-out">How each part is laid out</h2><ul class="legend" role="list">${legend}</ul>${legendAfter}</div></section>
-<section class="home-section"><div class="shell"><h2 class="home-h2" id="suggested-routes">Suggested routes</h2><ul class="routes" role="list">${routes}</ul></div></section>
-<section class="home-section"><div class="shell split"><h2 class="home-h2" id="a-note-on-currency">A note on currency</h2><div class="currency">${currency}</div></div></section></main>`;
+  )}</span>${ICONS.arrowRight}</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
+<section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div class="split-body">${purposeRest}</div></div></section>
+<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="the-six-parts">The six parts</h2><div class="section-intro">${paragraphs(
+    S['The six parts'].blocks,
+  )}</div><ol class="part-cards grid-12" role="list">${parts.map(card).join('')}</ol></div></section>
+<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="four-ideas">Four ideas that run through everything</h2><ol class="ideas grid-12" role="list">${ideas}</ol></div></section>
+<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="how-each-part-is-laid-out">How each part is laid out</h2><ul class="legend grid-12" role="list">${legend}</ul><div class="section-outro">${paragraphs(
+    layoutBlocks,
+  )}</div></div></section>
+<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="suggested-routes">Suggested routes</h2><ul class="routes grid-12" role="list">${routes}</ul></div></section>
+<section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="a-note-on-currency">A note on currency</h2><div class="split-body currency">${paragraphs(
+    S['A note on currency'].blocks,
+  )}</div></div></section></main>`;
 }
 
 // ------------------------------------------------------------- the dc wrapper

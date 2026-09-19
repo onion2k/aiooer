@@ -8,6 +8,7 @@ import path from 'node:path';
 import { parsePart, parseIntro, PART_SOURCES } from './content.mjs';
 import { homeFile, partFile } from './pages.mjs';
 import { DIAGRAMS } from './diagrams.mjs';
+import { GRID_GUIDE } from './styles.mjs';
 import { CONTENT_DIR, CANVAS_PROJECT as PROJECT, TEST_SITE, RUNTIME, HEIGHTS_FILE, CREATED_FILE } from './paths.mjs';
 
 const heights = fs.existsSync(HEIGHTS_FILE) ? JSON.parse(fs.readFileSync(HEIGHTS_FILE, 'utf8')) : {};
@@ -185,6 +186,8 @@ rows.forEach((row, ri) => {
     fs.writeFileSync(path.join(PROJECT, b.file), html);
     fs.writeFileSync(path.join(TEST_SITE, b.file), html);
     const entry = { x, y: rowY, w: b.w, h: b.h, title: b.title };
+    // Desktop boards show the twelve-column grid they are laid out on.
+    if (b.w === 1440) entry.guides = [GRID_GUIDE];
     if (b.fill) {
       entry.expand = 'fill';
       entry.is_interactive = true;
@@ -194,7 +197,16 @@ rows.forEach((row, ri) => {
     x += b.w + GAP_X;
     rowH = Math.max(rowH, b.h);
   }
-  notes['row' + (ri + 1)] = { x: 0, y: rowY - 260, text: row.note, kind: 'title1', maxW: x - GAP_X };
+  // The editor saves a title's width and caps maxW at 8000; writing the same
+  // keeps a rebuild from differing from what the canvas holds.
+  notes['row' + (ri + 1)] = {
+    x: 0,
+    y: rowY - 260,
+    text: row.note,
+    kind: 'title1',
+    maxW: Math.min(8000, x - GAP_X),
+    w: 240,
+  };
   y = rowY + rowH;
 });
 
@@ -206,6 +218,7 @@ const createdOnFiles = previous || { v: 1, at: new Date().toISOString().replace(
 if (!previous) fs.writeFileSync(CREATED_FILE, JSON.stringify(createdOnFiles));
 const canvas = {
   v: 3,
+  attachments: {},
   createdOnFiles,
   title: 'How Frontier LLMs Work',
   launch: { view: 'focused', file: 'Main.dc.html' },

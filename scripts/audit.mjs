@@ -9,6 +9,10 @@
 //   spacing   clipped text with the 1.4.12 spacing overrides applied
 //   keyboard  a Tab walk: focus visible, ring 2px or more, never covered
 //   headings  one h1, and no skipped levels
+//   corners   no corner rounder than 2px, on any block or control
+//   grids     every block in a grid the same height, at desktop and phone
+//             widths, and the page's layout on twelve columns at desktop
+//   storage   every shape of saved reading settings still loads
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
 //   node scripts/audit.mjs [--quick] [--only axe,measure,...] [--pages File.dc.html,...] [--mutate name]
 
@@ -16,6 +20,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { startSite, openPage, setSetting, AXE_PATH } from './harness.mjs';
 import { RESULTS } from '../src/paths.mjs';
+import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
 // --only measure,reflow runs just those checks, for quick iteration.
@@ -33,6 +38,11 @@ const MUTATIONS = {
   measure: { css: '.reader{--measure-em:40em!important}' },
   reflow: { css: '.plain{min-width:400px}' },
   spacing: { css: '.plain-label{height:1.2em;overflow:hidden}' },
+  corners: { css: '.header-btn{border-radius:999px!important}' },
+  grids: {
+    css: '.part-cards,.ideas,.legend,.routes,.parts-list,.settings-grid,.pager{grid-auto-rows:auto!important;align-items:start!important}',
+  },
+  twelve: { css: '.layout,.home-hero{grid-template-columns:15em minmax(0,1fr)!important}' },
   headings: {
     js: () => {
       const h = document.querySelector('.article h3:not(.deep-heading):not(.myth-claim)');
@@ -68,7 +78,18 @@ const COMPS = [
 ];
 
 const site = await startSite();
-const results = { axe: [], measure: [], targets: [], reflow: [], spacing: [], keyboard: [], headings: [] };
+const results = {
+  axe: [],
+  measure: [],
+  targets: [],
+  reflow: [],
+  spacing: [],
+  keyboard: [],
+  headings: [],
+  corners: [],
+  grids: [],
+  storage: [],
+};
 let failures = 0;
 const fail = (kind, msg) => {
   failures++;
@@ -302,6 +323,106 @@ async function keyboardWalk(page, steps) {
   return { seen, issues };
 }
 
+// Any element, or its ::before or ::after, whose corners are rounder than
+// 2px. Radio buttons are left out: the browser draws those itself.
+async function roundCorners(page) {
+  return page.evaluate(() => {
+    const out = [];
+    const sides = ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius'];
+    for (const el of document.querySelectorAll('.reader, .reader *')) {
+      if (el.matches('input[type="radio"]') || !el.getClientRects().length) continue;
+      for (const pseudo of [null, '::before', '::after']) {
+        const cs = getComputedStyle(el, pseudo);
+        if (pseudo && (cs.content === 'none' || cs.content === 'normal')) continue;
+        const r = Math.max(...sides.map((k) => parseFloat(cs[k]) || 0));
+        if (r > 2)
+          out.push(
+            `${el.tagName.toLowerCase()}.${[...el.classList].join('.')}${pseudo || ''} ${cs.borderTopLeftRadius}`,
+          );
+      }
+    }
+    return [...new Set(out)];
+  });
+}
+
+// The grids of blocks, and how far apart the tallest and shortest block in
+// each are. A grid that is shut away in a closed panel is not measured.
+const GRIDS = ['.part-cards', '.ideas', '.legend', '.routes', '.pager', '.parts-list', '.settings-grid'];
+async function gridSpreads(page, selectors = GRIDS) {
+  return page.evaluate((selectors) => {
+    const out = [];
+    for (const sel of selectors) {
+      for (const grid of document.querySelectorAll(sel)) {
+        if (!grid.getClientRects().length) continue;
+        const heights = [...grid.children]
+          .filter((c) => c.getClientRects().length)
+          .map((c) => c.getBoundingClientRect().height);
+        if (heights.length < 2) continue;
+        out.push({ sel, n: heights.length, spread: Math.max(...heights) - Math.min(...heights) });
+      }
+    }
+    return out;
+  }, selectors);
+}
+
+// The containers that must lay out on twelve columns at desktop width, by
+// kind of page. Each is checked open; the panels' grids with the panel open.
+const TWELVE = {
+  home: [
+    '.header-bar',
+    '.home-hero',
+    '.home-section > .shell',
+    '.part-cards',
+    '.ideas',
+    '.legend',
+    '.routes',
+    '.site-footer > .shell',
+  ],
+  part: ['.header-bar', '.layout', '.site-footer > .shell'],
+  panels: ['.parts-list', '.settings-grid'],
+};
+// A container is on twelve columns when its grid has exactly twelve tracks
+// of one width. Counting tracks alone is not enough: an item placed at column
+// 9 of a grid that has lost its twelve columns makes the browser add columns
+// of its own, some of them empty, and the count comes back twelve anyway.
+async function columnCounts(page, selectors) {
+  return page.evaluate((sels) => {
+    const out = [];
+    for (const sel of sels) {
+      const els = [...document.querySelectorAll(sel)].filter((e) => e.getClientRects().length);
+      if (!els.length) out.push({ sel, tracks: 0, equal: false, missing: true });
+      for (const el of els) {
+        const cs = getComputedStyle(el);
+        const widths = cs.display.includes('grid')
+          ? cs.gridTemplateColumns
+              .split(' ')
+              .filter(Boolean)
+              .map((w) => parseFloat(w))
+          : [];
+        const equal = widths.length > 0 && Math.max(...widths) - Math.min(...widths) <= 1;
+        out.push({ sel, tracks: widths.length, equal });
+      }
+    }
+    return out;
+  }, selectors);
+}
+
+// Every shape of saved settings a reader's browser may hold. A new setting
+// adds a shape here; an old one is never taken away, so a returning reader's
+// choices always load. Values the panel could not have written fall back to
+// the defaults instead of breaking the page.
+const SAVED_SHAPES = [
+  { name: 'nothing saved', value: null, expect: {} },
+  { name: 'one setting', value: { theme: 'dark' }, expect: { theme: 'dark' } },
+  {
+    name: 'every setting',
+    value: { theme: 'contrast', size: 'largest', spacing: 'widest', measure: 'short', font: 'serif', deep: 'open' },
+    expect: { theme: 'contrast', size: 'largest', spacing: 'widest', measure: 'short', font: 'serif', deep: 'open' },
+  },
+  { name: 'unknown values', value: { theme: 'sepia', size: 7, colour: 'red' }, expect: {} },
+  { name: 'not JSON', value: '{theme:', expect: {} },
+];
+
 const SPACING_CSS = `.reader *{line-height:1.5!important;letter-spacing:0.12em!important;word-spacing:0.16em!important}.reader p{margin-bottom:2em!important}`;
 
 for (const file of pagesArg || FULL_PAGES) {
@@ -401,7 +522,87 @@ for (const file of pagesArg || FULL_PAGES) {
     else pass('spacing', `${file} @${width}: nothing clipped with 1.4.12 spacing`);
     await page.close();
   }
+  // Corners, with every panel and deep dive open so nothing escapes.
+  if (run('corners')) {
+    const page = await open(file);
+    await setSetting(page, 'deep', 'open');
+    const round = await roundCorners(page);
+    await page.locator('button[aria-controls="settings-panel"]').click();
+    await page.locator('button[aria-controls="parts-panel"]').click();
+    round.push(...(await roundCorners(page)));
+    const unique = [...new Set(round)];
+    if (unique.length) fail('corners', `${file}: ${unique.length} rounder than 2px: ${unique.slice(0, 6).join('; ')}`);
+    else pass('corners', `${file}: no corner rounder than 2px`);
+    await page.close();
+  }
+
+  // Equal blocks in every grid, at both widths; twelve columns at desktop.
+  for (const width of run('grids') ? [1440, 390] : []) {
+    const page = await open(file, { width, height: 900 });
+    const spreads = await gridSpreads(page);
+    await page.locator('button[aria-controls="parts-panel"]').click();
+    spreads.push(...(await gridSpreads(page, ['.parts-list'])));
+    const panelTracks = width === 1440 ? await columnCounts(page, ['.parts-list']) : [];
+    await page.locator('button[aria-controls="parts-panel"]').click();
+    await page.locator('button[aria-controls="settings-panel"]').click();
+    spreads.push(...(await gridSpreads(page, ['.settings-grid'])));
+    if (width === 1440) panelTracks.push(...(await columnCounts(page, ['.settings-grid'])));
+    await page.locator('button[aria-controls="settings-panel"]').click();
+    const uneven = spreads.filter((g) => g.spread > 1);
+    const label = spreads.map((g) => `${g.sel} ${g.n} blocks`).join(', ');
+    if (!spreads.length) fail('grids', `${file} @${width}: no grids of blocks found`);
+    else if (uneven.length)
+      fail(
+        'grids',
+        `${file} @${width}: uneven ${uneven.map((g) => `${g.sel} by ${Math.round(g.spread)}px`).join(', ')}`,
+      );
+    else pass('grids', `${file} @${width}: every block the same height (${label})`);
+    if (width === 1440) {
+      const kind = file === 'Main.dc.html' ? 'home' : 'part';
+      const counts = [...(await columnCounts(page, TWELVE[kind])), ...panelTracks];
+      const wrong = counts.filter((c) => c.tracks !== 12 || !c.equal);
+      if (wrong.length)
+        fail(
+          'grids',
+          `${file} @1440: not on twelve columns: ${wrong.map((c) => `${c.sel} (${c.missing ? 'missing' : c.tracks + (c.equal ? ' columns' : ' columns of unequal widths')})`).join(', ')}`,
+        );
+      else pass('grids', `${file} @1440: ${counts.length} containers on twelve columns`);
+    }
+    await page.close();
+  }
   console.error(`audited ${file}`);
+}
+
+// Saved settings of every shape load, once, on a part with deep dives.
+for (const shape of run('storage') ? SAVED_SHAPES : []) {
+  const page = await openPage(site, 'Part1.dc.html', {
+    beforeLoad: (p) =>
+      p.addInitScript(
+        ([key, value]) => {
+          if (value !== null) localStorage.setItem(key, value);
+        },
+        [
+          STORE_KEY,
+          shape.value === null || typeof shape.value === 'string' ? shape.value : JSON.stringify(shape.value),
+        ],
+      ),
+  });
+  const want = { ...DEFAULTS, ...shape.expect };
+  const seen = await page.evaluate(() => ({
+    classes: document.querySelector('.reader').className,
+    deepOpen: document.querySelector('.deep-toggle')?.getAttribute('aria-expanded') === 'true',
+  }));
+  const missing = ['theme', 'size', 'spacing', 'measure', 'font']
+    .map((k) => `${k}-${want[k]}`)
+    .filter((c) => !seen.classes.split(' ').includes(c));
+  if (seen.deepOpen !== (want.deep === 'open')) missing.push(`deep dives ${want.deep}`);
+  if (missing.length) fail('storage', `${shape.name}: expected ${missing.join(', ')}; page has "${seen.classes}"`);
+  else
+    pass(
+      'storage',
+      `${shape.name}: loads as ${Object.keys(shape.expect).length ? JSON.stringify(shape.expect) : 'the defaults'}`,
+    );
+  await page.close();
 }
 
 for (const file of run('axe') ? COMPS : []) {

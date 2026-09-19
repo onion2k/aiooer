@@ -3,6 +3,8 @@
 // it the pages would show typewriter quotes and "10^23", which read worse and
 // which a screen reader speaks as "caret".
 
+import { ICONS } from './icons.mjs';
+
 export const PAGE_FILES = {
   '0a139f54-ef01': 'Main.dc.html',
   '590c1ae1-8bf3': 'Part1.dc.html',
@@ -79,7 +81,7 @@ export function renderInline(tokens, state = { prev: '' }) {
         const target = linkTarget(tok.href);
         const inner = renderInline(tok.tokens, state);
         html += target.external
-          ? `<a href="${esc(target.href)}" target="_blank" rel="noopener noreferrer" class="ext">${inner}<span class="sr-only"> (opens in a new tab)</span>${EXTERNAL_ICON}</a>`
+          ? `<a href="${esc(target.href)}" target="_blank" rel="noopener noreferrer" class="ext">${inner}<span class="sr-only"> (opens in a new tab)</span>${ICONS.external}</a>`
           : `<a href="${target.href}">${inner}</a>`;
         break;
       }
@@ -118,6 +120,3 @@ export function plainText(tokens) {
 export function smartPlain(text) {
   return smarten(text, { prev: '' });
 }
-
-export const EXTERNAL_ICON =
-  '<svg class="icon icon-ext" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>';
