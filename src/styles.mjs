@@ -129,10 +129,15 @@ ${swatches()}
 .reader a.ext .icon{width:0.85em;height:0.85em;margin-left:0.15em;vertical-align:-0.05em}
 
 /* Focus: a 3px ring clear of the element, at 3:1 or more against every
-   surface (2.4.7, 2.4.13), and a yellow highlighter behind links. */
+   surface (2.4.7, 2.4.13), and a yellow highlighter behind links. The
+   highlighter's colours are important, down to every span inside the
+   link: any rule giving a link or its parts their own colour would
+   otherwise paint that colour on the yellow, as the footer's yellow links,
+   the pager's labels and the dark theme's contents once did. */
 .reader :focus{outline:none}
 .reader :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
-.reader a:focus-visible{outline-offset:2px;background:var(--focus-bg);color:var(--focus-ink);box-shadow:0 0 0 2px var(--focus-bg);text-decoration-color:currentColor}
+.reader a:focus-visible{outline-offset:2px;background:var(--focus-bg)!important;color:var(--focus-ink)!important;box-shadow:0 0 0 2px var(--focus-bg);text-decoration-color:currentColor}
+.reader a:focus-visible *{color:inherit!important}
 .plain :focus-visible{outline-color:var(--plain-focus)}
 .site-footer :focus-visible{outline-color:var(--footer-link)}
 .reader main:focus-visible,.reader [tabindex="-1"]:focus-visible{outline:none}
@@ -429,7 +434,7 @@ ${swatches()}
 .reader .part-title a{color:inherit;text-decoration-thickness:0.07em}
 .reader .part-title a::after{content:'';position:absolute;inset:0}
 .reader .part-title a:hover{background:none;color:inherit}
-.reader .part-title a:focus-visible{outline:none;background:none;box-shadow:none;color:inherit}
+.reader .part-title a:focus-visible{outline:none;background:none!important;box-shadow:none;color:inherit!important}
 .home-section .part-outcome{grid-area:outcome;margin:0}
 .idea{--span:3;--span-md:3;margin:0;display:flex;flex-direction:column;gap:0.9em;padding:1.1em 0 0;border-top:var(--bw-heavy) solid var(--ink)}
 .idea-num{font-family:var(--font-display);font-weight:900;font-size:4.2em;line-height:0.8;letter-spacing:-0.06em;color:var(--link)}

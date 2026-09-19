@@ -7,7 +7,8 @@
 //   targets   buttons and links outside sentences under 44 by 44 (2.5.5)
 //   reflow    horizontal scrolling at 320px wide and at 200% zoom (1.4.10)
 //   spacing   clipped text with the 1.4.12 spacing overrides applied
-//   keyboard  a Tab walk: focus visible, ring 2px or more, never covered
+//   keyboard  a Tab walk: focus visible, ring 2px or more, never covered,
+//             and focused text 7:1 or better, in every theme
 //   headings  one h1, and no skipped levels
 //   corners   no corner rounder than 2px, on any block or control
 //   grids     every block in a grid the same height, at desktop and phone
@@ -39,6 +40,7 @@ const MUTATIONS = {
   reflow: { css: '.plain{min-width:400px}' },
   spacing: { css: '.plain-label{height:1.2em;overflow:hidden}' },
   corners: { css: '.header-btn{border-radius:999px!important}' },
+  focustext: { css: '.reader .toc-list a{color:var(--ink)!important}' },
   grids: {
     css: '.part-cards,.ideas,.legend,.routes,.parts-list,.settings-grid,.pager{grid-auto-rows:auto!important;align-items:start!important}',
   },
@@ -306,12 +308,32 @@ async function keyboardWalk(page, steps) {
       const top = document.elementFromPoint(cx, cy);
       const covered = top && !(el === top || el.contains(top) || top.contains(el) || (holder && holder.contains(top)));
       const inView = r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
+      // Every piece of text in the focused control, and what is behind it: the
+      // nearest background that is not transparent (a part-transparent one
+      // counts as solid, which this site never uses).
+      const pieces = [];
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        const text = node.parentElement;
+        if (!node.textContent.trim() || text.closest('.sr-only, svg')) continue;
+        const ts = getComputedStyle(text);
+        let back = null;
+        for (let n = text; n && !back; n = n.parentElement) {
+          const c = getComputedStyle(n).backgroundColor;
+          if (c !== 'rgba(0, 0, 0, 0)' && c !== 'transparent') back = c;
+        }
+        const size = parseFloat(ts.fontSize);
+        const large = size >= 24 || (size >= 18.66 && parseInt(ts.fontWeight, 10) >= 700);
+        if (back) pieces.push({ color: ts.color, back, large });
+      }
       return {
         name: `${el.tagName.toLowerCase()} "${(el.textContent || el.value || '').trim().slice(0, 30)}"`,
         ring,
         style,
         covered,
         inView,
+        pieces,
       };
     });
     if (!info) continue;
@@ -319,8 +341,39 @@ async function keyboardWalk(page, steps) {
     if (info.style === 'none' || info.ring < 2) issues.push(`no visible ring on ${info.name}`);
     if (info.covered) issues.push(`covered: ${info.name}`);
     if (!info.inView) issues.push(`off screen: ${info.name}`);
+    const faint = faintest(info.pieces);
+    if (faint) issues.push(`focused text at ${faint}: ${info.name}`);
   }
   return { seen, issues };
+}
+
+// The contrast between two computed colours, rgb() or rgba() strings, as
+// WCAG works it out.
+const channels = (c) => (c.match(/[\d.]+/g) || []).map(Number);
+function luminance(c) {
+  return [0.2126, 0.7152, 0.0722].reduce((sum, weight, i) => {
+    const v = channels(c)[i] / 255;
+    return sum + weight * (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+  }, 0);
+}
+function contrastOf(fg, bg) {
+  const [a, b] = [luminance(fg), luminance(bg)].sort((x, y) => y - x);
+  return (a + 0.05) / (b + 0.05);
+}
+
+// The piece of text furthest short of AAA's 7:1 (4.5:1 when large), said as
+// its ratio and colours, or null when every piece clears it. A focus style
+// that paints a background has to recolour the text on it too, and a later
+// rule that sets a colour can quietly undo that.
+function faintest(pieces) {
+  let worst = null;
+  for (const p of pieces) {
+    const ratio = contrastOf(p.color, p.back);
+    const short = (p.large ? 4.5 : 7) - ratio;
+    if (short > 0 && (!worst || short > worst.short))
+      worst = { short, text: `${ratio.toFixed(2)}:1, ${p.color} on ${p.back}` };
+  }
+  return worst && worst.text;
 }
 
 // Any element, or its ::before or ::after, whose corners are rounder than
@@ -467,22 +520,30 @@ for (const file of pagesArg || FULL_PAGES) {
     await page.close();
   }
 
-  // Targets, headings and the keyboard walk at desktop and phone widths.
-  for (const width of run('keyboard') ? [1440, 390] : []) {
+  // Targets, headings and the keyboard walk at desktop and phone widths, and
+  // the walk again at desktop in each other theme, whose focus colours differ.
+  const walks = [[1440, 'paper'], [390, 'paper'], ...THEMES.filter((t) => t !== 'paper').map((t) => [1440, t])];
+  for (const [width, theme] of run('keyboard') ? walks : []) {
     const page = await open(file, { width, height: 900 });
+    if (theme !== 'paper') await setSetting(page, 'theme', theme);
     await setSetting(page, 'deep', 'open');
-    const small = await targetSizes(page);
-    if (small.length) fail('targets', `${file} @${width}: ${small.length} small: ${small.slice(0, 6).join('; ')}`);
-    else pass('targets', `${file} @${width}: all targets 44x44 or larger`);
+    if (theme === 'paper') {
+      const small = await targetSizes(page);
+      if (small.length) fail('targets', `${file} @${width}: ${small.length} small: ${small.slice(0, 6).join('; ')}`);
+      else pass('targets', `${file} @${width}: all targets 44x44 or larger`);
+    }
     await page.locator('button[aria-controls="settings-panel"]').click();
-    const h = await headingOutline(page);
-    if (h.problems.length) fail('headings', `${file} @${width}: ${h.problems.join('; ')}`);
-    else pass('headings', `${file} @${width}: ${h.count} headings, one h1, no skipped levels`);
+    if (theme === 'paper') {
+      const h = await headingOutline(page);
+      if (h.problems.length) fail('headings', `${file} @${width}: ${h.problems.join('; ')}`);
+      else pass('headings', `${file} @${width}: ${h.count} headings, one h1, no skipped levels`);
+    }
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.mouse.click(5, 5);
     const k = await keyboardWalk(page, quick ? 40 : 120);
-    if (k.issues.length) fail('keyboard', `${file} @${width}: ${k.issues.slice(0, 5).join('; ')}`);
-    else pass('keyboard', `${file} @${width}: ${k.seen} tab stops, all with a ring of 2px or more, none covered`);
+    const label = `${file} @${width} ${theme}`;
+    if (k.issues.length) fail('keyboard', `${label}: ${k.issues.slice(0, 5).join('; ')}`);
+    else pass('keyboard', `${label}: ${k.seen} tab stops, all ringed, none covered, focused text 7:1 or better`);
     await page.close();
   }
 

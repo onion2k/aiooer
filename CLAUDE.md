@@ -27,7 +27,8 @@ was written on 19 September 2026 from what the code does at that date.
   overrides. `audit`.
 - **Operable.** Every control outside a sentence is 44 by 44 or larger
   (2.5.5); every Tab stop has a ring and is never covered (2.4.7, 2.4.11 to
-  2.4.13); one h1 and no skipped heading levels. `audit`.
+  2.4.13), and its text keeps 7:1 against the focus highlighter in every
+  theme; one h1 and no skipped heading levels. `audit`.
 - **On the grid.** At desktop width the page lays out on twelve equal
   columns, stepping to six and then one; every grid of blocks is one height
   at every width; no corner is rounder than 2px. `audit` holds it.
@@ -49,7 +50,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, targets   | 7 pages × desktop and phone             | all 44 × 44 or larger                       | none           |
 | `audit`, reflow    | 7 pages × 320px and 200% zoom           | no sideways scroll                          | none           |
 | `audit`, spacing   | 7 pages × desktop and phone             | nothing clipped                             | none           |
-| `audit`, keyboard  | 7 pages × desktop and phone             | 114 to 119 stops, all ringed, none covered  | none           |
+| `audit`, keyboard  | 7 pages × 2 widths, and 3 more themes   | 114 to 119 stops, ringed, uncovered, 7:1    | none           |
 | `audit`, headings  | 7 pages × desktop and phone             | one h1, no skipped level                    | none           |
 | `audit`, corners   | 7 pages, every panel and deep dive open | none rounder than 2px                       | none           |
 | `audit`, grids     | 7 pages × desktop and phone             | blocks equal; 15 or 5 containers on 12 cols | 1px on heights |
@@ -66,7 +67,7 @@ slowdown is only caught by reading them.
     npm run dev            build, then the site at http://127.0.0.1:5190 with the canvas runtime
     npm run build          the boards into dist/canvas, and a test copy into test-results/site
     npm run check:quick    formatting, lint, contrast, build (the pre-commit hook; ~1 s)
-    npm run check          check:quick, look and the full audit (~2 min)
+    npm run check          check:quick, look and the full audit (~3 min)
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
     npm run audit          the accessibility audit; report in test-results/audit-report.md
     npm run audit:quick    two themes and shorter keyboard walks (~1.5 min; line length takes most of it)
@@ -77,8 +78,8 @@ slowdown is only caught by reading them.
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage`,
 `--pages Part1.dc.html,...` and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `reflow`,
-`spacing`, `headings`, `corners`, `grids`, `twelve`) to prove the check that
-should catch it still does.
+`spacing`, `headings`, `corners`, `grids`, `twelve`, `focustext`) to prove the
+check that should catch it still does.
 `node scripts/look-parts.mjs <width> <File.dc.html> <selector>...` takes
 pictures of single elements, with `--theme`, `--size` and the other
 settings; `node scripts/tile.mjs <in.png> <out.png>` lays a tall phone
@@ -189,6 +190,9 @@ reader's saved settings.
   narrow window does.
 - **No logic in the markup.** A hole is a dotted lookup into
   `renderVals()`; anything computed is computed there.
+- **Focus colours win.** The link highlighter's colours are `!important`,
+  and everything inside a focused link takes them, because any rule giving
+  a link its own colour would otherwise paint that colour on the yellow.
 - **Nothing here uses chance,** and a build is byte-for-byte repeatable.
 - **Match the style.** Comments are full sentences in the house voice,
   saying why and not what. Prettier decides the formatting.
@@ -222,8 +226,9 @@ For anything new on a page, check what it does:
 - **saved settings:** a new setting adds its shape to `SAVED_SHAPES` in
   `audit.mjs`, and every older shape stays
 - **inside a deep dive,** hidden until opened, as well as outside one
-- **the keyboard:** reached by Tab, a visible ring, and Escape closing a
-  panel back to the button that opened it
+- **the keyboard:** reached by Tab, a visible ring, its text 7:1 or better
+  while focused in every theme, and Escape closing a panel back to the
+  button that opened it
 - **a screen reader:** real buttons, links and labelled inputs, headings in
   order, table roles kept when a table stacks, icons hidden, new-tab links
   announced
