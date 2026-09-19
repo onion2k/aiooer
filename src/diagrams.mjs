@@ -144,6 +144,58 @@ export const DIAGRAMS = {
     ],
     loop: 'Go back to step 5 and change one more thing, until it is right.',
   },
+  // Practical AI part 1, "About this part". flowchart LR: three sources feed the
+  // context, and a tool call loops back into it.
+  'practical1-1': {
+    kind: 'flow',
+    layout: 'column',
+    caption: 'The system around the model',
+    inputs: {
+      label: 'Three things go into the context',
+      items: ['Instructions and examples', 'Retrieved documents', 'Tool results'],
+    },
+    steps: [
+      { text: 'Context' },
+      { text: 'Model' },
+      { text: 'Output' },
+      { text: 'Validation and approval' },
+      { text: 'Logged and evaluated' },
+    ],
+    loop: 'When the model makes a tool call, your code runs the tool, and its result goes back into the context as tool results.',
+  },
+  // Practical AI part 4, section 2. sequenceDiagram with three participants.
+  'practical4-1': {
+    kind: 'sequence',
+    caption: 'The tool-use loop',
+    participants: ['Your application', 'Model', 'Tool'],
+    messages: [
+      { from: 0, to: 1, text: 'Prompt + tool definitions' },
+      { from: 1, to: 0, text: 'Tool call: name + arguments' },
+      { from: 0, to: 2, text: 'Execute, after checks' },
+      { from: 2, to: 0, text: 'Result' },
+      { from: 0, to: 1, text: 'Result added to context' },
+      { from: 1, to: 0, text: 'Final answer, or another tool call' },
+    ],
+  },
+  // Practical AI part 5, section 2. Two rows: indexing ahead of time, answering
+  // per question.
+  'practical5-1': {
+    kind: 'lanes',
+    caption: 'The RAG pipeline',
+    lanes: [
+      { label: 'Top row: ahead of time', steps: ['Documents', 'Split into chunks', 'Embed', 'Index'] },
+      {
+        label: 'Bottom row: for every question',
+        steps: [
+          'Question',
+          'Search: meaning + keywords, in the index',
+          'Rerank',
+          'Top passages into prompt',
+          'Answer with citations',
+        ],
+      },
+    ],
+  },
 };
 
 function arrow() {

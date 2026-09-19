@@ -13,15 +13,19 @@ the practical module: hardware, Hugging Face and model names, engines and
 apps, agents and harnesses, and building on a local model. It was written by
 Claude from sources read in September 2026, names products throughout, and
 explains what tools do without giving commands, which date faster than
-anything else here. Practical AI (files `Practical N ….md`) is declared
-with six parts still to come: instruction files; skills, agents and
-plugins; multi-modal models; MCP servers and tool use; retrieval; and
-guardrails and evals. It replaces the language module's former part 4,
-Building with models, which the author had removed on 19 September 2026
-before its replacement was written; that part's text is in the git history
-at commit 3617b44, and is the natural source for parts 4 to 6. Until those
-are written, some thirty sentences across the course point to "the
-practical AI module" for material that is not yet on the site. Other AI
+anything else here. Practical AI (six parts, files `Practical N ….md`)
+covers instruction files; skills, agents and plugins; multi-modal models;
+MCP servers and tool use; retrieval; and guardrails and evals. It replaces
+the language module's former part 4, Building with models, whose text is in
+the git history at commit 3617b44. Claude wrote the six parts around that
+text, which the author had accepted, and added what was new from sources
+read in September 2026: the instruction file formats, Agent Skills,
+plugins, the July 2026 revision of MCP, and the whole of part 3. Each
+part's Sources section says which of its claims rest on the drafter's
+knowledge and not on a document. Part 6 closes with the module's core
+explanations and misconceptions, which the language module's part 5 lost
+when part 4 left it. Some thirty sentences across the other modules point
+to "the practical AI module" in plain text, without a link. Other AI
 models (files `Other N ….md`) is declared
 with four parts still to come: small models, world models, diffusion
 language models and system one models. It is expected to grow; a new part
@@ -90,25 +94,25 @@ was written on 19 September 2026 from what the code does at that date.
 
 Baselines as of 19 September 2026, on this machine:
 
-| Gate               | Holds                                   | Baseline                                         | Tolerance      |
-| ------------------ | --------------------------------------- | ------------------------------------------------ | -------------- |
-| `contrast`         | 188 colour pairs, four themes           | lowest text pair 7.33:1, lowest edge 8.38:1      | none           |
-| `audit`, axe       | 93 runs                                 | 0 violations, 0 needing review                   | none           |
-| `audit`, measure   | 7 pages × 3 setting mixes × 3 lengths   | Short's longest line 70; widths 1:1.5:2          | 80; 1% widths  |
-| `audit`, targets   | 7 pages × desktop and phone             | all 44 × 44 or larger                            | none           |
-| `audit`, reflow    | 7 pages × 320px and 200% zoom           | no sideways scroll                               | none           |
-| `audit`, spacing   | 7 pages × desktop and phone             | nothing clipped                                  | none           |
-| `audit`, keyboard  | 7 pages × 2 widths, and 3 more themes   | 114 to 119 stops, ringed, uncovered, 7:1         | none           |
-| `audit`, headings  | 7 pages × desktop and phone             | one h1, no skipped level                         | none           |
-| `audit`, corners   | 7 pages, every panel and deep dive open | none rounder than 2px                            | none           |
-| `audit`, grids     | 7 pages × desktop and phone             | blocks equal; 17 or 6 containers on 12 cols      | 1px on heights |
-| `audit`, storage   | 5 saved shapes                          | every one loads                                  | none           |
-| `audit`, numerals  | the home page in four themes            | the four ideas numbered in the text colour       | none           |
-| `audit`, spy       | 6 parts × 3 frames × top, middle, end   | one current, earlier passed, no jumps            | none           |
-| `audit`, modules   | the home page and every written part    | label, breadcrumb, title, ways on, no dead links | none           |
-| `audit`, name      | 7 pages and the canvas's index          | the heading's name wherever it is shown          | none           |
-| `look`             | 16 boards                               | no errors; recorded heights match                | 2px on heights |
-| `perf`, not a gate | render, fonts, repaint, scrolling       | see below                                        | not held       |
+| Gate               | Holds                                  | Baseline                                         | Tolerance      |
+| ------------------ | -------------------------------------- | ------------------------------------------------ | -------------- |
+| `contrast`         | 188 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1      | none           |
+| `audit`, axe       | 300 runs                               | 0 violations, 0 needing review                   | none           |
+| `audit`, measure   | 24 pages × 3 setting mixes × 3 lengths | Short's longest line 71; widths 1:1.5:2          | 80; 1% widths  |
+| `audit`, targets   | 24 pages × desktop and phone           | all 44 × 44 or larger                            | none           |
+| `audit`, reflow    | 24 pages × 320px and 200% zoom         | no sideways scroll                               | none           |
+| `audit`, spacing   | 24 pages × desktop and phone           | nothing clipped                                  | none           |
+| `audit`, keyboard  | 24 pages × 2 widths, and 3 more themes | 117 to 119 stops, ringed, uncovered, 7:1         | none           |
+| `audit`, headings  | 24 pages × desktop and phone           | one h1, no skipped level                         | none           |
+| `audit`, corners   | 24 pages, every panel, deep dive open  | none rounder than 2px                            | none           |
+| `audit`, grids     | 24 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols      | 1px on heights |
+| `audit`, storage   | 5 saved shapes                         | every one loads                                  | none           |
+| `audit`, numerals  | the home page in four themes           | the four ideas numbered in the text colour       | none           |
+| `audit`, spy       | 23 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps            | none           |
+| `audit`, modules   | the home page and every written part   | label, breadcrumb, title, ways on, no dead links | none           |
+| `audit`, name      | 24 pages and the canvas's index        | the heading's name wherever it is shown          | none           |
+| `look`             | 36 boards                              | no errors; recorded heights match                | 2px on heights |
+| `perf`, not a gate | render, fonts, repaint, scrolling      | see below                                        | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
 85 KB, a theme change 32 to 39 ms, opening every deep dive 19 to 33 ms, and
@@ -127,7 +131,7 @@ slowdown is only caught by reading them.
     npm run dev            build, then the site at http://127.0.0.1:5190 with the canvas runtime
     npm run build          the boards into dist/canvas, and a test copy into test-results/site
     npm run check:quick    formatting, lint, contrast, build (the pre-commit hook; ~1 s)
-    npm run check          check:quick, look and the full audit (~3 min)
+    npm run check          check:quick, look and the full audit (~12 min)
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
     npm run audit          the accessibility audit; report in test-results/audit-report.md
     npm run audit:quick    two themes and shorter keyboard walks (~2 min; line length takes most of it)
@@ -327,8 +331,8 @@ For anything new on a page, check what it does:
   order, table roles kept when a table stacks, icons hidden, new-tab links
   announced
 - **the 1.4.12 spacing overrides** and **forced colours**
-- **a code block's language:** `python`, `json`, `prompt` (which wraps as
-  prose), `names` for a list of model names, or none, which is a formula; any other stops the build until
+- **a code block's language:** `python`, `json`, `prompt` and `file` (an instruction file
+  such as `AGENTS.md`; both wrap as prose), `names` for a list of model names, or none, which is a formula; any other stops the build until
   `CODE_LABELS` in `render.mjs` names it
 - **a part's second block in one language:** each code block is a named,
   scrollable region, and regions on a page need different names, so the

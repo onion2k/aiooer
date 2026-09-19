@@ -24,6 +24,12 @@ export const PAGE_FILES = {
   '6e0f3c81-a247': 'Local3.dc.html',
   'b7d15e92-4c60': 'Local4.dc.html',
   '3a8c9f47-d1e5': 'Local5.dc.html',
+  'f3a91c20-6d4e': 'Practical1.dc.html',
+  '8d27b5e4-c019': 'Practical2.dc.html',
+  '52e0a7c9-b3f6': 'Practical3.dc.html',
+  'c9146f3b-27a8': 'Practical4.dc.html',
+  '0b8e5d17-f4c2': 'Practical5.dc.html',
+  '7a3f2c68-91de': 'Practical6.dc.html',
 };
 
 export function esc(s) {
