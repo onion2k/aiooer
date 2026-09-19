@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the fifth of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the fifth of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
 [Part 1](file/f3a91c20-6d4e) covered the instructions that stand in the context, and [part 4](file/c9146f3b-27a8) the tool results that arrive in it. This part covers the third source: your own documents, found and placed there at the moment of the question. The technique is called retrieval-augmented generation, or RAG. It is how a model comes to know your codebase, your wiki and your tickets without any retraining.
 

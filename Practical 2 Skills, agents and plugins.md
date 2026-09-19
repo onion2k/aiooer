@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the second of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
+This is the second of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
 
 [Part 1](file/f3a91c20-6d4e) covered the text that stands in front of every request. This part covers the thing that reads it. It explains what an agent is, how one survives a long task, and the three ways a team now extends one: skills, which package know-how; sub-agents, which isolate work; and plugins, which bundle both for sharing. It ends with how coding agents are used in practice. [Part 4 of the running AI locally module](file/b7d15e92-4c60) covers what changes when the model behind the agent is small and the computer is yours.
 
@@ -257,6 +257,8 @@ Teams that get much more from these tools change the shape of the work:
 - **Shift effort to the two ends.** The engineer's time moves to specifying the task well and to deciding whether the result is acceptable. The middle belongs to the agent.
 - **Invest in verification you can trust.** Reading every line is a substitute for tests, types and checks you do not have. Each improvement to automated verification reduces how much must be read.
 - **Do what was not worth doing before.** Build three prototypes to choose between instead of debating one. Backfill tests on legacy code. Complete the migration that was always deferred. Write the internal tool nobody had time for.
+
+Measure whether it worked. Directing five agents at once feels enormously productive, and that feeling is not evidence. In the best-known trial, experienced developers took 19% longer with AI tools and still believed they had been 20% faster. Before changing how the team works, record a baseline: how long work takes from start to release, how much comes back as rework, how many defects escape. Then watch those figures and not the activity, since pull requests opened, lines written and tokens spent all soar whether or not anything reaches a customer sooner. Section 7 of [part 4 of the language models module](file/3e89a4fc-a0bc) sets out the evidence and the measures.
 
 None of this removes accountability. It changes where assurance comes from. Skipping review without stronger automated verification simply moves the cost to production. [Part 4 of the language models module](file/3e89a4fc-a0bc) covers how to make this shift across a team.
 

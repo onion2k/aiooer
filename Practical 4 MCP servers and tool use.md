@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the fourth of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the fourth of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
 [Part 2](file/8d27b5e4-c019) described an agent as a model in a loop, choosing actions. This part is about the actions. It explains how a model that only produces text comes to search, run code and change records, why your software stays in charge while it does, and how the Model Context Protocol lets one integration serve every AI application. It also covers what each connection costs, in context and in risk.
 

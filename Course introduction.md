@@ -61,9 +61,10 @@ This module is more practical than the others, and it dates faster. It covers th
 | [Part 3: Multi-modal models](file/52e0a7c9-b3f6) | Use models that read images, audio and video as well as text, and know what they miss | 30 min |
 | [Part 4: MCP servers and tool use](file/c9146f3b-27a8) | Connect a model to your own systems, and decide what it may do there | 25 min |
 | [Part 5: Retrieval](file/0b8e5d17-f4c2) | Have a model answer from your own documents, and diagnose it when it answers badly | 25 min |
-| [Part 6: Guardrails and evals](file/7a3f2c68-91de) | Contain what a model can do, and measure whether it is doing it well | 30 min |
+| [Part 6: Guardrails and evals](file/7a3f2c68-91de) | Contain what a model can do, and measure whether it is doing it well | 25 min |
+| [Part 7: AI across the software lifecycle](file/d6e2a95b-3f14) | Apply AI to discovery, planning, review, testing and operations as well as coding, and say why the whole process sets the gain | 40 min |
 
-This module covers the craft of building with models: the instruction files, skills and plugins that shape an agent, models that take more than text, connecting a model to tools and systems, answering from your own documents, and keeping the result safe and measured. It names products and file formats throughout, and those date quickly. It grew out of a part of the language models module called Building with models, and it assumes part 3 of that module. Its part 6 ends with a design review checklist and the module's own two reference sections. The whole module is about three hours of reading.
+This module covers the craft of building with models: the instruction files, skills and plugins that shape an agent, models that take more than text, connecting a model to tools and systems, answering from your own documents, keeping the result safe and measured, and applying all of it along the whole software lifecycle and not only to coding. It names products and file formats throughout, and those date quickly. It grew out of a part of the language models module called Building with models, and it assumes part 3 of that module. Its part 6 ends with a design review checklist, and its part 7 with the module's own two reference sections. The whole module is about three and a half hours of reading.
 
 ### Other AI models
 
@@ -86,7 +87,7 @@ This module will grow. Each part stands alone, and each names products and figur
 - **Glossary** at the end of each part defines every technical term introduced there.
 - **Sources** appear where a part quotes study results or legal dates.
 
-Part 5 of the language models module ends with two reference sections for use on their own: the 20 explanations you will need most often, and all sixteen misconceptions with one-line responses. Part 7 of the generative media module and part 6 of the practical AI module end with the same for their own modules.
+Part 5 of the language models module ends with two reference sections for use on their own: the 20 explanations you will need most often, and all sixteen misconceptions with one-line responses. Part 7 of the generative media module and part 7 of the practical AI module end with the same for their own modules.
 
 ## Suggested routes
 
