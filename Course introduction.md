@@ -1,10 +1,10 @@
-# How Frontier LLMs Work: Course Introduction
+# How AI works: Course Introduction
 
 2026-09-18 · @Someone
 
 ## What this course is for
 
-This course explains how frontier large language models work and how to use them well in an engineering organisation. It is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
+This course explains how AI works and how to use it well in an engineering organisation. It concentrates on large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. It is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 

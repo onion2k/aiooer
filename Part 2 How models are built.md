@@ -34,7 +34,7 @@ Take a document from the corpus. At every position, have the model predict the n
 
 Two properties make this practical at scale. First, it needs no human labelling: the text is its own answer key. Second, causal masking from part 1 means one 8,000-token document yields 8,000 prediction exercises in a single pass.
 
-The scale is hard to picture. Frontier models are trained on well over ten trillion tokens. One openly documented model with 405 billion parameters used about 15 trillion tokens and 16,000 GPUs running for months. Publicly reported compute costs for a single frontier run range from tens to hundreds of millions of dollars.
+The scale is hard to picture. The largest models are trained on well over ten trillion tokens. One openly documented model with 405 billion parameters used about 15 trillion tokens and 16,000 GPUs running for months. Publicly reported compute costs for a single run at that scale range from tens to hundreds of millions of dollars.
 
 ### Why guessing the next token builds capability
 
@@ -86,7 +86,7 @@ Open data projects that publish their numbers report keeping only a small fracti
 
 ### The data wall and synthetic data
 
-Good human-written text is finite, and frontier training runs already use most of what is publicly reachable. Labs respond in three ways: repeating the best data several times, licensing private archives, and generating synthetic data.
+Good human-written text is finite, and the largest training runs already use most of what is publicly reachable. Labs respond in three ways: repeating the best data several times, licensing private archives, and generating synthetic data.
 
 Synthetic data means text written by models for training models. Common forms are rewriting messy web pages into clean textbook style, generating maths and coding problems with worked solutions, and producing example conversations. It works best where output can be checked automatically, because the code runs or the answer is verifiably correct. Section 5 builds on this.
 
@@ -130,8 +130,8 @@ When you hear that "scaling has hit a wall", it usually refers to the first axis
 ### What this explains
 
 - **Capability arrives in steps.** Each generation is one large, planned training run lasting months. Between generations you get smaller refreshes from improved post-training.
-- **The price of a given capability keeps falling.** Better data, over-trained small models and distillation push last year's frontier quality into this year's cheap tier. Several analyses put the fall at around tenfold per year for a fixed level of quality.
-- **Few companies can play.** The capital needed for a frontier run limits the field to a handful of labs.
+- **The price of a given capability keeps falling.** Better data, over-trained small models and distillation push the quality of last year's best models into this year's cheap tier. Several analyses put the fall at around tenfold per year for a fixed level of quality.
+- **Few companies can play at the top.** The capital needed to train the largest models limits that end of the field to a handful of labs.
 - **Do not over-build around today's weaknesses.** Elaborate workarounds for a current limitation may be obsolete within a year. Keep them light, and keep a test suite that tells you when a newer model no longer needs them. Part 4 shows how.
 
 There is a further consequence for how you organise work. The set of tasks that can safely be delegated grows with every model generation. A team that settled its habits around last year's model, including how much it reads and reviews by hand, is carrying a cost that may no longer buy anything. Revisit those habits as often as you revisit the tools.
@@ -249,7 +249,7 @@ Nobody scripts how the model should reason. Yet trained this way, models develop
 
 Mechanically, "thinking" is nothing exotic. It is ordinary tokens generated before the answer, usually hidden or summarised in products. Part 1 explained why this helps: compute per token is fixed, so more tokens means more computation, and written-down intermediate results become available to attention. Reinforcement learning taught the model to use that scratchpad well.
 
-Most frontier models are now hybrids with a control for how much to think. That control is a cost and latency dial, which part 3 covers.
+Many current models are now hybrids with a control for how much to think. That control is a cost and latency dial, which part 3 covers.
 
 ### Why code and maths moved fastest
 

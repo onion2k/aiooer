@@ -20,7 +20,7 @@ A caution on sections 3 and 4. They describe the questions to ask and the shape 
 
 | Layer | Who | What you buy from them |
 | --- | --- | --- |
-| Model labs | A few frontier labs, mostly in the US and China | Direct API access and their own assistants and coding agents |
+| Model labs | A few labs building the most capable models, mostly in the US and China | Direct API access and their own assistants and coding agents |
 | Cloud platforms | The major cloud providers | The same models under your existing contract, with regional hosting |
 | Tool makers | Hundreds of companies, from start-ups to established vendors | Coding assistants, review tools, support bots, search and meeting tools built on the labs' models |
 | Open-weight ecosystem | Labs that publish weights, plus hosting services | Models you can run yourself or rent cheaply, as part 3 described |
@@ -246,7 +246,7 @@ Part 3 gave the headline: a server for a large open model rents for $15,000 to $
 | Compute | Fixed, around the clock, whatever the usage | Pay per token |
 | Engineering | Roughly half an engineer to one engineer for the serving stack, upgrades and on-call | None |
 | Model evaluation | Each new open model must be tested and deployed by you | The vendor upgrades, and you re-run your evals |
-| Quality gap | Open models trail the frontier by months. Price that as lower success rates on hard tasks | The frontier |
+| Quality gap | Open models trail the best closed ones by months. Price that as lower success rates on hard tasks | The best closed models |
 | Capacity planning | Peaks need headroom, so average utilisation falls further | Elastic, within rate limits |
 | Security and compliance | Entirely yours, which is the point if that is the requirement | Shared, under contract |
 

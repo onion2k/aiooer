@@ -57,7 +57,7 @@ A model never sees characters or words. It sees integers, each one an index into
 
 Characters would make sequences very long, and every step costs compute. Whole words would need an unbounded vocabulary and would fail on typos, new names and code. Sub-word fragments sit in between: common words are one token, rare words are several, and anything at all can be spelled out from smaller pieces.
 
-Current frontier models use vocabularies of roughly 100,000 to 250,000 tokens. The usual algorithm is byte-pair encoding (BPE). It starts from raw bytes and repeatedly merges the most frequent adjacent pair in a large text sample until the vocabulary is full. The result is a lookup table, learned once and then frozen.
+Current models use vocabularies of roughly 30,000 to 250,000 tokens, and most recent ones use more than 100,000. The usual algorithm is byte-pair encoding (BPE). It starts from raw bytes and repeatedly merges the most frequent adjacent pair in a large text sample until the vocabulary is full. The result is a lookup table, learned once and then frozen.
 
 Useful rules of thumb for English prose: one token is about four characters, or about three quarters of a word. A 1,000-word document is roughly 1,300 tokens. Code, numbers and other languages behave differently, which is where the consequences start.
 
@@ -162,7 +162,7 @@ Attention(Q, K, V) = softmax( (Q K^T) / sqrt(d_k) + mask ) V
 
 The `sqrt(d_k)` divisor is there for training stability. The dot product of two vectors with d\_k roughly independent unit-variance components has variance d\_k. With d\_k of 128, raw scores would often be large enough to push softmax into near one-hot outputs, where gradients vanish. Dividing by the square root brings the variance back to about 1.
 
-Multi-head attention splits the model width across heads. A model 8,192 wide with 64 heads gives each head 128 dimensions. Head outputs are concatenated and passed through one more learned matrix, which mixes them back into the full width. Most frontier models also share keys and values across groups of heads to shrink the cache, which part 3 covers.
+Multi-head attention splits the model width across heads. A model 8,192 wide with 64 heads gives each head 128 dimensions. Head outputs are concatenated and passed through one more learned matrix, which mixes them back into the full width. Most current models also share keys and values across groups of heads to shrink the cache, which part 3 covers.
 
 ### Deep dive (optional): rotary position embeddings and context extension
 
@@ -176,7 +176,7 @@ It also explains how context windows grow after the fact. A model trained at 8,0
 
 **In plain terms.** A model is one processing step repeated many dozens of times, each pass refining its understanding of the text. The "size" of a model is the number of adjustable settings in those steps. Many modern models use only a small part of themselves for each word, which makes them cheaper to run than their size suggests. **Who should read it:** non-technical readers need only "Mixture of experts", for the two meanings of model size.
 
-A transformer is one block design repeated many times. Each block has two sub-layers: attention, which moves information between positions, and a feed-forward network, which processes information at each position. Frontier models stack many dozens of these blocks, in some cases more than a hundred.
+A transformer is one block design repeated many times. Each block has two sub-layers: attention, which moves information between positions, and a feed-forward network, which processes information at each position. Small models stack a few dozen of these blocks or fewer. The largest stack many dozens, in some cases more than a hundred.
 
 ```mermaid
 flowchart TD
@@ -219,7 +219,7 @@ When someone quotes a parameter count, almost all of it is the attention and fee
 
 ### Mixture of experts
 
-Most frontier models are now believed to be mixture-of-experts (MoE) designs. The change is confined to the feed-forward sub-layer. Instead of one large network, each layer holds many smaller ones, called experts, plus a small router. For each token, the router picks a few experts to run and ignores the rest.
+Most of the largest models are now believed to be mixture-of-experts (MoE) designs. The change is confined to the feed-forward sub-layer. Instead of one large network, each layer holds many smaller ones, called experts, plus a small router. For each token, the router picks a few experts to run and ignores the rest.
 
 This splits the parameter count into two numbers:
 

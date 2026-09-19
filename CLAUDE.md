@@ -1,8 +1,10 @@
-# How Frontier LLMs Work: the course website
+# How AI works: the course website
 
-The course is the seven markdown files at the top of this folder. Its name
-is the introduction's heading, and the code reads it from there. The code
-here builds the markdown into a website on a Claude Design canvas, at
+The course is the seven markdown files at the top of this folder. It
+concentrates on large language models for now; content on local AI, image
+models and small LLMs is to come. Its name is the introduction's heading,
+and the code reads it from there. The code here builds the markdown into a
+website on a Claude Design canvas, at
 https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
 easy to read as possible. The look is Brutalist graphic design: a pale grey
@@ -289,8 +291,9 @@ For anything new on a page, check what it does:
 Headless, through the harness, for anything seen or measured; never the
 in-app browser pane. The typefaces come from Google Fonts, so the checks
 need the network. The site keeps a reader's settings in local storage under
-`how-frontier-llms-work/reading-settings/v1`; a test that needs a setting
-chooses it through the panel.
+`how-frontier-llms-work/reading-settings/v1`, which keeps the course's first
+name on purpose, since a new key would lose every reader's saved choices; a
+test that needs a setting chooses it through the panel.
 
 ## Commits
 

@@ -38,7 +38,10 @@ export const SETTINGS = {
 };
 
 // Where a reader's choices are kept between pages. The shape stored under it
-// must go on loading as the settings grow, which the audit's storage check holds.
+// must go on loading as the settings grow, which the audit's storage check
+// holds. The key keeps the course's first name, How Frontier LLMs Work, on
+// purpose: it is where readers' choices already are, and a new key would
+// quietly lose every one of them.
 export const STORE_KEY = 'how-frontier-llms-work/reading-settings/v1';
 
 export const DEFAULTS = {

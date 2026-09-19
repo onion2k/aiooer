@@ -252,7 +252,7 @@ Part 2 gave the method for choosing a tier: prove the task with the best model, 
 | Vendor API, direct | Newest models and features first | A separate contract and security review |
 | Major cloud platform | Existing contract, regional hosting, your access controls, committed-spend discounts | New features can arrive later |
 | Open-weight model on a hosting service | Low per-token prices, wide choice | Quality varies by host for the "same" model, often through undisclosed quantisation |
-| Open-weight model, self-hosted | Full control of data and a fixed cost | You run the GPUs. The models trail the frontier |
+| Open-weight model, self-hosted | Full control of data and a fixed cost | You run the GPUs. The models trail the best closed ones |
 
 "Open-weight" means the trained weights can be downloaded and run by anyone, subject to a licence that varies by model. The best open models trail the best closed ones by several months to a year on the hardest work, and are competitive for many routine tasks.
 
@@ -408,7 +408,7 @@ The working conclusion: temperature 0 makes output far more consistent, and you 
 
 **True:** per-token prices for open models are low, and a fully loaded server does beat API prices.
 
-**Misleading:** our usage is bursty, so the server would sit idle most of the time while costing the same. The open models are weaker than the frontier, and someone has to run the stack.
+**Misleading:** our usage is bursty, so the server would sit idle most of the time while costing the same. The open models are weaker than the best closed ones, and someone has to run the stack.
 
 **What to say:** "We would pay for a server around the clock to use it a few hours a day, for a weaker model. If the concern is data, a cloud contract with the right terms addresses it for far less."
 
