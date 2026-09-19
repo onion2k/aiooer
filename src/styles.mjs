@@ -281,6 +281,10 @@ ${swatches()}
 /* In plain terms */
 .plain{margin:0 0 2.25em;padding:1.2em 1.4em 1.3em;max-width:calc(var(--measure) + 2.8em);background:var(--plain-bg);color:var(--plain-ink);border:var(--bw) solid var(--plain-edge)}
 .reader .plain a{color:var(--plain-link)}
+/* A code span in the panel keeps the panel's ground. Its own sunk fill is a
+   page colour, and in the dark theme that is near-black under the panel's
+   near-black ink. */
+.reader .plain code{background:none;box-shadow:inset 0 0 0 1px currentColor}
 .plain-label{display:flex;align-items:center;gap:0.5em;margin:0 0 0.6em!important}
 .article .plain-summary{font-size:1.07em;margin:0 0 0.9em}
 .article .plain-who{margin:0;padding-top:0.85em;border-top:var(--bw) solid var(--plain-ink)}
