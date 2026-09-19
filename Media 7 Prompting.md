@@ -253,7 +253,7 @@ The benefits are real, and they are engineering benefits.
 
 - **Fields keep attributes apart.** Two subjects, each with its own description, position and action, are less likely to swap clothes and colours than the same content in one paragraph.
 - **Templates become trivial.** A brand's lighting, camera, style and palette are fixed fields. Only the subject and scene change per image. Software fills the slots.
-- **Changes are reviewable.** A difference between two versions of a JSON prompt shows exactly which field changed. That is the discipline from part 4 of the language models module, where prompts are code.
+- **Changes are reviewable.** A difference between two versions of a JSON prompt shows exactly which field changed. That is the discipline of treating prompts as code, which the practical AI module covers.
 - **Iteration is cleaner.** Section 8's rule is to change one thing at a time. With fields, one thing is one field.
 - **It forces a complete brief.** An empty "lighting" field is visible in a way that a missing sentence is not. For many people this is the largest benefit, and a checklist would achieve the same.
 
@@ -430,7 +430,7 @@ Turning a brief into a fluent prompt in a particular dialect is a translation ta
 
 ### Prompts as shared tooling
 
-For a team, the unit of reuse is not a prompt but a template: fixed text for the things that define the brand's look, which are usually medium, lighting, palette and finish, and named slots for what varies. Store it with the model and version it was tuned for, the settings, any LoRA and its strength, and a few reference outputs that show what good looks like. When the model changes, regenerate the reference outputs and compare, which is a small version of the evaluation discipline in part 4 of the language models module.
+For a team, the unit of reuse is not a prompt but a template: fixed text for the things that define the brand's look, which are usually medium, lighting, palette and finish, and named slots for what varies. Store it with the model and version it was tuned for, the settings, any LoRA and its strength, and a few reference outputs that show what good looks like. When the model changes, regenerate the reference outputs and compare, which is a small version of the evaluation discipline in the practical AI module.
 
 A prompt tuned on one model rarely transfers unchanged, even within a dialect. Budget time to re-tune templates whenever the model behind them changes, including when a hosted service changes it for you.
 

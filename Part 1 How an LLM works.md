@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the first of six parts. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format here is the one described there: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
+This is the first of five parts. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format here is the one described there: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
 
 ### What part 1 gives you
 
@@ -102,7 +102,7 @@ That top vector is then compared against an output table, one row per vocabulary
 
 ### Why this matters later
 
-The semantic search behind RAG in part 4 uses the same idea with a different model. An embedding model is trained to produce one vector for a whole passage, so that passages with similar meaning land close together. If you have worked with vector similarity, you already have the right intuition: distance in the space stands in for similarity of meaning, imperfectly.
+The semantic search behind RAG, which the practical AI module covers, uses the same idea with a different model. An embedding model is trained to produce one vector for a whole passage, so that passages with similar meaning land close together. If you have worked with vector similarity, you already have the right intuition: distance in the space stands in for similarity of meaning, imperfectly.
 
 ## 4. Attention
 
@@ -318,7 +318,7 @@ This is why a model can be right about the gist and wrong about the version numb
 | Cost | Free at run time | Paid in tokens on every call |
 | How to change it | Retrain or fine-tune | Edit the prompt |
 
-Most practical AI engineering, which part 4 covers, is the work of getting the right information into the context at the right time. When precision matters, put the source in the prompt and do not rely on recall.
+Most practical AI engineering, which the practical AI module covers, is the work of getting the right information into the context at the right time. When precision matters, put the source in the prompt and do not rely on recall.
 
 ### In-context learning
 
@@ -328,7 +328,7 @@ This is the most useful property for day-to-day work, and it is temporary by nat
 
 ### It does not learn from your conversations
 
-Typing into a model does not update it. Weights change only when the vendor runs a new training process. Whether a vendor may use your conversations as training data for a future model is a separate, contractual question. Business and API terms generally exclude it by default, and part 6 covers how to check.
+Typing into a model does not update it. Weights change only when the vendor runs a new training process. Whether a vendor may use your conversations as training data for a future model is a separate, contractual question. Business and API terms generally exclude it by default, and part 5 covers how to check.
 
 ### Parameter count is capacity, not quality
 
@@ -420,7 +420,7 @@ Every technical term used in this part, in plain language and in alphabetical or
 | Post-training | The training stages after the main one that turn a raw text predictor into a helpful assistant. Covered in part 2 |
 | Prompt | The input you send to the model |
 | Query, key, value | The three vectors attention uses: what a position is looking for, what it offers, and the information it passes on |
-| RAG (retrieval-augmented generation) | Fetching relevant documents and putting them in the prompt so the model works from sources. Covered in part 4 |
+| RAG (retrieval-augmented generation) | Fetching relevant documents and putting them in the prompt so the model works from sources. Covered in the practical AI module |
 | Reasoning model | A model trained to write out extended thinking before it answers |
 | Residual stream | The running vector at each position that every layer reads from and adds to. The model's shared workspace |
 | Rotary position embedding (RoPE) | The common way of telling attention how far apart two tokens are |

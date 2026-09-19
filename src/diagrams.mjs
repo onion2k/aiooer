@@ -57,39 +57,6 @@ export const DIAGRAMS = {
       { text: 'Distilled smaller models' },
     ],
   },
-  // Part 4, "About this part". Three sources feed the context; the model
-  // either calls a tool, whose result goes back in, or produces output.
-  'part4-1': {
-    kind: 'flow',
-    layout: 'column',
-    caption: 'The system around the model',
-    inputs: {
-      label: 'Three things go into the context',
-      items: ['Instructions and examples', 'Retrieved documents', 'Tool results'],
-    },
-    steps: [
-      { text: 'Context' },
-      { text: 'Model' },
-      { text: 'Output' },
-      { text: 'Validation and approval' },
-      { text: 'Logged and evaluated' },
-    ],
-    loop: 'When the model makes a tool call, your code runs the tool, and its result goes back into the context as tool results.',
-  },
-  // Part 4, section 2. sequenceDiagram with three participants.
-  'part4-2': {
-    kind: 'sequence',
-    caption: 'The tool-use loop',
-    participants: ['Your application', 'Model', 'Tool'],
-    messages: [
-      { from: 0, to: 1, text: 'Prompt + tool definitions' },
-      { from: 1, to: 0, text: 'Tool call: name + arguments' },
-      { from: 0, to: 2, text: 'Execute, after checks' },
-      { from: 2, to: 0, text: 'Result' },
-      { from: 0, to: 1, text: 'Result added to context' },
-      { from: 1, to: 0, text: 'Final answer, or another tool call' },
-    ],
-  },
   // Generative media part 1, section 1. flowchart LR: the prompt and the seed both
   // feed the denoiser, which loops on itself before the decoder.
   'media1-1': {
@@ -176,24 +143,6 @@ export const DIAGRAMS = {
       { text: 'Compare with the last version' },
     ],
     loop: 'Go back to step 5 and change one more thing, until it is right.',
-  },
-  // Part 4, section 3. Two rows: indexing ahead of time, answering per question.
-  'part4-3': {
-    kind: 'lanes',
-    caption: 'The RAG pipeline',
-    lanes: [
-      { label: 'Top row: ahead of time', steps: ['Documents', 'Split into chunks', 'Embed', 'Index'] },
-      {
-        label: 'Bottom row: for every question',
-        steps: [
-          'Question',
-          'Search: meaning + keywords, in the index',
-          'Rerank',
-          'Top passages into prompt',
-          'Answer with citations',
-        ],
-      },
-    ],
   },
 };
 

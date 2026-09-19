@@ -6,7 +6,7 @@
 
 Part 3 covers what happens when a model is put to work: how a request is processed, what it costs, how fast it runs, and how it fails. Parts 1 and 2 explained the machine and its training. This part turns that into numbers you can budget with and failure patterns you can predict.
 
-It is the hinge of the course. Sections 1 to 6 are about performance and money. Section 7 maps each characteristic failure back to its cause in parts 1 and 2, and forward to its mitigation in part 4.
+It is the hinge of the course. Sections 1 to 6 are about performance and money. Section 7 maps each characteristic failure back to its cause in parts 1 and 2, and forward to its mitigation in the practical AI module.
 
 The numbers in this part also support the course's main argument. Tokens are cheap next to people's time, so the economic question is rarely what the AI costs. It is whether a person is waiting on the AI, or the AI is waiting on a person. And because each failure mode has a known cause, each can be met with an automatic check, which is what allows people to step back.
 
@@ -40,7 +40,7 @@ Total time is roughly the first plus output length divided by the second. A 1,00
 - **Run independent calls in parallel.** Ten calls take about as long as one. Agent designs that fan work out to sub-agents rely on this.
 - **Use batch processing for non-urgent work.** Vendors give a large discount for jobs that can wait hours, because they can fill idle capacity with them.
 
-The last two points lead somewhere important. An engineer who sits watching an agent work has combined the slowness of decode with the cost of a person. Design the work so that neither waits on the other: dispatch the task, do something else, and come back to a verified result. Part 5 describes working this way.
+The last two points lead somewhere important. An engineer who sits watching an agent work has combined the slowness of decode with the cost of a person. Design the work so that neither waits on the other: dispatch the task, do something else, and come back to a verified result. Part 4 describes working this way.
 
 ### Deep dive (optional): speculative decoding
 
@@ -130,13 +130,13 @@ The causes trace back to parts 1 and 2. Attention weights must sum to 1, so more
 
 A long working session fills the context with dead ends, superseded instructions and old versions of files. The model cannot tell which version is current as reliably as you can. The symptoms are distinctive: repeating a mistake you already corrected, forgetting a constraint from early on, or contradicting itself.
 
-The fix is procedural. Start a fresh session for each task. When a session must continue, have the model summarise the state, then restart from the summary. Keep durable instructions in a file that is loaded every time, not in chat history. Part 4 covers how agents automate this.
+The fix is procedural. Start a fresh session for each task. When a session must continue, have the model summarise the state, then restart from the summary. Keep durable instructions in a file that is loaded every time, not in chat history. The practical AI module covers how agents automate this.
 
 ### Working rules
 
 - Put documents before the question, and the key instruction at the very start or very end.
 - Curate. Every irrelevant token costs money and a little accuracy.
-- Prefer fetching the relevant parts over loading everything. Part 4 covers retrieval.
+- Prefer fetching the relevant parts over loading everything. The practical AI module covers retrieval.
 - Use long context for what it is good at: one-off reading of a whole specification, contract or log file.
 - Treat a vendor's maximum as a ceiling for emergencies, not as an operating point.
 
@@ -222,7 +222,7 @@ Four lessons come out of the table.
 
 For scale: a fully loaded engineer costs in the order of a dollar a minute. At about $8 a day, the tool pays for itself if it saves under ten minutes. That is a low bar, and it exposes a common economic mistake. Teams ration tokens, or have an engineer supervise every step, and so save dollars while spending hours.
 
-The real questions are about quality and workflow: how to let the agent run without a person in the loop, and how to trust the result. Part 5 takes those up, and part 6 turns this model into a full investment case.
+The real questions are about quality and workflow: how to let the agent run without a person in the loop, and how to trust the result. Part 4 takes those up, and part 5 turns this model into a full investment case.
 
 Expect wide variation between people. Heavy users can consume ten times what light users do. Build the spreadsheet with tasks per day, calls per task, average context, cache hit rate, output per call and price per tier as inputs, and check it against a month of real usage data.
 
@@ -271,7 +271,7 @@ Self-hosting is the right answer in a few cases:
 
 Small models change the sums. A model under about 30 billion parameters runs on a single GPU, or a well-specified laptop, and is cheap and simple to operate.
 
-For most data-sensitivity concerns there is a middle path: a major cloud platform, with regional hosting and contractual terms that exclude training on your data and limit retention. Part 6 covers how to evaluate those terms.
+For most data-sensitivity concerns there is a middle path: a major cloud platform, with regional hosting and contractual terms that exclude training on your data and limit retention. Part 5 covers how to evaluate those terms.
 
 ### Deep dive (optional): quantisation
 
@@ -289,7 +289,7 @@ The practical warning concerns hosted open models. Two providers offering the sa
 
 **In plain terms.** LLMs fail in characteristic ways that follow from how they are built. They state false things with confidence. They give different answers to the same question. They can be hijacked by instructions hidden in a document they read. They do not know about recent changes. And they lean towards agreeing with you. None of these will be fully fixed. They are managed by how you design the system around the model. **Who should read it:** everyone. This is the most important section of the part.
 
-| Failure | Root cause | Main defence (part 4) |
+| Failure | Root cause | Main defence (practical AI module) |
 | --- | --- | --- |
 | Hallucination | Recall is reconstruction, and training rewarded confident guesses | Ground answers in supplied sources, and verify with tools |
 | Non-determinism | Random sampling, plus variation in the serving infrastructure | Validate outputs, retry, and measure over many runs |
@@ -328,7 +328,7 @@ The closest analogy is SQL injection, with one painful difference: there is no e
 
 The risk scales with what the model is able to do. A chatbot that gets injected gives a wrong answer. An agent with tools can leak data or take destructive action. The combination to avoid is an agent that has all three of: access to private data, exposure to untrusted content, and a way to send data out.
 
-For coding agents, untrusted content includes a README in a dependency, a comment in a pull request from outside, or the body of a public issue. Part 4 covers the defences: least privilege, human approval for consequential actions, sandboxing, and keeping secrets out of the context.
+For coding agents, untrusted content includes a README in a dependency, a comment in a pull request from outside, or the body of a public issue. The practical AI module covers the defences: least privilege, human approval for consequential actions, sandboxing, and keeping secrets out of the context.
 
 ### Stale knowledge
 
@@ -344,7 +344,7 @@ Ask without signalling the answer you want. Request the strongest objections exp
 
 ### Compounding errors in long tasks
 
-A model that gets each step right 98% of the time completes a 50-step task without error only 36% of the time. Agents therefore need verification between steps, such as running tests, checking types and confirming that a file really changed, and they need checkpoints to return to. This is why part 4 treats fast automatic feedback as the foundation of agent work.
+A model that gets each step right 98% of the time completes a 50-step task without error only 36% of the time. Agents therefore need verification between steps, such as running tests, checking types and confirming that a file really changed, and they need checkpoints to return to. This is why the practical AI module treats fast automatic feedback as the foundation of agent work.
 
 ### Two smaller habits
 
@@ -353,7 +353,7 @@ A model that gets each step right 98% of the time completes a 50-step task witho
 
 ### What this means for speed
 
-Every failure in this section has a known cause, and so every one has a defence that can run automatically: grounding and citation checks, schema validation and retries, sandboxing and scoped permissions, tests between steps. A person reading everything the model produces is the fallback for when those defences are missing. It is slow, and part 5 shows it is less reliable than it feels.
+Every failure in this section has a known cause, and so every one has a defence that can run automatically: grounding and citation checks, schema validation and retries, sandboxing and scoped permissions, tests between steps. A person reading everything the model produces is the fallback for when those defences are missing. It is slow, and part 4 shows it is less reliable than it feels.
 
 Build the defences and the person can step back to the decisions that need them. This is the link between understanding how models fail and being able to work at their pace.
 

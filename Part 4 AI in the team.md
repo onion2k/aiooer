@@ -1,12 +1,12 @@
-# Part 5: AI in the Engineering Team
+# Part 4: AI in the Engineering Team
 
 2026-09-18 · @Someone
 
 ## About this part
 
-Part 5 is about the team, and it makes one claim: tools do not produce speed, redesigned work does. A team can give every engineer the best model available and see almost no change in what it delivers. Another team with the same tools can ship several times as much. The difference is whether the work was reorganised around what the AI can do, or the AI was fitted into work that stayed the same.
+Part 4 is about the team, and it makes one claim: tools do not produce speed, redesigned work does. A team can give every engineer the best model available and see almost no change in what it delivers. Another team with the same tools can ship several times as much. The difference is whether the work was reorganised around what the AI can do, or the AI was fitted into work that stayed the same.
 
-Parts 1 to 4 supplied what you need to make that change responsibly: what these systems are good at, how they fail, and how to build checks that do not depend on a person reading everything. This part applies it to how a team plans, builds, reviews, measures and grows.
+Parts 1 to 3 supplied what you need to make that change responsibly: what these systems are good at, how they fail, and how to build checks that do not depend on a person reading everything. This part applies it to how a team plans, builds, reviews, measures and grows.
 
 The format is unchanged. Reading time is about 45 minutes.
 
@@ -438,7 +438,7 @@ Product managers and analysts can now build working prototypes and small interna
 
 - Pull baseline measures from existing tools: cycle time by stage, pull request size, review wait, change failure rate, rework rate.
 - Map the value stream for the last 30 tickets and name the constraint, as in section 2.
-- Settle the basics: approved tools, licences, and an instruction file in each main repository, as in part 4.
+- Settle the basics: approved tools, licences, and an instruction file in each main repository, as the practical AI module describes.
 - Agree the risk tiers from section 3 with security and compliance. Write them down.
 - Choose two or three champions and give them time.
 - Start the "not worth it before" list from section 5.
@@ -449,7 +449,7 @@ Product managers and analysts can now build working prototypes and small interna
 - Close the biggest gap in "what must be true first" from section 3.
 - Pilot spec-first work and background agents with the champions, on the low-risk tier only.
 - Pick one long-deferred migration or debt item as a showcase, and finish it.
-- Build a small eval set for your coding agent on your own repository, as in part 4.
+- Build a small eval set for your coding agent on your own repository, as the practical AI module describes.
 - Hold the weekly show-and-tell.
 
 ### Days 61 to 90: spread and embed
@@ -463,7 +463,7 @@ Product managers and analysts can now build working prototypes and small interna
 
 ### What to expect
 
-Output usually dips in the first few weeks, while people learn and the verification work draws effort. Gains are uneven across people and across kinds of work. When the constraint leaves engineering, the conversation you need is with product, release management or compliance, and part 6 prepares you for it.
+Output usually dips in the first few weeks, while people learn and the verification work draws effort. Gains are uneven across people and across kinds of work. When the constraint leaves engineering, the conversation you need is with product, release management or compliance, and part 5 prepares you for it.
 
 ### What not to do
 
@@ -523,7 +523,7 @@ Output usually dips in the first few weeks, while people learn and the verificat
 
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of parts 1 to 4.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of parts 1 to 3.
 
 | Term | Meaning |
 | --- | --- |

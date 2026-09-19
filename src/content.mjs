@@ -18,6 +18,7 @@ const MODULE_FILES = {
   'Language models': 'Part',
   'Generative media': 'Media',
   'Running AI locally': 'Local',
+  'Practical AI': 'Practical',
   'Other AI models': 'Other',
 };
 

@@ -315,7 +315,7 @@ Laptops and desktops that share memory between processor and graphics can run th
 | Following complex prompts, lettering | Strongest, especially in assistants built on language models | Good in the newest families, weak in older ones |
 | Control over layout, pose, character, style | Whatever the service chooses to expose | Everything in sections 2 to 6 |
 | Repeatability | The model changes under you. Last quarter's prompt may not give last quarter's look | A pinned model file never changes. The same settings give the same image next year |
-| Privacy | Prompts and uploaded images go to the vendor. Check the terms, as part 6 of the language models module describes | Nothing leaves your network |
+| Privacy | Prompts and uploaded images go to the vendor. Check the terms, as part 5 of the language models module describes | Nothing leaves your network |
 | Content rules | The vendor's filters, which sometimes block legitimate work and cannot be adjusted | None built in. Your policy is the only control |
 | Cost shape | Per image or per seat. Illustratively, one to ten cents an image | Hardware or GPU rental, plus someone's time. Near zero per image at volume |
 | Legal comfort | Some vendors train only on licensed material and indemnify business customers | Training data is what it is. Section 9 |
@@ -386,7 +386,7 @@ Three limits keep expectations honest.
 
 Some hosted generators also embed an invisible watermark in the pixels themselves, which survives cropping and compression better than metadata does. Only the vendor's detector can read it, and open models have nothing equivalent that cannot be switched off.
 
-Labelling is also becoming a legal duty. The EU AI Act's transparency duties, which have applied since 2 August 2026, require that AI-generated or manipulated images that could pass as real are disclosed as such. Part 6 of the language models module covers the Act and its dates.
+Labelling is also becoming a legal duty. The EU AI Act's transparency duties, which have applied since 2 August 2026, require that AI-generated or manipulated images that could pass as real are disclosed as such. Part 5 of the language models module covers the Act and its dates.
 
 For your own work the habit is simple and cheap: keep, for every published image, the model and version, the add-ons, the prompt, the seed and settings, the source images and the name of the person who made it. Tools for open models already write most of this into the file. It is your evidence of authorship, your answer to a rights query, and your way of making the image again.
 
@@ -416,7 +416,7 @@ Three rules sit behind the table.
 
 **Put people where models are weak.** Composition, exact products and lettering are cheap for a person and unreliable for a model. Rendering, lighting, texture and variation are the reverse. The strongest workflows hand each side the work it is good at: a person blocks out the layout and supplies the real logo, the model renders the scene, and a person fixes what is left.
 
-**Treat a working setup as an asset.** A model file, its add-ons and their strengths, a prompt template, the settings and a control workflow together are a piece of production tooling. Pin the versions, store them with the project, and record them with every image. This is the image counterpart of the rule in [part 4 of the language models module](file/cadfcb5f-9a30) that prompts are code.
+**Treat a working setup as an asset.** A model file, its add-ons and their strengths, a prompt template, the settings and a control workflow together are a piece of production tooling. Pin the versions, store them with the project, and record them with every image. This is the image counterpart of the rule in the practical AI module that prompts are code.
 
 ### The whiteboard version
 

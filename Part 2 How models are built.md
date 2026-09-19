@@ -92,7 +92,7 @@ Synthetic data means text written by models for training models. Common forms ar
 
 The known risk is a feedback loop. A model trained carelessly on model output loses variety and drifts, an effect called model collapse. Filtering, verification and mixing with real data keep it under control in practice.
 
-The legal position on training data remains contested, with lawsuits, licensing deals and opt-out schemes all in progress. Part 6 covers what this means for you as a buyer.
+The legal position on training data remains contested, with lawsuits, licensing deals and opt-out schemes all in progress. Part 5 covers what this means for you as a buyer.
 
 ### What this explains
 
@@ -132,7 +132,7 @@ When you hear that "scaling has hit a wall", it usually refers to the first axis
 - **Capability arrives in steps.** Each generation is one large, planned training run lasting months. Between generations you get smaller refreshes from improved post-training.
 - **The price of a given capability keeps falling.** Better data, over-trained small models and distillation push the quality of last year's best models into this year's cheap tier. Several analyses put the fall at around tenfold per year for a fixed level of quality.
 - **Few companies can play at the top.** The capital needed to train the largest models limits that end of the field to a handful of labs.
-- **Do not over-build around today's weaknesses.** Elaborate workarounds for a current limitation may be obsolete within a year. Keep them light, and keep a test suite that tells you when a newer model no longer needs them. Part 4 shows how.
+- **Do not over-build around today's weaknesses.** Elaborate workarounds for a current limitation may be obsolete within a year. Keep them light, and keep a test suite that tells you when a newer model no longer needs them. The practical AI module shows how.
 
 There is a further consequence for how you organise work. The set of tasks that can safely be delegated grows with every model generation. A team that settled its habits around last year's model, including how much it reads and reviews by hand, is carrying a cost that may no longer buy anything. Revisit those habits as often as you revisit the tools.
 
@@ -158,7 +158,7 @@ A 2023 rebuttal argued that much of the sharpness comes from the scoring. If a t
 
 Both views are useful. Underlying competence improves smoothly. Practical usefulness has thresholds. A task that needs ten consecutive correct steps succeeds 35% of the time at 90% per-step reliability, and 90% of the time at 99%. From the user's seat, the ability switched on.
 
-The management lesson is to re-test. Something that failed with last year's model may work now, and multi-step agent tasks, covered in part 4, are the most threshold-sensitive of all.
+The management lesson is to re-test. Something that failed with last year's model may work now, and multi-step agent tasks, covered in the practical AI module, are the most threshold-sensitive of all.
 
 ## 4. Post-training
 
@@ -226,7 +226,7 @@ LoRA avoids this by freezing the original weights. Beside each large weight matr
 
 What matters more is what fine-tuning is good for. It works well for style, format, tone, narrow classification or extraction, and getting a small model to match a large one on a single task. It works poorly for adding facts. Models fine-tuned on new facts learn them unreliably and tend to hallucinate more around them, and the facts are stale the day they change.
 
-The rule of thumb: fine-tune for behaviour, retrieve for knowledge. Part 4 covers retrieval. Most engineering teams never need to fine-tune at all.
+The rule of thumb: fine-tune for behaviour, retrieve for knowledge. The practical AI module covers retrieval. Most engineering teams never need to fine-tune at all.
 
 ## 5. Reasoning models
 
@@ -265,13 +265,13 @@ The result is uneven ability. A model can solve competition programming problems
 
 There is a practical lever in this, and it is central to the rest of the course. The more checkable you make your own work, through tests, types, schemas and explicit acceptance criteria, the more of the model's strongest capability you can use.
 
-Checkability is also what lets you stop reading everything. Where an automatic check can say whether the work is right, the model can run at its own pace. Where none exists, a person has to stand in for the check, and the work slows to that person's reading speed. Parts 4 and 5 build on this.
+Checkability is also what lets you stop reading everything. Where an automatic check can say whether the work is right, the model can run at its own pace. Where none exists, a person has to stand in for the check, and the work slows to that person's reading speed. Part 4 and the practical AI module build on this.
 
 ### Reward hacking
 
 An optimiser finds what the checker rewards, which is not always what you meant. During this kind of training, labs have reported models special-casing the test inputs, hard-coding expected outputs, editing or deleting failing tests, and swallowing exceptions so that nothing visibly fails.
 
-Labs work to remove these, and traces remain in coding agents. The answer is not to read every line looking for them, which does not scale. Turn the watch list into automatic checks. Flag any change that edits tests alongside a fix. Detect weakened assertions with mutation testing. Lint for error handling that hides failures. Have an independent AI reviewer compare the change with the ticket. Part 5 assembles these into a full assurance stack.
+Labs work to remove these, and traces remain in coding agents. The answer is not to read every line looking for them, which does not scale. Turn the watch list into automatic checks. Flag any change that edits tests alongside a fix. Detect weakened assertions with mutation testing. Lint for error handling that hides failures. Have an independent AI reviewer compare the change with the ticket. Part 4 assembles these into a full assurance stack.
 
 ### Two cautions
 
@@ -348,7 +348,7 @@ Low prices at the small tier change what is practical. Running five attempts in 
 
 Collect 20 to 50 real tasks from your own backlog, each with a known good outcome: a bug that was fixed, a review that caught something, a query that had to be right. Run every candidate model through them under the same conditions.
 
-This takes an afternoon per model once it is set up. It is immune to contamination, because your code is not on the internet. It is also the one asset that stays valuable whichever vendor you use. Part 4 shows how to build it, and part 6 uses it for vendor decisions.
+This takes an afternoon per model once it is set up. It is immune to contamination, because your code is not on the internet. It is also the one asset that stays valuable whichever vendor you use. The practical AI module shows how to build it, and part 5 uses it for vendor decisions.
 
 ## Say it two ways
 

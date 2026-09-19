@@ -2,7 +2,7 @@
 
 The course is the markdown files at the top of this folder: the
 introduction, and a file for each written part. It is in modules, each with
-its own parts numbered from 1: Language models (six parts, files `Part N
+its own parts numbered from 1: Language models (five parts, files `Part N
 ….md`) and Generative media (seven parts, files `Media N ….md`): how the
 models work, then images, video, music and audio, and 3D, then shaping
 models and prompting. The media parts were drafted by Claude in the
@@ -13,7 +13,16 @@ the practical module: hardware, Hugging Face and model names, engines and
 apps, agents and harnesses, and building on a local model. It was written by
 Claude from sources read in September 2026, names products throughout, and
 explains what tools do without giving commands, which date faster than
-anything else here. Other AI models (files `Other N ….md`) is declared
+anything else here. Practical AI (files `Practical N ….md`) is declared
+with six parts still to come: instruction files; skills, agents and
+plugins; multi-modal models; MCP servers and tool use; retrieval; and
+guardrails and evals. It replaces the language module's former part 4,
+Building with models, which the author had removed on 19 September 2026
+before its replacement was written; that part's text is in the git history
+at commit 3617b44, and is the natural source for parts 4 to 6. Until those
+are written, some thirty sentences across the course point to "the
+practical AI module" for material that is not yet on the site. Other AI
+models (files `Other N ….md`) is declared
 with four parts still to come: small models, world models, diffusion
 language models and system one models. It is expected to grow; a new part
 is a new row in its table, linked once its file exists. Across the

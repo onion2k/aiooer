@@ -1,14 +1,14 @@
-# Part 6: Strategy, Risk and Communication
+# Part 5: Strategy, Risk and Communication
 
 2026-09-18 · @Someone
 
 ## About this part
 
-Part 6 covers the decisions that sit above the team, and how to talk about everything in this course to people who have not read it. Part 5 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
+Part 5 covers the decisions that sit above the team, and how to talk about everything in this course to people who have not read it. Part 4 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
 
-Sections 1 to 4 cover the market, the build-or-buy decision, the legal and data risks, and governance. Section 5 builds the investment case from the cost model in part 3 and the measures in part 5. Section 6 is the communication toolkit. Section 7 covers keeping all of it current.
+Sections 1 to 4 cover the market, the build-or-buy decision, the legal and data risks, and governance. Section 5 builds the investment case from the cost model in part 3 and the measures in part 4. Section 6 is the communication toolkit. Section 7 covers keeping all of it current.
 
-Two reference sections follow. They consolidate the two-audience explanations and the misconceptions from all six parts, for use on their own.
+Two reference sections follow. They consolidate the two-audience explanations and the misconceptions from all five parts, for use on their own.
 
 A caution on sections 3 and 4. They describe the questions to ask and the shape of good answers. They are not legal advice, and the regulatory detail is correct only as of the date above. Confirm specifics with your own legal and compliance colleagues. Reading time is about 45 minutes.
 
@@ -45,7 +45,7 @@ Total independence is not worth its cost. A few habits keep switching affordable
 | Your verification stack and test suites | Data held only inside a vendor's product |
 | Clean, current documentation |  |
 
-The eval set from part 4 matters most. With it, switching models is an afternoon's test and a configuration change. Without it, every switch is a leap of faith, which in practice means you never switch.
+An eval set, which the practical AI module covers, matters most. With it, switching models is an afternoon's test and a configuration change. Without it, every switch is a leap of faith, which in practice means you never switch.
 
 A practical arrangement is one primary vendor, a second under contract and tested, and most tools configured so that the model behind them can be changed.
 
@@ -56,7 +56,7 @@ A practical arrangement is one primary vendor, a second under contract and teste
 | Option | What it means | Right when |
 | --- | --- | --- |
 | Buy | Off-the-shelf products: coding agents, chat assistants, review tools, support tools | The need is common to most companies and the product works with your systems |
-| Assemble | Vendor models through an API, plus your own context, tools, guardrails and evals, as in part 4 | The value comes from your data, your domain rules or your workflow |
+| Assemble | Vendor models through an API, plus your own context, tools, guardrails and evals, which the practical AI module covers | The value comes from your data, your domain rules or your workflow |
 | Build | Fine-tuned or self-hosted models, or an internal AI platform | You have a narrow, very high-volume task, or a hard data constraint. See part 3 |
 | Wait | Defer this purchase | The need is modest and the products in that niche are changing every quarter |
 
@@ -70,7 +70,7 @@ A practical arrangement is one primary vendor, a second under contract and teste
 
 ### Waiting has a cost
 
-It is sensible to defer a particular product. It is a mistake to defer the change in working practices from part 5. Those take a team months to learn, and the learning does not come bundled with next year's better model. A team that starts a year later starts a year behind on the part that is hardest to buy.
+It is sensible to defer a particular product. It is a mistake to defer the change in working practices from part 4. Those take a team months to learn, and the learning does not come bundled with next year's better model. A team that starts a year later starts a year behind on the part that is hardest to buy.
 
 ## 3. Data, IP and legal risk
 
@@ -94,9 +94,9 @@ If approved tools are missing, slow to arrive or worse than the free ones, peopl
 
 ### What goes into prompts
 
-Personal data sent to a model is processed by a third party, and data protection law applies in the usual way: a lawful basis, a processing agreement, data minimisation and attention to international transfers. For most engineering work the simple answer is to keep real customer data out of prompts. Use synthetic or masked data in development, and keep production data behind tools that enforce access control, as part 4 described.
+Personal data sent to a model is processed by a third party, and data protection law applies in the usual way: a lawful basis, a processing agreement, data minimisation and attention to international transfers. For most engineering work the simple answer is to keep real customer data out of prompts. Use synthetic or masked data in development, and keep production data behind tools that enforce access control, as the practical AI module describes.
 
-Secrets are a separate matter. Credentials should never appear in a prompt or sit in a repository that an agent reads. Part 4 explained how to inject them at the tool layer.
+Secrets are a separate matter. Credentials should never appear in a prompt or sit in a repository that an agent reads. The practical AI module explains how to inject them at the tool layer.
 
 ### Who owns the output
 
@@ -106,7 +106,7 @@ A smaller risk is reproduction. A model can occasionally emit a passage close to
 
 ### Sector rules still apply
 
-Regulators hold the licensed business responsible for outcomes, whatever produced them. In iGaming that covers safer-gambling interactions, anti-money-laundering controls, fairness of games and the handling of player data. "The AI did it" is not a defence. This is the practical reason for keeping regulated logic in the high-risk review tier from part 5, and for the audit trail from part 4.
+Regulators hold the licensed business responsible for outcomes, whatever produced them. In iGaming that covers safer-gambling interactions, anti-money-laundering controls, fairness of games and the handling of player data. "The AI did it" is not a defence. This is the practical reason for keeping regulated logic in the high-risk review tier from part 4, and for an audit trail.
 
 Check each vendor's acceptable use policy too. Some include restrictions that touch gambling-related uses, and it is better to find that during procurement than afterwards.
 
@@ -155,7 +155,7 @@ Four rows that people can remember are better than forty they cannot.
 
 - which tools are approved, and for which data classes
 - the rule on personal accounts: not for anything above public
-- the ownership principle from part 5: whoever merges it owns it
+- the ownership principle from part 4: whoever merges it owns it
 - the review-by-risk tiers, by reference
 - what to do if something goes wrong, and that reporting it is blame-free
 - who to ask, and how long an answer takes
@@ -166,7 +166,7 @@ New tools appear every week, and some will be worth having. Publish a route with
 
 ### Agents and integrations
 
-Part 4 set out the controls. Governance decides who signs them off.
+The practical AI module sets out the controls. Governance decides who signs them off.
 
 - An allow-list of MCP servers, with an owner for each.
 - Default credentials that are read-only and narrowly scoped.
@@ -198,7 +198,7 @@ An illustrative first year for a team of 20 engineers. It uses the cost model fr
 | Governance, security and legal review | Estimate | $10,000 |
 | Total |  | $190,000 |
 
-Three points stand out. Tools are a fifth of the total. The largest line is the verification groundwork from part 5, and it would have been worth doing without AI. The total is about 9% of what the team costs in a year, which is $2.2 million on these assumptions.
+Three points stand out. Tools are a fifth of the total. The largest line is the verification groundwork from part 4, and it would have been worth doing without AI. The total is about 9% of what the team costs in a year, which is $2.2 million on these assumptions.
 
 ### Three scenarios for the return
 
@@ -222,13 +222,13 @@ The percentages are planning assumptions and not forecasts. Replace them with yo
 
 ### Ask for a staged bet
 
-Match the request to the 90-day plan in part 5.
+Match the request to the 90-day plan in part 4.
 
 1. **Quarter one.** Fund the tools, learning time and verification groundwork. State the baseline, the constraint you will attack and the measures you will report.
-2. **Decision point.** Show the before-and-after measures and the signature from part 5, section 7. Continue, adjust or stop.
+2. **Decision point.** Show the before-and-after measures and the signature from part 4, section 7. Continue, adjust or stop.
 3. **Quarters two to four.** Extend to the whole team and the neighbouring functions, funded against results.
 
-This lowers the risk for the sponsor. It also commits you to measurement, which protects you from the perception gap described in part 5.
+This lowers the risk for the sponsor. It also commits you to measurement, which protects you from the perception gap described in part 4.
 
 ### What not to promise
 
@@ -265,7 +265,7 @@ On these lines, self-hosting rarely wins on cost below very large, steady volume
 | Product | Speed of learning, scope, quality | Prototypes in days and more experiments | Implying that engineering no longer needs clear requirements |
 | Security and compliance | Data, access, auditability, accountability | Data classes, review by risk, the audit trail | Asking for blanket approval |
 | Engineers | Craft, quality, autonomy, job security | Honest limits, what the gains will be used for, their part in designing the checks | Hype, quotas, vendor statistics |
-| Sceptics | Evidence and failure modes | The studies in part 5, including the unflattering ones, and your own baseline | Dismissing their concerns. They are often right about specifics |
+| Sceptics | Evidence and failure modes | The studies in part 4, including the unflattering ones, and your own baseline | Dismissing their concerns. They are often right about specifics |
 | Enthusiasts | New capability and speed | The constraint and the assurance stack | Letting enthusiasm skip the groundwork |
 
 ### Three habits for any audience
@@ -314,7 +314,7 @@ Skip the daily news cycle, social media benchmark claims and anything that promi
 ### Assessing a new model in an afternoon
 
 1. Read the release notes and system card for price, speed, context length, training cutoff and known limitations.
-2. Run your eval set from part 4 under the same conditions as your current model, three runs per case.
+2. Run your eval set under the same conditions as your current model, three runs per case.
 3. Compare success rate, cost per task and latency. Read the failures, not only the scores.
 4. Give it three tasks from your "not worth it before" list, or that the current model could not do. New capability shows up here first.
 5. Decide whether to switch now, switch for some task types, or wait. Record the result, so that the next comparison has a history.
@@ -340,11 +340,11 @@ Most announcements change little. A few developments would justify rethinking yo
 
 ### In closing
 
-The course has made one argument in six parts. These systems are statistical machines with known strengths and predictable failure modes. Because the failures are predictable, you can build checks that do not depend on a person reading everything. Once you have those checks, you can let the AI work at its own pace, reorganise the team around direction and verification, and take on work that was never worth attempting. The tools will keep changing. Understanding the mechanism, measuring honestly and redesigning the work will serve you through every change.
+The course has made one argument in five parts. These systems are statistical machines with known strengths and predictable failure modes. Because the failures are predictable, you can build checks that do not depend on a person reading everything. Once you have those checks, you can let the AI work at its own pace, reorganise the team around direction and verification, and take on work that was never worth attempting. The tools will keep changing. Understanding the mechanism, measuring honestly and redesigning the work will serve you through every change.
 
 ## Core explanations
 
-The 25 ideas you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part.
+The 20 ideas you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part.
 
 | Idea | Say it like this | Part |
 | --- | --- | --- |
@@ -364,19 +364,13 @@ The 25 ideas you will explain most often, each in one line for a non-technical l
 | Hallucination | It fills gaps with plausible inventions, in the same confident voice as the facts | 3 |
 | Non-determinism | Ask twice and you may get two different answers. We design for that | 3 |
 | Prompt injection | Text hidden in a document or web page that tells the AI to do something else, and it may obey | 3 |
-| Context engineering | Writing a good brief. What we choose to put in front of it decides the result | 4 |
-| Tool use | The AI asks our software to do something. Our software decides whether to do it and hands back the result | 4 |
-| RAG | It looks things up in our documents before answering, and shows where the answer came from | 4 |
-| Agent | An AI that works through a task step by step, checking the result of each step before the next | 4 |
-| Eval | A test suite for an AI feature. It tells us the success rate and whether a change helped or hurt | 4 |
-| Effort-saving vs redesign | Doing the same job with less effort, versus changing the job so that the AI's speed reaches the customer | 5 |
-| The constraint | The narrowest part of the pipe decides the flow. Speeding up anything else makes a bigger puddle in front of it | 5 |
-| Assurance stack | Many automatic safety nets, so that people check only what truly needs a person | 5 |
-| Review by risk | Our experts look hardest at payments and player data and lightly at internal tools, in place of reading everything equally | 5 |
-
+| Effort-saving vs redesign | Doing the same job with less effort, versus changing the job so that the AI's speed reaches the customer | 4 |
+| The constraint | The narrowest part of the pipe decides the flow. Speeding up anything else makes a bigger puddle in front of it | 4 |
+| Assurance stack | Many automatic safety nets, so that people check only what truly needs a person | 4 |
+| Review by risk | Our experts look hardest at payments and player data and lightly at internal tools, in place of reading everything equally | 4 |
 ## Misconceptions quick reference
 
-All twenty misconceptions from parts 1 to 5, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
+All sixteen misconceptions from parts 1 to 4, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
 
 | Claim | Short response | Part |
 | --- | --- | --- |
@@ -392,18 +386,13 @@ All twenty misconceptions from parts 1 to 5, each with a one-line response. Ever
 | "Hallucination will be patched out" | It is getting rarer, not going away. We supply sources and check in proportion to the stakes | 3 |
 | "Self-hosting will be cheaper" | We would pay around the clock for a weaker model we use a few hours a day | 3 |
 | "Temperature zero makes it reliable" | That reduces variety. Reliability comes from checking outputs over many runs | 3 |
-| "Prompting is about magic words" | There are no secret phrases. A poor result means the brief was missing something | 4 |
-| "RAG eliminates hallucination" | It helps a great deal. We still check the sources, and our documentation quality now matters more | 4 |
-| "An agent is just a smarter model" | The model is the engine. Whether the vehicle gets anywhere depends on what we build around it | 4 |
-| "We need to fine-tune on our data" | We start by supplying our information at question time. It takes days, and we can see what it was told | 4 |
-| "AI makes everyone a 10x developer" | It makes typing ten times faster, and typing is a quarter of delivery. The gain comes from changing the rest | 5 |
-| "Percentage of AI-written code shows success" | That shows the tool is open. I report whether finished work arrives sooner and fails less | 5 |
-| "Reviewing every line is the safe option" | Nobody reviews a thousand lines well. We move safety into automatic checks and keep experts for what counts | 5 |
-| "Juniors no longer need fundamentals" | The tools raise the floor, and raise the value of judgement more. Judgement rests on fundamentals | 5 |
-
+| "AI makes everyone a 10x developer" | It makes typing ten times faster, and typing is a quarter of delivery. The gain comes from changing the rest | 4 |
+| "Percentage of AI-written code shows success" | That shows the tool is open. I report whether finished work arrives sooner and fails less | 4 |
+| "Reviewing every line is the safe option" | Nobody reviews a thousand lines well. We move safety into automatic checks and keep experts for what counts | 4 |
+| "Juniors no longer need fundamentals" | The tools raise the floor, and raise the value of judgement more. Judgement rests on fundamentals | 4 |
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of parts 1 to 5.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of parts 1 to 4.
 
 | Term | Meaning |
 | --- | --- |

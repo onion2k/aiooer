@@ -18,7 +18,7 @@ Part 5 builds one idea: a local model is a component, and the design rules for b
 
 Part 3 described the local server and its compatible format. The practical consequence is that the client libraries published for the hosted services work against a local model when given a different address, and the higher-level libraries treat a local server as one more provider.
 
-[Part 4 of the language models module](file/cadfcb5f-9a30) covers how to build with models: prompts as code, structured output, tools, retrieval and evaluation. All of it applies. Three points are particular to local models.
+The practical AI module covers how to build with models: prompts as code, structured output, tools, retrieval and evaluation. All of it applies. Three points are particular to local models.
 
 ### Design for the model you have
 
@@ -37,13 +37,13 @@ Against a paid API, every call is a cost, and designs are shaped by that. Locall
 - **Try several times and check.** Generate five candidates and keep the one that passes a test, or the one most of them agree on. The language models module's idea that verification converts compute into reliability is cheapest to apply here.
 - **Use a second call as a checker.** Ask the model, in a separate request, whether the output meets the instruction.
 - **Process everything.** Tag every document, summarise every ticket, check every commit message. Jobs that would never justify an API bill are an overnight run.
-- **Run your evaluations often.** Part 4 of the language models module says to test prompts like code. A local test set of a few hundred examples can be run on every change.
+- **Run your evaluations often.** The practical AI module says to test prompts like code. A local test set of a few hundred examples can be run on every change.
 
 ## 2. Your own documents
 
 **In plain terms.** A local model knows nothing about your files until they are put in front of it. The usual way is to search your documents for the passages relevant to a question and hand those to the model with the question. Every piece of that, the search included, can run on your own machine, so nothing confidential leaves it. **Who should read it:** anyone who wants a private assistant over their own material.
 
-[Part 4 of the language models module](file/cadfcb5f-9a30) explains retrieval-augmented generation in full: split documents into passages, turn each into a vector with an embedding model so that similar meanings land close together, search by meaning and by keyword, rerank, and put the best passages in the prompt. Nothing about that changes locally. What changes is that all of it can run beside the model.
+The practical AI module explains retrieval-augmented generation in full: split documents into passages, turn each into a vector with an embedding model so that similar meanings land close together, search by meaning and by keyword, rerank, and put the best passages in the prompt. Nothing about that changes locally. What changes is that all of it can run beside the model.
 
 - **Embedding models are small.** Part 2 listed them among the things a name can tell you. Good ones have from a few hundred million to a few billion parameters, run quickly on a processor with no graphics card at all, and are published under the same licences as chat models. The local tools in part 3 serve them alongside chat models.
 - **The index can be a file.** For thousands to a few million passages, a vector index inside an ordinary embedded database is enough. No server is needed.
@@ -51,7 +51,7 @@ Against a paid API, every call is a cost, and designs are shaped by that. Locall
 
 This is the strongest case for local AI. A private assistant over contracts, client files, medical notes, source code or a lifetime of personal notes is exactly the thing people will not send to a third party, and it plays to a small model's strength, since part 2 of the language models module notes that small models do well when the facts are in front of them.
 
-Two cautions carry over from the language models module, with more force. A small model is more easily distracted by irrelevant passages, so retrieve fewer and better ones. And part 3's context setting applies: retrieved passages need room, and a 4,000-token default will silently discard them.
+Two cautions apply with more force to a small model. A small model is more easily distracted by irrelevant passages, so retrieve fewer and better ones. And part 3's context setting applies: retrieved passages need room, and a 4,000-token default will silently discard them.
 
 ## 3. Other kinds of local model
 
@@ -124,7 +124,7 @@ A local model is the wrong choice, and it is worth recognising quickly, when:
 - **The task needs the best model there is.** Hard reasoning, large-scale design, long autonomous work. The language models module's method applies: prove the task with the most capable model, then step down. If it fails at the step to local, that is your answer.
 - **The time spent is worth more than the API bill.** For most individuals and small teams, a modest monthly spend on a hosted model costs less than the hours spent keeping a local stack running. Privacy, reproducibility or volume have to justify the difference.
 - **It needs to be available to many people, reliably,** and nobody's job is to keep it so.
-- **Nothing confidential is involved,** and the vendor's terms are acceptable, which part 6 of the language models module explains how to check.
+- **Nothing confidential is involved,** and the vendor's terms are acceptable, which part 5 of the language models module explains how to check.
 
 And it is the right choice, often the only one, when the data cannot leave, when the result must be reproducible, when the volume is large and the task is narrow, when there is no connection, or when you are building something that ships to a user's own machine.
 

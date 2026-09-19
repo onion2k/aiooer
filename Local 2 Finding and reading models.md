@@ -185,7 +185,7 @@ Four points are worth knowing.
 - **The local-sized models are, at the moment, unusually permissive.** A year or two ago the best small models carried restrictive licences. In 2026 nearly every leading family offers its small and mid-sized models under Apache 2.0 or MIT. Check anyway: it has changed before and will change again.
 - **A fine-tune inherits its parent's licence** and may add its own. A conversion carries the licence of what it converts.
 - **The licence covers the weights, not what you generate.** Some licences do restrict using outputs to train competing models.
-- **The training data is a separate question,** which part 6 of the language models module covers, and a permissive licence on the weights says nothing about it.
+- **The training data is a separate question,** which part 5 of the language models module covers, and a permissive licence on the weights says nothing about it.
 
 ## 5. Choosing a model
 
