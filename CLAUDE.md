@@ -13,7 +13,11 @@ the practical module: hardware, Hugging Face and model names, engines and
 apps, agents and harnesses, and building on a local model. It was written by
 Claude from sources read in September 2026, names products throughout, and
 explains what tools do without giving commands, which date faster than
-anything else here. Across the generated modules, sources were checked to
+anything else here. Other AI models (files `Other N ….md`) is declared
+with four parts still to come: small models, world models, diffusion
+language models and system one models. It is expected to grow; a new part
+is a new row in its table, linked once its file exists. Across the
+generated modules, sources were checked to
 exist, the tables of models and tools date fast and say so, and no one but
 the author has reviewed their claims. The course's name, its modules and
 their parts all come from the introduction, and the code reads them from

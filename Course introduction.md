@@ -4,7 +4,7 @@
 
 ## What this course is for
 
-This course explains how AI works and how to use it well in an engineering organisation. Its first module covers large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. Its second covers the models that generate images, video, music and 3D objects. Its third is practical: running models on your own hardware. It is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
+This course explains how AI works and how to use it well in an engineering organisation. Its first module covers large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. Its second covers the models that generate images, video, music and 3D objects. Its third is practical: running models on your own hardware. A fourth, on other kinds of AI model, is on its way. The course is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 
@@ -12,7 +12,7 @@ That change needs confidence about where AI can be trusted, where it cannot, and
 
 ## The modules
 
-The course is in three modules. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
+The course is in four modules. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
 
 ### Language models
 
@@ -52,6 +52,17 @@ This module covers models that generate images, video, music and 3D objects. Par
 | [Part 5: Building on it](file/3a8c9f47-d1e5) | Build on a local model from your own code, and know when a hosted one is the better tool | 25 min |
 
 This module is more practical than the others, and it dates faster. It covers the hardware, where models are published and how to read their names, the software that runs them, agents and the harnesses that drive them, and building on a local model. It names products throughout and says when each table was written. It explains what the tools do and leaves the commands to their own documentation. It leans on part 3 of the language models module, and can be read without it. The whole module is about two and a half hours of reading.
+
+### Other AI models
+
+| Part | After it you can | Time |
+| --- | --- | --- |
+| Part 1: Small models | Explain how quantising, distilling and pruning make a model small, what each costs, and what a very small model is good for | 30 min |
+| Part 2: World models | Say what a world model predicts, how it differs from a video model, and what it is for | 25 min |
+| Part 3: Diffusion language models | Explain how a language model can write a whole passage at once and refine it, and what that trades against writing word by word | 25 min |
+| Part 4: System one models | Tell when a decision needs a typed answer with a probability, and not generated text | 20 min |
+
+This module is being written, and it will grow. It covers kinds of model that the other modules do not: small models such as the Smol, Phi and Needle families, world models such as NVIDIA's Cosmos, DeepMind's Genie and World Labs' work, language models built on diffusion, and models such as Jev that return a decision and no text.
 
 ## How each part is laid out
 

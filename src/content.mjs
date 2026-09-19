@@ -18,6 +18,7 @@ const MODULE_FILES = {
   'Language models': 'Part',
   'Generative media': 'Media',
   'Running AI locally': 'Local',
+  'Other AI models': 'Other',
 };
 
 export function slugify(text) {

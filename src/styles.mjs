@@ -461,6 +461,8 @@ ${swatches()}
 /* Seven cards sit four and then three, since three, three and one would
    strand the last on a row of its own. */
 .part-cards:has(> :nth-child(7):last-child) > :nth-child(-n+4){--span:3}
+/* Four sit in one row, since three and one would strand the last. */
+.part-cards:has(> :nth-child(4):last-child) > *{--span:3}
 /* Five sit three and then two, the two sharing the row between them. */
 .part-cards:has(> :nth-child(5):last-child) > :nth-child(n+4){--span:6}
 /* A part still to come: the same card, sunk into the ground, leading nowhere. */

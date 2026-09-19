@@ -110,8 +110,30 @@ const paragraphs = (blocks) =>
     .join('');
 
 // Counts and reading times are worked out from the introduction's tables, so
-// they stay true as parts are written. Numbers up to twelve are spelt out.
-const WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+// they stay true as parts are written. Numbers up to twenty are spelt out.
+const WORDS = [
+  'no',
+  'one',
+  'two',
+  'three',
+  'four',
+  'five',
+  'six',
+  'seven',
+  'eight',
+  'nine',
+  'ten',
+  'eleven',
+  'twelve',
+  'thirteen',
+  'fourteen',
+  'fifteen',
+  'sixteen',
+  'seventeen',
+  'eighteen',
+  'nineteen',
+  'twenty',
+];
 const word = (n) => WORDS[n] ?? String(n);
 const capital = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const plural = (n, noun) => `${word(n)} ${noun}${n === 1 ? '' : 's'}`;
