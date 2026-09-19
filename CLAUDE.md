@@ -26,10 +26,14 @@ knowledge and not on a document. Part 6 closes with the module's core
 explanations and misconceptions, which the language module's part 5 lost
 when part 4 left it. Some thirty sentences across the other modules point
 to "the practical AI module" in plain text, without a link. Other AI
-models (files `Other N ….md`) is declared
-with four parts still to come: small models, world models, diffusion
-language models and system one models. It is expected to grow; a new part
-is a new row in its table, linked once its file exists. Across the
+models (four parts, files `Other N ….md`) covers small models, world
+models, diffusion language models and system one models, each part
+standing alone. Claude wrote them from sources read in September 2026.
+Part 4 describes one vendor's product, Jev, announced four days before it
+was written, from the vendor's own figures and one independent write-up,
+and says so at its head; it is the part most likely to need rewriting. The
+module is expected to grow; a new part is a new row in its table, linked
+once its file exists. Across the
 generated modules, sources were checked to
 exist, the tables of models and tools date fast and say so, and no one but
 the author has reviewed their claims. The course's name, its modules and
@@ -97,21 +101,21 @@ Baselines as of 19 September 2026, on this machine:
 | Gate               | Holds                                  | Baseline                                         | Tolerance      |
 | ------------------ | -------------------------------------- | ------------------------------------------------ | -------------- |
 | `contrast`         | 188 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1      | none           |
-| `audit`, axe       | 300 runs                               | 0 violations, 0 needing review                   | none           |
-| `audit`, measure   | 24 pages × 3 setting mixes × 3 lengths | Short's longest line 71; widths 1:1.5:2          | 80; 1% widths  |
-| `audit`, targets   | 24 pages × desktop and phone           | all 44 × 44 or larger                            | none           |
-| `audit`, reflow    | 24 pages × 320px and 200% zoom         | no sideways scroll                               | none           |
-| `audit`, spacing   | 24 pages × desktop and phone           | nothing clipped                                  | none           |
-| `audit`, keyboard  | 24 pages × 2 widths, and 3 more themes | 117 to 119 stops, ringed, uncovered, 7:1         | none           |
-| `audit`, headings  | 24 pages × desktop and phone           | one h1, no skipped level                         | none           |
-| `audit`, corners   | 24 pages, every panel, deep dive open  | none rounder than 2px                            | none           |
-| `audit`, grids     | 24 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols      | 1px on heights |
+| `audit`, axe       | 349 runs                               | 0 violations, 0 needing review                   | none           |
+| `audit`, measure   | 28 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2          | 80; 1% widths  |
+| `audit`, targets   | 28 pages × desktop and phone           | all 44 × 44 or larger                            | none           |
+| `audit`, reflow    | 28 pages × 320px and 200% zoom         | no sideways scroll                               | none           |
+| `audit`, spacing   | 28 pages × desktop and phone           | nothing clipped                                  | none           |
+| `audit`, keyboard  | 28 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1         | none           |
+| `audit`, headings  | 28 pages × desktop and phone           | one h1, no skipped level                         | none           |
+| `audit`, corners   | 28 pages, every panel, deep dive open  | none rounder than 2px                            | none           |
+| `audit`, grids     | 28 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols      | 1px on heights |
 | `audit`, storage   | 5 saved shapes                         | every one loads                                  | none           |
 | `audit`, numerals  | the home page in four themes           | the four ideas numbered in the text colour       | none           |
-| `audit`, spy       | 23 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps            | none           |
+| `audit`, spy       | 27 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps            | none           |
 | `audit`, modules   | the home page and every written part   | label, breadcrumb, title, ways on, no dead links | none           |
-| `audit`, name      | 24 pages and the canvas's index        | the heading's name wherever it is shown          | none           |
-| `look`             | 36 boards                              | no errors; recorded heights match                | 2px on heights |
+| `audit`, name      | 28 pages and the canvas's index        | the heading's name wherever it is shown          | none           |
+| `look`             | 41 boards                              | no errors; recorded heights match                | 2px on heights |
 | `perf`, not a gate | render, fonts, repaint, scrolling      | see below                                        | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
@@ -131,7 +135,7 @@ slowdown is only caught by reading them.
     npm run dev            build, then the site at http://127.0.0.1:5190 with the canvas runtime
     npm run build          the boards into dist/canvas, and a test copy into test-results/site
     npm run check:quick    formatting, lint, contrast, build (the pre-commit hook; ~1 s)
-    npm run check          check:quick, look and the full audit (~12 min)
+    npm run check          check:quick, look and the full audit (~14 min)
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
     npm run audit          the accessibility audit; report in test-results/audit-report.md
     npm run audit:quick    two themes and shorter keyboard walks (~2 min; line length takes most of it)

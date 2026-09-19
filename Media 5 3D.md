@@ -156,7 +156,7 @@ Two points matter more than the rows.
 
 ### Scenes and worlds
 
-Everything above makes single objects. Generating a whole navigable scene is a separate and much younger line of work, which meets the world models that part 3 described coming from video. Open and hosted systems released from mid-2025 will produce an explorable environment from a picture or a description, usually as splats or as a panorama with depth, and not as a set of separate editable objects. They are useful now for backdrops and for quickly exploring a space. They are not yet a way to build a level.
+Everything above makes single objects. Generating a whole navigable scene is a separate and much younger line of work, which meets the world models that part 3 described coming from video. Open and hosted systems released from mid-2025 will produce an explorable environment from a picture or a description, usually as splats or as a panorama with depth, and not as a set of separate editable objects. They are useful now for backdrops and for quickly exploring a space. They are not yet a way to build a level. [Part 2 of the other AI models module](file/96c3f08a-d417) sets them beside the other kinds of world model.
 
 ### The whiteboard version
 

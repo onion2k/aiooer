@@ -4,7 +4,7 @@
 
 ## What this course is for
 
-This course explains how AI works and how to use it well in an engineering organisation. Its first module covers large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. Its second covers the models that generate images, video, music and 3D objects. Its third is practical: running models on your own hardware. Its fourth covers the craft of building with models: instructions, skills, tools, retrieval, guardrails and evals. A fifth, on other kinds of AI model, is on its way. The course is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
+This course explains how AI works and how to use it well in an engineering organisation. Its first module covers large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. Its second covers the models that generate images, video, music and 3D objects. Its third is practical: running models on your own hardware. Its fourth covers the craft of building with models: instructions, skills, tools, retrieval, guardrails and evals. Its fifth covers other kinds of AI model: small models, world models, language models built on diffusion, and models that return decisions and no text. The course is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 
@@ -69,12 +69,12 @@ This module covers the craft of building with models: the instruction files, ski
 
 | Part | After it you can | Time |
 | --- | --- | --- |
-| Part 1: Small models | Explain how quantising, distilling and pruning make a model small, what each costs, and what a very small model is good for | 30 min |
-| Part 2: World models | Say what a world model predicts, how it differs from a video model, and what it is for | 25 min |
-| Part 3: Diffusion language models | Explain how a language model can write a whole passage at once and refine it, and what that trades against writing word by word | 25 min |
-| Part 4: System one models | Tell when a decision needs a typed answer with a probability, and not generated text | 20 min |
+| [Part 1: Small models](file/e4b7a1d3-5c92) | Explain how quantising, distilling and pruning make a model small, what each costs, and what a very small model is good for | 30 min |
+| [Part 2: World models](file/96c3f08a-d417) | Say what a world model predicts, how it differs from a video model, and what it is for | 25 min |
+| [Part 3: Diffusion language models](file/2d5e8b61-a3f0) | Explain how a language model can write a whole passage at once and refine it, and what that trades against writing word by word | 25 min |
+| [Part 4: System one models](file/b18f4c27-6e9a) | Tell when a decision needs a typed answer with a probability, and not generated text | 30 min |
 
-This module is being written, and it will grow. It covers kinds of model that the other modules do not: small models such as the Smol, Phi and Needle families, world models such as NVIDIA's Cosmos, DeepMind's Genie and World Labs' work, language models built on diffusion, and models such as Jev that return a decision and no text.
+This module will grow. Each part stands alone, and each names products and figures that date quickly. It covers kinds of model that the other modules do not: small models such as the Smol, Phi and Needle families, world models such as NVIDIA's Cosmos, DeepMind's Genie and World Labs' work, language models built on diffusion, and models such as Jev that return a decision and no text. Part 4 describes a product announced days before it was written, from its maker's own figures, and says so. The whole module is about two hours of reading.
 
 ## How each part is laid out
 

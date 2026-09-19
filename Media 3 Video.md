@@ -138,7 +138,7 @@ Three points matter more than the rows.
 
 - **The gap is wider than in images.** Open video models trail the best hosted ones by something like six months to a year. Training at this scale needs more data and compute than most publishers of open models have.
 - **Open models take the same add-ons.** LoRAs for a character, a style or a kind of motion, control inputs and distilled fast versions all exist for the main open families, and part 6's methods apply. This is the reason to use them.
-- **The field is turning towards worlds.** Several labs now describe their video models as world models: systems that predict how a scene evolves and can be steered as it plays, with uses in games, simulation and robotics. For making footage this changes little yet. It is where the research effort is going.
+- **The field is turning towards worlds.** Several labs now describe their video models as world models: systems that predict how a scene evolves and can be steered as it plays, with uses in games, simulation and robotics. For making footage this changes little yet. It is where the research effort is going. [Part 2 of the other AI models module](file/96c3f08a-d417) covers them.
 
 ## 7. Working in shots
 

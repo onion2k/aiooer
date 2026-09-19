@@ -30,6 +30,10 @@ export const PAGE_FILES = {
   'c9146f3b-27a8': 'Practical4.dc.html',
   '0b8e5d17-f4c2': 'Practical5.dc.html',
   '7a3f2c68-91de': 'Practical6.dc.html',
+  'e4b7a1d3-5c92': 'Other1.dc.html',
+  '96c3f08a-d417': 'Other2.dc.html',
+  '2d5e8b61-a3f0': 'Other3.dc.html',
+  'b18f4c27-6e9a': 'Other4.dc.html',
 };
 
 export function esc(s) {
