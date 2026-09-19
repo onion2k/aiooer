@@ -10,7 +10,8 @@ const rows = [];
 for (const name of THEME_ORDER) {
   const t = THEMES[name];
   for (const [fg, bg] of TEXT_PAIRS) {
-    const r = contrast(t[fg], t[bg]);
+    // A colour missing from a theme is a failure, not a crash.
+    const r = t[fg] && t[bg] ? contrast(t[fg], t[bg]) : 0;
     const ok = r >= 7;
     if (!ok) failures++;
     rows.push({
@@ -23,7 +24,7 @@ for (const name of THEME_ORDER) {
     });
   }
   for (const [fg, bg] of UI_PAIRS) {
-    const r = contrast(t[fg], t[bg]);
+    const r = t[fg] && t[bg] ? contrast(t[fg], t[bg]) : 0;
     const ok = r >= 3;
     if (!ok) failures++;
     rows.push({

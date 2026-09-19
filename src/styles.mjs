@@ -25,6 +25,7 @@ const VAR_NAMES = {
   surface: '--surface',
   ink: '--ink',
   ink2: '--ink-2',
+  past: '--past',
   rule: '--rule',
   edge: '--edge',
   link: '--link',
@@ -80,7 +81,7 @@ ${themeBlocks()}
 ${swatches()}
 .reader{
   --base:1.25rem;--scale:1;--face-scale:1;--lh:1.6;--para:1.2em;
-  --measure-em:30em;--measure-face:1;--measure:calc(var(--measure-em) * var(--measure-face));--wide:46em;
+  --measure-em:39em;--measure-face:1;--measure:calc(var(--measure-em) * var(--measure-face));--wide:max(46em, var(--measure) + 2.8em);
   --gutter:1.2em;--margin:2.4em;--r:2px;--bw:2px;--bw-heavy:4px;
   --font-body:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;
   --font-display:'Archivo','Helvetica Neue',Arial,sans-serif;
@@ -95,9 +96,12 @@ ${swatches()}
 @media (max-width:40em){.reader{--base:1.125rem}}
 .size-large{--scale:1.15}.size-larger{--scale:1.3}.size-largest{--scale:1.5}
 .spacing-wide{--lh:1.8}.spacing-widest{--lh:2}
-/* Line lengths are held under 80 characters (1.4.8). The serif face fits
-   about a tenth more characters into the same width, so it gets less. */
-.measure-short{--measure-em:26em}.measure-long{--measure-em:32em}
+/* Short keeps every line under 80 characters, and offering it is how the
+   site meets 1.4.8; Standard is half as wide again and Long twice as wide,
+   for readers who want more on a line. Tables and figures widen with Long,
+   so they never sit narrower than the text around them. The serif face
+   fits about a tenth more characters into the same width, so it gets less. */
+.measure-short{--measure-em:26em}.measure-long{--measure-em:52em}
 .font-serif{--font-body:'Newsreader','Iowan Old Style','Palatino Linotype',Georgia,serif;--face-scale:1.08;--measure-face:0.9}
 .reader ::selection{background:var(--select);color:var(--select-ink)}
 
@@ -227,6 +231,17 @@ ${swatches()}
 .toc-list{list-style:none;margin:0.75em 0 0;padding:0;border-top:var(--bw) solid var(--ink)}
 .toc-list li{margin:0}
 .reader .toc-list a{display:flex;gap:0.7em;align-items:baseline;min-height:44px;padding:0.55em 0.5em;border-bottom:1px solid var(--rule);color:var(--ink);text-decoration:none;line-height:1.3}
+/* The contents follow the reader down the page: the section being read is
+   bold, and the ones already passed are dimmed, never below 7:1. Bold is
+   wider, and a heading that wrapped onto another line in bold would make
+   the list below it jump as the reader scrolled past. So each heading has
+   an unseen bold copy stacked in the same cell, which keeps room for it,
+   and a heading shorter than its copy sits in the middle of that room. */
+.reader .toc-list .is-past a{color:var(--past)}
+.reader .toc-list .is-current a{font-weight:800}
+.toc-text{display:grid;align-items:center}
+.toc-text > span,.toc-text::after{grid-area:1 / 1}
+.toc-text::after{content:attr(data-bold);font-weight:800;visibility:hidden}
 .reader .toc-list a:hover{background:var(--ink);color:var(--bg)}
 .toc-num{flex:none;min-width:1.6em;font-family:var(--font-mono);font-weight:700;font-size:0.9em}
 @container page (width >= 62em){
@@ -437,7 +452,7 @@ ${swatches()}
 .reader .part-title a:focus-visible{outline:none;background:none!important;box-shadow:none;color:inherit!important}
 .home-section .part-outcome{grid-area:outcome;margin:0}
 .idea{--span:3;--span-md:3;margin:0;display:flex;flex-direction:column;gap:0.9em;padding:1.1em 0 0;border-top:var(--bw-heavy) solid var(--ink)}
-.idea-num{font-family:var(--font-display);font-weight:900;font-size:4.2em;line-height:0.8;letter-spacing:-0.06em;color:var(--link)}
+.idea-num{font-family:var(--font-display);font-weight:900;font-size:4.2em;line-height:0.8;letter-spacing:-0.06em;color:var(--ink)}
 .home-section .idea p{margin:0}
 .idea-lead{display:block;margin-bottom:0.45em;font-family:var(--font-display);font-weight:800;font-size:1.3em;line-height:1.12;letter-spacing:-0.015em}
 .legend li{--span:3;--span-md:3;margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:1em;padding:1.1em 1.2em 1.3em;background:var(--surface);border:var(--bw) solid var(--edge)}

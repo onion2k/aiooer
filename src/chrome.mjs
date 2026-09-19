@@ -46,15 +46,19 @@ export function header(parts, current) {
   return `<a class="skip-link" href="#main">Skip to main content</a><header class="site-header"><div class="shell header-bar grid-12"><a class="wordmark" href="Main.dc.html"${homeCurrent}>${COURSE_TITLE}</a><div class="header-actions"><button type="button" class="header-btn" aria-expanded="{{parts.expanded}}" aria-controls="parts-panel" onClick="{{parts.toggle}}" ref="{{parts.buttonRef}}">${ICONS.parts}<span>Parts</span></button><button type="button" class="header-btn" aria-expanded="{{settingsPanel.expanded}}" aria-controls="settings-panel" onClick="{{settingsPanel.toggle}}" ref="{{settingsPanel.buttonRef}}">${ICONS.settings}<span>Reading settings</span></button></div></div>${partsPanel(parts, current)}${settingsPanel()}</header>`;
 }
 
+// The contents list. Each item carries the spy's state for its section
+// (past, current or next) as a class, and the current one says so to a
+// screen reader with aria-current. Each heading also carries a copy of
+// itself for the stylesheet, which keeps room for it in bold.
 export function toc(sections) {
   const items = sections
-    .map((s) => {
+    .map((s, i) => {
       const num =
         s.number !== null
           ? `<span class="toc-num" aria-hidden="true">${String(s.number).padStart(2, '0')}</span>`
           : '<span class="toc-num" aria-hidden="true"></span>';
       const label = s.number !== null ? `<span class="sr-only">Section ${s.number}: </span>` : '';
-      return `<li><a href="#${s.id}">${num}<span class="toc-text">${label}${esc(s.heading)}</span></a></li>`;
+      return `<li class="is-{{spy.s${i}.state}}"><a href="#${s.id}" aria-current="{{spy.s${i}.current}}">${num}<span class="toc-text" data-bold="${esc(s.heading)}"><span>${label}${esc(s.heading)}</span></span></a></li>`;
     })
     .join('');
   return `<nav class="toc" aria-labelledby="toc-title"><h2 class="toc-title" id="toc-title"><span class="toc-static label">On this page</span><button type="button" class="toc-toggle" aria-expanded="{{toc.expanded}}" aria-controls="toc-list" onClick="{{toc.toggle}}"><span>On this page</span>${ICONS.chevron}</button></h2><ol class="toc-list" id="toc-list" role="list" hidden="{{toc.hidden}}">${items}</ol></nav>`;

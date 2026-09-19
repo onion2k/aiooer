@@ -223,5 +223,12 @@ export function partFile(part, parts, intro, page) {
   const deepKeys = [];
   const sections = page.maxSections ? part.sections.slice(0, page.maxSections) : part.sections;
   for (const s of sections) for (const b of s.blocks) if (b.type === 'deep') deepKeys.push(b.key);
-  return dcFile({ title: `Part ${part.n}: ${meta.shortTitle} · ${COURSE_TITLE}`, body, page: { ...page, deepKeys } });
+  // The contents list every section, even on a board trimmed to a few, so
+  // the spy follows the same list in the same order.
+  const spyIds = part.sections.map((s) => s.id);
+  return dcFile({
+    title: `Part ${part.n}: ${meta.shortTitle} · ${COURSE_TITLE}`,
+    body,
+    page: { ...page, deepKeys, spyIds },
+  });
 }

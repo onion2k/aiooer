@@ -20,8 +20,11 @@ was written on 19 September 2026 from what the code does at that date.
 - **Accessible.** axe-core's WCAG A, AA and AAA rules and its best
   practices find nothing, on every page, in every theme, with the panels
   and deep dives open. `audit` holds it.
-- **Lines a reader can follow.** No line of running text passes 80
-  characters (1.4.8), at any line length, text size or typeface. `audit`.
+- **Lines a reader can choose.** Short keeps every line of running text
+  within 80 characters (1.4.8), at any text size or typeface, and offering
+  it is how the site meets that criterion. Standard, the default, is half as
+  wide again and Long twice as wide, each capped by its column, for readers
+  who want more on a line. `audit` holds the 80 and the proportions.
 - **Any size, any spacing.** No sideways scrolling at 320px wide or at
   200% zoom (1.4.10), and nothing clipped under the 1.4.12 spacing
   overrides. `audit`.
@@ -29,6 +32,10 @@ was written on 19 September 2026 from what the code does at that date.
   (2.5.5); every Tab stop has a ring and is never covered (2.4.7, 2.4.11 to
   2.4.13), and its text keeps 7:1 against the focus highlighter in every
   theme; one h1 and no skipped heading levels. `audit`.
+- **The contents follow the reader.** On a part page the section being read
+  is bold in the contents and marked `aria-current="location"`, the sections
+  already passed are dimmed at 7:1 or better, and the list never changes
+  height as it follows. `audit` holds it.
 - **On the grid.** At desktop width the page lays out on twelve equal
   columns, stepping to six and then one; every grid of blocks is one height
   at every width; no corner is rounder than 2px. `audit` holds it.
@@ -44,9 +51,9 @@ Baselines as of 19 September 2026, on this machine:
 
 | Gate               | Holds                                   | Baseline                                    | Tolerance      |
 | ------------------ | --------------------------------------- | ------------------------------------------- | -------------- |
-| `contrast`         | 184 colour pairs, four themes           | lowest text pair 7.33:1, lowest edge 8.38:1 | none           |
+| `contrast`         | 188 colour pairs, four themes           | lowest text pair 7.33:1, lowest edge 8.38:1 | none           |
 | `audit`, axe       | 93 runs                                 | 0 violations, 0 needing review              | none           |
-| `audit`, measure   | 42 runs: 7 pages × 6 setting mixes      | longest line 78 characters                  | up to 80       |
+| `audit`, measure   | 7 pages × 3 setting mixes × 3 lengths   | Short's longest line 70; widths 1:1.5:2     | 80; 1% widths  |
 | `audit`, targets   | 7 pages × desktop and phone             | all 44 × 44 or larger                       | none           |
 | `audit`, reflow    | 7 pages × 320px and 200% zoom           | no sideways scroll                          | none           |
 | `audit`, spacing   | 7 pages × desktop and phone             | nothing clipped                             | none           |
@@ -55,8 +62,18 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, corners   | 7 pages, every panel and deep dive open | none rounder than 2px                       | none           |
 | `audit`, grids     | 7 pages × desktop and phone             | blocks equal; 15 or 5 containers on 12 cols | 1px on heights |
 | `audit`, storage   | 5 saved shapes                          | every one loads                             | none           |
+| `audit`, numerals  | the home page in four themes            | the four ideas numbered in the text colour  | none           |
+| `audit`, spy       | 6 parts × 3 frames × top, middle, end   | one current, earlier passed, no jumps       | none           |
 | `look`             | 16 boards                               | no errors; recorded heights match           | 2px on heights |
-| `perf`, not a gate | render, fonts, repaint on a setting     | 263 to 323 ms; fonts 85 KB; theme 32-39 ms  | not held       |
+| `perf`, not a gate | render, fonts, repaint, scrolling       | see below                                   | not held       |
+
+`perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
+85 KB, a theme change 32 to 39 ms, opening every deep dive 19 to 33 ms, and
+scrolling a part 1.1 to 2.0 ms of main-thread time a step, against 0.5 on
+the home page, which has no contents to follow. A step on which the section
+changes costs about 6 ms (worst 8.7), since the page redraws whole. Runs on
+this machine swing by tens of milliseconds, so compare medians of two runs
+each side before believing a change.
 
 A gate that is red is fixed before anything else lands. `perf` prints
 figures for the before-and-after in a report; nothing holds them yet, so a
@@ -70,15 +87,16 @@ slowdown is only caught by reading them.
     npm run check          check:quick, look and the full audit (~3 min)
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
     npm run audit          the accessibility audit; report in test-results/audit-report.md
-    npm run audit:quick    two themes and shorter keyboard walks (~1.5 min; line length takes most of it)
+    npm run audit:quick    two themes and shorter keyboard walks (~2 min; line length takes most of it)
     npm run look           every board rendered: errors and stale heights fail it; pictures in test-results/shots
     npm run heights        build, record the showcase boards' natural heights, then build again
     npm run perf           render and repaint times, five runs each, medians
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy`,
 `--pages Part1.dc.html,...` and `--mutate <name>`, which puts a known defect
-into every page (`contrast`, `focus`, `targets`, `measure`, `reflow`,
-`spacing`, `headings`, `corners`, `grids`, `twelve`, `focustext`) to prove the
+into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
+`reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`) to prove the
 check that should catch it still does.
 `node scripts/look-parts.mjs <width> <File.dc.html> <selector>...` takes
 pictures of single elements, with `--theme`, `--size` and the other
@@ -119,7 +137,8 @@ canvas is private until it is shared from its Share menu.
 - `src/icons.mjs` inlines IBM Carbon's 32px icons from `@carbon/icons` by
   name when the site builds, and stops the build if a name is missing.
 - `src/logic.mjs` writes the page's logic class: the reading settings, the
-  header's panels and the deep dives.
+  header's panels, the deep dives, and the spy that follows the reader down
+  a part in its contents.
 - `src/build.mjs` is the one place that wires everything together and knows
   the boards and their layout. `src/paths.mjs` says where everything is.
 - `src/heights.json` is measured by `npm run heights`, never typed.
@@ -146,8 +165,15 @@ What to copy the shape of, when building something new:
   `pages.mjs`).
 - **A reading setting:** line length. Its options are in `SETTINGS` in
   `logic.mjs`, its classes are `.measure-*` in `styles.mjs`, its legend is
-  in `chrome.mjs`, and the audit's measure check holds every option under
-  80 characters in both typefaces.
+  in `chrome.mjs`, and the audit's measure check holds Short under 80
+  characters in both typefaces and the three widths at 1, 1.5 and 2 times
+  Short.
+- **Something that follows the reader:** the contents spy. `sectionInView`
+  in `logic.mjs` reads the page once a frame at most, its state reaches the
+  markup through `renderVals()` into holes on each item of `toc` in
+  `chrome.mjs`, `.is-past` and `.is-current` in `styles.mjs` give it its
+  look with the `past` colour from `tokens.mjs`, and `spyAt` in `audit.mjs`
+  holds it.
 - **A grid of blocks:** the six part cards on the home page. An `ol` with
   `grid-12`, each card `--span: 4` and `--span-md: 3`, rows at
   `grid-auto-rows: 1fr`, and the list named in `GRIDS` and `TWELVE` in
@@ -190,6 +216,10 @@ reader's saved settings.
   narrow window does.
 - **No logic in the markup.** A hole is a dotted lookup into
   `renderVals()`; anything computed is computed there.
+- **A page's listeners are its own.** The canvas swaps in a fresh copy of
+  the logic class when a board is edited, calling `componentWillUnmount` on
+  the old one, so anything added to `window` is removed there. The canvas
+  allows no global keydown handlers.
 - **Focus colours win.** The link highlighter's colours are `!important`,
   and everything inside a focused link takes them, because any rule giving
   a link its own colour would otherwise paint that colour on the yellow.
@@ -216,7 +246,9 @@ For anything new on a page, check what it does:
 - **every theme:** light grey (its key is `paper`), white, dark and high
   contrast
 - **every setting:** text size up to largest, line spacing up to widest,
-  each line length, the serif typeface, deep dives folded and open
+  each line length, the serif typeface, deep dives folded and open. On the
+  home page at desktop width the text column is 774px, so Standard (780px)
+  and Long both fill it and look the same there
 - **every width:** desktop, tablet, phone at 390px, 320px, and 200% zoom of
   a 1280px window; tables stack below 44em, the header wraps below 40em
 - **every board:** home, each part, and the showcase boards, which are
@@ -229,6 +261,11 @@ For anything new on a page, check what it does:
 - **the keyboard:** reached by Tab, a visible ring, its text 7:1 or better
   while focused in every theme, and Escape closing a panel back to the
   button that opened it
+- **scrolling:** the top, middle and end of a part; the canvas's 1440 by
+  3200 frame, where a short last section never reaches the reading line; a
+  frame too tall to scroll, like a board drawn at full height; and headings
+  that move without a scroll, as a deep dive opening does in a browser
+  without scroll anchoring
 - **a screen reader:** real buttons, links and labelled inputs, headings in
   order, table roles kept when a table stacks, icons hidden, new-tab links
   announced

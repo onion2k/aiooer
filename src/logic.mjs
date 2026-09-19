@@ -1,8 +1,9 @@
 // Writes the logic class each page runs: the reader's display settings, the
-// three disclosure panels and the deep dives. Every page shares the same class
-// so a setting behaves identically everywhere; only the constants at the top
-// differ per page (its deep dives, and for the showcase boards a fixed start).
-// Without it the settings panel would be a picture of a settings panel.
+// three disclosure panels, the deep dives, and the spy that follows the reader
+// down a part in its contents. Every page shares the same class so a setting
+// behaves identically everywhere; only the constants at the top differ per
+// page (its deep dives and sections, and for the showcase boards a fixed
+// start). Without it the settings panel would be a picture of a settings panel.
 
 import { THEMES, THEME_ORDER } from './tokens.mjs';
 
@@ -72,6 +73,7 @@ export function logicScript(page) {
     DEEP_OPEN_AT_START: page.deepOpenAtStart || [],
     TOC_OPEN_AT_START: !!page.tocOpen,
     REMEMBER: page.remember !== false,
+    SPY_IDS: page.spyIds || [],
   };
   return `
 const SETTINGS = ${JSON.stringify(SETTINGS)};
@@ -83,6 +85,7 @@ const DEEP_OPEN_AT_START = ${JSON.stringify(constants.DEEP_OPEN_AT_START)};
 const TOC_OPEN_AT_START = ${JSON.stringify(constants.TOC_OPEN_AT_START)};
 const REMEMBER = ${JSON.stringify(constants.REMEMBER)};
 const STORE_KEY = ${JSON.stringify(STORE_KEY)};
+const SPY_IDS = ${JSON.stringify(constants.SPY_IDS)};
 
 function isOption(key, value) {
   return SETTINGS[key].some((o) => o[0] === value);
@@ -114,17 +117,74 @@ function writeSaved(saved) {
   }
 }
 
+// The section the reader is in, as an index into SPY_IDS: the last whose
+// heading has risen past a line 30% of the way down the window. At the top of
+// the page, before any heading reaches the line, that is the first. Scrolled
+// to the very end it is the last, since a short last section can finish below
+// the line and would otherwise never be reached. A page that does not scroll
+// at all, like a board drawn at its full height, stays on the first.
+function sectionInView() {
+  const view = window.innerHeight;
+  const end = document.documentElement.scrollHeight - view;
+  if (end <= 0) return 0;
+  let index = 0;
+  let last = 0;
+  SPY_IDS.forEach((id, i) => {
+    const heading = document.getElementById(id);
+    if (!heading) return;
+    last = i;
+    if (heading.getBoundingClientRect().top <= view * 0.3) index = i;
+  });
+  return window.scrollY >= end - 2 ? last : index;
+}
+
 class Component extends DCLogic {
   constructor(props) {
     super(props);
     const dd = {};
     for (const key of DEEP_OPEN_AT_START) dd[key] = true;
-    this.state = { chosen: {}, saved: {}, open: OPEN_AT_START, tocOpen: TOC_OPEN_AT_START, dd };
+    this.state = { chosen: {}, saved: {}, open: OPEN_AT_START, tocOpen: TOC_OPEN_AT_START, dd, spy: 0 };
     this.buttons = {};
+    this.frame = 0;
   }
 
   componentDidMount() {
     if (REMEMBER) this.setState({ saved: readSaved() });
+    if (!SPY_IDS.length) return;
+    // Scrolling fires many times a frame; the spy looks once a frame at most,
+    // and the page redraws only when the section changes.
+    this.followSoon = () => {
+      if (this.frame) return;
+      this.frame = window.requestAnimationFrame(() => {
+        this.frame = 0;
+        this.follow();
+      });
+    };
+    window.addEventListener('scroll', this.followSoon, { passive: true });
+    window.addEventListener('resize', this.followSoon);
+    this.follow();
+  }
+
+  // A new text size or line length, or a deep dive opening, moves the
+  // headings without any scrolling, so every redraw looks again.
+  componentDidUpdate() {
+    if (this.followSoon) this.followSoon();
+  }
+
+  // The canvas swaps in a fresh copy of this class when the page is edited,
+  // and the old copy's listeners must go with it or they pile up.
+  componentWillUnmount() {
+    if (!this.followSoon) return;
+    window.removeEventListener('scroll', this.followSoon);
+    window.removeEventListener('resize', this.followSoon);
+    window.cancelAnimationFrame(this.frame);
+    this.frame = 0;
+    this.followSoon = null;
+  }
+
+  follow() {
+    const spy = sectionInView();
+    if (spy !== this.state.spy) this.setState({ spy });
   }
 
   // A choice made in this page's panel wins; then a value set on the design
@@ -204,10 +264,19 @@ class Component extends DCLogic {
         this.buttons[name] = el;
       },
     });
+    const spy = {};
+    SPY_IDS.forEach((id, i) => {
+      const here = this.state.spy;
+      spy['s' + i] = {
+        state: i < here ? 'past' : i === here ? 'current' : 'next',
+        current: i === here ? 'location' : null,
+      };
+    });
     return {
       s,
       options,
       dd,
+      spy,
       parts: panel('parts'),
       settingsPanel: panel('settings'),
       toc: {

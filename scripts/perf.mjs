@@ -1,9 +1,11 @@
 // Measures what a reader waits for: the time until a page has rendered with
-// its typeface in, what it downloads (the page, its fonts, all of it), and how
-// long a change of reading setting takes to repaint it. The whole page
-// re-renders on every change, so the longest part is the worst case. Five runs
-// each; the median is shown. These are figures to compare before and after a
-// change; no gate holds them yet, so a slowdown is only caught by reading them.
+// its typeface in, what it downloads (the page, its fonts, all of it), how
+// long a change of reading setting takes to repaint it, and what scrolling
+// costs the page's main thread, where the contents follow the reader. The
+// whole page re-renders on every change, so the longest part is the worst
+// case. Five runs each; the median is shown. These are figures to compare
+// before and after a change; no gate holds them yet, so a slowdown is only
+// caught by reading them.
 //   node scripts/perf.mjs
 
 import fs from 'node:fs';
@@ -37,6 +39,31 @@ async function timeSetting(page, key, value) {
   );
 }
 
+// Scrolls the page from top to bottom in 100 steps of two frames each, and
+// reads how long the main thread was busy meanwhile, per step: the browser's
+// own scrolling and painting, and on a part page the contents following the
+// reader. The home page has no contents, so it shows what scrolling costs
+// without them.
+async function timeScroll(page) {
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send('Performance.enable');
+  const busy = async () =>
+    (await cdp.send('Performance.getMetrics')).metrics.find((m) => m.name === 'TaskDuration').value;
+  const before = await busy();
+  const steps = await page.evaluate(async () => {
+    const end = document.documentElement.scrollHeight - innerHeight;
+    const STEPS = 100;
+    for (let i = 1; i <= STEPS; i++) {
+      window.scrollTo(0, (end * i) / STEPS);
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    }
+    return STEPS;
+  });
+  const seconds = (await busy()) - before;
+  await cdp.detach();
+  return (seconds * 1000) / steps;
+}
+
 // Counts the bytes each response brought in, as sent over the wire. Fonts are
 // counted apart, since a typeface is the heaviest thing a design can add.
 function watchDownloads(page, tally) {
@@ -55,6 +82,7 @@ for (const file of PAGES) {
   const load = [];
   const theme = [];
   const deep = [];
+  const scroll = [];
   const fontKB = [];
   const totalKB = [];
   let elements = 0;
@@ -67,6 +95,8 @@ for (const file of PAGES) {
     fontKB.push(Math.round(tally.fonts / 1024));
     totalKB.push(Math.round(tally.total / 1024));
     elements = await page.evaluate(() => document.querySelectorAll('.reader *').length);
+    scroll.push(await timeScroll(page));
+    await page.evaluate(() => window.scrollTo(0, 0));
     await togglePanel(page, 'settings');
     theme.push(await timeSetting(page, 'theme', 'dark'));
     deep.push(await timeSetting(page, 'deep', 'open'));
@@ -81,6 +111,7 @@ for (const file of PAGES) {
     'render + fonts ms': median(load),
     'theme change ms': Math.round(median(theme)),
     'open all deep dives ms': Math.round(median(deep)),
+    'scroll ms a step': Number(median(scroll).toFixed(2)),
   });
 }
 console.table(rows);

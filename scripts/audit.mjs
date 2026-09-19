@@ -3,7 +3,9 @@
 // figure for each check so a regression shows as a number that moved:
 //   axe       axe-core's WCAG A, AA and AAA rules and its best practices,
 //             in every theme, with every panel and deep dive open
-//   measure   the longest line of running text, in characters (1.4.8: 80)
+//   measure   the longest line at each line length: Short within AAA's 80
+//             characters (1.4.8), Standard and Long wider on purpose, and
+//             the three widths held at 1, 1.5 and 2 times Short
 //   targets   buttons and links outside sentences under 44 by 44 (2.5.5)
 //   reflow    horizontal scrolling at 320px wide and at 200% zoom (1.4.10)
 //   spacing   clipped text with the 1.4.12 spacing overrides applied
@@ -14,6 +16,9 @@
 //   grids     every block in a grid the same height, at desktop and phone
 //             widths, and the page's layout on twelve columns at desktop
 //   storage   every shape of saved reading settings still loads
+//   numerals  the home page's four ideas numbered in the text colour
+//   spy       the contents list marks the section the reader is in, bold,
+//             and dims the ones already passed
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
 //   node scripts/audit.mjs [--quick] [--only axe,measure,...] [--pages File.dc.html,...] [--mutate name]
 
@@ -40,6 +45,14 @@ const MUTATIONS = {
   reflow: { css: '.plain{min-width:400px}' },
   spacing: { css: '.plain-label{height:1.2em;overflow:hidden}' },
   corners: { css: '.header-btn{border-radius:999px!important}' },
+  widths: { css: '.reader{--measure-em:30em!important}' },
+  numerals: { css: '.idea-num{color:var(--link)!important}' },
+  // The spy's own scroll listener never hears the page scroll.
+  spy: { js: () => window.addEventListener('scroll', (e) => e.stopImmediatePropagation(), true) },
+  spybold: { css: '.reader .toc-list .is-current a{font-weight:400!important}' },
+  spydim: { css: '.reader .toc-list .is-past a{color:var(--ink)!important}' },
+  spyjump: { css: '.toc-text::after{display:none!important}' },
+  pastfocus: { css: '.reader .toc-list .is-past a{color:var(--past)!important}' },
   focustext: { css: '.reader .toc-list a{color:var(--ink)!important}' },
   grids: {
     css: '.part-cards,.ideas,.legend,.routes,.parts-list,.settings-grid,.pager{grid-auto-rows:auto!important;align-items:start!important}',
@@ -91,6 +104,8 @@ const results = {
   corners: [],
   grids: [],
   storage: [],
+  numerals: [],
+  spy: [],
 };
 let failures = 0;
 const fail = (kind, msg) => {
@@ -198,6 +213,64 @@ async function longestLine(page) {
     const median = all[Math.floor(all.length / 2)] || 0;
     return { max, p95, median, lines: all.length, where };
   });
+}
+
+// The width a paragraph of running text is allowed (its measure), the width
+// it fills, and the column it sits in, in pixels.
+async function textWidths(page) {
+  return page.evaluate(() => {
+    const p = [...document.querySelectorAll('.article > section > p, .split-body > p')].find(
+      (e) => e.getClientRects().length,
+    );
+    return {
+      measure: Math.round(parseFloat(getComputedStyle(p).maxWidth)),
+      rendered: Math.round(p.getBoundingClientRect().width),
+      column: Math.round(p.parentElement.getBoundingClientRect().width),
+    };
+  });
+}
+
+// Scrolls to the top, the bottom, or just into section `index`, waits for the
+// contents list to follow, and says what is wrong with it: there must be one
+// current item, marked for screen readers and bold, every earlier item
+// dimmed and every later one plain.
+async function spyAt(page, where, index) {
+  await page.evaluate(
+    ([w, i]) => {
+      const heads = document.querySelectorAll('.article > section > h2');
+      const y =
+        w === 'top'
+          ? 0
+          : w === 'bottom'
+            ? document.documentElement.scrollHeight
+            : heads[i].getBoundingClientRect().top + window.scrollY - 40;
+      window.scrollTo(0, y);
+    },
+    [where, index],
+  );
+  await page
+    .waitForFunction((i) => document.querySelectorAll('.toc-list > li')[i]?.classList.contains('is-current'), index, {
+      timeout: 3000,
+    })
+    .catch(() => {});
+  return page.evaluate((i) => {
+    const problems = [];
+    const items = [...document.querySelectorAll('.toc-list > li')];
+    const marked = items.filter((li) => li.querySelector('a').getAttribute('aria-current') === 'location');
+    if (marked.length !== 1) problems.push(`${marked.length} items marked current`);
+    items.forEach((li, k) => {
+      const want = k < i ? 'is-past' : k === i ? 'is-current' : 'is-next';
+      if (!li.classList.contains(want)) problems.push(`item ${k + 1} is "${li.className}", not ${want}`);
+    });
+    const link = items[i]?.querySelector('a');
+    if (link && parseInt(getComputedStyle(link).fontWeight, 10) < 700) problems.push('the current item is not bold');
+    if (i > 0 && i < items.length - 1) {
+      const past = getComputedStyle(items[0].querySelector('a')).color;
+      const next = getComputedStyle(items[items.length - 1].querySelector('a')).color;
+      if (past === next) problems.push('passed items are not dimmed');
+    }
+    return problems.slice(0, 4);
+  }, index);
 }
 
 async function targetSizes(page) {
@@ -496,27 +569,184 @@ for (const file of pagesArg || FULL_PAGES) {
     await page.close();
   }
 
-  // Line length at each line-length setting, and at the largest text.
-  for (const [measure, size, font] of !run('measure')
-    ? []
-    : [
-        ['standard', 'standard', 'sans'],
-        ['long', 'standard', 'sans'],
-        ['short', 'standard', 'sans'],
-        ['long', 'largest', 'sans'],
-        ['standard', 'standard', 'serif'],
-        ['long', 'standard', 'serif'],
-      ]) {
+  // Line length. Short is the setting that holds AAA's 80 characters (1.4.8),
+  // in both typefaces and at the largest text: offering it is the mechanism
+  // the criterion asks for. Standard and Long are wider on purpose, so their
+  // lines are reported, not capped, and their widths are held to Short's:
+  // Standard half as wide again, Long twice, or the column where it is less.
+  for (const [size, font] of run('measure')
+    ? [
+        ['standard', 'sans'],
+        ['largest', 'sans'],
+        ['standard', 'serif'],
+      ]
+    : []) {
+    const widths = {};
+    for (const measure of ['short', 'standard', 'long']) {
+      const page = await open(file);
+      await setSetting(page, 'measure', measure);
+      await setSetting(page, 'size', size);
+      await setSetting(page, 'font', font);
+      await setSetting(page, 'deep', 'open');
+      await page.locator('button[aria-controls="settings-panel"]').click();
+      const m = await longestLine(page);
+      widths[measure] = await textWidths(page);
+      const label = `${file} measure=${measure} size=${size} font=${font}: longest ${m.max} chars, 95th pct ${m.p95}, median ${m.median} over ${m.lines} lines`;
+      if (measure === 'short' && m.max > 80) fail('measure', `${label} ("${m.where}")`);
+      else pass('measure', measure === 'short' ? label : `${label} (wider on purpose)`);
+      await page.close();
+    }
+    const [s, st, l] = ['short', 'standard', 'long'].map((k) => widths[k].measure);
+    const proportions = Math.abs(l / s - 2) < 0.01 && Math.abs(st / s - 1.5) < 0.01;
+    const filled = Object.values(widths).every((w) => Math.abs(w.rendered - Math.min(w.measure, w.column)) <= 1);
+    const label = `${file} size=${size} font=${font}: text widths short ${s}px, standard ${st}px, long ${l}px, in a ${widths.long.column}px column`;
+    if (proportions && filled) pass('measure', `${label}; standard 1.5 and long 2 times short`);
+    else
+      fail(
+        'measure',
+        `${label}; standard ${(st / s).toFixed(2)} and long ${(l / s).toFixed(2)} times short, wanted 1.5 and 2`,
+      );
+  }
+
+  // The four ideas' numerals are the text colour, in every theme.
+  for (const theme of run('numerals') && file === 'Main.dc.html' ? THEMES : []) {
     const page = await open(file);
-    await setSetting(page, 'measure', measure);
-    await setSetting(page, 'size', size);
-    await setSetting(page, 'font', font);
-    await setSetting(page, 'deep', 'open');
-    await page.locator('button[aria-controls="settings-panel"]').click();
-    const m = await longestLine(page);
-    const label = `${file} measure=${measure} size=${size} font=${font}: longest ${m.max} chars, 95th pct ${m.p95}, median ${m.median} over ${m.lines} lines`;
-    if (m.max > 80) fail('measure', `${label} ("${m.where}")`);
-    else pass('measure', label);
+    if (theme !== 'paper') {
+      await setSetting(page, 'theme', theme);
+      await page.locator('button[aria-controls="settings-panel"]').click();
+    }
+    const r = await page.evaluate(() => ({
+      ink: getComputedStyle(document.querySelector('.reader')).color,
+      nums: [...document.querySelectorAll('.idea-num')].map((n) => getComputedStyle(n).color),
+    }));
+    const off = r.nums.filter((c) => c !== r.ink);
+    if (!r.nums.length) fail('numerals', `${file} ${theme}: no numerals found`);
+    else if (off.length)
+      fail('numerals', `${file} ${theme}: ${off.length} numerals are ${off[0]}, not the text colour ${r.ink}`);
+    else pass('numerals', `${file} ${theme}: all ${r.nums.length} numerals in the text colour`);
+    await page.close();
+  }
+
+  // The contents list follows the reader: at the top, in the middle and at
+  // the bottom of a part, at desktop and phone size, and in the canvas's own
+  // 1440 by 3200 frame, where a short last section never reaches the line.
+  const frames = [
+    [1440, 900],
+    [390, 844],
+    [1440, 3200],
+  ];
+  for (const [width, height] of run('spy') && file !== 'Main.dc.html' ? frames : []) {
+    const page = await open(file, { width, height });
+    const count = await page.evaluate(() => document.querySelectorAll('.article > section > h2').length);
+    for (const [where, index] of [
+      ['top', 0],
+      ['middle', Math.floor(count / 2)],
+      ['bottom', count - 1],
+    ]) {
+      const problems = await spyAt(page, where, index);
+      const label = `${file} @${width}x${height} ${where}`;
+      if (problems.length) fail('spy', `${label}: ${problems.join('; ')}`);
+      else pass('spy', `${label}: section ${index + 1} of ${count} current, ${index} passed`);
+    }
+    // Headings that move without any scrolling: deep dives above the reader
+    // open, in a browser that does not hold the view still around them, as
+    // Chromium's scroll anchoring would. The spy looks again after the redraw.
+    if (width === 1440 && height === 900) {
+      // The middle section, or if no deep dive comes before it, the one after
+      // the first section that has one.
+      const target = await page.evaluate((count) => {
+        const sections = [...document.querySelectorAll('.article > section')];
+        const first = sections.findIndex((sec) => sec.querySelector('.deep-toggle'));
+        const middle = Math.floor(count / 2);
+        return first === -1 ? -1 : first < middle ? middle : Math.min(first + 1, count - 2);
+      }, count);
+      if (target !== -1) await spyAt(page, 'middle', target);
+      const moved = await page.evaluate(async () => {
+        document.documentElement.style.overflowAnchor = 'none';
+        document.body.style.overflowAnchor = 'none';
+        const above = [...document.querySelectorAll('.deep-toggle[aria-expanded="false"]')].filter(
+          (b) => b.getBoundingClientRect().bottom < 0,
+        );
+        for (const b of above) b.click();
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        let expected = 0;
+        document.querySelectorAll('.article > section > h2').forEach((h, i) => {
+          if (h.getBoundingClientRect().top <= innerHeight * 0.3) expected = i;
+        });
+        const shown = [...document.querySelectorAll('.toc-list > li')].findIndex((li) =>
+          li.classList.contains('is-current'),
+        );
+        return { opened: above.length, expected, shown };
+      });
+      const label = `${file} @${width}x${height}, ${moved.opened} deep dives opened above the reader`;
+      if (target === -1) results.spy.push(`note ${file}: no deep dives, so nothing moves without scrolling`);
+      else if (moved.expected === target)
+        fail('spy', `${label}: the reader's section did not change, so this proves nothing`);
+      else if (moved.shown !== moved.expected)
+        fail('spy', `${label}: section ${moved.shown + 1} shown, section ${moved.expected + 1} under the line`);
+      else pass('spy', `${label}: section ${moved.shown + 1} current, as it now is under the line`);
+    }
+    // Bold is wider, so an item that wrapped differently when current would
+    // make the whole list below it jump as the reader scrolls past.
+    if (width === 1440 && height === 900) {
+      const jumps = await page.evaluate(() =>
+        [...document.querySelectorAll('.toc-list > li')].flatMap((li) => {
+          const was = li.className;
+          const heights = ['is-next', 'is-current', 'is-past'].map((state) => {
+            li.className = state;
+            return li.getBoundingClientRect().height;
+          });
+          li.className = was;
+          return Math.max(...heights) - Math.min(...heights) > 0.5
+            ? [`"${li.textContent.slice(0, 40)}" ${heights.map((h) => h.toFixed(0)).join('/')}px`]
+            : [];
+        }),
+      );
+      if (jumps.length) fail('spy', `${file} @${width}: items change height with their state: ${jumps.join('; ')}`);
+      else pass('spy', `${file} @${width}: every item the same height whether passed, current or next`);
+    }
+    // A passed item given keyboard focus takes the focus colours, as every
+    // link does. The walk never reaches one, since Tab from the top of the
+    // page scrolls it back to the first section.
+    if (width === 1440 && height === 900) {
+      const f = await page.evaluate(() => {
+        const a = document.querySelector('.toc-list > li.is-past a');
+        if (!a) return null;
+        a.focus({ preventScroll: true });
+        const cs = getComputedStyle(a);
+        return { visible: a.matches(':focus-visible'), color: cs.color, back: cs.backgroundColor };
+      });
+      const faint = !f ? null : f.back === 'rgba(0, 0, 0, 0)' ? 'on no background' : faintest([{ ...f, large: false }]);
+      if (!f) fail('spy', `${file} @${width}: no passed item at the bottom of the page to give focus to`);
+      else if (!f.visible) fail('spy', `${file} @${width}: a passed item given focus does not show it`);
+      else if (faint) fail('spy', `${file} @${width}: a passed item with focus is ${faint}`);
+      else pass('spy', `${file} @${width}: a passed item with focus at ${contrastOf(f.color, f.back).toFixed(2)}:1`);
+
+      // A page that does not scroll at all, like a board drawn at its full
+      // height, stays on the first section with none passed. Two frames let
+      // the spy hear the resize and redraw.
+      await page.evaluate(() => window.scrollTo(0, 0));
+      const tall = await page.evaluate(() => document.documentElement.scrollHeight);
+      await page.setViewportSize({ width, height: tall });
+      await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+      const still = await page.evaluate(() => {
+        const items = [...document.querySelectorAll('.toc-list > li')];
+        return {
+          scrolls: document.documentElement.scrollHeight > innerHeight,
+          current: items.findIndex((li) => li.classList.contains('is-current')),
+          past: items.filter((li) => li.classList.contains('is-past')).length,
+        };
+      });
+      const label = `${file} @${width}x${tall}, not scrolling`;
+      if (still.scrolls) fail('spy', `${label}: the page still scrolls`);
+      else if (still.current !== 0 || still.past)
+        fail(
+          'spy',
+          `${label}: section ${still.current + 1} current and ${still.past} passed, wanted the first and none`,
+        );
+      else pass('spy', `${label}: the first section current, none passed`);
+    }
     await page.close();
   }
 
