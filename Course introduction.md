@@ -32,7 +32,7 @@ Parts 1 to 3 cover how the technology works. Parts 4 to 6 cover how to use it. E
 | Part | After it you can | Time |
 | --- | --- | --- |
 | [Part 1: How image models work](file/7c41d2a9-1e05) | Explain how a diffusion model turns noise and a prompt into a picture | 40 min |
-| Part 2: Shaping image models | Choose between a base model, a fine-tune, a LoRA and image-to-image for a job | 40 min |
+| [Part 2: Shaping image models](file/2f9be6c3-5a17) | Choose between a base model, a fine-tune, a LoRA and image-to-image for a job | 45 min |
 | Part 3: Prompting for images | Write prompts that suit the model in front of you, and improve them with purpose | 35 min |
 
 This module is being written, one part at a time. It covers how image generation works, how models such as Stable Diffusion are adapted with fine-tunes, LoRAs and style transfer, and how to prompt different models well.

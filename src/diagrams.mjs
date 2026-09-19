@@ -131,6 +131,37 @@ export const DIAGRAMS = {
       },
     ],
   },
+  // Image models part 2, "About this part". flowchart LR, seven rungs in a line.
+  'images2-1': {
+    kind: 'flow',
+    layout: 'column',
+    caption: 'The ladder, from lightest to heaviest',
+    steps: [
+      { text: 'Prompt and seed', tag: 'Words' },
+      { text: 'Reference image', tag: 'Images' },
+      { text: 'Start from an image', tag: 'Images' },
+      { text: 'Control image', tag: 'Images' },
+      { text: 'LoRA', tag: 'Training' },
+      { text: 'Full fine-tune', tag: 'Training' },
+      { text: 'Train a new model', tag: 'Training' },
+    ],
+  },
+  // Image models part 2, section 4. flowchart LR: the image is encoded and
+  // partly noised, then the usual loop runs for the remaining steps only.
+  'images2-2': {
+    kind: 'flow',
+    layout: 'column',
+    caption: 'Image-to-image: joining the loop part way',
+    steps: [
+      { text: 'Your image, and a prompt' },
+      { text: 'Encoder: the image becomes a latent' },
+      { text: 'Add noise up to the chosen strength' },
+      { text: 'Denoiser: guesses the noise, steered by the prompt' },
+      { text: 'Decoder' },
+      { text: 'New image' },
+    ],
+    loop: 'Remove some of the noise and run step 4, the denoiser, again, for the remaining steps only.',
+  },
   // Part 4, section 3. Two rows: indexing ahead of time, answering per question.
   'part4-3': {
     kind: 'lanes',
