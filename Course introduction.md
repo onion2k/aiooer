@@ -4,7 +4,7 @@
 
 ## What this course is for
 
-This course explains how AI works and how to use it well in an engineering organisation. It concentrates on large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. It is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
+This course explains how AI works and how to use it well in an engineering organisation. Its first module covers large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. Its second covers the models that generate images, video, music and 3D objects. It is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 
@@ -27,15 +27,19 @@ The course is in two modules. Each numbers its own parts from 1, and a reference
 
 Parts 1 to 3 cover how the technology works. Parts 4 to 6 cover how to use it. Every technical idea is included because it explains a behaviour you will see or a decision you will make. The whole module is about four hours of reading.
 
-### Image models
+### Generative media
 
 | Part | After it you can | Time |
 | --- | --- | --- |
-| [Part 1: How image models work](file/7c41d2a9-1e05) | Explain how a diffusion model turns noise and a prompt into a picture | 40 min |
-| [Part 2: Shaping image models](file/2f9be6c3-5a17) | Choose between a base model, a fine-tune, a LoRA and image-to-image for a job | 45 min |
-| Part 3: Prompting for images | Write prompts that suit the model in front of you, and improve them with purpose | 35 min |
+| [Part 1: How generative media models work](file/7c41d2a9-1e05) | Explain how a model turns noise and a prompt into a picture, a clip or a song, and how the token design differs | 45 min |
+| [Part 2: Images](file/4b1e90c7-3d28) | Say what image models do reliably, what still goes wrong and why | 15 min |
+| [Part 3: Video](file/9a63f5d1-7c40) | Plan a generated sequence as shots, and say why clips are short and what breaks in them | 30 min |
+| [Part 4: Music and audio](file/c5d82e16-0f9b) | Tell the two designs of music model apart by ear and by behaviour, and say what you may do with a generated song | 30 min |
+| [Part 5: 3D](file/1f7a3b94-e652) | Judge whether a generated 3D object is usable for a job, and what it will cost to make it so | 25 min |
+| [Part 6: Shaping models](file/2f9be6c3-5a17) | Choose between a base model, a fine-tune, a LoRA and starting from existing media for a job | 50 min |
+| [Part 7: Prompting](file/e08a7d54-9b32) | Write prompts that suit the model in front of you, and improve them with purpose | 45 min |
 
-This module is being written, one part at a time. It covers how image generation works, how models such as Stable Diffusion are adapted with fine-tunes, LoRAs and style transfer, and how to prompt different models well.
+This module covers models that generate images, video, music and 3D objects. Part 1 explains the machine they share, and the second design that competes with it. Parts 2 to 5 take each medium in turn. Part 6 covers how models are adapted with fine-tunes, LoRAs, control inputs and style transfer, where to run them, and the questions of rights and provenance. Part 7 covers how to prompt them. You can read this module without the first. The whole module is about four hours of reading.
 
 ## How each part is laid out
 
@@ -51,7 +55,7 @@ Part 6 of the language models module ends with two reference sections for use on
 
 ## Suggested routes
 
-These routes run through the language models module. Routes through the image models module will join them as it is written.
+The first four routes run through the language models module. The last two run through the generative media module.
 
 | Reader | Route |
 | --- | --- |
@@ -59,6 +63,8 @@ These routes run through the language models module. Routes through the image mo
 | Engineer | Parts 1 to 4 with the deep dives, then part 5 |
 | Non-technical leader | The "In plain terms" openers throughout, then part 5 sections 1 to 3 and part 6 sections 5 and 6 in full |
 | One hour only | Part 1 sections 1 and 7, part 3 section 7, part 5 sections 1 to 3, and the two reference sections that close part 6 |
+| Designer, marketer or producer making media | Generative media part 7 in full, then the part for your medium from parts 2 to 5, then part 6 sections 4, 7, 9 and 10, with the "In plain terms" openers of part 1 |
+| Engineer building a media pipeline | Generative media parts 1 to 7 in order, with the deep dives |
 
 ## Four ideas that run through everything
 

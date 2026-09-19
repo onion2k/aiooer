@@ -108,7 +108,7 @@ const THEMES = quick ? ['paper', 'dark'] : ['paper', 'white', 'dark', 'contrast'
 const COMPS = [
   'Phone-Home.dc.html',
   'Phone-Part.dc.html',
-  'Phone-Images1.dc.html',
+  'Phone-Media1.dc.html',
   'Phone-Contents.dc.html',
   'Phone-Parts.dc.html',
   'Phone-Settings.dc.html',
@@ -262,7 +262,24 @@ async function textWidths(page) {
 // contents list to follow, and says what is wrong with it: there must be one
 // current item, marked for screen readers and bold, every earlier item
 // dimmed and every later one plain.
-async function spyAt(page, where, index) {
+// Which section the rule says is current once section `index` has been
+// scrolled to the top: the last heading above a line 30% down the window, or
+// the last of all when the page cannot scroll that far.
+async function expectedAt(page, index) {
+  return page.evaluate((i) => {
+    const heads = [...document.querySelectorAll('.article > section > h2')];
+    const end = document.documentElement.scrollHeight - window.innerHeight;
+    const y = Math.min(end, heads[i].getBoundingClientRect().top + window.scrollY - 40);
+    if (y >= end - 2) return heads.length - 1;
+    let current = 0;
+    heads.forEach((h, k) => {
+      if (h.getBoundingClientRect().top + window.scrollY - y <= window.innerHeight * 0.3) current = k;
+    });
+    return current;
+  }, index);
+}
+
+async function spyAt(page, where, scrollTo, index = scrollTo) {
   await page.evaluate(
     ([w, i]) => {
       const heads = document.querySelectorAll('.article > section > h2');
@@ -274,7 +291,7 @@ async function spyAt(page, where, index) {
             : heads[i].getBoundingClientRect().top + window.scrollY - 40;
       window.scrollTo(0, y);
     },
-    [where, index],
+    [where, scrollTo],
   );
   await page
     .waitForFunction((i) => document.querySelectorAll('.toc-list > li')[i]?.classList.contains('is-current'), index, {
@@ -770,10 +787,17 @@ for (const file of pagesArg || FULL_PAGES) {
       ['middle', Math.floor(count / 2)],
       ['bottom', count - 1],
     ]) {
-      const problems = await spyAt(page, where, index);
+      // Scrolling a heading to the top makes it current only if the next one
+      // is still below the reading line. On a short page in a tall frame
+      // several headings sit above the line at once, and the rule is that
+      // the last of them is current, or the last of all at the page's end.
+      const expected = where === 'middle' ? await expectedAt(page, index) : index;
+      const problems = await spyAt(page, where, index, expected);
       const label = `${file} @${width}x${height} ${where}`;
-      if (problems.length) fail('spy', `${label}: ${problems.join('; ')}`);
-      else pass('spy', `${label}: section ${index + 1} of ${count} current, ${index} passed`);
+      if (where === 'middle' && expected === 0)
+        fail('spy', `${label}: the test never left the first section, so it proves nothing`);
+      else if (problems.length) fail('spy', `${label}: ${problems.join('; ')}`);
+      else pass('spy', `${label}: section ${expected + 1} of ${count} current, ${expected} passed`);
     }
     // Headings that move without any scrolling: deep dives above the reader
     // open, in a browser that does not hold the view still around them, as

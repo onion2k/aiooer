@@ -338,6 +338,9 @@ ${swatches()}
 .code-block{margin:1.5em 0 2.25em;max-width:var(--wide)}
 .code-cap{margin:0 0 0.5em!important}
 .code{margin:0;padding:1.1em 1.3em;overflow-x:auto;background:var(--code-bg);color:var(--code-ink);border:var(--bw) solid var(--edge);font-family:var(--font-mono);font-size:0.86em;line-height:1.65;tab-size:4;white-space:pre}
+/* A prompt is prose, not code: it wraps like prose, so no one scrolls
+   sideways to read a sentence. */
+.code.is-prose{white-space:pre-wrap;overflow-wrap:anywhere}
 .code code{background:none;color:inherit;padding:0;font-size:1em;white-space:inherit;box-shadow:none}
 .c-note{color:var(--code-note)}
 
@@ -451,6 +454,9 @@ ${swatches()}
 .part-card{--span:4;--span-md:3;position:relative;margin:0;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"num time" "title title" "outcome outcome";align-content:start;gap:0.2em 1em;padding:1.2em 1.3em 1.4em;background:var(--surface);border:var(--bw) solid var(--edge)}
 .part-card:hover{background:var(--link);border-color:var(--link);color:var(--on-accent)}
 .part-card:focus-within{outline:3px solid var(--focus);outline-offset:3px}
+/* Seven cards sit four and then three, since three, three and one would
+   strand the last on a row of its own. */
+.part-cards:has(> :nth-child(7):last-child) > :nth-child(-n+4){--span:3}
 /* A part still to come: the same card, sunk into the ground, leading nowhere. */
 .part-card.is-coming,.part-card.is-coming:hover{background:var(--sunk);border-color:var(--edge);color:inherit}
 .module{--span:12;margin-top:1.6em;padding-top:1.2em;border-top:var(--bw) solid var(--ink)}
@@ -486,6 +492,9 @@ ${swatches()}
 .spec-true{color:var(--true-ink)}.spec-false{color:var(--false-ink)}.spec-say{color:var(--say-ink)}
 .section-outro{--span:7;--span-md:6}
 .route{--span:3;--span-md:3;margin:0;display:flex;flex-direction:column;gap:0.6em;padding:1.2em 1.3em 1.4em;background:var(--surface);border:var(--bw) solid var(--edge)}
+/* Four routes sit four across. Six sit three and three, since four and two
+   would leave half a row empty. */
+.routes:has(> :nth-child(6):last-child) > .route{--span:4}
 .route-reader{margin:0;font-family:var(--font-display);font-weight:800;font-size:1.3em;line-height:1.12;letter-spacing:-0.015em}
 .home-section .route p{margin:0}
 .currency{padding:1.4em 1.6em;background:var(--sunk);border:var(--bw) solid var(--edge)}

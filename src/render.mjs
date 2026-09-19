@@ -97,14 +97,19 @@ function highlightPython(code) {
     .join('\n');
 }
 
+// What a block is called, by the language its fence names. A block with no
+// language is a formula, as it always was. A language the course has not used
+// before stops the build, so a block is never labelled as something it is not.
+const CODE_LABELS = { python: 'Python code', json: 'JSON', prompt: 'Prompt' };
+
 function renderCode(block) {
-  const lang = block.lang === 'python' ? 'Python' : null;
+  if (block.lang && !CODE_LABELS[block.lang]) throw new Error(`No label for a code block in "${block.lang}"`);
   const body = block.lang === 'python' ? highlightPython(block.text) : esc(block.text);
-  const label = lang ? `${lang} code` : 'Formula';
+  const label = block.lang ? CODE_LABELS[block.lang] : 'Formula';
   // Each block is a region a keyboard can scroll, and regions on one page
   // need different names, so a part's second Python block says it is the second.
   const name = block.nth > 1 ? `${label} ${block.nth}` : label;
-  return `<div class="code-block"><p class="code-cap label" aria-hidden="true">${esc(label)}</p><pre class="code" tabindex="0" role="region" aria-label="${esc(name)}"><code>${body}</code></pre></div>`;
+  return `<div class="code-block"><p class="code-cap label" aria-hidden="true">${esc(label)}</p><pre class="code${block.lang === 'prompt' ? ' is-prose' : ''}" tabindex="0" role="region" aria-label="${esc(name)}"><code>${body}</code></pre></div>`;
 }
 
 function renderPlain(block) {

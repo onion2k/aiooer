@@ -3,9 +3,15 @@
 The course is the markdown files at the top of this folder: the
 introduction, and a file for each written part. It is in modules, each with
 its own parts numbered from 1: Language models (six parts, files `Part N
-….md`) and Image models (three parts, files `Images N ….md`, being written
-one at a time and reviewed by the author before the next). Content on local
-AI and small LLMs is to come. The course's name, its modules and their parts
+….md`) and Generative media (seven parts, files `Media N ….md`): how the
+models work, then images, video, music and audio, and 3D, then shaping
+models and prompting. The media parts were drafted by Claude in the
+author's voice. Parts 1, 6 and 7 grew out of a three-part image module the
+author had accepted; parts 3 to 5 were written from sources read in
+September 2026. Their sources were checked to exist, the model tables date
+fast and say so, and no one but the author has reviewed their claims.
+Content on local AI and
+small LLMs is to come. The course's name, its modules and their parts
 all come from the introduction, and the code reads them from there. The code here builds the markdown into a
 website on a Claude Design canvas, at
 https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
@@ -303,6 +309,9 @@ For anything new on a page, check what it does:
   order, table roles kept when a table stacks, icons hidden, new-tab links
   announced
 - **the 1.4.12 spacing overrides** and **forced colours**
+- **a code block's language:** `python`, `json`, `prompt` (which wraps as
+  prose) or none, which is a formula; any other stops the build until
+  `CODE_LABELS` in `render.mjs` names it
 - **a part's second block in one language:** each code block is a named,
   scrollable region, and regions on a page need different names, so the
   parser numbers them and the second says it is the second

@@ -13,9 +13,13 @@ export const PAGE_FILES = {
   'cadfcb5f-9a30': 'Part4.dc.html',
   '3e89a4fc-a0bc': 'Part5.dc.html',
   'bbb9efdd-e221': 'Part6.dc.html',
-  '7c41d2a9-1e05': 'Images1.dc.html',
-  '2f9be6c3-5a17': 'Images2.dc.html',
-  'e08a7d54-9b32': 'Images3.dc.html',
+  '7c41d2a9-1e05': 'Media1.dc.html',
+  '4b1e90c7-3d28': 'Media2.dc.html',
+  '9a63f5d1-7c40': 'Media3.dc.html',
+  'c5d82e16-0f9b': 'Media4.dc.html',
+  '1f7a3b94-e652': 'Media5.dc.html',
+  '2f9be6c3-5a17': 'Media6.dc.html',
+  'e08a7d54-9b32': 'Media7.dc.html',
 };
 
 export function esc(s) {

@@ -16,7 +16,7 @@ import { plainText, PAGE_FILES } from './inline.mjs';
 // before there were modules, so every address a reader has kept still works.
 const MODULE_FILES = {
   'Language models': 'Part',
-  'Image models': 'Images',
+  'Generative media': 'Media',
 };
 
 export function slugify(text) {

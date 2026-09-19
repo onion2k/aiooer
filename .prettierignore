@@ -8,4 +8,4 @@ vendor
 # the course as its author wrote it, byte for byte
 /Course introduction.md
 /Part *.md
-/Images *.md
+/Media *.md

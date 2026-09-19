@@ -1,16 +1,18 @@
-# Part 2: Shaping Image Models: Fine-Tunes, LoRAs, Style and Control
+# Part 6: Shaping Models: Fine-Tunes, LoRAs, Style and Control
 
 2026-09-19 · @Someone
 
 ## About this part
 
-This is the second of three parts in the image models module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 45 minutes.
+This is the sixth of seven parts in the generative media module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 50 minutes.
 
-[Part 1](file/7c41d2a9-1e05) described the machine: noise in, a few dozen steps of cleaning up steered by a prompt, a picture out. It ended on a limit. Every image is a fresh draw, and a prompt alone cannot give you the same character twice, your product as it really looks, or your brand's style. This part is about everything that can.
+[Part 1](file/7c41d2a9-1e05) described the machine: noise in, a few dozen steps of cleaning up steered by a prompt, a picture out. It ended on a limit. Every output is a fresh draw, and a prompt alone cannot give you the same character twice, your product as it really looks, or your brand's style. This part is about everything that can.
 
-### What part 2 gives you
+The techniques were all developed for images, where they are most mature, so images are the example in sections 2 to 6. Section 7 shows how each carries over to video, music and 3D.
 
-Part 2 builds one idea: there is a ladder of ways to shape what an image model produces, from changing the words to changing the weights, and the skill is choosing the lowest rung that does the job.
+### What part 6 gives you
+
+Part 6 builds one idea: there is a ladder of ways to shape what a generative model produces, from changing the words to changing the weights, and the skill is choosing the lowest rung that does the job.
 
 ```mermaid
 flowchart LR
@@ -22,42 +24,31 @@ flowchart LR
   F --> G[Train a<br/>new model]
 ```
 
-Each rung costs more than the one before in effort, skill and risk, and each can do something the rungs below cannot. Sections 2 to 6 climb the ladder. Section 7 asks where to run all this, section 8 covers rights, likeness and provenance, and section 9 turns the ladder into a way of choosing.
+Each rung costs more than the one before in effort, skill and risk, and each can do something the rungs below cannot. Sections 2 to 6 climb the ladder, and section 7 carries it to the other media. Section 8 asks where to run all this, section 9 covers rights, likeness and provenance, and section 10 turns the ladder into a way of choosing.
 
 Almost everything here depends on having the model's weights, which is why this part is mostly about open models. Hosted services offer some of the same abilities behind simpler names, and each section says which.
 
 ## 1. The open ecosystem
 
-**In plain terms.** Some image models can be downloaded and run on your own computer. Around them has grown a huge public library of adapted versions and add-ons, made by companies and hobbyists alike. That library is the reason to care about open models: not that they are free, but that they can be changed. **Who should read it:** everyone should read "What you are actually downloading". The family history is for people who will choose a model.
+**In plain terms.** Some models can be downloaded and run on your own computer. Around them has grown a huge public library of adapted versions and add-ons, made by companies and hobbyists alike. That library is the reason to care about open models: not that they are free, but that they can be changed. **Who should read it:** everyone should read "What you are actually downloading". The family history is for people who will choose a model.
 
 ### Base models and families
 
-A base model is one trained from scratch by a lab, at a cost of hundreds of thousands to many millions of dollars. Few organisations do this. Everyone else starts from a base model that someone has published.
-
-Stable Diffusion is the family the ecosystem grew from, and its history explains the labels you will meet.
-
-| Family | Released | Home size | Reads prompts with | Notes |
-| --- | --- | --- | --- | --- |
-| Stable Diffusion 1.x | 2022 | 512 pixels | CLIP | About a billion parameters in all. Small, fast, runs on almost anything. The largest library of add-ons |
-| Stable Diffusion XL | 2023 | 1,024 pixels | Two CLIP encoders | A 2.6 billion parameter denoiser. The workhorse for several years |
-| Stable Diffusion 3 and 3.5 | 2024 | 1,024 pixels | Two CLIP encoders and T5 | Diffusion transformers of 2 to 8 billion parameters. Better lettering and prompt following |
-| FLUX.1 | 2024 | 1,024 pixels and up | CLIP and T5 | A 12 billion parameter diffusion transformer from a company founded by authors of the original latent diffusion work |
-
-Several other labs have since published open models of similar or greater size, some built around a full language model as the text encoder. The names will keep changing. The pattern that matters is stable: each family is a separate world.
+A base model is one trained from scratch by a lab, at a cost of hundreds of thousands to many millions of dollars. Few organisations do this. Everyone else starts from a base model that someone has published. Parts 2 to 5 list the current families for images, video, music and 3D.
 
 ### Add-ons belong to a family
 
 A LoRA, a control model or a fine-tune is made for one base model and works only with that model and its descendants. An add-on for Stable Diffusion 1.5 does nothing useful on SDXL. An add-on is a set of adjustments to particular weights, and it means nothing applied to different ones.
 
-So the choice of family is a choice of ecosystem. The newest base model often produces the best raw images and has the fewest add-ons. A model two generations old may have tens of thousands. For a job that needs a specific control or style, the older family is often the right answer.
+So the choice of family is a choice of ecosystem. The newest base model often produces the best raw images and has the fewest add-ons. SDXL, three years old, still has by far the largest library. For a job that needs a specific control or style, the older family is often the right answer, and for a job that needs lettering or a long, exact description, it never is.
 
 ### What you are actually downloading
 
 Models are shared on public hubs as single files, and three facts about those files matter to anyone responsible for a team's machines.
 
-- **They are large.** A first-generation model is about 2 GB. SDXL is about 6.5 GB. A 12 billion parameter model is over 20 GB at full precision, and is usually run in an 8-bit or 4-bit quantised form to fit on one graphics card, with the same trade of a little quality for a lot of memory that part 3 of the language models module describes.
+- **They are large, and growing.** A first-generation model is about 2 GB. SDXL is about 6.5 GB. A 12 billion parameter model is over 20 GB at full precision and a 32 billion parameter one over 60 GB, before counting a text encoder that may be a large language model in its own right. These are usually run in an 8-bit or 4-bit quantised form to fit on one graphics card, with the same trade of a little quality for a lot of memory that part 3 of the language models module describes.
 - **The old file format can run code.** Early checkpoints used a general-purpose Python format in which loading a file can execute whatever the file's author put there. The replacement, safetensors, holds only numbers and cannot. Treat any model file that is not safetensors the way you would treat an unknown executable, and do not load one on a work machine.
-- **Anyone can upload.** Hubs host hundreds of thousands of community files with little review. Provenance, licence and content vary from careful to absent. Section 8 returns to this.
+- **Anyone can upload.** Hubs host hundreds of thousands of community files with little review. Provenance, licence and content vary from careful to absent. Section 9 returns to this.
 
 ### The tools
 
@@ -135,7 +126,7 @@ LoRA training is ordinary supervised learning on a tiny dataset, and everything 
 
 - **It bleeds.** A style LoRA trained on portraits makes everything a portrait. A character LoRA pulls every face towards the character. Lower the strength before anything else.
 - **It fights the base.** A LoRA trained on one fine-tune often works on its siblings and sometimes does not. Test on the checkpoint you will actually use.
-- **It quietly carries its data.** A LoRA trained on an illustrator's portfolio reproduces that illustrator's style on demand. A LoRA trained on photos of a real person produces that person doing anything at all. Both are trivially easy, and section 8 explains why an organisation needs a rule about each.
+- **It quietly carries its data.** A LoRA trained on an illustrator's portfolio reproduces that illustrator's style on demand. A LoRA trained on photos of a real person produces that person doing anything at all. Both are trivially easy, and section 9 explains why an organisation needs a rule about each.
 
 ### What hosted services offer instead
 
@@ -199,7 +190,7 @@ Three practical points save most of the frustration.
 - **Seams come from hard masks.** Feather the mask edge and let it overlap what you are keeping by a few pixels.
 - **Dedicated inpainting models do it better.** These are versions of a base model trained with the mask and the surrounding image as extra inputs. They fill more coherently than a standard model used with the reset trick.
 
-Inpainting is how professionals fix the failures that part 1 listed. A wrong hand, garbled lettering or an extra finger is masked and regenerated, several times if need be, while the ninety-five percent of the image that was right is kept.
+Inpainting is how professionals fix the failures that part 2 listed. A wrong hand, garbled lettering or an extra finger is masked and regenerated, several times if need be, while the ninety-five percent of the image that was right is kept.
 
 ### Editing by instruction
 
@@ -213,7 +204,7 @@ Treat instruction editing as the first thing to try for a simple change, and mas
 
 **In plain terms.** Words are bad at saying where things go. Control models let you show the model instead: a stick figure for the pose, an outline for the shapes, a depth map for what is near and far. The model then paints whatever you describe, in exactly that arrangement. **Who should read it:** everyone should read the table. The rest is mechanics.
 
-Part 1 showed that composition is the weakest thing to steer with a prompt: counts, positions and relationships all go astray. Image-to-image helps but carries colour and texture along with layout. Control models separate the two. They take a structural map of an image and make the generated image conform to it, leaving appearance entirely to the prompt.
+Part 2 showed that composition is the weakest thing to steer with a prompt: counts, positions and relationships all go astray. Image-to-image helps but carries colour and texture along with layout. Control models separate the two. They take a structural map of an image and make the generated image conform to it, leaving appearance entirely to the prompt.
 
 The best-known method, ControlNet, was published in early 2023. Each control model is trained for one kind of map.
 
@@ -273,9 +264,28 @@ One reference image can stand in for a paragraph of description that no one coul
 
 Start at the top of the table and move down only when the result is not close enough. A described style costs nothing to try. A reference image is the right tool for one-off work and mood exploration. A LoRA is justified when the style must be held across hundreds of images and many people, which is the definition of a brand style.
 
-The harder question is whose style it is. All four routes can imitate a living artist, and the last does it best. Section 8 deals with that.
+The harder question is whose style it is. All four routes can imitate a living artist, and the last does it best. Section 9 deals with that.
 
-## 7. Local or hosted
+## 7. The ladder in other media
+
+**In plain terms.** Every rung of the ladder exists for video, music and 3D as well. The names change and the idea does not: show the model something to start from, show it a structure to follow, or teach it one new thing with a small add-on. They are less developed than for images, and the newest models increasingly build them in. **Who should read it:** anyone working beyond still images. Parts 3 to 5 give the detail for each medium.
+
+| Rung | Images | Video | Music and audio | 3D |
+| --- | --- | --- | --- | --- |
+| Reference | A style or character reference image | Reference images of a character, object or style, held across a new shot | A reference track for style. A voice or persona held across songs | One or several pictures of the object. This is the normal input |
+| Start from media | Image-to-image | Image-to-video from a first frame, or first and last. Video-to-video to restyle footage | Audio-to-audio: a cover that keeps the melody and changes the style. Extending a clip | Painting a new surface onto an existing shape |
+| Redo a part | Inpainting and outpainting | Replacing an object or a performer in a clip. Extending a clip | Replacing a section, or the lyrics over a span | Regenerating textures only |
+| Control the structure | Pose, edges, depth | A driving video of poses or depth. Drawn paths for objects and the camera | Lyrics with structure tags. In some tools, a melody to follow | Several views. A rough block-out shape |
+| LoRA | Subject, style, concept, speed | Character, style and kinds of motion, for the main open families | Genre, or an artist's catalogue, on open models | Rare |
+| Full fine-tune | A house look | Rare outside large studios, for cost | Rare | Rare |
+
+Three things are worth drawing out.
+
+- **Starting from media is the normal method everywhere except images.** Parts 3 and 5 both recommend making a still first and generating from it. The still carries the composition and the consistency, which means the image techniques in sections 2 to 6 are how you control video and 3D as well.
+- **LoRAs carry over where there is an open family to attach them to.** Open video models have growing libraries of them. Training one for video needs far more memory and time than for images, and clips in place of pictures. For music they exist on open models and raise section 9's questions in their sharpest form, since a LoRA of one artist's catalogue imitates a living performer.
+- **The rungs are merging into the models.** Part 2 noted that current image models generate, edit and follow references in one system. The same is happening in video, and it is how hosted services expose these abilities at all. The ladder remains the right way to think, since it tells you what kind of input will fix what kind of problem, even when all of it sits behind one prompt box.
+
+## 8. Local or hosted
 
 **In plain terms.** You can use a hosted service and pay per picture, or run an open model on your own hardware. Hosted is easier and usually produces better raw images. Local gives you control, privacy, repeatability and the add-ons in this part. Most teams that do serious volume end up using both. **Who should read it:** everyone. This is the decision most readers will actually face.
 
@@ -289,6 +299,11 @@ An image model needs a graphics card with enough memory to hold the weights and 
 | SDXL class, about 3 billion | 8 to 12 GB | 5 to 15 seconds | A mid-range gaming card |
 | 8 to 12 billion, quantised | 12 to 16 GB | 15 to 60 seconds | A high-end gaming card |
 | 8 to 12 billion, full precision | 24 GB or more | 10 to 30 seconds | The top consumer card, or a workstation or cloud GPU |
+| 20 to 32 billion | 24 GB with 4-bit quantisation and the text encoder run elsewhere. Otherwise 48 to 80 GB | 30 seconds to minutes | A workstation or cloud GPU |
+| Video, 5 billion | 24 GB | Up to nine minutes for five seconds at 720p | The top consumer card |
+| Video, 14 billion and up | 80 GB, or less with quantisation and patience | Minutes per clip | A data-centre GPU |
+| Music, open diffusion model | 8 GB | Seconds to a minute or two per song | Most recent graphics cards |
+| 3D, shape and texture | 24 to 29 GB | Under a minute to a few minutes | The top consumer card |
 
 Laptops and desktops that share memory between processor and graphics can run the larger models, more slowly. Each control model or additional encoder adds to the memory needed. For a team, the usual arrangement is one shared workstation or a rented cloud GPU with a web interface, not a powerful card on every desk.
 
@@ -303,8 +318,10 @@ Laptops and desktops that share memory between processor and graphics can run th
 | Privacy | Prompts and uploaded images go to the vendor. Check the terms, as part 6 of the language models module describes | Nothing leaves your network |
 | Content rules | The vendor's filters, which sometimes block legitimate work and cannot be adjusted | None built in. Your policy is the only control |
 | Cost shape | Per image or per seat. Illustratively, one to ten cents an image | Hardware or GPU rental, plus someone's time. Near zero per image at volume |
-| Legal comfort | Some vendors train only on licensed material and indemnify business customers | Training data is what it is. Section 8 |
+| Legal comfort | Some vendors train only on licensed material and indemnify business customers | Training data is what it is. Section 9 |
 | Effort | None | Real. Installation, updates, model management, and a person who understands this part |
+
+The balance differs by medium, as parts 3 to 5 found. In video and in song generation the hosted services are well ahead and the open models demand serious hardware, so local is a deliberate choice made for control or privacy. In 3D the open models are close to the front. For sound effects and instrumental music, open models are small and easy to run.
 
 ### How the decision usually goes
 
@@ -317,9 +334,9 @@ Local earns its place when one of four things is true.
 - **The output must be reproducible.** Regulated or audited work, or a production pipeline that cannot tolerate the model changing mid-project.
 - **The volume is high and steady.** Catalogue imagery, game assets, personalised creative at scale. At thousands of images a day the arithmetic reverses.
 
-Unlike a large language model, an image model that is good enough for production fits on one consumer card. The self-hosting sums that the language models module found so unfavourable are far kinder here, and that is why a do-it-yourself ecosystem thrives for images in a way it does not for the largest language models.
+Unlike a large language model, an image model that is good enough for production still fits on one consumer card, even though the largest no longer do. The self-hosting sums that the language models module found so unfavourable are far kinder here, and that is why a do-it-yourself ecosystem thrives for images in a way it does not for the largest language models.
 
-## 8. Rights, likeness and provenance
+## 9. Rights, likeness and provenance
 
 **In plain terms.** Three questions decide whether an image is safe to use: was it lawful to make, who owns it, and can you show where it came from. The law on the first is unsettled, the answer to the second is "possibly no one", and the third is something you can start doing today. None of this is legal advice, and all of it is as of September 2026. **Who should read it:** everyone. If you read one section of this part, read this one.
 
@@ -343,17 +360,21 @@ The consequence is easy to miss. If your campaign image came straight from a pro
 
 Model licences are a separate matter. "Open" covers everything from permissive licences that allow any use, through licences that forbid listed harmful uses, to licences that are free only for non-commercial use or only for companies below a revenue threshold. Different sizes of the same model often carry different licences. Read the licence of the exact file, and of every add-on, before commercial use.
 
+### Music
+
+Recorded music is the exception to almost everything above, because it is owned by a few large companies that acted together. Part 4 covers the lawsuits, the settlements of late 2025 and what they mean for using a generated song. The short version is that what you may do depends on the service and on your plan, and that resemblance to an existing tune is a more serious risk than resemblance to an existing picture.
+
 ### Likeness
 
-A subject LoRA of a real person takes twenty photographs and an hour. It will then produce that person anywhere, doing anything. Reference adapters do nearly as well with one photograph.
+A subject LoRA of a real person takes twenty photographs and an hour. It will then produce that person anywhere, doing anything. Reference adapters do nearly as well with one photograph. A voice can be copied from under a minute of recording, as part 4 describes, and part 3 noted that video models now generate speech with matching lip movement, so a convincing clip of a real person saying something they never said is a single prompt.
 
 Non-consensual sexual imagery of real people made this way is a crime in a growing number of jurisdictions and a serious harm everywhere. Fake images of public figures are a fraud and disinformation tool. Even benign uses, such as an employee's likeness in marketing, engage rights of publicity and data protection law, since a face is biometric personal data.
 
-Hosted services block much of this with filters. A local model has no filters at all, so the only control is the organisation's own. A workable rule is short: no model, LoRA or reference of a real person without their written consent for the specific use, and no exceptions for "internal" or "just testing".
+Hosted services block much of this with filters. A local model has no filters at all, so the only control is the organisation's own. A workable rule is short: no model, LoRA, reference or voice clone of a real person without their written consent for the specific use, and no exceptions for "internal" or "just testing".
 
 ### Provenance
 
-Part 1 argued that no one can reliably tell a generated image by eye. The alternative is to record where an image came from at the moment it is made, in a way that can be checked later.
+Part 2 argued that no one can reliably tell a generated image by eye, and the same now goes for a voice and for a few seconds of video. The alternative is to record where an image came from at the moment it is made, in a way that can be checked later.
 
 The industry standard for this is Content Credentials, from a coalition called C2PA. A credential is a signed record attached to the file: what made it, when, and what edits followed, each step signed by the tool that performed it. Cameras from several manufacturers, the major creative software suites and most large hosted image generators now attach them, and some platforms display them.
 
@@ -369,7 +390,7 @@ Labelling is also becoming a legal duty. The EU AI Act's transparency duties, wh
 
 For your own work the habit is simple and cheap: keep, for every published image, the model and version, the add-ons, the prompt, the seed and settings, the source images and the name of the person who made it. Tools for open models already write most of this into the file. It is your evidence of authorship, your answer to a rights query, and your way of making the image again.
 
-## 9. Choosing the lightest tool
+## 10. Choosing the lightest tool
 
 **In plain terms.** Always try the simplest thing first. Most jobs are solved by a better prompt or a reference image. Reach for training only when the same subject or style must be held across many images. **Who should read it:** everyone. This section turns the part into a procedure.
 
@@ -384,6 +405,10 @@ The ladder from the start of this part, as a decision table:
 | Your real product in generated scenes | Composite the real photo, then low-strength image-to-image to blend | A subject LoRA, with a depth or edge control | |
 | A brand style across many images and people | A described style with a fixed prompt template, and style references | A style LoRA | A full fine-tune |
 | A broad house look for a whole image library | A community fine-tune close to it | A style LoRA on top | A full fine-tune |
+| A video shot | A still made with everything above, then image-to-video | First and last frames. A driving video for the motion | A character or motion LoRA on an open model |
+| The same character across video shots | Make consistent stills first, and animate each | Reference images in the video model | A character LoRA |
+| A piece of music in our style | A detailed style brief and a reference track | A cover of a rough recording you made | A LoRA on an open model, trained on music you own |
+| A 3D prop | A clean picture of it, then image-to-3D | Several views of it | A modeller, starting from the generated shape |
 
 Three rules sit behind the table.
 
@@ -490,7 +515,6 @@ Dates, figures and findings quoted in this part come from these papers, reports 
 - [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685), 2021, for the low-rank method
 - [DreamBooth](https://arxiv.org/abs/2208.12242), 2022, for subject fine-tuning from a few images and prior preservation
 - [An Image is Worth One Word](https://arxiv.org/abs/2208.01618), 2022, for textual inversion
-- [SDXL](https://arxiv.org/abs/2307.01952), 2023, for the 2.6 billion parameter denoiser and its two text encoders
 - [SDEdit](https://arxiv.org/abs/2108.01073), 2021, for generating from a partly noised image, the basis of image-to-image
 - [InstructPix2Pix](https://arxiv.org/abs/2211.09800), 2022, for editing by written instruction
 - [Adding Conditional Control to Text-to-Image Diffusion Models](https://arxiv.org/abs/2302.05543), 2023, for ControlNet and its zero-initialised connections

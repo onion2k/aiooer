@@ -90,9 +90,9 @@ export const DIAGRAMS = {
       { from: 1, to: 0, text: 'Final answer, or another tool call' },
     ],
   },
-  // Image models part 1, section 1. flowchart LR: the prompt and the seed both
+  // Generative media part 1, section 1. flowchart LR: the prompt and the seed both
   // feed the denoiser, which loops on itself before the decoder.
-  'images1-1': {
+  'media1-1': {
     kind: 'flow',
     layout: 'column',
     caption: 'From a prompt and a seed to an image',
@@ -102,12 +102,12 @@ export const DIAGRAMS = {
       { text: 'Random noise in latent space, made from the seed' },
       { text: 'Denoiser: reads the grid and the prompt vectors, and guesses the noise' },
       { text: 'Decoder' },
-      { text: 'Image' },
+      { text: 'Image, clip, audio or shape' },
     ],
     loop: 'Remove some of the noise and run step 4, the denoiser, again, 20 to 50 times, before moving on to the decoder.',
   },
-  // Image models part 1, section 3. Two subgraphs: training and generating.
-  'images1-2': {
+  // Generative media part 1, section 3. Two subgraphs: training and generating.
+  'media1-2': {
     kind: 'lanes',
     caption: 'The same game, played two ways',
     lanes: [
@@ -131,8 +131,8 @@ export const DIAGRAMS = {
       },
     ],
   },
-  // Image models part 2, "About this part". flowchart LR, seven rungs in a line.
-  'images2-1': {
+  // Generative media part 6, "About this part". flowchart LR, seven rungs in a line.
+  'media6-1': {
     kind: 'flow',
     layout: 'column',
     caption: 'The ladder, from lightest to heaviest',
@@ -146,9 +146,9 @@ export const DIAGRAMS = {
       { text: 'Train a new model', tag: 'Training' },
     ],
   },
-  // Image models part 2, section 4. flowchart LR: the image is encoded and
+  // Generative media part 6, section 4. flowchart LR: the image is encoded and
   // partly noised, then the usual loop runs for the remaining steps only.
-  'images2-2': {
+  'media6-2': {
     kind: 'flow',
     layout: 'column',
     caption: 'Image-to-image: joining the loop part way',
@@ -161,6 +161,21 @@ export const DIAGRAMS = {
       { text: 'New image' },
     ],
     loop: 'Remove some of the noise and run step 4, the denoiser, again, for the remaining steps only.',
+  },
+  // Generative media part 7, section 8. flowchart LR, with refining looping back.
+  'media7-1': {
+    kind: 'flow',
+    layout: 'column',
+    caption: 'Improving a prompt',
+    steps: [
+      { text: 'Write the brief' },
+      { text: 'Translate it to the dialect the model reads' },
+      { text: 'Generate a batch of seeds' },
+      { text: 'Pick the best composition' },
+      { text: 'Fix that seed, and change one thing' },
+      { text: 'Compare with the last version' },
+    ],
+    loop: 'Go back to step 5 and change one more thing, until it is right.',
   },
   // Part 4, section 3. Two rows: indexing ahead of time, answering per question.
   'part4-3': {
