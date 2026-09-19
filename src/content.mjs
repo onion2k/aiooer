@@ -235,7 +235,12 @@ export function parseIntro(dir) {
   const tokens = lex(dir, 'Course introduction.md');
   const h1 = tokens.find((t) => t.type === 'heading' && t.depth === 1);
   const full = plainText(h1.tokens);
-  const [courseTitle, pageTitle] = full.split(': ');
+  // The heading names the course and then the page, with a colon between.
+  // The course's name is used on every page, so a heading without both
+  // halves stops the build rather than leave it blank.
+  const [courseTitle, pageTitle, ...rest] = full.split(': ');
+  if (!courseTitle || !pageTitle || rest.length)
+    throw new Error(`The introduction's heading "${full}" should read "<course name>: <page name>"`);
   const byline = tokens.find(isBylineParagraph);
   const sections = {};
   let current = null;

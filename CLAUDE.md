@@ -1,7 +1,8 @@
 # How Frontier LLMs Work: the course website
 
-The course is the seven markdown files at the top of this folder. The code
-here builds them into a website on a Claude Design canvas, at
+The course is the seven markdown files at the top of this folder. Its name
+is the introduction's heading, and the code reads it from there. The code
+here builds the markdown into a website on a Claude Design canvas, at
 https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
 easy to read as possible. The look is Brutalist graphic design: a pale grey
@@ -44,6 +45,10 @@ was written on 19 September 2026 from what the code does at that date.
 - **True to the markdown.** Every section, block, inline token and diagram
   the parser meets is one it knows, and every icon exists in Carbon; anything
   else stops the build. `build`.
+- **One name.** The course is called what the introduction's heading calls
+  it, in the wordmark, the footer, every page title and the canvas's title.
+  `audit` holds it, and a heading without both the course's name and the
+  page's stops the build.
 
 ## Gates and baselines
 
@@ -64,6 +69,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, storage   | 5 saved shapes                          | every one loads                             | none           |
 | `audit`, numerals  | the home page in four themes            | the four ideas numbered in the text colour  | none           |
 | `audit`, spy       | 6 parts × 3 frames × top, middle, end   | one current, earlier passed, no jumps       | none           |
+| `audit`, name      | 7 pages and the canvas's index          | the heading's name wherever it is shown     | none           |
 | `look`             | 16 boards                               | no errors; recorded heights match           | 2px on heights |
 | `perf`, not a gate | render, fonts, repaint, scrolling       | see below                                   | not held       |
 
@@ -92,12 +98,12 @@ slowdown is only caught by reading them.
     npm run heights        build, record the showcase boards' natural heights, then build again
     npm run perf           render and repaint times, five runs each, medians
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,name`,
 `--pages Part1.dc.html,...` and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`) to prove the
-check that should catch it still does.
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `name`) to
+prove the check that should catch it still does.
 `node scripts/look-parts.mjs <width> <File.dc.html> <selector>...` takes
 pictures of single elements, with `--theme`, `--size` and the other
 settings; `node scripts/tile.mjs <in.png> <out.png>` lays a tall phone
@@ -198,7 +204,9 @@ reader's saved settings.
 ## Rules for the code
 
 - **The words are the author's.** A change to what the course says is made
-  in the markdown. Typesetting happens in the render, never in the files.
+  in the markdown, and that includes its name, which the code reads from
+  the introduction's heading. Typesetting happens in the render, never in
+  the files.
 - **Unknown input stops the build.** A new kind of section, block, inline
   token or diagram throws until it is handled; it never falls through as
   plain text.

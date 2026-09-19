@@ -220,7 +220,7 @@ const canvas = {
   v: 3,
   attachments: {},
   createdOnFiles,
-  title: 'How Frontier LLMs Work',
+  title: intro.courseTitle,
   launch: { view: 'focused', file: 'Main.dc.html' },
   pages: [],
   boards,

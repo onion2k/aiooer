@@ -19,14 +19,17 @@
 //   numerals  the home page's four ideas numbered in the text colour
 //   spy       the contents list marks the section the reader is in, bold,
 //             and dims the ones already passed
+//   name      the course called by one name, its introduction's heading, in
+//             the wordmark, the footer, every page title and the canvas
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
 //   node scripts/audit.mjs [--quick] [--only axe,measure,...] [--pages File.dc.html,...] [--mutate name]
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { startSite, openPage, setSetting, AXE_PATH } from './harness.mjs';
-import { RESULTS } from '../src/paths.mjs';
+import { RESULTS, CONTENT_DIR, CANVAS_PROJECT } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
+import { parseIntro } from '../src/content.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
 // --only measure,reflow runs just those checks, for quick iteration.
@@ -47,6 +50,12 @@ const MUTATIONS = {
   corners: { css: '.header-btn{border-radius:999px!important}' },
   widths: { css: '.reader{--measure-em:30em!important}' },
   numerals: { css: '.idea-num{color:var(--link)!important}' },
+  // A wordmark that says something other than the introduction's heading.
+  name: {
+    js: () => {
+      document.querySelector('.wordmark').textContent = 'Another course';
+    },
+  },
   // The spy's own scroll listener never hears the page scroll.
   spy: { js: () => window.addEventListener('scroll', (e) => e.stopImmediatePropagation(), true) },
   spybold: { css: '.reader .toc-list .is-current a{font-weight:400!important}' },
@@ -106,6 +115,7 @@ const results = {
   storage: [],
   numerals: [],
   spy: [],
+  name: [],
 };
 let failures = 0;
 const fail = (kind, msg) => {
@@ -608,6 +618,32 @@ for (const file of pagesArg || FULL_PAGES) {
       );
   }
 
+  // The course's name is the introduction's heading, and every page says it
+  // the same way: in the wordmark, the footer, the page title, and on the
+  // home page as its heading.
+  if (run('name')) {
+    const course = parseIntro(CONTENT_DIR).courseTitle;
+    const page = await open(file);
+    const seen = await page.evaluate(() => {
+      const text = (sel) => document.querySelector(sel)?.textContent.trim() ?? null;
+      return {
+        wordmark: text('.wordmark'),
+        footer: text('.footer-title'),
+        home: text('.home-title'),
+        title: document.title,
+      };
+    });
+    await page.close();
+    const wrong = [];
+    if (seen.wordmark !== course) wrong.push(`wordmark "${seen.wordmark}"`);
+    if (seen.footer !== course) wrong.push(`footer "${seen.footer}"`);
+    if (file === 'Main.dc.html' && seen.home !== course) wrong.push(`heading "${seen.home}"`);
+    if (!seen.title.startsWith(`${course}: `) && !seen.title.endsWith(` · ${course}`))
+      wrong.push(`page title "${seen.title}"`);
+    if (wrong.length) fail('name', `${file}: ${wrong.join('; ')}, not "${course}"`);
+    else pass('name', `${file}: "${course}" in the wordmark, footer and page title`);
+  }
+
   // The four ideas' numerals are the text colour, in every theme.
   for (const theme of run('numerals') && file === 'Main.dc.html' ? THEMES : []) {
     const page = await open(file);
@@ -894,6 +930,14 @@ for (const shape of run('storage') ? SAVED_SHAPES : []) {
       `${shape.name}: loads as ${Object.keys(shape.expect).length ? JSON.stringify(shape.expect) : 'the defaults'}`,
     );
   await page.close();
+}
+
+// The canvas carries the course's name as its title too.
+if (run('name')) {
+  const course = parseIntro(CONTENT_DIR).courseTitle;
+  const canvas = JSON.parse(fs.readFileSync(path.join(CANVAS_PROJECT, 'canvas.json'), 'utf8'));
+  if (canvas.title !== course) fail('name', `canvas.json: title "${canvas.title}", not "${course}"`);
+  else pass('name', `canvas.json: titled "${course}"`);
 }
 
 for (const file of run('axe') ? COMPS : []) {

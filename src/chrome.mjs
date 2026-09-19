@@ -8,8 +8,6 @@ import { esc } from './inline.mjs';
 import { ICONS } from './icons.mjs';
 import { SETTINGS } from './logic.mjs';
 
-export const COURSE_TITLE = 'How Frontier LLMs Work';
-
 const SETTING_LEGENDS = {
   theme: 'Colours',
   size: 'Text size',
@@ -41,9 +39,11 @@ function partsPanel(parts, current) {
   return `<nav class="panel parts-panel" id="parts-panel" aria-label="Course parts" hidden="{{parts.hidden}}" onKeyDown="{{parts.onKeyDown}}"><div class="shell panel-inner"><p class="parts-intro"><a class="parts-home" href="Main.dc.html"${introHere ? ' aria-current="page"' : ''}>${ICONS.book}<span>Course introduction</span></a></p><ol class="parts-list grid-12" role="list">${items}</ol><div class="panel-actions"><button type="button" class="btn-line" onClick="{{parts.close}}">${ICONS.close}<span>Close the list of parts</span></button></div></div></nav>`;
 }
 
-export function header(parts, current) {
+// The course's name comes from the introduction's heading, so renaming the
+// course is a change to the markdown alone.
+export function header(parts, current, course) {
   const homeCurrent = current === 0 ? ' aria-current="page"' : '';
-  return `<a class="skip-link" href="#main">Skip to main content</a><header class="site-header"><div class="shell header-bar grid-12"><a class="wordmark" href="Main.dc.html"${homeCurrent}>${COURSE_TITLE}</a><div class="header-actions"><button type="button" class="header-btn" aria-expanded="{{parts.expanded}}" aria-controls="parts-panel" onClick="{{parts.toggle}}" ref="{{parts.buttonRef}}">${ICONS.parts}<span>Parts</span></button><button type="button" class="header-btn" aria-expanded="{{settingsPanel.expanded}}" aria-controls="settings-panel" onClick="{{settingsPanel.toggle}}" ref="{{settingsPanel.buttonRef}}">${ICONS.settings}<span>Reading settings</span></button></div></div>${partsPanel(parts, current)}${settingsPanel()}</header>`;
+  return `<a class="skip-link" href="#main">Skip to main content</a><header class="site-header"><div class="shell header-bar grid-12"><a class="wordmark" href="Main.dc.html"${homeCurrent}>${esc(course)}</a><div class="header-actions"><button type="button" class="header-btn" aria-expanded="{{parts.expanded}}" aria-controls="parts-panel" onClick="{{parts.toggle}}" ref="{{parts.buttonRef}}">${ICONS.parts}<span>Parts</span></button><button type="button" class="header-btn" aria-expanded="{{settingsPanel.expanded}}" aria-controls="settings-panel" onClick="{{settingsPanel.toggle}}" ref="{{settingsPanel.buttonRef}}">${ICONS.settings}<span>Reading settings</span></button></div></div>${partsPanel(parts, current)}${settingsPanel()}</header>`;
 }
 
 // The contents list. Each item carries the spy's state for its section
@@ -80,9 +80,9 @@ export function pager(n, parts) {
   return `<nav class="pager" aria-label="Previous and next"><a class="pager-link is-prev" href="${prev.href}"><span class="pager-dir label">${ICONS.arrowLeft}<span>Previous</span></span><span class="pager-title">${esc(prev.label)}</span></a><a class="pager-link is-next" href="${next.href}"><span class="pager-dir label"><span>${next.dir || 'Next'}</span>${ICONS.arrowRight}</span><span class="pager-title">${esc(next.label)}</span></a></nav>`;
 }
 
-export function footer(parts, currencyNote) {
+export function footer(parts, currencyNote, course) {
   const links = [`<li><a href="Main.dc.html">Course introduction</a></li>`]
     .concat(parts.map((p) => `<li><a href="Part${p.n}.dc.html">Part ${p.n}: ${esc(p.shortTitle)}</a></li>`))
     .join('');
-  return `<footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${COURSE_TITLE}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links" role="list">${links}</ul></nav><p class="footer-note">${currencyNote}</p></div></footer>`;
+  return `<footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links" role="list">${links}</ul></nav><p class="footer-note">${currencyNote}</p></div></footer>`;
 }

@@ -5,7 +5,7 @@
 
 import { renderInline, plainText, esc, smartPlain } from './inline.mjs';
 import { renderBlocks, sectionHeading } from './render.mjs';
-import { header, toc, crumbs, pager, footer, COURSE_TITLE } from './chrome.mjs';
+import { header, toc, crumbs, pager, footer } from './chrome.mjs';
 import { stylesheet, FONT_LINK } from './styles.mjs';
 import { logicScript, dataProps } from './logic.mjs';
 import { ICONS } from './icons.mjs';
@@ -209,9 +209,10 @@ ${root}
 }
 
 export function homeFile(intro, parts, page) {
-  const body = `${header(parts, 0)}${homeMain(intro, parts)}${footer(parts, currencyNote(intro))}`;
+  const course = intro.courseTitle;
+  const body = `${header(parts, 0, course)}${homeMain(intro, parts)}${footer(parts, currencyNote(intro), course)}`;
   return dcFile({
-    title: `${COURSE_TITLE}: ${intro.pageTitle.toLowerCase().replace(/^c/, 'C')}`,
+    title: `${course}: ${intro.pageTitle.toLowerCase().replace(/^c/, 'C')}`,
     body,
     page: { ...page, deepKeys: [] },
   });
@@ -219,7 +220,8 @@ export function homeFile(intro, parts, page) {
 
 export function partFile(part, parts, intro, page) {
   const meta = parts.find((p) => p.n === part.n);
-  const body = `${header(parts, part.n)}${partMain(part, parts, page)}${page.maxSections ? '' : footer(parts, currencyNote(intro))}`;
+  const course = intro.courseTitle;
+  const body = `${header(parts, part.n, course)}${partMain(part, parts, page)}${page.maxSections ? '' : footer(parts, currencyNote(intro), course)}`;
   const deepKeys = [];
   const sections = page.maxSections ? part.sections.slice(0, page.maxSections) : part.sections;
   for (const s of sections) for (const b of s.blocks) if (b.type === 'deep') deepKeys.push(b.key);
@@ -227,7 +229,7 @@ export function partFile(part, parts, intro, page) {
   // the spy follows the same list in the same order.
   const spyIds = part.sections.map((s) => s.id);
   return dcFile({
-    title: `Part ${part.n}: ${meta.shortTitle} · ${COURSE_TITLE}`,
+    title: `Part ${part.n}: ${meta.shortTitle} · ${course}`,
     body,
     page: { ...page, deepKeys, spyIds },
   });
