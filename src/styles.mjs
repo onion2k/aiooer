@@ -266,7 +266,11 @@ ${swatches()}
 .prose-list > li::marker{color:var(--ink)}
 .prose-list > li > p{margin-bottom:0.6em}
 .article strong{font-weight:800}
+/* A code span is kept whole and its spaces kept, since a leading space can
+   be the point. A long one with no spaces, which the renderer marks, may
+   break anywhere: a model's name can be longer than a phone is wide. */
 .reader code{font-family:var(--font-mono);font-size:0.88em;background:var(--sunk);padding:0.08em 0.3em;white-space:pre;box-shadow:inset 0 0 0 1px var(--rule)}
+.reader code.is-long{white-space:normal;overflow-wrap:anywhere;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .reader sup{font-size:0.7em;line-height:0;vertical-align:0.55em}
 .sec-title{font-family:var(--font-display);font-weight:900;font-size:2.7em;line-height:0.98;letter-spacing:-0.035em;margin:0 0 0.8em;max-width:15em;text-wrap:balance;scroll-margin-top:1em}
 .sec-num{display:block;margin-bottom:0.3em;font-size:0.5em;letter-spacing:-0.02em}
@@ -457,6 +461,8 @@ ${swatches()}
 /* Seven cards sit four and then three, since three, three and one would
    strand the last on a row of its own. */
 .part-cards:has(> :nth-child(7):last-child) > :nth-child(-n+4){--span:3}
+/* Five sit three and then two, the two sharing the row between them. */
+.part-cards:has(> :nth-child(5):last-child) > :nth-child(n+4){--span:6}
 /* A part still to come: the same card, sunk into the ground, leading nowhere. */
 .part-card.is-coming,.part-card.is-coming:hover{background:var(--sunk);border-color:var(--edge);color:inherit}
 .module{--span:12;margin-top:1.6em;padding-top:1.2em;border-top:var(--bw) solid var(--ink)}
@@ -495,6 +501,7 @@ ${swatches()}
 /* Four routes sit four across. Six sit three and three, since four and two
    would leave half a row empty. */
 .routes:has(> :nth-child(6):last-child) > .route{--span:4}
+.routes:has(> :nth-child(7):last-child) > .route:nth-child(n+5){--span:4}
 .route-reader{margin:0;font-family:var(--font-display);font-weight:800;font-size:1.3em;line-height:1.12;letter-spacing:-0.015em}
 .home-section .route p{margin:0}
 .currency{padding:1.4em 1.6em;background:var(--sunk);border:var(--bw) solid var(--edge)}

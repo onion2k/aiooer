@@ -100,7 +100,7 @@ function highlightPython(code) {
 // What a block is called, by the language its fence names. A block with no
 // language is a formula, as it always was. A language the course has not used
 // before stops the build, so a block is never labelled as something it is not.
-const CODE_LABELS = { python: 'Python code', json: 'JSON', prompt: 'Prompt' };
+const CODE_LABELS = { python: 'Python code', json: 'JSON', prompt: 'Prompt', names: 'Model names' };
 
 function renderCode(block) {
   if (block.lang && !CODE_LABELS[block.lang]) throw new Error(`No label for a code block in "${block.lang}"`);

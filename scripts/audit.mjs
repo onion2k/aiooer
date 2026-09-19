@@ -105,18 +105,12 @@ const MUTATIONS = {
 const FULL_PAGES = sitePages();
 const COURSE = course();
 const THEMES = quick ? ['paper', 'dark'] : ['paper', 'white', 'dark', 'contrast'];
-const COMPS = [
-  'Phone-Home.dc.html',
-  'Phone-Part.dc.html',
-  'Phone-Media1.dc.html',
-  'Phone-Contents.dc.html',
-  'Phone-Parts.dc.html',
-  'Phone-Settings.dc.html',
-  'Settings-Open.dc.html',
-  'Theme-Dark.dc.html',
-  'Theme-Contrast.dc.html',
-  'Theme-Largest.dc.html',
-];
+// The showcase boards: every board the build made that is not one of the
+// site's own pages. Read from the built index, so a new module's phone board
+// is checked without anyone adding it to a list.
+const COMPS = JSON.parse(fs.readFileSync(path.join(CANVAS_PROJECT, 'canvas.json'), 'utf8')).order.filter(
+  (file) => !FULL_PAGES.includes(file),
+);
 
 const site = await startSite();
 const results = {

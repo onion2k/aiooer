@@ -8,12 +8,17 @@ models work, then images, video, music and audio, and 3D, then shaping
 models and prompting. The media parts were drafted by Claude in the
 author's voice. Parts 1, 6 and 7 grew out of a three-part image module the
 author had accepted; parts 3 to 5 were written from sources read in
-September 2026. Their sources were checked to exist, the model tables date
-fast and say so, and no one but the author has reviewed their claims.
-Content on local AI and
-small LLMs is to come. The course's name, its modules and their parts
-all come from the introduction, and the code reads them from there. The code here builds the markdown into a
-website on a Claude Design canvas, at
+September 2026. Running AI locally (five parts, files `Local N ….md`) is
+the practical module: hardware, Hugging Face and model names, engines and
+apps, agents and harnesses, and building on a local model. It was written by
+Claude from sources read in September 2026, names products throughout, and
+explains what tools do without giving commands, which date faster than
+anything else here. Across the generated modules, sources were checked to
+exist, the tables of models and tools date fast and say so, and no one but
+the author has reviewed their claims. The course's name, its modules and
+their parts all come from the introduction, and the code reads them from
+there. The code here builds the markdown into a website on a Claude Design
+canvas, at
 https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
 easy to read as possible. The look is Brutalist graphic design: a pale grey
@@ -310,7 +315,7 @@ For anything new on a page, check what it does:
   announced
 - **the 1.4.12 spacing overrides** and **forced colours**
 - **a code block's language:** `python`, `json`, `prompt` (which wraps as
-  prose) or none, which is a formula; any other stops the build until
+  prose), `names` for a list of model names, or none, which is a formula; any other stops the build until
   `CODE_LABELS` in `render.mjs` names it
 - **a part's second block in one language:** each code block is a named,
   scrollable region, and regions on a page need different names, so the

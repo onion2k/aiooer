@@ -20,6 +20,11 @@ export const PAGE_FILES = {
   '1f7a3b94-e652': 'Media5.dc.html',
   '2f9be6c3-5a17': 'Media6.dc.html',
   'e08a7d54-9b32': 'Media7.dc.html',
+  'a1c4e7f2-5b38': 'Local1.dc.html',
+  'd92b6a05-8e13': 'Local2.dc.html',
+  '6e0f3c81-a247': 'Local3.dc.html',
+  'b7d15e92-4c60': 'Local4.dc.html',
+  '3a8c9f47-d1e5': 'Local5.dc.html',
 };
 
 export function esc(s) {
@@ -80,10 +85,16 @@ export function renderInline(tokens, state = { prev: '' }) {
       case 'em':
         html += '<em>' + renderInline(tok.tokens, state) + '</em>';
         break;
-      case 'codespan':
-        html += '<code>' + esc(unescapeEntities(tok.text)) + '</code>';
+      case 'codespan': {
+        // A code span is kept whole, since its spaces can be the point. A long
+        // one with no spaces in it, such as a model's full name, is wider than
+        // a phone, so it alone is allowed to break.
+        const code = unescapeEntities(tok.text);
+        const long = code.length > 16 && !/\s/.test(code);
+        html += `<code${long ? ' class="is-long"' : ''}>` + esc(code) + '</code>';
         state.prev = 'x';
         break;
+      }
       case 'link': {
         const target = linkTarget(tok.href);
         const inner = renderInline(tok.tokens, state);

@@ -4,7 +4,7 @@
 
 ## What this course is for
 
-This course explains how AI works and how to use it well in an engineering organisation. Its first module covers large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. Its second covers the models that generate images, video, music and 3D objects. It is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
+This course explains how AI works and how to use it well in an engineering organisation. Its first module covers large language models (LLMs), the kind of AI behind today's chat assistants and coding tools. Its second covers the models that generate images, video, music and 3D objects. Its third is practical: running models on your own hardware. It is written for people who lead engineering work and need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 
@@ -12,7 +12,7 @@ That change needs confidence about where AI can be trusted, where it cannot, and
 
 ## The modules
 
-The course is in two modules. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
+The course is in three modules. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
 
 ### Language models
 
@@ -41,6 +41,18 @@ Parts 1 to 3 cover how the technology works. Parts 4 to 6 cover how to use it. E
 
 This module covers models that generate images, video, music and 3D objects. Part 1 explains the machine they share, and the second design that competes with it. Parts 2 to 5 take each medium in turn. Part 6 covers how models are adapted with fine-tunes, LoRAs, control inputs and style transfer, where to run them, and the questions of rights and provenance. Part 7 covers how to prompt them. You can read this module without the first. The whole module is about four hours of reading.
 
+### Running AI locally
+
+| Part | After it you can | Time |
+| --- | --- | --- |
+| [Part 1: What you need](file/a1c4e7f2-5b38) | Look at a machine and a model and say whether it will run, and roughly how fast | 30 min |
+| [Part 2: Finding and reading models](file/d92b6a05-8e13) | Read a model's name as a specification, and choose one for your memory, your job and your licence | 30 min |
+| [Part 3: Running a model](file/6e0f3c81-a247) | Choose an engine and an app, and set the three settings that decide whether a local model works | 30 min |
+| [Part 4: Agents on local models](file/b7d15e92-4c60) | Pick a harness and a task a local model can handle, and keep the agent contained | 30 min |
+| [Part 5: Building on it](file/3a8c9f47-d1e5) | Build on a local model from your own code, and know when a hosted one is the better tool | 25 min |
+
+This module is more practical than the others, and it dates faster. It covers the hardware, where models are published and how to read their names, the software that runs them, agents and the harnesses that drive them, and building on a local model. It names products throughout and says when each table was written. It explains what the tools do and leaves the commands to their own documentation. It leans on part 3 of the language models module, and can be read without it. The whole module is about two and a half hours of reading.
+
 ## How each part is laid out
 
 - **In plain terms** opens each numbered section. It is a short non-technical summary, followed by a note on which parts of the section a non-technical reader needs and which they can skip.
@@ -55,7 +67,7 @@ Part 6 of the language models module ends with two reference sections for use on
 
 ## Suggested routes
 
-The first four routes run through the language models module. The last two run through the generative media module.
+The first four routes run through the language models module, the next two through the generative media module, and the last through running AI locally.
 
 | Reader | Route |
 | --- | --- |
@@ -65,6 +77,7 @@ The first four routes run through the language models module. The last two run t
 | One hour only | Part 1 sections 1 and 7, part 3 section 7, part 5 sections 1 to 3, and the two reference sections that close part 6 |
 | Designer, marketer or producer making media | Generative media part 7 in full, then the part for your medium from parts 2 to 5, then part 6 sections 4, 7, 9 and 10, with the "In plain terms" openers of part 1 |
 | Engineer building a media pipeline | Generative media parts 1 to 7 in order, with the deep dives |
+| Anyone who wants a model on their own machine | Language models part 3, then running AI locally parts 1 to 3. Add part 4 before letting an agent near your files |
 
 ## Four ideas that run through everything
 

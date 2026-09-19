@@ -17,6 +17,7 @@ import { plainText, PAGE_FILES } from './inline.mjs';
 const MODULE_FILES = {
   'Language models': 'Part',
   'Generative media': 'Media',
+  'Running AI locally': 'Local',
 };
 
 export function slugify(text) {
