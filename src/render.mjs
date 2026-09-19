@@ -8,10 +8,13 @@ import { renderInline, plainText, esc, smartPlain, unescapeEntities } from './in
 import { renderDiagram } from './diagrams.mjs';
 import { ICONS } from './icons.mjs';
 
-// The Part column of Part 6's reference tables holds a bare number.
+// The Part column of a reference table holds a bare number, which means that
+// part of the same module; ctx.parts is the module's own list.
 function partLink(n, parts) {
   const p = parts.find((x) => x.n === n);
-  return `<a href="Part${n}.dc.html">Part ${n}<span class="sr-only">: ${esc(p.shortTitle)}</span></a>`;
+  if (!p) throw new Error(`A reference table names part ${n}, which its module does not have`);
+  if (!p.written) return `Part ${n}`;
+  return `<a href="${p.out}">Part ${n}<span class="sr-only">: ${esc(p.shortTitle)}</span></a>`;
 }
 
 function cellHtml(cell, ctx, colIndex) {

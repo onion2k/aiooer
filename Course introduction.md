@@ -10,7 +10,11 @@ It has a point of view. Most people use AI to lower their own effort on work the
 
 That change needs confidence about where AI can be trusted, where it cannot, and what must be built to close the gap. The first three parts supply that understanding. The last three apply it.
 
-## The six parts
+## The modules
+
+The course is in two modules. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
+
+### Language models
 
 | Part | After it you can | Time |
 | --- | --- | --- |
@@ -21,7 +25,17 @@ That change needs confidence about where AI can be trusted, where it cannot, and
 | [Part 5: AI in the team](file/3e89a4fc-a0bc) | Redesign how your team works so that AI's speed shows up in delivery | 45 min |
 | [Part 6: Strategy and communication](file/bbb9efdd-e221) | Make and defend an AI investment case to any audience | 45 min |
 
-Parts 1 to 3 cover how the technology works. Parts 4 to 6 cover how to use it. Every technical idea is included because it explains a behaviour you will see or a decision you will make. The whole course is about four hours of reading.
+Parts 1 to 3 cover how the technology works. Parts 4 to 6 cover how to use it. Every technical idea is included because it explains a behaviour you will see or a decision you will make. The whole module is about four hours of reading.
+
+### Image models
+
+| Part | After it you can | Time |
+| --- | --- | --- |
+| Part 1: How image models work | Explain how a diffusion model turns noise and a prompt into a picture | 40 min |
+| Part 2: Shaping image models | Choose between a base model, a fine-tune, a LoRA and image-to-image for a job | 40 min |
+| Part 3: Prompting for images | Write prompts that suit the model in front of you, and improve them with purpose | 35 min |
+
+This module is being written. It covers how image generation works, how models such as Stable Diffusion are adapted with fine-tunes, LoRAs and style transfer, and how to prompt different models well.
 
 ## How each part is laid out
 
@@ -33,9 +47,11 @@ Parts 1 to 3 cover how the technology works. Parts 4 to 6 cover how to use it. E
 - **Glossary** at the end of each part defines every technical term introduced there.
 - **Sources** appear where a part quotes study results or legal dates.
 
-Part 6 ends with two reference sections for use on their own: the 25 explanations you will need most often, and all twenty misconceptions with one-line responses.
+Part 6 of the language models module ends with two reference sections for use on their own: the 25 explanations you will need most often, and all twenty misconceptions with one-line responses.
 
 ## Suggested routes
+
+These routes run through the language models module. Routes through the image models module will join them as it is written.
 
 | Reader | Route |
 | --- | --- |
@@ -53,4 +69,4 @@ Part 6 ends with two reference sections for use on their own: the 25 explanation
 
 ## A note on currency
 
-The course was written in September 2026. The mechanisms in parts 1 to 3 change slowly. Products, prices and regulation change quickly. All prices are illustrative, and the regulatory detail in part 6 is correct only as of that date. Part 6 section 7 describes a quarterly habit for keeping your own picture up to date.
+The course was written in September 2026. The mechanisms the course explains change slowly. Products, prices and regulation change quickly. All prices are illustrative, and the regulatory detail in part 6 of the language models module is correct only as of that date. Section 7 of that part describes a quarterly habit for keeping your own picture up to date.

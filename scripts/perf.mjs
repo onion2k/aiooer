@@ -10,18 +10,10 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { startSite, openPage, togglePanel } from './harness.mjs';
+import { startSite, openPage, togglePanel, sitePages } from './harness.mjs';
 import { TEST_SITE } from '../src/paths.mjs';
 
-const PAGES = [
-  'Main.dc.html',
-  'Part1.dc.html',
-  'Part2.dc.html',
-  'Part3.dc.html',
-  'Part4.dc.html',
-  'Part5.dc.html',
-  'Part6.dc.html',
-];
+const PAGES = sitePages();
 const RUNS = 5;
 const median = (xs) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
 

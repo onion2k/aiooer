@@ -1,9 +1,12 @@
 # How AI works: the course website
 
-The course is the seven markdown files at the top of this folder. It
-concentrates on large language models for now; content on local AI, image
-models and small LLMs is to come. Its name is the introduction's heading,
-and the code reads it from there. The code here builds the markdown into a
+The course is the markdown files at the top of this folder: the
+introduction, and a file for each written part. It is in modules, each with
+its own parts numbered from 1: Language models (six parts, files `Part N
+….md`) and Image models (three parts, files `Images N ….md`, being written
+one at a time and reviewed by the author before the next). Content on local
+AI and small LLMs is to come. The course's name, its modules and their parts
+all come from the introduction, and the code reads them from there. The code here builds the markdown into a
 website on a Claude Design canvas, at
 https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
@@ -47,6 +50,13 @@ was written on 19 September 2026 from what the code does at that date.
 - **True to the markdown.** Every section, block, inline token and diagram
   the parser meets is one it knows, and every icon exists in Carbon; anything
   else stops the build. `build`.
+- **Modules from the introduction.** The introduction's "The modules"
+  section declares each module and its parts; a part whose name is a link
+  is written, and one in plain text is still to come and is shown without a
+  link. A written part without its file, a file no table names, parts out
+  of order, or a link to a page that was not built stops the build. Every
+  part page names its module and its place in it, and the previous and next
+  links run through every written part across modules. `audit` holds it.
 - **One name.** The course is called what the introduction's heading calls
   it, in the wordmark, the footer, every page title and the canvas's title.
   `audit` holds it, and a heading without both the course's name and the
@@ -56,24 +66,25 @@ was written on 19 September 2026 from what the code does at that date.
 
 Baselines as of 19 September 2026, on this machine:
 
-| Gate               | Holds                                   | Baseline                                    | Tolerance      |
-| ------------------ | --------------------------------------- | ------------------------------------------- | -------------- |
-| `contrast`         | 188 colour pairs, four themes           | lowest text pair 7.33:1, lowest edge 8.38:1 | none           |
-| `audit`, axe       | 93 runs                                 | 0 violations, 0 needing review              | none           |
-| `audit`, measure   | 7 pages × 3 setting mixes × 3 lengths   | Short's longest line 70; widths 1:1.5:2     | 80; 1% widths  |
-| `audit`, targets   | 7 pages × desktop and phone             | all 44 × 44 or larger                       | none           |
-| `audit`, reflow    | 7 pages × 320px and 200% zoom           | no sideways scroll                          | none           |
-| `audit`, spacing   | 7 pages × desktop and phone             | nothing clipped                             | none           |
-| `audit`, keyboard  | 7 pages × 2 widths, and 3 more themes   | 114 to 119 stops, ringed, uncovered, 7:1    | none           |
-| `audit`, headings  | 7 pages × desktop and phone             | one h1, no skipped level                    | none           |
-| `audit`, corners   | 7 pages, every panel and deep dive open | none rounder than 2px                       | none           |
-| `audit`, grids     | 7 pages × desktop and phone             | blocks equal; 15 or 5 containers on 12 cols | 1px on heights |
-| `audit`, storage   | 5 saved shapes                          | every one loads                             | none           |
-| `audit`, numerals  | the home page in four themes            | the four ideas numbered in the text colour  | none           |
-| `audit`, spy       | 6 parts × 3 frames × top, middle, end   | one current, earlier passed, no jumps       | none           |
-| `audit`, name      | 7 pages and the canvas's index          | the heading's name wherever it is shown     | none           |
-| `look`             | 16 boards                               | no errors; recorded heights match           | 2px on heights |
-| `perf`, not a gate | render, fonts, repaint, scrolling       | see below                                   | not held       |
+| Gate               | Holds                                   | Baseline                                         | Tolerance      |
+| ------------------ | --------------------------------------- | ------------------------------------------------ | -------------- |
+| `contrast`         | 188 colour pairs, four themes           | lowest text pair 7.33:1, lowest edge 8.38:1      | none           |
+| `audit`, axe       | 93 runs                                 | 0 violations, 0 needing review                   | none           |
+| `audit`, measure   | 7 pages × 3 setting mixes × 3 lengths   | Short's longest line 70; widths 1:1.5:2          | 80; 1% widths  |
+| `audit`, targets   | 7 pages × desktop and phone             | all 44 × 44 or larger                            | none           |
+| `audit`, reflow    | 7 pages × 320px and 200% zoom           | no sideways scroll                               | none           |
+| `audit`, spacing   | 7 pages × desktop and phone             | nothing clipped                                  | none           |
+| `audit`, keyboard  | 7 pages × 2 widths, and 3 more themes   | 114 to 119 stops, ringed, uncovered, 7:1         | none           |
+| `audit`, headings  | 7 pages × desktop and phone             | one h1, no skipped level                         | none           |
+| `audit`, corners   | 7 pages, every panel and deep dive open | none rounder than 2px                            | none           |
+| `audit`, grids     | 7 pages × desktop and phone             | blocks equal; 17 or 6 containers on 12 cols      | 1px on heights |
+| `audit`, storage   | 5 saved shapes                          | every one loads                                  | none           |
+| `audit`, numerals  | the home page in four themes            | the four ideas numbered in the text colour       | none           |
+| `audit`, spy       | 6 parts × 3 frames × top, middle, end   | one current, earlier passed, no jumps            | none           |
+| `audit`, modules   | the home page and every written part    | label, breadcrumb, title, ways on, no dead links | none           |
+| `audit`, name      | 7 pages and the canvas's index          | the heading's name wherever it is shown          | none           |
+| `look`             | 16 boards                               | no errors; recorded heights match                | 2px on heights |
+| `perf`, not a gate | render, fonts, repaint, scrolling       | see below                                        | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
 85 KB, a theme change 32 to 39 ms, opening every deep dive 19 to 33 ms, and
@@ -100,11 +111,11 @@ slowdown is only caught by reading them.
     npm run heights        build, record the showcase boards' natural heights, then build again
     npm run perf           render and repaint times, five runs each, medians
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,name`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name`,
 `--pages Part1.dc.html,...` and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `name`) to
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`) to
 prove the check that should catch it still does.
 `node scripts/look-parts.mjs <width> <File.dc.html> <selector>...` takes
 pictures of single elements, with `--theme`, `--size` and the other
@@ -125,7 +136,9 @@ canvas is private until it is shared from its Share menu.
 
 - **The course** is the markdown at the top. The build reads it and never
   writes it, and Prettier is told to leave it alone.
-- `src/content.mjs` is the course without its picture: markdown into page
+- `src/content.mjs` is the course without its picture: the introduction into
+  the course's modules and parts (`MODULE_FILES` there gives each module's
+  file and page prefix; a new module is added to it), and markdown into page
   models, with the course's devices recognised (In plain terms, deep dives,
   misconceptions, glossaries, questions and answers, bold lines that are
   really headings). It makes no HTML. It is handed the folder to read.
@@ -199,7 +212,10 @@ trusted, and `beforeLoad(page)` runs first, to watch the load or seed the
 page's storage;
 `setSetting(page, key, value)` chooses a reading setting through the panel,
 as a reader would (`theme`, `size`, `spacing`, `measure`, `font`, `deep`);
-`togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel.
+`togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel;
+`course()` is the course as the introduction declares it, and `sitePages()`
+the home page and every written part, which is what the audit and `perf`
+walk, so a new part is checked from the day it is written.
 Each page opens in a fresh browser context, so no check ever sees a
 reader's saved settings.
 
@@ -258,11 +274,17 @@ For anything new on a page, check what it does:
 - **every setting:** text size up to largest, line spacing up to widest,
   each line length, the serif typeface, deep dives folded and open. On the
   home page at desktop width the text column is 774px, so Standard (780px)
-  and Long both fill it and look the same there
+  and Long both fill it and look the same there; that is by choice, and the
+  home page keeps its layout for Long
 - **every width:** desktop, tablet, phone at 390px, 320px, and 200% zoom of
   a 1280px window; tables stack below 44em, the header wraps below 40em
-- **every board:** home, each part, and the showcase boards, which are
-  trimmed pages at fixed sizes
+- **every board:** home, each part of each module, and the showcase boards,
+  which are trimmed pages at fixed sizes
+- **every module:** a part written and a part still to come, on the home
+  page's cards, in the parts panel and the footer; the first and last part
+  of a module, where previous and next cross into another module; a
+  reference from one module to another, which names the module, since a
+  bare "part 3" means the same module
 - **every grid:** twelve columns at desktop, six on a tablet, one on a
   phone, and its blocks one height at each
 - **saved settings:** a new setting adds its shape to `SAVED_SHAPES` in

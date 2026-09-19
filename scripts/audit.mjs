@@ -19,6 +19,10 @@
 //   numerals  the home page's four ideas numbered in the text colour
 //   spy       the contents list marks the section the reader is in, bold,
 //             and dims the ones already passed
+//   modules   every part page says which module it is in and where, the
+//             previous and next links run through every written part and
+//             end at the introduction, nothing links to an unwritten part,
+//             and the home page and the parts panel group parts by module
 //   name      the course called by one name, its introduction's heading, in
 //             the wordmark, the footer, every page title and the canvas
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
@@ -26,10 +30,9 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { startSite, openPage, setSetting, AXE_PATH } from './harness.mjs';
-import { RESULTS, CONTENT_DIR, CANVAS_PROJECT } from '../src/paths.mjs';
+import { startSite, openPage, setSetting, AXE_PATH, course, sitePages } from './harness.mjs';
+import { RESULTS, CANVAS_PROJECT } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
-import { parseIntro } from '../src/content.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
 // --only measure,reflow runs just those checks, for quick iteration.
@@ -50,6 +53,26 @@ const MUTATIONS = {
   corners: { css: '.header-btn{border-radius:999px!important}' },
   widths: { css: '.reader{--measure-em:30em!important}' },
   numerals: { css: '.idea-num{color:var(--link)!important}' },
+  // A part that claims to be in the other module, a way on that stops short,
+  // and an unwritten part linked as if it were there.
+  modulelabel: {
+    js: () => {
+      const e = document.querySelector('.eyebrow');
+      if (e) e.textContent = 'Some other module · Part 1 of 3';
+    },
+  },
+  pagerchain: {
+    js: () => {
+      const a = document.querySelector('.pager-link.is-next');
+      if (a) a.setAttribute('href', 'Main.dc.html');
+    },
+  },
+  cominglink: {
+    js: () => {
+      const a = document.querySelector('.footer-links a');
+      if (a) a.setAttribute('href', 'Nowhere9.dc.html');
+    },
+  },
   // A wordmark that says something other than the introduction's heading.
   name: {
     js: () => {
@@ -79,15 +102,8 @@ const MUTATIONS = {
   },
 };
 
-const FULL_PAGES = [
-  'Main.dc.html',
-  'Part1.dc.html',
-  'Part2.dc.html',
-  'Part3.dc.html',
-  'Part4.dc.html',
-  'Part5.dc.html',
-  'Part6.dc.html',
-];
+const FULL_PAGES = sitePages();
+const COURSE = course();
 const THEMES = quick ? ['paper', 'dark'] : ['paper', 'white', 'dark', 'contrast'];
 const COMPS = [
   'Phone-Home.dc.html',
@@ -116,6 +132,7 @@ const results = {
   numerals: [],
   spy: [],
   name: [],
+  modules: [],
 };
 let failures = 0;
 const fail = (kind, msg) => {
@@ -618,11 +635,84 @@ for (const file of pagesArg || FULL_PAGES) {
       );
   }
 
+  // Modules. A part page names its module and its place in it, in the label
+  // over its title, its breadcrumb and its page title; its way on leads to the
+  // next written part, or from the last one back to the introduction; and no
+  // page links to a page that was not built.
+  if (run('modules')) {
+    const written = COURSE.parts.filter((p) => p.written);
+    const built = new Set(FULL_PAGES);
+    const part = written.find((p) => p.out === file);
+    const page = await open(file);
+    const seen = await page.evaluate(() => ({
+      label: document.querySelector('.eyebrow')?.textContent.trim() ?? null,
+      crumbs: [...document.querySelectorAll('.crumbs li')].map((li) => li.querySelector('a')?.textContent.trim()),
+      title: document.title,
+      next: document.querySelector('.pager-link.is-next')?.getAttribute('href') ?? null,
+      prev: document.querySelector('.pager-link.is-prev')?.getAttribute('href') ?? null,
+      links: [...document.querySelectorAll('a[href]')]
+        .map((a) => a.getAttribute('href'))
+        .filter((h) => /\.dc\.html/.test(h))
+        .map((h) => h.split('#')[0]),
+      groups: [...document.querySelectorAll('.parts-group')].map((g) => ({
+        name: g.querySelector('.parts-group-title')?.textContent.trim(),
+        items: g.querySelectorAll('.parts-item').length,
+        coming: g.querySelectorAll('.parts-item.is-coming').length,
+      })),
+      home: [...document.querySelectorAll('.module')].map((m) => ({
+        name: m.querySelector('.module-title')?.textContent.trim(),
+        level: m.querySelector('.module-title')?.tagName,
+        cards: m.querySelectorAll('.part-card').length,
+        coming: m.querySelectorAll('.part-card.is-coming').length,
+        comingLinks: m.querySelectorAll('.part-card.is-coming a').length,
+      })),
+    }));
+    await page.close();
+    const wrong = [];
+    const dead = [...new Set(seen.links.filter((h) => !built.has(h)))];
+    if (dead.length) wrong.push(`links to pages that were not built: ${dead.join(', ')}`);
+    const wantGroups = COURSE.modules.map((m) => ({
+      name: m.name,
+      items: m.parts.length,
+      coming: m.parts.filter((p) => !p.written).length,
+    }));
+    if (JSON.stringify(seen.groups) !== JSON.stringify(wantGroups))
+      wrong.push(`the parts panel groups ${JSON.stringify(seen.groups)}, wanted ${JSON.stringify(wantGroups)}`);
+    if (part) {
+      const i = written.indexOf(part);
+      const label = `${part.module} · Part ${part.n} of ${part.of}`;
+      if (seen.label !== label) wrong.push(`label "${seen.label}", wanted "${label}"`);
+      const crumbs = ['Course introduction', part.module, `Part ${part.n}: ${part.shortTitle}`];
+      if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
+        wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
+      if (!seen.title.includes(`${part.module}, part ${part.n}: `)) wrong.push(`page title "${seen.title}"`);
+      const next = written[i + 1]?.out ?? 'Main.dc.html';
+      const prev = written[i - 1]?.out ?? 'Main.dc.html';
+      if (seen.next !== next) wrong.push(`next is ${seen.next}, wanted ${next}`);
+      if (seen.prev !== prev) wrong.push(`previous is ${seen.prev}, wanted ${prev}`);
+    } else {
+      const wantHome = COURSE.modules.map((m) => {
+        const coming = m.parts.filter((p) => !p.written).length;
+        return { name: m.name, level: 'H3', cards: m.parts.length, coming, comingLinks: 0 };
+      });
+      if (JSON.stringify(seen.home) !== JSON.stringify(wantHome))
+        wrong.push(`home modules ${JSON.stringify(seen.home)}, wanted ${JSON.stringify(wantHome)}`);
+    }
+    if (wrong.length) fail('modules', `${file}: ${wrong.join('; ')}`);
+    else
+      pass(
+        'modules',
+        part
+          ? `${file}: ${part.module}, part ${part.n} of ${part.of}, in its label, breadcrumb and title; ways on and back right`
+          : `${file}: ${seen.home.map((m) => `${m.name} ${m.cards} cards (${m.coming} coming)`).join(', ')}; no dead links`,
+      );
+  }
+
   // The course's name is the introduction's heading, and every page says it
   // the same way: in the wordmark, the footer, the page title, and on the
   // home page as its heading.
   if (run('name')) {
-    const course = parseIntro(CONTENT_DIR).courseTitle;
+    const course = COURSE.courseTitle;
     const page = await open(file);
     const seen = await page.evaluate(() => {
       const text = (sel) => document.querySelector(sel)?.textContent.trim() ?? null;
@@ -934,7 +1024,7 @@ for (const shape of run('storage') ? SAVED_SHAPES : []) {
 
 // The canvas carries the course's name as its title too.
 if (run('name')) {
-  const course = parseIntro(CONTENT_DIR).courseTitle;
+  const course = COURSE.courseTitle;
   const canvas = JSON.parse(fs.readFileSync(path.join(CANVAS_PROJECT, 'canvas.json'), 'utf8'));
   if (canvas.title !== course) fail('name', `canvas.json: title "${canvas.title}", not "${course}"`);
   else pass('name', `canvas.json: titled "${course}"`);

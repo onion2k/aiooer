@@ -194,6 +194,12 @@ ${swatches()}
 .reader .parts-link:hover .parts-title{text-decoration-thickness:0.16em}
 .is-current .parts-title{color:var(--bg)}
 .parts-here{margin-left:0.5em}
+/* A group of parts for each module. A part still to come is words on the
+   sunk ground with no link, so it cannot be mistaken for somewhere to go. */
+.parts-group + .parts-group{margin-top:1.6em}
+.parts-group-title{margin:0 0 0.7em}
+.parts-item.is-coming{background:var(--sunk)}
+.parts-title.is-plain{color:inherit;text-decoration:none}
 
 /* Part pages: the giant number and the contents in the left three columns,
    the title and the text in the right nine. */
@@ -411,6 +417,8 @@ ${swatches()}
 .footer-nav{--start:5;--span:8;--span-md:6}
 .footer-links{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--gutter)}
 .footer-links li{margin:0}
+.footer-group{margin-top:1.2em}
+.footer-group-title{margin:0 0 0.2em;color:var(--footer-ink)}
 .reader .footer-links a{display:inline-flex;align-items:center;min-height:44px;color:var(--footer-link)}
 .reader .footer-links a:hover{color:var(--footer-link);text-decoration-thickness:0.16em}
 .footer-note{--start:5;--span:7;--span-md:6;margin:0;max-width:var(--measure);color:var(--footer-ink)}
@@ -443,6 +451,17 @@ ${swatches()}
 .part-card{--span:4;--span-md:3;position:relative;margin:0;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"num time" "title title" "outcome outcome";align-content:start;gap:0.2em 1em;padding:1.2em 1.3em 1.4em;background:var(--surface);border:var(--bw) solid var(--edge)}
 .part-card:hover{background:var(--link);border-color:var(--link);color:var(--on-accent)}
 .part-card:focus-within{outline:3px solid var(--focus);outline-offset:3px}
+/* A part still to come: the same card, sunk into the ground, leading nowhere. */
+.part-card.is-coming,.part-card.is-coming:hover{background:var(--sunk);border-color:var(--edge);color:inherit}
+.module{--span:12;margin-top:1.6em;padding-top:1.2em;border-top:var(--bw) solid var(--ink)}
+.module-title{margin:0;font-family:var(--font-display);font-weight:900;font-size:2em;line-height:1.05;letter-spacing:-0.03em;scroll-margin-top:1em}
+/* These outrank the home page's paragraph rule, which would otherwise close
+   the gap under the module's name and open one under its last paragraph. */
+.home-section .module-meta{margin:1.7em 0 0;color:var(--ink-2)}
+.home-section .module-notes{margin-top:1.1em}
+.home-section .module-notes > :last-child{margin-bottom:0}
+.home-section .module .part-cards{margin-top:2.2em}
+@container page (width < 40em){.module-title{font-size:1.6em}}
 .part-num{grid-area:num;font-family:var(--font-display);font-weight:900;font-size:3.8em;line-height:0.8;letter-spacing:-0.06em}
 .home-section .part-time{grid-area:time;display:flex;align-items:center;gap:0.4em;margin:0;color:inherit}
 .part-title{grid-area:title;margin:1em 0 0.35em;font-family:var(--font-display);font-weight:800;font-size:1.45em;line-height:1.08;letter-spacing:-0.02em}

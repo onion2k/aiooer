@@ -13,6 +13,9 @@ export const PAGE_FILES = {
   'cadfcb5f-9a30': 'Part4.dc.html',
   '3e89a4fc-a0bc': 'Part5.dc.html',
   'bbb9efdd-e221': 'Part6.dc.html',
+  '7c41d2a9-1e05': 'Images1.dc.html',
+  '2f9be6c3-5a17': 'Images2.dc.html',
+  'e08a7d54-9b32': 'Images3.dc.html',
 };
 
 export function esc(s) {

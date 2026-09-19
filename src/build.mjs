@@ -5,7 +5,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { parsePart, parseIntro, PART_SOURCES } from './content.mjs';
+import { parsePart, parseIntro } from './content.mjs';
 import { homeFile, partFile } from './pages.mjs';
 import { DIAGRAMS } from './diagrams.mjs';
 import { GRID_GUIDE } from './styles.mjs';
@@ -17,7 +17,7 @@ const h = (file, fallback) => Math.min(MAX_H, heights[file] || fallback);
 
 const intro = parseIntro(CONTENT_DIR);
 const parts = intro.parts;
-const models = PART_SOURCES.map((src) => parsePart(CONTENT_DIR, src));
+const models = parts.filter((p) => p.written).map((src) => parsePart(CONTENT_DIR, src));
 
 // Every diagram in the course must have a drawing, and every drawing a diagram.
 const used = new Set();
@@ -28,7 +28,7 @@ for (const m of models)
 for (const key of used) if (!DIAGRAMS[key]) throw new Error('Diagram without a drawing: ' + key);
 for (const key of Object.keys(DIAGRAMS)) if (!used.has(key)) throw new Error('Drawing without a diagram: ' + key);
 
-const partTitle = (n) => `Part ${n}: ${parts[n - 1].shortTitle}`;
+const partTitle = (m) => `${m.module}, part ${m.n}: ${m.shortTitle}`;
 
 // The boards, row by row. Row one is the website itself; the rows below show
 // it on a phone and in its other reading settings.
@@ -46,7 +46,7 @@ const rows = [
       },
       ...models.map((m) => ({
         file: m.out,
-        title: partTitle(m.n),
+        title: partTitle(m),
         w: 1440,
         h: 3200,
         fill: true,
@@ -209,6 +209,14 @@ rows.forEach((row, ri) => {
   };
   y = rowY + rowH;
 });
+
+// Nothing may link to a page that was not built: a part still to come has an
+// address waiting for it, and a link to it would lead nowhere.
+for (const file of order) {
+  const html = fs.readFileSync(path.join(PROJECT, file), 'utf8');
+  for (const m of html.matchAll(/href="([^"#]+\.dc\.html)/g))
+    if (!boards[m[1]]) throw new Error(`${file} links to ${m[1]}, which was not built`);
+}
 
 const indexFile = path.join(PROJECT, 'canvas.json');
 // The canvas was created once; its stamp is kept so every rebuild writes the

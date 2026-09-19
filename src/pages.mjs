@@ -48,11 +48,12 @@ export function currencyNote(intro) {
 
 // ---------------------------------------------------------------- part pages
 
-function partHero(part, meta) {
+function partHero(part) {
+  const meta = part;
   const title = part.subtitle
     ? `${esc(part.title)}<span class="sr-only">: </span><span class="title-sub">${esc(part.subtitle)}</span>`
     : esc(part.title);
-  return `<div class="hero">${crumbs(part.n, meta.shortTitle)}<p class="eyebrow label">Part ${part.n} of 6</p><h1 class="title">${title}</h1><ul class="hero-meta label" role="list"><li>${ICONS.clock}<span>About ${esc(
+  return `<div class="hero">${crumbs(part)}<p class="eyebrow label">${esc(part.module)} · Part ${part.n} of ${part.of}</p><h1 class="title">${title}</h1><ul class="hero-meta label" role="list"><li>${ICONS.clock}<span>About ${esc(
     minutes(meta.time),
   )}</span></li><li>${ICONS.calendar}<span>Written ${longDate(part.date)}</span></li></ul><div class="outcome"><p class="outcome-label label">${ICONS.outcome}<span>After this part you can</span></p><p class="outcome-text">${esc(
     smartPlain(meta.outcome),
@@ -75,14 +76,13 @@ function partArticle(part, parts, maxSections) {
 
 // The part's number, set huge in the three left columns above the contents.
 // It repeats "Part 3 of 6" for the eye only, so it is hidden from screen readers.
+// parts is the whole course's list; a reference table's bare part numbers mean
+// this part's own module.
 export function partMain(part, parts, opts = {}) {
-  const meta = parts.find((p) => p.n === part.n);
+  const own = parts.filter((p) => p.module === part.module);
   const number = String(part.n).padStart(2, '0');
-  return `<main id="main" tabindex="-1"><div class="shell layout grid-12"><div class="hero-num" aria-hidden="true">${number}</div>${partHero(
-    part,
-    meta,
-  )}${toc(part.sections)}<div class="article">${partArticle(part, parts, opts.maxSections)}${
-    opts.maxSections ? '' : pager(part.n, parts)
+  return `<main id="main" tabindex="-1"><div class="shell layout grid-12"><div class="hero-num" aria-hidden="true">${number}</div>${partHero(part)}${toc(part.sections)}<div class="article">${partArticle(part, own, opts.maxSections)}${
+    opts.maxSections ? '' : pager(part, parts)
   }</div></div></main>`;
 }
 
@@ -109,6 +109,40 @@ const paragraphs = (blocks) =>
     .map((p) => `<p>${renderInline(p.tokens)}</p>`)
     .join('');
 
+// Counts and reading times are worked out from the introduction's tables, so
+// they stay true as parts are written. Numbers up to twelve are spelt out.
+const WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const word = (n) => WORDS[n] ?? String(n);
+const capital = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+const plural = (n, noun) => `${word(n)} ${noun}${n === 1 ? '' : 's'}`;
+
+// The reading time of some parts, to the nearest half hour: "four hours".
+function hoursOf(parts) {
+  const total = parts.reduce((sum, p) => {
+    const m = /^(\d+) min$/.exec(p.time);
+    if (!m) throw new Error(`A reading time should read "<number> min", not "${p.time}"`);
+    return sum + Number(m[1]);
+  }, 0);
+  const halves = Math.round(total / 30);
+  if (halves < 2) return `${total} minutes`;
+  const whole = Math.floor(halves / 2);
+  return `${word(whole)}${halves % 2 ? ' and a half' : ''} hour${whole === 1 && !(halves % 2) ? '' : 's'}`;
+}
+
+function moduleMeta(m) {
+  const written = m.parts.filter((p) => p.written);
+  const coming = m.parts.length - written.length;
+  if (!written.length) return `${capital(plural(coming, 'part'))}, all still to come`;
+  return `${capital(plural(written.length, 'part'))}${coming ? `, ${word(coming)} more to come` : ''} · about ${hoursOf(written)}`;
+}
+
+function courseCount(modules) {
+  const all = modules.flatMap((m) => m.parts);
+  const written = all.filter((p) => p.written).length;
+  const coming = all.length - written;
+  return `${capital(plural(modules.length, 'module'))}, ${plural(written, 'part')}${coming ? `, ${word(coming)} more to come` : ''}`;
+}
+
 // The home page on the twelve-column grid: every section is a grid-12, and
 // every set of blocks (the six parts, the four ideas, the legend, the routes)
 // is a grid-12 of its own whose rows size to the tallest block.
@@ -121,12 +155,24 @@ function homeMain(intro, parts) {
     .map((p) => `<p>${renderInline(p.tokens)}</p>`)
     .join('');
 
-  // One list of all six, three to a row: parts 1 to 3 (how the technology
-  // works) above parts 4 to 6 (how to use it), as the introduction says.
-  const card = (p) =>
-    `<li class="part-card"><span class="part-num" aria-hidden="true">${String(p.n).padStart(2, '0')}</span><h3 class="part-title"><a href="Part${p.n}.dc.html"><span class="sr-only">Part ${p.n}: </span>${esc(
+  // A card for each part, three to a row, a grid for each module. A part still
+  // to come has a card too, so a reader sees what the module will hold, but it
+  // links nowhere and says "Coming" where the others give a reading time.
+  const card = (p) => {
+    const num = `<span class="part-num" aria-hidden="true">${String(p.n).padStart(2, '0')}</span>`;
+    const outcome = `<p class="part-outcome"><span class="sr-only">After it you can: </span>${esc(smartPlain(p.outcome))}</p>`;
+    if (!p.written)
+      return `<li class="part-card is-coming">${num}<h4 class="part-title"><span class="sr-only">Part ${p.n}: </span>${esc(p.shortTitle)}</h4>${outcome}<p class="part-time label">Coming</p></li>`;
+    return `<li class="part-card">${num}<h4 class="part-title"><a href="${p.out}"><span class="sr-only">Part ${p.n}: </span>${esc(
       p.shortTitle,
-    )}</a></h3><p class="part-outcome"><span class="sr-only">After it you can: </span>${esc(smartPlain(p.outcome))}</p><p class="part-time label">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
+    )}</a></h4>${outcome}<p class="part-time label">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
+  };
+  const moduleBlock = (m) =>
+    `<div class="module" id="module-${m.slug}"><h3 class="module-title">${esc(m.name)}</h3><p class="module-meta label">${esc(moduleMeta(m))}</p><div class="module-notes">${paragraphs(
+      m.notes,
+    )}</div><ol class="part-cards grid-12" role="list">${m.parts.map(card).join('')}</ol></div>`;
+  const written = parts.filter((p) => p.written);
+  const first = written[0];
 
   const layoutBlocks = S['How each part is laid out'].blocks;
   const legendList = layoutBlocks.find((b) => b.type === 'list');
@@ -160,18 +206,20 @@ function homeMain(intro, parts) {
   const kicker = intro.pageTitle.charAt(0) + intro.pageTitle.slice(1).toLowerCase();
   return `<main id="main" tabindex="-1"><div class="shell home-hero grid-12"><p class="home-kicker label">${esc(kicker)}</p><h1 class="home-title">${esc(
     intro.courseTitle,
-  )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>Six parts</span></li><li>${ICONS.clock}<span>About four hours of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026</span></li></ul><div class="cta-row"><a class="btn-primary" href="Part1.dc.html"><span>Start with Part 1: ${esc(
-    parts[0].shortTitle,
+  )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026</span></li></ul><div class="cta-row"><a class="btn-primary" href="${first.out}"><span>Start with Part ${first.n}: ${esc(
+    first.shortTitle,
   )}</span>${ICONS.arrowRight}</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div class="split-body">${purposeRest}</div></div></section>
-<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="the-six-parts">The six parts</h2><div class="section-intro">${paragraphs(
-    S['The six parts'].blocks,
-  )}</div><ol class="part-cards grid-12" role="list">${parts.map(card).join('')}</ol></div></section>
+<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="the-modules">The modules</h2><div class="section-intro">${paragraphs(
+    intro.lead,
+  )}</div>${intro.modules.map(moduleBlock).join('')}</div></section>
 <section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="four-ideas">Four ideas that run through everything</h2><ol class="ideas grid-12" role="list">${ideas}</ol></div></section>
 <section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="how-each-part-is-laid-out">How each part is laid out</h2><ul class="legend grid-12" role="list">${legend}</ul><div class="section-outro">${paragraphs(
     layoutBlocks,
   )}</div></div></section>
-<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="suggested-routes">Suggested routes</h2><ul class="routes grid-12" role="list">${routes}</ul></div></section>
+<section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="suggested-routes">Suggested routes</h2><div class="section-intro">${paragraphs(
+    S['Suggested routes'].blocks,
+  )}</div><ul class="routes grid-12" role="list">${routes}</ul></div></section>
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="a-note-on-currency">A note on currency</h2><div class="split-body currency">${paragraphs(
     S['A note on currency'].blocks,
   )}</div></div></section></main>`;
@@ -210,7 +258,7 @@ ${root}
 
 export function homeFile(intro, parts, page) {
   const course = intro.courseTitle;
-  const body = `${header(parts, 0, course)}${homeMain(intro, parts)}${footer(parts, currencyNote(intro), course)}`;
+  const body = `${header(intro.modules, null, course)}${homeMain(intro, parts)}${footer(intro.modules, currencyNote(intro), course)}`;
   return dcFile({
     title: `${course}: ${intro.pageTitle.toLowerCase().replace(/^c/, 'C')}`,
     body,
@@ -219,9 +267,11 @@ export function homeFile(intro, parts, page) {
 }
 
 export function partFile(part, parts, intro, page) {
-  const meta = parts.find((p) => p.n === part.n);
   const course = intro.courseTitle;
-  const body = `${header(parts, part.n, course)}${partMain(part, parts, page)}${page.maxSections ? '' : footer(parts, currencyNote(intro), course)}`;
+  // The header marks the current part by identity, so it needs the
+  // introduction's own record of this part, not the parsed page.
+  const current = parts.find((p) => p.out === part.out);
+  const body = `${header(intro.modules, current, course)}${partMain(part, parts, page)}${page.maxSections ? '' : footer(intro.modules, currencyNote(intro), course)}`;
   const deepKeys = [];
   const sections = page.maxSections ? part.sections.slice(0, page.maxSections) : part.sections;
   for (const s of sections) for (const b of s.blocks) if (b.type === 'deep') deepKeys.push(b.key);
@@ -229,7 +279,7 @@ export function partFile(part, parts, intro, page) {
   // the spy follows the same list in the same order.
   const spyIds = part.sections.map((s) => s.id);
   return dcFile({
-    title: `Part ${part.n}: ${meta.shortTitle} · ${course}`,
+    title: `${part.module}, part ${part.n}: ${part.shortTitle} · ${course}`,
     body,
     page: { ...page, deepKeys, spyIds },
   });

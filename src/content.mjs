@@ -7,16 +7,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { marked } from 'marked';
-import { plainText } from './inline.mjs';
+import { plainText, PAGE_FILES } from './inline.mjs';
 
-export const PART_SOURCES = [
-  { n: 1, file: 'Part 1 How an LLM works.md', out: 'Part1.dc.html' },
-  { n: 2, file: 'Part 2 How models are built.md', out: 'Part2.dc.html' },
-  { n: 3, file: 'Part 3 Running models.md', out: 'Part3.dc.html' },
-  { n: 4, file: 'Part 4 Building with models.md', out: 'Part4.dc.html' },
-  { n: 5, file: 'Part 5 AI in the team.md', out: 'Part5.dc.html' },
-  { n: 6, file: 'Part 6 Strategy and communication.md', out: 'Part6.dc.html' },
-];
+// What each module's markdown files and pages are called. The modules
+// themselves, their order and their parts come from the introduction; this
+// only says that the language models module's first part is the file that
+// starts "Part 1" and the page Part1.dc.html, which are the names they had
+// before there were modules, so every address a reader has kept still works.
+const MODULE_FILES = {
+  'Language models': 'Part',
+  'Image models': 'Images',
+};
 
 export function slugify(text) {
   return text
@@ -182,7 +183,7 @@ export function parsePart(dir, src) {
     }
     if (tok.type === 'code' && tok.lang === 'mermaid') {
       diagramCount++;
-      push({ type: 'diagram', key: `part${src.n}-${diagramCount}`, source: tok.text });
+      push({ type: 'diagram', key: `${src.id}-${diagramCount}`, source: tok.text });
       continue;
     }
     if (tok.type === 'code') {
@@ -253,18 +254,79 @@ export function parseIntro(dir) {
     }
     current.blocks.push(tok);
   }
-  const partsTable = sections['The six parts'].blocks.find((b) => b.type === 'table');
-  const parts = partsTable.rows.map((row) => {
-    const link = row[0].tokens.find((t) => t.type === 'link');
-    const label = plainText(link.tokens);
-    const mm = /^Part (\d+): (.*)$/.exec(label);
-    return {
-      n: Number(mm[1]),
-      shortTitle: mm[2],
-      outcomeTokens: row[1].tokens,
-      outcome: row[1].text,
-      time: row[2].text,
-    };
-  });
-  return { courseTitle, pageTitle, date: byline ? byline.text.slice(0, 10) : null, sections, parts };
+  const { lead, modules } = parseModules(dir, sections['The modules']);
+  const parts = modules.flatMap((m) => m.parts);
+  return { courseTitle, pageTitle, date: byline ? byline.text.slice(0, 10) : null, sections, lead, modules, parts };
+}
+
+// The introduction's "The modules" section: some opening paragraphs, then for
+// each module a heading, a table of its parts and any paragraphs about it. A
+// part whose name is a link has been written; one in plain text is still to
+// come, and the site shows it without linking to it. The markdown files must
+// agree with the tables both ways, or the build stops: a written part with no
+// file would be a dead link, and a file no table names would never be read.
+function parseModules(dir, section) {
+  if (!section) throw new Error('The introduction needs a section called "The modules"');
+  const lead = [];
+  const modules = [];
+  let mod = null;
+  for (const tok of section.blocks) {
+    if (tok.type === 'heading' && tok.depth === 3) {
+      const name = plainText(tok.tokens);
+      const prefix = MODULE_FILES[name];
+      if (!prefix) throw new Error(`No file names are known for a module called "${name}"; add it to MODULE_FILES`);
+      if (modules.some((m) => m.name === name)) throw new Error(`The module "${name}" is declared twice`);
+      mod = { name, slug: slugify(name), prefix, notes: [], parts: [] };
+      modules.push(mod);
+    } else if (!mod) lead.push(tok);
+    else if (tok.type === 'table') mod.parts.push(...tok.rows.map((row) => parsePartRow(dir, mod, row)));
+    else mod.notes.push(tok);
+  }
+  if (!modules.length) throw new Error('"The modules" declares no module');
+  for (const m of modules) {
+    if (!m.parts.length) throw new Error(`The module "${m.name}" has no table of parts`);
+    m.parts.forEach((p, i) => {
+      if (p.n !== i + 1)
+        throw new Error(`${m.name}: part ${p.n} is in place ${i + 1}; parts are numbered from 1 in order`);
+      p.of = m.parts.length;
+    });
+    // A file with this module's prefix that the table does not name.
+    for (const file of fs.readdirSync(dir)) {
+      const mm = new RegExp(`^${m.prefix} (\\d+) .*\\.md$`).exec(file);
+      if (mm && !m.parts.some((p) => p.file === file))
+        throw new Error(`"${file}" is not a written part of the module "${m.name}" in the introduction`);
+    }
+  }
+  return { lead, modules };
+}
+
+function parsePartRow(dir, mod, row) {
+  const link = row[0].tokens.find((t) => t.type === 'link');
+  const label = plainText(row[0].tokens).trim();
+  const mm = /^Part (\d+): (.*)$/.exec(label);
+  if (!mm) throw new Error(`${mod.name}: "${label}" should read "Part <number>: <title>"`);
+  const n = Number(mm[1]);
+  const out = `${mod.prefix}${n}.dc.html`;
+  const files = fs.readdirSync(dir).filter((f) => new RegExp(`^${mod.prefix} ${n} .*\\.md$`).test(f));
+  if (files.length > 1) throw new Error(`${mod.name} part ${n} has more than one file: ${files.join(', ')}`);
+  if (link && !files.length) throw new Error(`${mod.name} part ${n} is linked in the introduction but has no file`);
+  if (!link && files.length)
+    throw new Error(`${mod.name} part ${n} has the file "${files[0]}" but is not linked in the introduction`);
+  if (link) {
+    const id = /^file\/([0-9a-f-]+)$/.exec(link.href)?.[1];
+    if (PAGE_FILES[id] !== out) throw new Error(`${mod.name} part ${n} links to ${link.href}, which is not ${out}`);
+  }
+  return {
+    module: mod.name,
+    moduleSlug: mod.slug,
+    n,
+    id: `${mod.prefix.toLowerCase()}${n}`,
+    shortTitle: mm[2],
+    outcomeTokens: row[1].tokens,
+    outcome: row[1].text,
+    time: row[2].text,
+    written: !!link,
+    file: files[0] || null,
+    out,
+  };
 }

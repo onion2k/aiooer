@@ -10,10 +10,28 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
 import { serve } from './serve.mjs';
-import { TEST_SITE } from '../src/paths.mjs';
+import { TEST_SITE, CONTENT_DIR } from '../src/paths.mjs';
+import { parseIntro } from '../src/content.mjs';
 
 const require = createRequire(import.meta.url);
 export const AXE_PATH = require.resolve('axe-core/axe.min.js');
+
+// The course as the introduction declares it: its name, its modules and their
+// parts, written or still to come. The checks read it from here so that a new
+// part is checked the day it is written, without anyone adding it to a list.
+export function course() {
+  return parseIntro(CONTENT_DIR);
+}
+
+// The site's own pages: the home page and every written part, in course order.
+export function sitePages() {
+  return [
+    'Main.dc.html',
+    ...course()
+      .parts.filter((p) => p.written)
+      .map((p) => p.out),
+  ];
+}
 
 // Starts the server and the browser. Close both with site.close().
 // Without the canvas's runtime beside the boards nothing would render, and
