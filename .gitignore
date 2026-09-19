@@ -1,0 +1,7 @@
+node_modules
+dist
+test-results
+.DS_Store
+
+# the canvas runtime has no licence to republish it; see vendor/README.md
+vendor/design-runtime.js

@@ -1,0 +1,10 @@
+dist
+node_modules
+package-lock.json
+.claude
+test-results
+vendor
+
+# the course as its author wrote it, byte for byte
+/Course introduction.md
+/Part *.md

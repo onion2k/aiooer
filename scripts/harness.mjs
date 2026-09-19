@@ -1,0 +1,76 @@
+// The test API. Serves the built site beside the canvas's own page runtime,
+// opens a board in headless Chromium, and drives it the way a reader does:
+// through the reading settings panel and the page's buttons. Every check and
+// look tool goes through here, so they all see the site exactly as the canvas
+// renders it; without it each script would boot the page its own way and
+// their figures would not agree.
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+import { chromium } from 'playwright';
+import { serve } from './serve.mjs';
+import { TEST_SITE } from '../src/paths.mjs';
+
+const require = createRequire(import.meta.url);
+export const AXE_PATH = require.resolve('axe-core/axe.min.js');
+
+// Starts the server and the browser. Close both with site.close().
+// Without the canvas's runtime beside the boards nothing would render, and
+// every check would fail on an empty page; this says why before any does.
+export async function startSite() {
+  if (!fs.existsSync(path.join(TEST_SITE, 'support.js'))) {
+    throw new Error(
+      'The canvas runtime is missing, so the boards cannot be rendered. It is not in the repository; vendor/README.md says how to get it. Then run npm run build.',
+    );
+  }
+  const server = await serve(TEST_SITE);
+  const browser = await chromium.launch();
+  return {
+    browser,
+    url: (file) => `http://127.0.0.1:${server.address().port}/${file}`,
+    async close() {
+      await browser.close();
+      server.close();
+    },
+  };
+}
+
+// Opens a board and waits until it has rendered and its typeface is in.
+// Line lengths and pictures measured in a fallback font would be wrong, so a
+// page whose body face failed to load (offline, or the font service down)
+// stops the run instead of producing figures.
+export async function openPage(site, file, { width = 1440, height = 900, errors = [] } = {}) {
+  const page = await site.browser.newPage({ viewport: { width, height } });
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(site.url(file));
+  await page.waitForSelector('.reader', { timeout: 15000 });
+  await page.evaluate(() => document.fonts.ready);
+  const face = await page.evaluate(() => {
+    const family = getComputedStyle(document.querySelector('.reader'))
+      .fontFamily.split(',')[0]
+      .replace(/["']/g, '')
+      .trim();
+    const loaded = [...document.fonts].some((f) => f.family.replace(/["']/g, '') === family && f.status === 'loaded');
+    return { family, loaded };
+  });
+  if (!face.loaded)
+    throw new Error(
+      `${file}: the body typeface "${face.family}" did not load, so nothing measured here can be trusted`,
+    );
+  await page.waitForTimeout(150);
+  return page;
+}
+
+// Chooses a reading setting through the panel, opening it if it is shut.
+// The panel is left open; close it with togglePanel(page, 'settings').
+export async function setSetting(page, key, value) {
+  const button = page.locator('button[aria-controls="settings-panel"]');
+  if ((await button.getAttribute('aria-expanded')) !== 'true') await button.click();
+  await page.locator(`input[name="setting-${key}"][value="${value}"]`).check();
+}
+
+// Opens or shuts the header's panels: 'settings' or 'parts'.
+export async function togglePanel(page, name) {
+  await page.locator(`button[aria-controls="${name}-panel"]`).click();
+}

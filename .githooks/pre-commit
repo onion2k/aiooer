@@ -1,0 +1,5 @@
+#!/bin/sh
+# Everything quick before a commit: formatting, lint, the contrast gate and a
+# build. The audit takes minutes; run `npm run check` for that too.
+# Skip in an emergency with `git commit --no-verify`.
+exec npm run --silent check:quick
