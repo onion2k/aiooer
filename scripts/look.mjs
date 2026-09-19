@@ -37,10 +37,12 @@ for (const file of canvas.order) {
     return { natural: Math.ceil(r.scrollHeight), text: r.innerText.length };
   });
   // A frame sized from a recorded height has to still fit its content, or the
-  // board on the canvas is cut short or left with an empty tail.
+  // board on the canvas is cut short or left with an empty tail. Frames are
+  // capped at the canvas's 8000px, so past the cap a change does not matter.
   const recorded = heights[file];
-  const sizedFromHeight = recorded !== undefined && board.h === Math.min(8000, recorded);
-  if (!writeHeights && sizedFromHeight && Math.abs(recorded - info.natural) > 2) {
+  const cap = (px) => Math.min(8000, px);
+  const sizedFromHeight = recorded !== undefined && board.h === cap(recorded);
+  if (!writeHeights && sizedFromHeight && Math.abs(cap(recorded) - cap(info.natural)) > 2) {
     problems.push(
       `recorded height ${recorded}px is out of date, the board is now ${info.natural}px: run npm run heights`,
     );

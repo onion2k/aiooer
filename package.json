@@ -8,7 +8,7 @@
     "build": "node src/build.mjs",
     "dev": "node src/build.mjs && node scripts/serve.mjs",
     "look": "node scripts/look.mjs",
-    "heights": "node scripts/look.mjs --heights && node src/build.mjs",
+    "heights": "node src/build.mjs && node scripts/look.mjs --heights && node src/build.mjs",
     "contrast": "node scripts/contrast.mjs",
     "audit": "node scripts/audit.mjs",
     "audit:quick": "node scripts/audit.mjs --quick",
