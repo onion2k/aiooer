@@ -76,6 +76,20 @@ const rows = [
         maxSections: 3,
         make: (p) => partFile(models[0], parts, intro, p),
       },
+      // The first written part of each later module, so that a module's own
+      // label and breadcrumb are seen at phone width too.
+      ...models
+        .filter((m) => m.n === 1 && m.module !== models[0].module)
+        .map((m) => ({
+          file: `Phone-${m.out}`,
+          title: `Phone: ${m.module}, part 1, opening sections`,
+          w: 390,
+          h: h(`Phone-${m.out}`, 6000),
+          fixed: true,
+          remember: false,
+          maxSections: 3,
+          make: (p) => partFile(m, parts, intro, p),
+        })),
       {
         file: 'Phone-Contents.dc.html',
         title: 'Phone: contents open',

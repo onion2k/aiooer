@@ -135,7 +135,8 @@ canvas is private until it is shared from its Share menu.
 ## How the code is laid out
 
 - **The course** is the markdown at the top. The build reads it and never
-  writes it, and Prettier is told to leave it alone.
+  writes it, and Prettier is told to leave it alone: a new module's file
+  prefix goes into `.prettierignore` as well as `MODULE_FILES`.
 - `src/content.mjs` is the course without its picture: the introduction into
   the course's modules and parts (`MODULE_FILES` there gives each module's
   file and page prefix; a new module is added to it), and markdown into page
@@ -302,6 +303,9 @@ For anything new on a page, check what it does:
   order, table roles kept when a table stacks, icons hidden, new-tab links
   announced
 - **the 1.4.12 spacing overrides** and **forced colours**
+- **a part's second block in one language:** each code block is a named,
+  scrollable region, and regions on a page need different names, so the
+  parser numbers them and the second says it is the second
 - **the markdown's shapes:** tight and loose lists, empty table cells and an
   empty corner cell, code spans whose spaces matter, bold-only paragraphs,
   bold quoted questions, `file/…` links and outside links

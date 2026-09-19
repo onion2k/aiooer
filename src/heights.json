@@ -1,12 +1,12 @@
 {
-  "Main.dc.html": 6400,
-  "Part1.dc.html": 29848,
-  "Part2.dc.html": 31652,
-  "Part3.dc.html": 31010,
-  "Part4.dc.html": 39358,
-  "Part5.dc.html": 38366,
-  "Part6.dc.html": 29241,
-  "Phone-Home.dc.html": 12624,
+  "Main.dc.html": 6493,
+  "Part1.dc.html": 29940,
+  "Part2.dc.html": 31745,
+  "Part3.dc.html": 31103,
+  "Part4.dc.html": 39451,
+  "Part5.dc.html": 38459,
+  "Part6.dc.html": 29334,
+  "Phone-Home.dc.html": 12760,
   "Phone-Part.dc.html": 8283,
   "Phone-Contents.dc.html": 2205,
   "Phone-Parts.dc.html": 3321,
@@ -14,5 +14,7 @@
   "Settings-Open.dc.html": 2155,
   "Theme-Dark.dc.html": 6347,
   "Theme-Contrast.dc.html": 6347,
-  "Theme-Largest.dc.html": 6177
+  "Theme-Largest.dc.html": 6177,
+  "Images1.dc.html": 32550,
+  "Phone-Images1.dc.html": 8430
 }

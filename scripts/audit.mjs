@@ -108,6 +108,7 @@ const THEMES = quick ? ['paper', 'dark'] : ['paper', 'white', 'dark', 'contrast'
 const COMPS = [
   'Phone-Home.dc.html',
   'Phone-Part.dc.html',
+  'Phone-Images1.dc.html',
   'Phone-Contents.dc.html',
   'Phone-Parts.dc.html',
   'Phone-Settings.dc.html',

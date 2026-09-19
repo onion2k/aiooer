@@ -105,6 +105,7 @@ export function parsePart(dir, src) {
   let myth = null;
   let deepCount = 0;
   let diagramCount = 0;
+  const codeCounts = {};
 
   const push = (block) => {
     if (deep) deep.blocks.push(block);
@@ -187,7 +188,11 @@ export function parsePart(dir, src) {
       continue;
     }
     if (tok.type === 'code') {
-      push({ type: 'code', lang: tok.lang || null, text: tok.text });
+      // Its place among the part's blocks in the same language, so that the
+      // renderer can give each scrollable region a name of its own.
+      const lang = tok.lang || null;
+      codeCounts[lang] = (codeCounts[lang] || 0) + 1;
+      push({ type: 'code', lang, text: tok.text, nth: codeCounts[lang] });
       continue;
     }
     if (isBoldOnly(tok)) {

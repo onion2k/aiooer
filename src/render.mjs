@@ -101,7 +101,10 @@ function renderCode(block) {
   const lang = block.lang === 'python' ? 'Python' : null;
   const body = block.lang === 'python' ? highlightPython(block.text) : esc(block.text);
   const label = lang ? `${lang} code` : 'Formula';
-  return `<div class="code-block"><p class="code-cap label" aria-hidden="true">${esc(label)}</p><pre class="code" tabindex="0" role="region" aria-label="${esc(label)}"><code>${body}</code></pre></div>`;
+  // Each block is a region a keyboard can scroll, and regions on one page
+  // need different names, so a part's second Python block says it is the second.
+  const name = block.nth > 1 ? `${label} ${block.nth}` : label;
+  return `<div class="code-block"><p class="code-cap label" aria-hidden="true">${esc(label)}</p><pre class="code" tabindex="0" role="region" aria-label="${esc(name)}"><code>${body}</code></pre></div>`;
 }
 
 function renderPlain(block) {

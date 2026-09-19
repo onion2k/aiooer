@@ -1,4 +1,4 @@
-// The course's six Mermaid diagrams, redrawn as HTML figures. A drawing of
+// The course's Mermaid diagrams, redrawn as HTML figures. A drawing of
 // boxes and arrows is an image to a screen reader and does not reflow on a
 // phone; an ordered list of real text is read in order, grows with the text
 // size setting and stacks at any width. Each entry follows its Mermaid source
@@ -88,6 +88,47 @@ export const DIAGRAMS = {
       { from: 2, to: 0, text: 'Result' },
       { from: 0, to: 1, text: 'Result added to context' },
       { from: 1, to: 0, text: 'Final answer, or another tool call' },
+    ],
+  },
+  // Image models part 1, section 1. flowchart LR: the prompt and the seed both
+  // feed the denoiser, which loops on itself before the decoder.
+  'images1-1': {
+    kind: 'flow',
+    layout: 'column',
+    caption: 'From a prompt and a seed to an image',
+    steps: [
+      { text: 'Prompt and seed' },
+      { text: 'Text encoder: the prompt becomes vectors' },
+      { text: 'Random noise in latent space, made from the seed' },
+      { text: 'Denoiser: reads the grid and the prompt vectors, and guesses the noise' },
+      { text: 'Decoder' },
+      { text: 'Image' },
+    ],
+    loop: 'Remove some of the noise and run step 4, the denoiser, again, 20 to 50 times, before moving on to the decoder.',
+  },
+  // Image models part 1, section 3. Two subgraphs: training and generating.
+  'images1-2': {
+    kind: 'lanes',
+    caption: 'The same game, played two ways',
+    lanes: [
+      {
+        label: 'Training',
+        steps: [
+          'Image and caption',
+          'Add a known amount of noise',
+          'Model guesses the noise',
+          'Compare with the truth, adjust the weights',
+        ],
+      },
+      {
+        label: 'Generating',
+        steps: [
+          'Pure noise and a prompt',
+          'Model guesses the noise',
+          'Remove part of the guess, and repeat from the step before, 20 to 50 times',
+          'Clean image',
+        ],
+      },
     ],
   },
   // Part 4, section 3. Two rows: indexing ahead of time, answering per question.
