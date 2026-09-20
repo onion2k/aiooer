@@ -10,7 +10,7 @@
 // every child takes the full width. Every grid of blocks sizes its rows to
 // the tallest block, so the blocks in it are always the same height.
 
-import { THEMES, THEME_ORDER } from './tokens.mjs';
+import { THEMES, THEME_ORDER, HUE_COUNT } from './tokens.mjs';
 
 export const FONT_LINK =
   'https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Atkinson+Hyperlegible+Mono:wght@400;700&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;0,800;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap';
@@ -62,7 +62,10 @@ function themeBlocks() {
     const vars = Object.entries(VAR_NAMES)
       .map(([k, v]) => `${v}:${t[k]}`)
       .join(';');
-    return `.theme-${name}{${vars};color-scheme:${name === 'dark' || name === 'contrast' ? 'dark' : 'light'}}`;
+    // High contrast sets every hue to its ink, so it stays black, white, cyan
+    // and yellow, and the module is named in words wherever a hue would be.
+    const hues = Array.from({ length: HUE_COUNT }, (_, i) => `--hue-${i + 1}:${t[`hue${i + 1}`]}`).join(';');
+    return `.theme-${name}{${vars};${hues};color-scheme:${name === 'dark' || name === 'contrast' ? 'dark' : 'light'}}`;
   }).join('\n');
 }
 
@@ -472,6 +475,15 @@ ${swatches()}
 .home-kicker{margin:0 0 1.1em}
 .home-title{margin:0;font-family:var(--font-display);font-weight:900;font-size:7.4em;line-height:0.87;letter-spacing:-0.05em;text-wrap:balance}
 .hero-rule{margin-top:1.3em;border-top:var(--bw-heavy) solid var(--ink)}
+/* A part page's band sits between the breadcrumbs and the eyebrow that names
+   its module, so the colour and the words arrive together. */
+.hero .eyebrow::before{content:"";display:block;height:0.5em;margin:0 0 0.9em;background:var(--hue)}
+.parts-group-title,.footer-group-title{border-left:0.5em solid var(--hue);padding-left:0.6em}
+/* The pager names the module it crosses into whenever it is a different one.
+   The band sits inside the link's own border, which stays whole: a pastel is
+   too quiet to carry a boundary. */
+.reader .pager-link{position:relative;padding-top:1.7em}
+.reader .pager-link::before{content:"";position:absolute;left:0;right:0;top:0;height:0.5em;background:var(--hue)}
 .home-lede{--start:1;--span:7;margin:1.4em 0 0;max-width:30em;font-size:1.3em;line-height:1.5}
 .hero-side{--start:9;--span:4;display:flex;flex-direction:column;gap:1.5em;padding-top:1.9em}
 .home-meta{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.75em;color:var(--ink-2)}
@@ -507,6 +519,15 @@ ${swatches()}
 /* A part still to come: the same card, sunk into the ground, leading nowhere. */
 .part-card.is-coming,.part-card.is-coming:hover{background:var(--sunk);border-color:var(--edge);color:inherit}
 .module{--span:12;margin-top:1.6em;padding-top:1.2em;border-top:var(--bw) solid var(--ink)}
+/* A module's hue. It is a design language and never a meaning: the module is
+   named in words wherever one of these appears, and the high contrast theme
+   sets every hue to the ink, so nothing there depends on telling them apart.
+   The hues are bands and rules only, never behind text, so none of them has to
+   carry a 7:1 pair. */
+.module{position:relative}
+.module::before{content:"";position:absolute;left:0;right:0;top:calc(var(--bw) * -1);height:0.5em;background:var(--hue)}
+.module .part-card::before{content:"";position:absolute;left:0;right:0;top:0;height:0.5em;background:var(--hue)}
+.module .part-card{padding-top:1.7em}
 .module-title{margin:0;font-family:var(--font-display);font-weight:900;font-size:2em;line-height:1.05;letter-spacing:-0.03em;scroll-margin-top:1em}
 /* These outrank the home page's paragraph rule, which would otherwise close
    the gap under the module's name and open one under its last paragraph. */

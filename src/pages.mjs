@@ -53,7 +53,7 @@ function partHero(part) {
   const title = part.subtitle
     ? `${esc(part.title)}<span class="sr-only">: </span><span class="title-sub">${esc(part.subtitle)}</span>`
     : esc(part.title);
-  return `<div class="hero">${crumbs(part)}<p class="eyebrow label">${esc(part.module)} · Part ${part.n} of ${part.of}</p><h1 class="title">${title}</h1><ul class="hero-meta label" role="list"><li>${ICONS.clock}<span>About ${esc(
+  return `<div class="hero" style="--hue: var(--hue-${part.hue})">${crumbs(part)}<p class="eyebrow label">${esc(part.module)} · Part ${part.n} of ${part.of}</p><h1 class="title">${title}</h1><ul class="hero-meta label" role="list"><li>${ICONS.clock}<span>About ${esc(
     minutes(meta.time),
   )}</span></li><li>${ICONS.calendar}<span>Written ${longDate(part.date)}${part.author ? ` by ${esc(part.author)}` : ''}</span></li></ul><div class="outcome"><p class="outcome-label label">${ICONS.outcome}<span>After this part you can</span></p><p class="outcome-text">${esc(
     smartPlain(meta.outcome),
@@ -192,7 +192,7 @@ function homeMain(intro, parts) {
     )}</a></h4>${outcome}<p class="part-time label">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
   };
   const moduleBlock = (m) =>
-    `<div class="module" id="module-${m.slug}"><h3 class="module-title">${esc(m.name)}</h3><p class="module-meta label">${esc(moduleMeta(m))}</p><div class="module-notes">${paragraphs(
+    `<div class="module" id="module-${m.slug}" style="--hue: var(--hue-${m.hue})"><h3 class="module-title">${esc(m.name)}</h3><p class="module-meta label">${esc(moduleMeta(m))}</p><div class="module-notes">${paragraphs(
       m.notes,
     )}</div><ol class="part-cards grid-12" role="list">${m.parts.map(card).join('')}</ol></div>`;
   const written = parts.filter((p) => p.written);

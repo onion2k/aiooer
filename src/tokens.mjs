@@ -9,6 +9,19 @@
 // for highlights. The theme keys are what a reader's saved settings hold, so
 // they never change; only their labels and colours do.
 
+// One muted hue per module, in the order the introduction declares them. They
+// are a design language and never a meaning of their own: every place one
+// appears also names its module in words, so a reader who cannot see the
+// difference loses nothing. They are deliberately quieter than the blue and
+// the yellow, which carry meaning and must keep the eye.
+//
+// The same seven serve every theme but high contrast, which has none: a mid
+// tone reads against a near-white ground and a near-black one alike, and each
+// clears 3.5:1 against every ground it can sit on, so a band is always a band
+// and never a smudge. They carry no text, so nothing needs 7:1 on them.
+export const HUE_NAMES = ['sand', 'coral', 'mint', 'periwinkle', 'apricot', 'aqua', 'lilac'];
+export const HUE_COUNT = HUE_NAMES.length;
+
 export const THEMES = {
   paper: {
     label: 'Light grey',
@@ -46,6 +59,13 @@ export const THEMES = {
     footerLink: '#FFE500',
     select: '#FFE500',
     selectInk: '#0A0A0A',
+    hue1: '#E0D2BB', // sand
+    hue2: '#FFB0A3', // coral
+    hue3: '#A9E4C3', // mint
+    hue4: '#B7C6F5', // periwinkle
+    hue5: '#F7CB9E', // apricot
+    hue6: '#A3DCEA', // aqua
+    hue7: '#DCBCEE', // lilac
   },
   white: {
     label: 'White',
@@ -83,6 +103,13 @@ export const THEMES = {
     footerLink: '#FFE500',
     select: '#FFE500',
     selectInk: '#0A0A0A',
+    hue1: '#E0D2BB', // sand
+    hue2: '#FFB0A3', // coral
+    hue3: '#A9E4C3', // mint
+    hue4: '#B7C6F5', // periwinkle
+    hue5: '#F7CB9E', // apricot
+    hue6: '#A3DCEA', // aqua
+    hue7: '#DCBCEE', // lilac
   },
   dark: {
     label: 'Dark',
@@ -120,6 +147,13 @@ export const THEMES = {
     footerLink: '#FFE500',
     select: '#FFE500',
     selectInk: '#111111',
+    hue1: '#403C35', // sand
+    hue2: '#4E3632', // coral
+    hue3: '#2F4037', // mint
+    hue4: '#373C4A', // periwinkle
+    hue5: '#463A2D', // apricot
+    hue6: '#2F3F43', // aqua
+    hue7: '#423948', // lilac
   },
   contrast: {
     label: 'High contrast',
@@ -157,6 +191,13 @@ export const THEMES = {
     footerLink: '#FFFF00',
     select: '#FFFF00',
     selectInk: '#000000',
+    hue1: '#FFFFFF', // sand
+    hue2: '#FFFFFF', // coral
+    hue3: '#FFFFFF', // mint
+    hue4: '#FFFFFF', // periwinkle
+    hue5: '#FFFFFF', // apricot
+    hue6: '#FFFFFF', // aqua
+    hue7: '#FFFFFF', // lilac
   },
 };
 
@@ -208,6 +249,18 @@ export const TEXT_PAIRS = [
 // Boundaries and indicators that must stand out from what surrounds them:
 // 3:1 for component edges (1.4.11) and for the focus ring (2.4.13). The
 // footer is a dark block in every theme, so its ring is the footer link colour.
+// A module's hue is decoration: it is never behind text and nothing depends
+// on telling one from another, so WCAG asks nothing of it and 1.4.11 does not
+// apply. What it does need is to look deliberate, which is a window rather
+// than a floor. Too faint and a band is a smudge; too strong and it competes
+// with the blue and the yellow, which carry meaning and must keep the eye.
+export const HUE_RANGE = { min: 1.15, max: 2.2 };
+export const HUE_PAIRS = Array.from({ length: 7 }, (_, i) => `hue${i + 1}`).flatMap((h) => [
+  [h, 'bg'],
+  [h, 'surface'],
+  [h, 'sunk'],
+]);
+
 export const UI_PAIRS = [
   ['edge', 'bg'],
   ['edge', 'surface'],

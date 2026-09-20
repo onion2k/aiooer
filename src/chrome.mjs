@@ -40,7 +40,7 @@ function partsPanel(modules, current) {
   const groups = modules
     .map(
       (m) =>
-        `<div class="parts-group"><p class="parts-group-title label" id="parts-group-${m.slug}">${esc(m.name)}</p><ol class="parts-list grid-12" role="list" aria-labelledby="parts-group-${m.slug}">${m.parts.map(item).join('')}</ol></div>`,
+        `<div class="parts-group" style="--hue: var(--hue-${m.hue})"><p class="parts-group-title label" id="parts-group-${m.slug}">${esc(m.name)}</p><ol class="parts-list grid-12" role="list" aria-labelledby="parts-group-${m.slug}">${m.parts.map(item).join('')}</ol></div>`,
     )
     .join('');
   const introHere = !current;
@@ -89,12 +89,12 @@ export function pager(part, parts) {
   const before = written[i - 1];
   const after = written[i + 1];
   const prev = before
-    ? { href: before.out, label: name(before) }
+    ? { href: before.out, label: name(before), hue: before.hue }
     : { href: 'Main.dc.html', label: 'Course introduction' };
   const next = after
-    ? { href: after.out, label: name(after) }
+    ? { href: after.out, label: name(after), hue: after.hue }
     : { href: 'Main.dc.html', label: 'Back to the course introduction', dir: 'End of the course' };
-  return `<nav class="pager" aria-label="Previous and next"><a class="pager-link is-prev" href="${prev.href}"><span class="pager-dir label">${ICONS.arrowLeft}<span>Previous</span></span><span class="pager-title">${esc(prev.label)}</span></a><a class="pager-link is-next" href="${next.href}"><span class="pager-dir label"><span>${next.dir || 'Next'}</span>${ICONS.arrowRight}</span><span class="pager-title">${esc(next.label)}</span></a></nav>`;
+  return `<nav class="pager" aria-label="Previous and next"><a class="pager-link is-prev" href="${prev.href}" style="--hue: ${prev.hue ? `var(--hue-${prev.hue})` : 'var(--ink)'}"><span class="pager-dir label">${ICONS.arrowLeft}<span>Previous</span></span><span class="pager-title">${esc(prev.label)}</span></a><a class="pager-link is-next" href="${next.href}" style="--hue: ${next.hue ? `var(--hue-${next.hue})` : 'var(--ink)'}"><span class="pager-dir label"><span>${next.dir || 'Next'}</span>${ICONS.arrowRight}</span><span class="pager-title">${esc(next.label)}</span></a></nav>`;
 }
 
 // Every written page, a group for each module that has one.
@@ -103,7 +103,7 @@ export function footer(modules, currencyNote, course) {
     .filter((m) => m.parts.some((p) => p.written))
     .map(
       (m) =>
-        `<div class="footer-group"><p class="footer-group-title label" id="footer-group-${m.slug}">${esc(m.name)}</p><ul class="footer-links" role="list" aria-labelledby="footer-group-${m.slug}">${m.parts
+        `<div class="footer-group" style="--hue: var(--hue-${m.hue})"><p class="footer-group-title label" id="footer-group-${m.slug}">${esc(m.name)}</p><ul class="footer-links" role="list" aria-labelledby="footer-group-${m.slug}">${m.parts
           .filter((p) => p.written)
           .map((p) => `<li><a href="${p.out}">Part ${p.n}: ${esc(p.shortTitle)}</a></li>`)
           .join('')}</ul></div>`,

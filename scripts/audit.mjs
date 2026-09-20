@@ -23,6 +23,10 @@
 //             previous and next links run through every written part and
 //             end at the introduction, nothing links to an unwritten part,
 //             and the home page and the parts panel group parts by module
+//   hues      a module's hue is never the only signal: everywhere one is
+//             drawn, the module is also named in words, and in the high
+//             contrast theme every hue is the ink, so nothing there needs
+//             telling apart
 //   calculator  a part's calculator shows what calculator.mjs works out from
 //             the values on the page: as it opens, after each example, after
 //             a slider is moved from the keyboard and a day count typed, and
@@ -105,6 +109,18 @@ const MUTATIONS = {
   },
   // The spy's own scroll listener never hears the page scroll.
   spy: { js: () => window.addEventListener('scroll', (e) => e.stopImmediatePropagation(), true) },
+  // The words are taken away from beside the hues, leaving the colour to say
+  // on its own which module a thing belongs to, which is what must never
+  // happen. Flattening the hues instead would prove nothing: nothing depends
+  // on telling them apart, which is the whole point of them.
+  hues: {
+    js: () => {
+      for (const el of document.querySelectorAll(
+        '.module-title, .hero .eyebrow, .parts-group-title, .footer-group-title, .pager-link',
+      ))
+        el.textContent = '';
+    },
+  },
   // The calculator's result is swapped for a copy the page no longer updates.
   calc: {
     js: () => {
@@ -160,6 +176,7 @@ const KINDS = [
   'name',
   'modules',
   'calculator',
+  'hues',
 ];
 const emptyResults = () => Object.fromEntries(KINDS.map((k) => [k, []]));
 const results = emptyResults();
@@ -999,6 +1016,40 @@ async function auditPage(file) {
   // A calculator shows what its own rule gives for the values on the page. The
   // expectation is worked out here from those values, never typed, so the
   // check holds whatever stages and days the markdown declares.
+  // A hue is a design language, never a meaning: wherever one is drawn, the
+  // module it stands for is named in words within the same block, so the
+  // mutation that makes every hue alike takes nothing away.
+  if (run('hues')) {
+    const page = await open(file);
+    const named = await page.evaluate(() => {
+      const modules = [...document.querySelectorAll('.module')].map((el) => ({
+        where: 'a module on the home page',
+        hue: getComputedStyle(el).getPropertyValue('--hue').trim(),
+        words: el.querySelector('.module-title')?.textContent.trim() || '',
+      }));
+      const hero = [...document.querySelectorAll('.hero .eyebrow')].map((el) => ({
+        where: "a part's band",
+        hue: getComputedStyle(el.closest('.hero')).getPropertyValue('--hue').trim(),
+        words: el.textContent.trim(),
+      }));
+      const groups = [...document.querySelectorAll('.parts-group, .footer-group')].map((el) => ({
+        where: 'a group of parts',
+        hue: getComputedStyle(el).getPropertyValue('--hue').trim(),
+        words: el.querySelector('.parts-group-title, .footer-group-title')?.textContent.trim() || '',
+      }));
+      const pagers = [...document.querySelectorAll('.pager-link')].map((el) => ({
+        where: 'a way on',
+        hue: getComputedStyle(el).getPropertyValue('--hue').trim(),
+        words: el.textContent.trim(),
+      }));
+      return [...modules, ...hero, ...groups, ...pagers];
+    });
+    const mute = named.filter((h) => h.hue && !h.words);
+    if (!named.length) fail('hues', `${file}: nothing carries a module's hue`);
+    else if (mute.length) fail('hues', `${file}: ${mute.length} coloured without words, first ${mute[0].where}`);
+    else pass('hues', `${file}: ${named.length} hues drawn, every one beside the words that say the same`);
+    await page.close();
+  }
   if (run('calculator')) {
     const page = await open(file);
     if (await page.locator('.calc').count()) {

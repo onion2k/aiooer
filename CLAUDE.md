@@ -65,7 +65,8 @@ https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
 easy to read as possible. The look is Brutalist graphic design: a pale grey
 ground, near-black type and heavy rules, International Klein Blue and a
-signal yellow, Archivo 900 for titles over Atkinson Hyperlegible Next for
+signal yellow, a bright pastel for each module, Archivo 900 for titles over
+Atkinson Hyperlegible Next for
 reading, IBM Carbon icons, square blocks, and a twelve-column grid. Plain
 JavaScript modules, marked for the markdown, Playwright and axe-core for
 the checks. The house rules in `~/.claude/CLAUDE.md` apply too. This file
@@ -113,6 +114,20 @@ was written on 19 September 2026 from what the code does at that date.
 - **One author line.** Each markdown file's second line is its date and its
   author, as `2026-09-19 · Chris Neale`, and the page says "Written … by …"
   from it; a line with no name shows the date alone. Nothing holds this yet.
+- **Colour never says anything on its own.** Each module has a hue, drawn as
+  a band on the home page and its cards, under a part's breadcrumbs, beside a
+  group of parts in the panel and the footer, and on a way on that crosses
+  into another module. Every one of those also names the module in words, and
+  the high contrast theme sets every hue to its ink. `audit`'s `hues` holds
+  it, and its mutation takes the words away rather than flattening the
+  colours, since nothing depends on telling them apart.
+- **A band is decoration, and held to a window.** A hue is never behind text
+  and carries no meaning, so WCAG asks nothing of it and 1.4.11 does not
+  apply. `contrast` holds each one between 1.15 and 2.2:1 against every ground
+  it can sit on instead: fainter and a band is a smudge, stronger and it
+  competes with the blue and the yellow, which do carry meaning. A band never
+  makes a boundary, either: a card's and a link's own borders stay whole and
+  the hue sits inside them, since a pastel is too quiet to be an edge.
 - **One name.** The course is called what the introduction's heading calls
   it, in the wordmark, the footer, every page title and the canvas's title.
   `audit` holds it, and a heading without both the course's name and the
@@ -124,7 +139,7 @@ Baselines as of 19 September 2026, on this machine:
 
 | Gate                | Holds                                  | Baseline                                                                     | Tolerance      |
 | ------------------- | -------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
-| `contrast`          | 188 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1                                  | none           |
+| `contrast`          | 251 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1             | none           |
 | `audit`, axe        | 361 runs                               | 0 violations, 0 needing review                                               | none           |
 | `audit`, measure    | 29 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
 | `audit`, targets    | 29 pages × desktop and phone           | all 44 × 44 or larger                                                        | none           |
@@ -139,6 +154,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, spy        | 28 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps                                        | none           |
 | `audit`, modules    | the home page and every written part   | label, breadcrumb, title, ways on, no dead links                             | none           |
 | `audit`, name       | 29 pages and the canvas's index        | the heading's name wherever it is shown                                      | none           |
+| `audit`, hues       | every page, everywhere a hue is drawn  | 17 to 21 a page, each beside the words that say the same                     | none           |
 | `audit`, calculator | the one part that has a calculator     | every example, the keyboard, typing and Start again show what the rule gives | none           |
 | `look`              | 42 boards                              | no errors; recorded heights match                                            | 2px on heights |
 | `links`             | 151 outside addresses the course cites | 150 ok, 1 unverified, 0 gone                                                 | none gone      |
@@ -185,7 +201,7 @@ The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,cor
 `--pages Part1.dc.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`, `calc`) to
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
 the runtime, the packages, the introduction, the list of pages or the flags
@@ -275,6 +291,8 @@ canvas is private until it is shared from its Share menu.
 - `src/styles.mjs` is the stylesheet, and holds the grid: a `grid-12`
   container lays its children on twelve columns, each child placing itself
   with `--start` and `--span` (and `--start-md` and `--span-md` out of six),
+  and each module's hue: a block belonging to a module sets `--hue` from the
+  `--hue-1` to `--hue-7` every theme defines,
   and every grid of blocks sizes its rows with `grid-auto-rows: 1fr`.
   `GRID_GUIDE` gives the canvas's desktop boards matching column guides.
 - `src/tokens.mjs` is the only place a colour lives, with the pairs
@@ -343,6 +361,13 @@ What to copy the shape of, when building something new:
   the values on the page with the same `delivery`. A part can hold one. The
   class is written inside a template literal, so nothing in it may use one,
   and its helper names must not clash with the ones already there.
+- **A colour that groups:** a module's hue. `HUE_NAMES` and each theme's
+  `hue1` to `hue7` are in `tokens.mjs`, with their pairs in `UI_PAIRS`;
+  `content.mjs` numbers each module as the introduction declares it, and
+  stops the build if there are more modules than hues; `styles.mjs` emits
+  `--hue-1` to `--hue-7` per theme and draws the bands; the blocks that carry
+  one set `--hue` inline; and `hues` in `audit.mjs` holds the rule that the
+  words are always there too.
 - **A tool that measures:** the measure check, `longestLine` in
   `audit.mjs`, with its mutation `--mutate measure`.
 

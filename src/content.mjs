@@ -9,6 +9,7 @@ import path from 'node:path';
 import { marked } from 'marked';
 import { plainText, PAGE_FILES } from './inline.mjs';
 import { parseCalculator } from './calculator.mjs';
+import { HUE_COUNT } from './tokens.mjs';
 
 // What each module's markdown files and pages are called. The modules
 // themselves, their order and their parts come from the introduction; this
@@ -326,7 +327,11 @@ function parseModules(dir, section) {
       const prefix = MODULE_FILES[name];
       if (!prefix) throw new Error(`No file names are known for a module called "${name}"; add it to MODULE_FILES`);
       if (modules.some((m) => m.name === name)) throw new Error(`The module "${name}" is declared twice`);
-      mod = { name, slug: slugify(name), prefix, optional, notes: [], parts: [] };
+      if (modules.length >= HUE_COUNT)
+        throw new Error(
+          `The course has more modules than there are hues in tokens.mjs, so "${name}" would share one; add a hue for it`,
+        );
+      mod = { name, slug: slugify(name), prefix, optional, hue: modules.length + 1, notes: [], parts: [] };
       modules.push(mod);
     } else if (!mod) lead.push(tok);
     else if (tok.type === 'table') mod.parts.push(...tok.rows.map((row) => parsePartRow(dir, mod, row)));
@@ -369,6 +374,7 @@ function parsePartRow(dir, mod, row) {
   return {
     module: mod.name,
     moduleSlug: mod.slug,
+    hue: mod.hue,
     n,
     id: `${mod.prefix.toLowerCase()}${n}`,
     shortTitle: mm[2],
