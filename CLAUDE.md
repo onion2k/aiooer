@@ -208,28 +208,41 @@ There are two outputs: the canvas, and an ordinary website.
 for the home page, and `reader.js`. Copy that folder to any static host. It
 needs no server code and no build step at the far end.
 
-It is taken from the canvas build rather than written separately, so it
-cannot drift: `scripts/static.mjs` opens each board with the runtime, exactly
-as the checks do, saves the rendered page, and cuts the canvas out of it, the
-placeholder styles, the `support.js` tag and the logic class. None of the
-runtime goes into it, so nothing unlicensed is republished; what ships is
-this project's own markup, rendered. The showcase boards are not part of the
-site and are left out.
+It runs in plain Node, with no browser and nothing that is not in this
+repository, so a build server can run it on a push. That matters: the runtime
+can never be committed, so a static build that needed it could only run on a
+machine that had fetched it by hand.
+
+A board is not a page. It is markup with holes, loops, branches and a logic
+class, which the runtime turns into a page in the browser.
+`scripts/static.mjs` does that work here: it runs the board's own logic class,
+with a small `DCLogic` stub, to get the values the page starts with, and
+`src/template.mjs` fills the template with them. Dotted holes, `<sc-for>`,
+`<sc-if>`, and the event attributes dropped, since `reader.js` binds its own:
+those are the only forms the build emits, and they are never nested more than
+one deep. Nothing of the runtime is in what ships. The showcase boards are
+not part of the site and are left out.
+
+It cannot drift from the canvas, and that is measured, not assumed: every
+page was compared with the same board rendered by the runtime and matched in
+text, structure, classes, inputs, state and links, and screenshots of the
+home page and the lifecycle part were byte-identical. The one difference is
+that the runtime wraps interpolated text in a `<span class="sc-interp">`,
+which nothing styles; the static pages have 18 fewer elements for it.
 
 What the runtime did in the browser, `src/reader.js` does: the reading
 settings, the header's panels, the deep dives, the contents that follow the
 reader, and the calculator, whose arithmetic is written into the page from
 `calculator.mjs` so that both sites work from one rule. Without JavaScript a
 page still holds the whole course, with the settings the build wrote. The
-static build checks its own output: no holes, loops, runtime or board links
-left, no dead link between pages, and every page opened again from the folder
-it wrote, failing on any error, any missing file, or a page whose script did
-not run.
+static build checks its own output: no hole, loop, event attribute, board
+link or piece of the canvas left, and no dead link between pages.
 
 The audit does not yet cover `dist/site`; it walks the canvas's boards. axe
 found nothing on all 32 static pages in the default theme when the build was
-written, and the rest of the guarantees are proved on the boards the static
-pages are taken from.
+written, the calculator, settings, panels, deep dives and contents were all
+driven there, and the rest of the guarantees are proved on the boards the
+static pages match.
 
 ### The canvas
 
