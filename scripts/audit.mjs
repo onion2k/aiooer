@@ -27,16 +27,35 @@
 //             the wordmark, the footer, every page title and the canvas
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
 //   node scripts/audit.mjs [--quick] [--only axe,measure,...] [--pages File.dc.html,...] [--mutate name]
+//                           [--jobs 4] [--all]
+//
+// Pages are audited several at a time, since each opens in its own browser
+// context and shares nothing with the others, and their results are put back
+// in page order, so the report reads the same however the work fell out.
+//
+// A page that passed is not audited again until something that could change
+// its result has changed: its own built file, this script, the harness, the
+// canvas runtime, the installed packages, the introduction, the list of built
+// pages, or the flags. The key is a hash of all of those, and the results kept
+// under it are the very lines the last run wrote. A failure is never kept, a
+// mutated run neither reads nor writes what is kept, and --all audits every
+// page whatever is kept. The typefaces come from the network and are not in
+// the key; a page stops the run if its face did not load, so a bad one is
+// never kept either.
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { startSite, openPage, setSetting, AXE_PATH, course, sitePages } from './harness.mjs';
-import { RESULTS, CANVAS_PROJECT } from '../src/paths.mjs';
+import { RESULTS, CANVAS_PROJECT, TEST_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
 // --only measure,reflow runs just those checks, for quick iteration.
 const run = (check) => !only || only.includes(check);
+const jobs = process.argv.includes('--jobs') ? Number(process.argv[process.argv.indexOf('--jobs') + 1]) : 4;
+const all = process.argv.includes('--all');
 const pagesArg = process.argv.includes('--pages') ? process.argv[process.argv.indexOf('--pages') + 1].split(',') : null;
 // --mutate <name> puts a known defect into every page, to prove the check
 // that should catch it does catch it.
@@ -113,28 +132,30 @@ const COMPS = JSON.parse(fs.readFileSync(path.join(CANVAS_PROJECT, 'canvas.json'
 );
 
 const site = await startSite();
-const results = {
-  axe: [],
-  measure: [],
-  targets: [],
-  reflow: [],
-  spacing: [],
-  keyboard: [],
-  headings: [],
-  corners: [],
-  grids: [],
-  storage: [],
-  numerals: [],
-  spy: [],
-  name: [],
-  modules: [],
-};
-let failures = 0;
-const fail = (kind, msg) => {
-  failures++;
-  results[kind].push('FAIL ' + msg);
-};
-const pass = (kind, msg) => results[kind].push('ok   ' + msg);
+const KINDS = [
+  'axe',
+  'measure',
+  'targets',
+  'reflow',
+  'spacing',
+  'keyboard',
+  'headings',
+  'corners',
+  'grids',
+  'storage',
+  'numerals',
+  'spy',
+  'name',
+  'modules',
+];
+const emptyResults = () => Object.fromEntries(KINDS.map((k) => [k, []]));
+const results = emptyResults();
+// Each page being audited has results of its own, found through the async
+// context, so that pages running side by side never write into one list.
+// Anything checked outside a page writes straight into the run's results.
+const current = new AsyncLocalStorage();
+const fail = (kind, msg) => (current.getStore() || results)[kind].push('FAIL ' + msg);
+const pass = (kind, msg) => (current.getStore() || results)[kind].push('ok   ' + msg);
 
 async function open(file, { width = 1440, height = 900 } = {}) {
   const errors = [];
@@ -184,7 +205,9 @@ async function runAxe(page, label) {
     fail('axe', `${label}: ${r.violations.map((v) => `${v.id} x${v.n} [${v.targets.join(' | ')}]`).join('; ')}`);
   else pass('axe', `${label}: no violations`);
   if (r.incomplete.length)
-    results.axe.push(`note ${label}: needs review: ${r.incomplete.map((v) => `${v.id} x${v.n}`).join(', ')}`);
+    (current.getStore() || results).axe.push(
+      `note ${label}: needs review: ${r.incomplete.map((v) => `${v.id} x${v.n}`).join(', ')}`,
+    );
 }
 
 // The longest line of running text, counted in characters, found by
@@ -590,7 +613,7 @@ const SAVED_SHAPES = [
 
 const SPACING_CSS = `.reader *{line-height:1.5!important;letter-spacing:0.12em!important;word-spacing:0.16em!important}.reader p{margin-bottom:2em!important}`;
 
-for (const file of pagesArg || FULL_PAGES) {
+async function auditPage(file) {
   // axe in every theme, first as the page opens, then with the settings
   // panel and every deep dive open so nothing hidden escapes the check.
   for (const theme of run('axe') ? THEMES : []) {
@@ -825,7 +848,8 @@ for (const file of pagesArg || FULL_PAGES) {
         return { opened: above.length, expected, shown };
       });
       const label = `${file} @${width}x${height}, ${moved.opened} deep dives opened above the reader`;
-      if (target === -1) results.spy.push(`note ${file}: no deep dives, so nothing moves without scrolling`);
+      if (target === -1)
+        (current.getStore() || results).spy.push(`note ${file}: no deep dives, so nothing moves without scrolling`);
       else if (moved.expected === target)
         fail('spy', `${label}: the reader's section did not change, so this proves nothing`);
       else if (moved.shown !== moved.expected)
@@ -1006,8 +1030,62 @@ for (const file of pagesArg || FULL_PAGES) {
     }
     await page.close();
   }
-  console.error(`audited ${file}`);
 }
+
+// A showcase board is a trimmed page at a fixed size, so axe is all it needs.
+async function auditBoard(file) {
+  const phone = file.startsWith('Phone');
+  const page = await open(file, { width: phone ? 390 : 1440, height: 900 });
+  await runAxe(page, `${file} (showcase board)`);
+  await page.close();
+}
+
+// Everything that could change a page's result, other than the page itself.
+const sha = (...parts) => parts.reduce((h, p) => h.update(p), crypto.createHash('sha256')).digest('hex');
+const SHARED = sha(
+  fs.readFileSync(new URL(import.meta.url)),
+  fs.readFileSync(new URL('./harness.mjs', import.meta.url)),
+  fs.readFileSync(path.join(TEST_SITE, 'support.js')),
+  fs.readFileSync(path.join(ROOT, 'package-lock.json')),
+  fs.readFileSync(path.join(CONTENT_DIR, 'Course introduction.md')),
+  fs.readdirSync(TEST_SITE).sort().join('|'),
+  JSON.stringify({ quick, only }),
+);
+const keyOf = (file) => sha(SHARED, fs.readFileSync(path.join(TEST_SITE, file)));
+const KEPT_FILE = path.join(RESULTS, 'audit-kept.json');
+const kept = !mutation && fs.existsSync(KEPT_FILE) ? JSON.parse(fs.readFileSync(KEPT_FILE, 'utf8')) : {};
+
+// The pages and then the boards, several at a time, each into results of its
+// own. A page whose key is unchanged since it last passed gives back the
+// lines it wrote then.
+const work = [
+  ...(pagesArg || FULL_PAGES).map((file) => ({ file, audit: auditPage })),
+  ...(run('axe') ? COMPS : []).map((file) => ({ file, audit: auditBoard })),
+];
+let unchanged = 0;
+let next = 0;
+await Promise.all(
+  Array.from({ length: Math.max(1, jobs) }, async () => {
+    while (next < work.length) {
+      const job = work[next++];
+      const key = keyOf(job.file);
+      if (!all && !mutation && kept[job.file]?.key === key) {
+        job.results = kept[job.file].results;
+        unchanged++;
+        continue;
+      }
+      job.results = emptyResults();
+      await current.run(job.results, () => job.audit(job.file));
+      const passed = !Object.values(job.results).some((lines) => lines.some((l) => l.startsWith('FAIL')));
+      if (passed && !mutation) kept[job.file] = { key, results: job.results };
+      else delete kept[job.file];
+      console.error(`audited ${job.file}`);
+    }
+  }),
+);
+// Pages first and boards last, each in its own order, as one run would have
+// written them.
+for (const job of work) for (const k of KINDS) results[k].push(...job.results[k]);
 
 // Saved settings of every shape load, once, on a part with deep dives.
 for (const shape of run('storage') ? SAVED_SHAPES : []) {
@@ -1049,19 +1127,15 @@ if (run('name')) {
   else pass('name', `canvas.json: titled "${course}"`);
 }
 
-for (const file of run('axe') ? COMPS : []) {
-  const phone = file.startsWith('Phone');
-  const page = await open(file, { width: phone ? 390 : 1440, height: 900 });
-  await runAxe(page, `${file} (showcase board)`);
-  await page.close();
-}
-
 await site.close();
 const report = Object.entries(results)
   .map(([k, lines]) => `## ${k}\n${lines.join('\n')}`)
   .join('\n\n');
 fs.mkdirSync(RESULTS, { recursive: true });
 fs.writeFileSync(path.join(RESULTS, 'audit-report.md'), report + '\n');
+if (!mutation) fs.writeFileSync(KEPT_FILE, JSON.stringify(kept));
+const failures = Object.values(results).reduce((n, lines) => n + lines.filter((l) => l.startsWith('FAIL')).length, 0);
 console.log(report);
-console.log(`\n${failures ? failures + ' FAILURE(S)' : 'ALL CHECKS PASS'}`);
+console.log(`\n${work.length - unchanged} audited, ${unchanged} unchanged since they last passed`);
+console.log(`${failures ? failures + ' FAILURE(S)' : 'ALL CHECKS PASS'}`);
 process.exit(failures ? 1 : 0);
