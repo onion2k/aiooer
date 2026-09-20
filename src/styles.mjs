@@ -469,6 +469,9 @@ ${swatches()}
 .part-cards:has(> :nth-child(4):last-child) > *{--span:3}
 /* Five sit three and then two, the two sharing the row between them. */
 .part-cards:has(> :nth-child(5):last-child) > :nth-child(n+4){--span:6}
+/* Two share the row between them, since two thirds would leave the last
+   third of it empty. */
+.part-cards:has(> :nth-child(2):last-child) > *{--span:6}
 /* A part still to come: the same card, sunk into the ground, leading nowhere. */
 .part-card.is-coming,.part-card.is-coming:hover{background:var(--sunk);border-color:var(--edge);color:inherit}
 .module{--span:12;margin-top:1.6em;padding-top:1.2em;border-top:var(--bw) solid var(--ink)}
