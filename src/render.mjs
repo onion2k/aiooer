@@ -7,6 +7,7 @@
 import { renderInline, plainText, esc, smartPlain, unescapeEntities } from './inline.mjs';
 import { renderDiagram } from './diagrams.mjs';
 import { ICONS } from './icons.mjs';
+import { MAX_DAYS, SAVED_STEP } from './calculator.mjs';
 
 // The Part column of a reference table holds a bare number, which means that
 // part of the same module; ctx.parts is the module's own list.
@@ -171,6 +172,18 @@ function renderQA(block) {
   return `<div class="qa"><h4 class="qa-q" id="${block.id}">${esc(smartPlain(block.question))}</h4><p>${renderInline(block.answer)}</p></div>`;
 }
 
+// The lifecycle calculator: a row for each stage, with the days it takes now
+// and the share of them AI saves, and under them what the whole comes to.
+// Every number on it is a hole, worked out in the page's logic from
+// calculator.mjs; the markup holds the words and the controls only. The
+// inputs are real ones with labels of their own, and the result is a live
+// region, so a screen reader hears the new total when a value changes.
+function renderCalculator(block) {
+  const n = block.stages.length;
+  const unit = esc(block.unit);
+  return `<figure class="figure calc" aria-labelledby="calc-cap"><figcaption class="figure-cap label" id="calc-cap">${esc(block.caption)}</figcaption><div class="calc-presets" role="group" aria-label="Try an example"><sc-for list="{{calc.presets}}" as="p" hint-placeholder-count="${block.presets.length}"><button type="button" class="btn-line calc-preset" onClick="{{p.apply}}">{{p.label}}</button></sc-for><button type="button" class="btn-line calc-preset calc-reset" onClick="{{calc.reset}}">${ICONS.reset}<span>Start again</span></button></div><ol class="calc-rows" role="list"><sc-for list="{{calc.rows}}" as="r" hint-placeholder-count="${n}"><li class="calc-row"><h4 class="calc-stage">{{r.name}}</h4><label class="calc-field"><span class="calc-label label">${unit[0].toUpperCase()}${unit.slice(1)} now</span><input class="calc-days" type="number" inputmode="decimal" min="0" max="${MAX_DAYS}" step="0.5" value="{{r.days}}" onChange="{{r.setDays}}"></label><label class="calc-field calc-field-saved"><span class="calc-label label">Time AI saves: <span class="calc-pct">{{r.saved}}%</span></span><input class="calc-saved" type="range" min="0" max="100" step="${SAVED_STEP}" value="{{r.saved}}" aria-valuetext="{{r.savedText}}" onChange="{{r.setSaved}}"></label><p class="calc-after"><span class="calc-label label">With AI</span><span class="calc-after-n"><span>{{r.after}} ${unit}</span></span></p><div class="calc-bar" aria-hidden="true"><span class="calc-bar-now" style="width: {{r.barNow}}%"></span><span class="calc-bar-after" style="width: {{r.barAfter}}%"></span></div></li></sc-for></ol><div class="calc-result" role="status" aria-live="polite"><p class="calc-totals"><span class="calc-total"><span class="calc-label label">Now</span><strong>{{calc.before}} ${unit}</strong></span><span class="calc-total"><span class="calc-label label">With AI</span><strong>{{calc.after}} ${unit}</strong></span><span class="calc-total calc-total-faster"><span class="calc-label label">The whole piece of work</span><strong>{{calc.faster}}</strong></span></p><p class="calc-note">{{calc.note}}</p></div></figure>`;
+}
+
 export function renderBlocks(blocks, ctx) {
   let headingId = ctx.headingId;
   let html = '';
@@ -204,6 +217,9 @@ export function renderBlocks(blocks, ctx) {
         break;
       case 'diagram':
         html += renderDiagram(b.key);
+        break;
+      case 'calculator':
+        html += renderCalculator(b);
         break;
       case 'glossary':
         html += renderGlossary(b);

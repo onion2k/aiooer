@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { marked } from 'marked';
 import { plainText, PAGE_FILES } from './inline.mjs';
+import { parseCalculator } from './calculator.mjs';
 
 // What each module's markdown files and pages are called. The modules
 // themselves, their order and their parts come from the introduction; this
@@ -118,6 +119,7 @@ export function parsePart(dir, src) {
   let myth = null;
   let deepCount = 0;
   let diagramCount = 0;
+  let calculator = null;
   const codeCounts = {};
 
   const push = (block) => {
@@ -200,6 +202,13 @@ export function parsePart(dir, src) {
       push({ type: 'diagram', key: `${src.id}-${diagramCount}`, source: tok.text });
       continue;
     }
+    if (tok.type === 'code' && tok.lang === 'calculator') {
+      // A page's logic holds one calculator's state, so a part may have one.
+      if (calculator) throw new Error(`${src.id}: a part can hold one calculator, and this is its second`);
+      calculator = parseCalculator(tok.text);
+      push({ type: 'calculator', ...calculator });
+      continue;
+    }
     if (tok.type === 'code') {
       // Its place among the part's blocks in the same language, so that the
       // renderer can give each scrollable region a name of its own.
@@ -239,7 +248,17 @@ export function parsePart(dir, src) {
       }
     }
   }
-  return { ...src, title, subtitle, fullTitle: full, date, author, sections, deepKeys: collectDeepKeys(sections) };
+  return {
+    ...src,
+    title,
+    subtitle,
+    fullTitle: full,
+    date,
+    author,
+    sections,
+    calculator,
+    deepKeys: collectDeepKeys(sections),
+  };
 }
 
 function collectDeepKeys(sections) {

@@ -358,6 +358,38 @@ ${swatches()}
 .flow-column{width:fit-content;min-width:min(100%,24em)}
 .flow-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-start}
 .flow-step{margin:0;padding:0;max-width:100%;display:flex;flex-direction:column;align-items:flex-start}
+/* The lifecycle calculator. A row for each stage: its name, the days it takes
+   now, the share AI saves, what is left, and a bar of the two under them. The
+   bars are an outline for now and a solid for with AI, in the text colour, so
+   they need no colours of their own and hold in every theme. Below 44em the
+   row's four pieces stack. */
+.calc-presets{display:flex;flex-wrap:wrap;gap:0.6em;margin:0 0 1.4em}
+.reader .calc-preset{font-size:0.92em;font-weight:700;line-height:1.25;text-align:left}
+.calc-rows{list-style:none;margin:0;padding:0;border-top:var(--bw) solid var(--edge)}
+.calc-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,1.9fr) minmax(0,0.8fr);gap:0.5em 1.4em;align-items:end;padding:1em 0 1.1em;border-bottom:1px solid var(--rule)}
+.calc-stage{margin:0;align-self:center;font-family:var(--font-display);font-weight:800;font-size:1.1em;line-height:1.15;letter-spacing:-0.01em}
+.calc-field{display:flex;flex-direction:column;gap:0.35em;min-width:0}
+.calc-label{display:block}
+.calc-pct{font-weight:800;color:var(--ink)}
+.calc-days{font:inherit;font-variant-numeric:tabular-nums;width:100%;min-height:48px;padding:0.3em 0.6em;border:var(--bw) solid var(--edge);border-radius:var(--r);background:var(--bg);color:var(--ink)}
+.calc-saved{width:100%;min-height:48px;margin:0;accent-color:var(--ink);cursor:pointer}
+.reader .calc-after{margin:0;display:flex;flex-direction:column;gap:0.35em}
+.calc-after-n{display:flex;align-items:center;min-height:48px;font-weight:800;font-variant-numeric:tabular-nums}
+.calc-bar{grid-column:1 / -1;position:relative;height:1.1em}
+.calc-bar-now,.calc-bar-after{position:absolute;left:0;top:0;bottom:0;min-width:2px;box-sizing:border-box}
+.calc-bar-now{border:var(--bw) solid var(--edge)}
+.calc-bar-after{background:var(--ink)}
+.calc-result{margin:1.4em 0 0;padding:1.1em 1.3em 1.2em;background:var(--plain-bg);color:var(--plain-ink);border:var(--bw) solid var(--plain-edge)}
+.calc-totals{display:flex;flex-wrap:wrap;gap:0.8em 2.4em;margin:0}
+.calc-total{display:flex;flex-direction:column;gap:0.2em}
+.calc-total strong{font-family:var(--font-display);font-weight:900;font-size:1.5em;line-height:1.1;letter-spacing:-0.015em}
+.calc-result .calc-label{color:var(--plain-ink)}
+.reader .calc-note{margin:0.9em 0 0;max-width:var(--measure)}
+@container page (width < 44em){
+  .calc-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .calc-stage,.calc-field-saved{grid-column:1 / -1}
+}
+@container page (width < 26em){.calc-row{grid-template-columns:minmax(0,1fr)}}
 .flow-box{display:inline-flex;max-width:100%;align-items:center;gap:0.6em;padding:0.5em 1em 0.5em 0.55em;border:var(--bw) solid var(--edge);background:var(--bg);font-size:0.95em;line-height:1.35}
 .flow-text{min-width:0}
 .flow-n{display:inline-grid;place-items:center;flex:none;min-width:1.8em;height:1.8em;padding:0 0.3em;background:var(--ink);color:var(--bg);font-family:var(--font-mono);font-size:0.8em;font-weight:700;line-height:1}
@@ -531,6 +563,8 @@ ${swatches()}
 
 /* Windows high contrast and other forced colours: keep edges and rings. */
 @media (forced-colors:active){
+  .calc-bar-after{background:CanvasText;forced-color-adjust:none}
+  .calc-bar-now,.calc-days,.calc-result{border-color:CanvasText}
   .header-btn,.choice,.btn-line,.toc-toggle,.deep-state,.pager-link,.part-card,.flow-box,.plain,.deep,.myth,.figure,.setting,.parts-item,.route,.legend li{border-color:CanvasText}
   .reader :focus-visible{outline-color:Highlight}
   .seq-step{border-bottom-color:CanvasText}

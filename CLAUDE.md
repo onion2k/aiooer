@@ -122,26 +122,27 @@ was written on 19 September 2026 from what the code does at that date.
 
 Baselines as of 19 September 2026, on this machine:
 
-| Gate               | Holds                                  | Baseline                                         | Tolerance      |
-| ------------------ | -------------------------------------- | ------------------------------------------------ | -------------- |
-| `contrast`         | 188 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1      | none           |
-| `audit`, axe       | 361 runs                               | 0 violations, 0 needing review                   | none           |
-| `audit`, measure   | 29 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2          | 80; 1% widths  |
-| `audit`, targets   | 29 pages × desktop and phone           | all 44 × 44 or larger                            | none           |
-| `audit`, reflow    | 29 pages × 320px and 200% zoom         | no sideways scroll                               | none           |
-| `audit`, spacing   | 29 pages × desktop and phone           | nothing clipped                                  | none           |
-| `audit`, keyboard  | 29 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1         | none           |
-| `audit`, headings  | 29 pages × desktop and phone           | one h1, no skipped level                         | none           |
-| `audit`, corners   | 29 pages, every panel, deep dive open  | none rounder than 2px                            | none           |
-| `audit`, grids     | 29 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols      | 1px on heights |
-| `audit`, storage   | 5 saved shapes                         | every one loads                                  | none           |
-| `audit`, numerals  | the home page in four themes           | the four ideas numbered in the text colour       | none           |
-| `audit`, spy       | 28 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps            | none           |
-| `audit`, modules   | the home page and every written part   | label, breadcrumb, title, ways on, no dead links | none           |
-| `audit`, name      | 29 pages and the canvas's index        | the heading's name wherever it is shown          | none           |
-| `look`             | 42 boards                              | no errors; recorded heights match                | 2px on heights |
-| `links`            | 151 outside addresses the course cites | 150 ok, 1 unverified, 0 gone                     | none gone      |
-| `perf`, not a gate | render, fonts, repaint, scrolling      | see below                                        | not held       |
+| Gate                | Holds                                  | Baseline                                                                     | Tolerance      |
+| ------------------- | -------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
+| `contrast`          | 188 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1                                  | none           |
+| `audit`, axe        | 361 runs                               | 0 violations, 0 needing review                                               | none           |
+| `audit`, measure    | 29 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
+| `audit`, targets    | 29 pages × desktop and phone           | all 44 × 44 or larger                                                        | none           |
+| `audit`, reflow     | 29 pages × 320px and 200% zoom         | no sideways scroll                                                           | none           |
+| `audit`, spacing    | 29 pages × desktop and phone           | nothing clipped                                                              | none           |
+| `audit`, keyboard   | 29 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
+| `audit`, headings   | 29 pages × desktop and phone           | one h1, no skipped level                                                     | none           |
+| `audit`, corners    | 29 pages, every panel, deep dive open  | none rounder than 2px                                                        | none           |
+| `audit`, grids      | 29 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
+| `audit`, storage    | 5 saved shapes                         | every one loads                                                              | none           |
+| `audit`, numerals   | the home page in four themes           | the four ideas numbered in the text colour                                   | none           |
+| `audit`, spy        | 28 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps                                        | none           |
+| `audit`, modules    | the home page and every written part   | label, breadcrumb, title, ways on, no dead links                             | none           |
+| `audit`, name       | 29 pages and the canvas's index        | the heading's name wherever it is shown                                      | none           |
+| `audit`, calculator | the one part that has a calculator     | every example, the keyboard, typing and Start again show what the rule gives | none           |
+| `look`              | 42 boards                              | no errors; recorded heights match                                            | 2px on heights |
+| `links`             | 151 outside addresses the course cites | 150 ok, 1 unverified, 0 gone                                                 | none gone      |
+| `perf`, not a gate  | render, fonts, repaint, scrolling      | see below                                                                    | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
 85 KB, a theme change 32 to 39 ms, opening every deep dive 19 to 33 ms, and
@@ -179,11 +180,11 @@ slowdown is only caught by reading them.
     npm run perf           render and repaint times, five runs each, medians
     npm run links          every outside address the course cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator`,
 `--pages Part1.dc.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`) to
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`, `calc`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
 the runtime, the packages, the introduction, the list of pages or the flags
@@ -282,6 +283,18 @@ What to copy the shape of, when building something new:
   `grid-12`, each card `--span: 4` and `--span-md: 3`, rows at
   `grid-auto-rows: 1fr`, and the list named in `GRIDS` and `TWELVE` in
   `audit.mjs` so the grids check holds it.
+- **Something a reader works:** the lifecycle calculator in AI in the
+  organisation part 1. Its stages, days and examples are a `calculator`
+  fence in the markdown, which `parseCalculator` in `calculator.mjs` reads
+  and which stops the build if a line is wrong. Its arithmetic is `delivery`
+  in the same file, which knows nothing of the page; `logic.mjs` writes those
+  functions into the page's class by their source and keeps the reader's
+  values in `state.calc`, `renderCalculator` in `render.mjs` draws it with
+  every number a hole, `.calc-*` in `styles.mjs` styles it from existing
+  tokens, and the audit's `calculator` check works the expectation out from
+  the values on the page with the same `delivery`. A part can hold one. The
+  class is written inside a template literal, so nothing in it may use one,
+  and its helper names must not clash with the ones already there.
 - **A tool that measures:** the measure check, `longestLine` in
   `audit.mjs`, with its mutation `--mutate measure`.
 
@@ -396,6 +409,9 @@ For anything new on a page, check what it does:
 - **the markdown's shapes:** tight and loose lists, empty table cells and an
   empty corner cell, code spans whose spaces matter, bold-only paragraphs,
   bold quoted questions, `file/…` links and outside links
+- **a calculator:** one to a part, under an h3 so that its stage names, which
+  are h4, skip no level; its values are not saved, and go back to the
+  markdown's on every load
 - **a new diagram,** which needs a drawing in `diagrams.mjs` before the
   build will run
 

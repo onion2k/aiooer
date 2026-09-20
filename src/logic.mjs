@@ -6,6 +6,7 @@
 // start). Without it the settings panel would be a picture of a settings panel.
 
 import { THEMES, THEME_ORDER } from './tokens.mjs';
+import { cleanDays, cleanSaving, delivery } from './calculator.mjs';
 
 // The theme's stored value is its key in tokens.mjs, which never changes; its
 // label is whatever tokens.mjs calls it now.
@@ -77,6 +78,8 @@ export function logicScript(page) {
     TOC_OPEN_AT_START: !!page.tocOpen,
     REMEMBER: page.remember !== false,
     SPY_IDS: page.spyIds || [],
+    // The part's calculator, if it has one: its stages and its examples.
+    CALC: page.calculator || null,
   };
   return `
 const SETTINGS = ${JSON.stringify(SETTINGS)};
@@ -89,6 +92,10 @@ const TOC_OPEN_AT_START = ${JSON.stringify(constants.TOC_OPEN_AT_START)};
 const REMEMBER = ${JSON.stringify(constants.REMEMBER)};
 const STORE_KEY = ${JSON.stringify(STORE_KEY)};
 const SPY_IDS = ${JSON.stringify(constants.SPY_IDS)};
+const CALC = ${JSON.stringify(constants.CALC)};
+// The calculator's arithmetic, written in from calculator.mjs by its source,
+// so that the page and the audit work from one rule.
+${constants.CALC ? [cleanDays, cleanSaving, delivery].map(String).join('\n') : ''}
 
 function isOption(key, value) {
   return SETTINGS[key].some((o) => o[0] === value);
@@ -146,7 +153,15 @@ class Component extends DCLogic {
     super(props);
     const dd = {};
     for (const key of DEEP_OPEN_AT_START) dd[key] = true;
-    this.state = { chosen: {}, saved: {}, open: OPEN_AT_START, tocOpen: TOC_OPEN_AT_START, dd, spy: 0 };
+    this.state = {
+      chosen: {},
+      saved: {},
+      open: OPEN_AT_START,
+      tocOpen: TOC_OPEN_AT_START,
+      dd,
+      spy: 0,
+      calc: this.calcStart(),
+    };
     this.buttons = {};
     this.frame = 0;
   }
@@ -231,6 +246,76 @@ class Component extends DCLogic {
     };
   }
 
+  // The calculator as the markdown declares it: each stage's days, and no
+  // time saved anywhere.
+  calcStart() {
+    if (!CALC) return null;
+    return { days: CALC.stages.map((st) => st.days), saved: CALC.stages.map(() => 0) };
+  }
+
+  calcSet(field, index, value) {
+    const calc = { days: this.state.calc.days.slice(), saved: this.state.calc.saved.slice() };
+    calc[field][index] = field === 'days' ? cleanDays(value) : cleanSaving(value);
+    this.setState({ calc });
+  }
+
+  // Everything the calculator's markup shows. The bars are drawn against the
+  // longest stage as it stands now, so they keep their scale as savings move.
+  calcVals() {
+    if (!CALC) return null;
+    const { days, saved } = this.state.calc;
+    const d = delivery(CALC.stages.map((st, i) => ({ days: days[i], saved: saved[i] })));
+    const longest = Math.max(1, ...d.rows.map((r) => r.days));
+    const unit = CALC.unit;
+    const any = d.rows.some((r) => r.saved > 0);
+    const faster =
+      d.faster === null
+        ? d.before > 0 && any
+          ? 'takes no time at all'
+          : 'is unchanged'
+        : d.faster === 0
+          ? any
+            ? 'is less than 1% faster'
+            : 'is unchanged'
+          : 'is ' + d.faster + '% faster';
+    const helped = d.rows.filter((r) => r.saved > 0).length;
+    const note = !any
+      ? 'Move a slider, or try an example, to see what a saving in one stage does to the whole.'
+      : helped === 1
+        ? 'One stage of ' + d.rows.length + ' is faster. The other ' + (d.rows.length - 1) + ' take as long as they did, so they set the pace.'
+        : helped === d.rows.length
+          ? 'Every stage is faster, so the whole line moves.'
+          : helped + ' stages of ' + d.rows.length + ' are faster. The rest take as long as they did.';
+    return {
+      rows: d.rows.map((r, i) => ({
+        name: CALC.stages[i].name,
+        days: r.days,
+        saved: r.saved,
+        savedText: r.saved + '% of ' + r.days + ' ' + unit + ' saved',
+        after: r.after,
+        barNow: Math.round((r.days / longest) * 1000) / 10,
+        barAfter: Math.round((r.after / longest) * 1000) / 10,
+        setDays: (event) => this.calcSet('days', i, event.target.value),
+        setSaved: (event) => this.calcSet('saved', i, event.target.value),
+      })),
+      before: d.before,
+      after: d.after,
+      faster,
+      note,
+      presets: CALC.presets.map((p) => ({
+        label: p.label,
+        apply: () =>
+          this.setState({
+            calc: {
+              days: this.state.calc.days.slice(),
+              saved: CALC.stages.map((st) => (st.name in p.saved ? p.saved[st.name] : p.saved.all || 0)),
+            },
+          }),
+      })),
+      reset: () => this.setState({ calc: this.calcStart() }),
+    };
+  }
+
   renderVals() {
     const s = this.settings();
     const options = {};
@@ -289,6 +374,7 @@ class Component extends DCLogic {
       },
       reset: () => this.reset(),
       remembers: REMEMBER,
+      calc: this.calcVals(),
     };
   }
 }

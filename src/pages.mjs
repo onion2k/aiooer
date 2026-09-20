@@ -312,6 +312,6 @@ export function partFile(part, parts, intro, page) {
   return dcFile({
     title: `${part.module}, part ${part.n}: ${part.shortTitle} · ${course}`,
     body,
-    page: { ...page, deepKeys, spyIds },
+    page: { ...page, deepKeys, spyIds, calculator: part.calculator || null },
   });
 }

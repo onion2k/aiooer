@@ -23,6 +23,10 @@
 //             previous and next links run through every written part and
 //             end at the introduction, nothing links to an unwritten part,
 //             and the home page and the parts panel group parts by module
+//   calculator  a part's calculator shows what calculator.mjs works out from
+//             the values on the page: as it opens, after each example, after
+//             a slider is moved from the keyboard and a day count typed, and
+//             after Start again
 //   name      the course called by one name, its introduction's heading, in
 //             the wordmark, the footer, every page title and the canvas
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
@@ -50,6 +54,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { startSite, openPage, setSetting, AXE_PATH, course, sitePages } from './harness.mjs';
 import { RESULTS, CANVAS_PROJECT, TEST_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
+import { delivery } from '../src/calculator.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
 // --only measure,reflow runs just those checks, for quick iteration.
@@ -100,6 +105,13 @@ const MUTATIONS = {
   },
   // The spy's own scroll listener never hears the page scroll.
   spy: { js: () => window.addEventListener('scroll', (e) => e.stopImmediatePropagation(), true) },
+  // The calculator's result is swapped for a copy the page no longer updates.
+  calc: {
+    js: () => {
+      const result = document.querySelector('.calc-result');
+      if (result) result.replaceWith(result.cloneNode(true));
+    },
+  },
   spybold: { css: '.reader .toc-list .is-current a{font-weight:400!important}' },
   spydim: { css: '.reader .toc-list .is-past a{color:var(--ink)!important}' },
   spyjump: { css: '.toc-text::after{display:none!important}' },
@@ -147,6 +159,7 @@ const KINDS = [
   'spy',
   'name',
   'modules',
+  'calculator',
 ];
 const emptyResults = () => Object.fromEntries(KINDS.map((k) => [k, []]));
 const results = emptyResults();
@@ -983,6 +996,58 @@ async function auditPage(file) {
     await page.close();
   }
   // Corners, with every panel and deep dive open so nothing escapes.
+  // A calculator shows what its own rule gives for the values on the page. The
+  // expectation is worked out here from those values, never typed, so the
+  // check holds whatever stages and days the markdown declares.
+  if (run('calculator')) {
+    const page = await open(file);
+    if (await page.locator('.calc').count()) {
+      const shown = () =>
+        page.evaluate(() => ({
+          days: [...document.querySelectorAll('.calc-days')].map((e) => Number(e.value)),
+          saved: [...document.querySelectorAll('.calc-saved')].map((e) => Number(e.value)),
+          after: [...document.querySelectorAll('.calc-after-n')].map((e) => e.textContent.trim()),
+          totals: [...document.querySelectorAll('.calc-total strong')].map((e) => e.textContent.trim()),
+        }));
+      const problems = [];
+      const check = async (when, wantSaved) => {
+        const s = await shown();
+        const d = delivery(s.days.map((days, i) => ({ days, saved: s.saved[i] })));
+        const unit = s.totals[0].split(' ').slice(1).join(' ');
+        const want = [`${d.before} ${unit}`, `${d.after} ${unit}`];
+        if (s.totals[0] !== want[0] || s.totals[1] !== want[1])
+          problems.push(`${when}: shows ${s.totals[0]} and ${s.totals[1]}, the rule gives ${want[0]} and ${want[1]}`);
+        if (d.faster > 0 && !s.totals[2].includes(`${d.faster}%`))
+          problems.push(`${when}: says "${s.totals[2]}", the rule gives ${d.faster}% faster`);
+        d.rows.forEach((r, i) => {
+          if (s.after[i] !== `${r.after} ${unit}`)
+            problems.push(`${when}: stage ${i + 1} shows ${s.after[i]}, not ${r.after} ${unit}`);
+        });
+        if (wantSaved && !wantSaved(s.saved)) problems.push(`${when}: the savings are ${s.saved.join(', ')}`);
+      };
+      await check('as it opens', (saved) => saved.every((v) => v === 0));
+      const presets = page.locator('.calc-preset:not(.calc-reset)');
+      for (let i = 0; i < (await presets.count()); i++) {
+        await presets.nth(i).click();
+        await check(`after example ${i + 1}`, (saved) => saved.some((v) => v > 0));
+      }
+      await page.locator('.calc-reset').click();
+      await check('after Start again', (saved) => saved.every((v) => v === 0));
+      await page.locator('.calc-saved').first().focus();
+      await page.keyboard.press('ArrowRight');
+      await check('after an arrow key on the first slider', (saved) => saved[0] > 0);
+      await page.locator('.calc-days').nth(1).fill('12.5');
+      await check('after typing 12.5 days', null);
+      if ((await shown()).days[1] !== 12.5) problems.push('a typed day count did not take');
+      if (problems.length) fail('calculator', `${file}: ${problems.slice(0, 4).join('; ')}`);
+      else
+        pass(
+          'calculator',
+          `${file}: ${await presets.count()} examples, the keyboard, typing and Start again all show what the rule gives`,
+        );
+    }
+    await page.close();
+  }
   if (run('corners')) {
     const page = await open(file);
     await setSetting(page, 'deep', 'open');

@@ -37,6 +37,27 @@ every stage 2 times faster                ->  100% overall
 
 The second line is the ceiling. If code wrote itself, in no time, for nothing, a team whose other work was unchanged would deliver about a fifth faster. Any larger figure has to come from the other 84%.
 
+### Try it on your own work
+
+The figures below are a made-up feature that takes thirty working days, with building at a sixth of it. Put in how long each stage takes where you work, then move a slider to say how much of that stage's time AI saves, and watch what happens to the whole. Start with the examples.
+
+```calculator
+caption: How long a feature takes, and what AI changes
+unit: days
+Discovery: 4
+Planning: 5
+Building: 5
+Review: 4
+QA and testing: 6
+Release and operations: 6
+preset: AI doubles the speed of coding | Building: 50
+preset: Coding takes no time at all | Building: 100
+preset: Every stage a fifth quicker | all: 20
+preset: Everything but coding about a third quicker | Discovery: 35 | Planning: 35 | Review: 35 | QA and testing: 35 | Release and operations: 35
+```
+
+Two things are worth trying. Make building instant, and see that the feature still takes twenty-five days. Then put building back, and take a third off everything else: the feature arrives sooner than it did when the code wrote itself, and nobody wrote any code faster. The days are days of effort. Add the days a piece of work spends waiting between stages, which the next paragraphs come to, and coding's share gets smaller still.
+
 ### Three reasons the real gain is larger than the arithmetic
 
 The sum above counts hours of effort. Delivery is worse than that in ways that favour the whole-process view further.
