@@ -177,6 +177,22 @@ export const DIAGRAMS = {
       { from: 1, to: 0, text: 'Final answer, or another tool call' },
     ],
   },
+  // Practical AI part 7, section 1. flowchart LR: six stages in a line, with
+  // operations feeding back into discovery.
+  'practical7-1': {
+    kind: 'flow',
+    layout: 'column',
+    caption: 'The software lifecycle, and what kind of work each stage is',
+    steps: [
+      { text: 'Discovery', tag: 'Deciding' },
+      { text: 'Planning', tag: 'Deciding' },
+      { text: 'Building', tag: 'Making' },
+      { text: 'Review', tag: 'Checking' },
+      { text: 'QA and testing', tag: 'Checking' },
+      { text: 'Release and operations', tag: 'Running' },
+    ],
+    loop: 'What customers and incidents show in operation goes back to step 1, discovery, for the next round.',
+  },
   // Practical AI part 5, section 2. Two rows: indexing ahead of time, answering
   // per question.
   'practical5-1': {

@@ -53,6 +53,18 @@ DORA's 2025 research says the same thing across thousands of teams: AI amplifies
 
 ### The stages, and where this part goes
 
+```mermaid
+flowchart LR
+  D[Discovery] --> P[Planning]
+  P --> B[Building]
+  B --> R[Review]
+  R --> Q[QA and<br/>testing]
+  Q --> O[Release and<br/>operations]
+  O -->|what customers and incidents show| D
+```
+
+The line is drawn straight and is really a loop. What is learned in operation, from customers and from incidents, is the raw material of the next round of discovery. The tags say what kind of work each stage is: deciding, making, checking and running. Most of the stages are not making.
+
 | Stage | The question it answers | What AI adds | Section |
 | --- | --- | --- | --- |
 | Discovery | What is the problem, and for whom? | Reading everything: interviews, tickets, usage data, the old system | 2 |
