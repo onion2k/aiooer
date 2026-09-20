@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "The course How AI works, built from its markdown into a WCAG AAA website on a Claude Design canvas.",
+  "description": "The course Using AI well, built from its markdown into a WCAG AAA website on a Claude Design canvas.",
   "scripts": {
     "build": "node src/build.mjs",
     "dev": "node src/build.mjs && node scripts/serve.mjs",

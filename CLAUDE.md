@@ -1,4 +1,4 @@
-# How AI works: the course website
+# Using AI well: the course website
 
 The course is the markdown files at the top of this folder: the
 introduction, and a file for each written part. It is in six modules, each with

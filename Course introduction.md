@@ -1,4 +1,4 @@
-# How AI works: Course Introduction
+# Using AI well: Course Introduction
 
 2026-09-18 · Chris Neale
 
