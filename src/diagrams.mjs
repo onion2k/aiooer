@@ -177,9 +177,9 @@ export const DIAGRAMS = {
       { from: 1, to: 0, text: 'Final answer, or another tool call' },
     ],
   },
-  // Practical AI part 7, section 1. flowchart LR: six stages in a line, with
+  // AI in the organisation part 1, section 1. flowchart LR: six stages in a line, with
   // operations feeding back into discovery.
-  'practical7-1': {
+  'org1-1': {
     kind: 'flow',
     layout: 'column',
     caption: 'The software lifecycle, and what kind of work each stage is',

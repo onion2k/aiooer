@@ -4,9 +4,9 @@
 
 ## About this part
 
-This is the sixth of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the last of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes, not counting the reference sections.
 
-Parts 1 to 5 built a system: instructions, skills, media, tools and retrieved documents, all feeding a model that acts. This part is about trusting it. Guardrails limit what can go wrong. Evals measure how often it goes right. Section 3 condenses parts 1 to 6 into a checklist for reviewing any AI feature. [Part 7](file/d6e2a95b-3f14) then applies all of it along the whole software lifecycle, and holds the module's two reference sections.
+Parts 1 to 5 built a system: instructions, skills, media, tools and retrieved documents, all feeding a model that acts. This part is about trusting it. Guardrails limit what can go wrong. Evals measure how often it goes right. Section 3 condenses the whole module into a checklist for reviewing any AI feature, and the part closes with two reference sections for the module. [Part 1 of the AI in the organisation module](file/d6e2a95b-3f14) then applies all of it along the whole software lifecycle.
 
 ### What part 6 gives you
 
@@ -135,7 +135,7 @@ Watch the signals users give without being asked: whether suggestions are accept
 
 ### Working is not the same as helping
 
-An eval answers "does it do the task?". It cannot answer "was the task worth doing this way?". A feature can pass nine cases in ten and leave the work around it no faster, because the time went to checking its output, or because the step it sped up was never the constraint. That second question needs a figure from before the feature existed: how long the job took, how often it went wrong, what it cost. Take it before launch, because it cannot be recovered afterwards, and people's sense of how much a tool helps them is reliably generous. Then report the outcome, such as tickets resolved or time to release, and not the usage. Section 7 of [part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) covers the measures.
+An eval answers "does it do the task?". It cannot answer "was the task worth doing this way?". A feature can pass nine cases in ten and leave the work around it no faster, because the time went to checking its output, or because the step it sped up was never the constraint. That second question needs a figure from before the feature existed: how long the job took, how often it went wrong, what it cost. Take it before launch, because it cannot be recovered afterwards, and people's sense of how much a tool helps them is reliably generous. Then report the outcome, such as tickets resolved or time to release, and not the usage. Section 7 of [part 2 of the AI in the organisation module](file/3e89a4fc-a0bc) covers the measures.
 
 ### Deep dive (optional): biases in LLM judges
 
@@ -239,6 +239,52 @@ Assume the model will sometimes be wrong and sometimes be fooled. Give it the le
 **Misleading:** a handful of attempts says little about a system whose output varies and whose failures are partial. It says nothing about next month's model or last week's prompt change.
 
 **What to say:** "A demo shows it can work. A set of fifty real cases, run every time we change something, shows how often it does. We decide on the second."
+
+## Core explanations
+
+The ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part. The AI in the organisation module and the language models module keep lists of their own.
+
+| Idea | Say it like this | Part |
+| --- | --- | --- |
+| Context engineering | Writing a good brief. The AI knows only what we put in front of it, so what we include decides the result | 1 |
+| Instruction file | The note we would leave a new colleague on day one, which the AI reads at the start of every session | 1 |
+| Asked versus enforced | We can ask the AI not to do something, and it usually will not. If it must never happen, we lock the door as well | 1 |
+| Agent | An AI that works through a task step by step, checking the result of each step before the next | 2 |
+| Skill | A procedure manual the AI takes off the shelf only when that job comes up | 2 |
+| Sub-agent | A helper sent off to do the legwork, who comes back with the answer and not the pile of paper | 2 |
+| Multi-modal model | An AI that can be shown pictures and played recordings. It reads them well and measures them badly | 3 |
+| Tool use | The AI asks our software to do something. Our software decides whether to do it and hands back the result | 4 |
+| MCP | A standard plug that connects AI tools to our systems, so we build each connection once | 4 |
+| RAG | It looks things up in our documents before answering, and shows where the answer came from | 5 |
+| Guardrails | We do not count on the AI never slipping. We make sure a slip cannot do much harm | 6 |
+| Least privilege | The AI gets the keys to the rooms it needs and no others | 6 |
+| Eval | A test suite for the AI feature. It tells us the success rate, and whether a change helped or hurt | 6 |
+| Baseline | The numbers from before we built it. Without them we can show that it works and never that it helped | 6 |
+
+## Misconceptions quick reference
+
+All eighteen misconceptions from the practical AI module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
+
+| Claim | Short response | Part |
+| --- | --- | --- |
+| "Prompt engineering is about finding the magic words" | There are no secret phrases. If the output is poor, the brief was missing something, and we fix the brief | 1 |
+| "A longer instruction file makes a better agent" | We write down what it cannot find out for itself, and keep it to a page or two | 1 |
+| "It is in the instruction file, so the agent will not do it" | The file shapes what it does. For anything that must never happen, we also make it impossible | 1 |
+| "An agent is just a smarter model" | The model is the engine. Whether the vehicle gets anywhere depends on what we build around it | 2 |
+| "A skill is only text, so it is safe to install" | For an agent, instructions are code. We install skills the way we install software | 2 |
+| "More agents will get it done faster" | We add a helper when one agent runs out of room or time. One well-briefed agent with good tests beats a committee | 2 |
+| "It sees the image the way I do" | It is an excellent reader and a poor measurer. We check counts, positions and exact figures | 3 |
+| "It watched the whole video" | It saw a frame a second and heard the soundtrack. For anything quick or small, we send the short clip | 3 |
+| "Multi-modal means it can make images and video too" | Understanding a picture and making one are different tools. We check what each model takes in and gives out | 3 |
+| "The AI is running commands on our systems" | The AI proposes and our software disposes. What it can reach is a setting we choose | 4 |
+| "MCP is a standard, so an MCP server is safe to connect" | A standard plug does not make every appliance safe. We approve servers like any supplier | 4 |
+| "The more tools we connect, the more capable the agent" | A short list of clear tools works better and is easier to defend than everything we own | 4 |
+| "RAG eliminates hallucination" | It works from our documents and shows its sources. We still check that the sources say what it claims | 5 |
+| "We need to fine-tune it on our data" | We give it our information at question time. That takes days, and we can see exactly what it was told | 5 |
+| "Context windows are huge now, so retrieval is obsolete" | If it fits comfortably, we paste it in. Most of what we know does not fit, so the AI looks things up | 5 |
+| "We have told it not to, so it will not" | Instructions make good behaviour likely. For what must not happen, we remove the ability | 6 |
+| "A person approves everything, so it is safe" | We save approvals for what cannot be undone, and make the rest safe with limits and checks | 6 |
+| "We tried it and it worked" | A demo shows it can work. Fifty real cases, run on every change, show how often it does | 6 |
 
 ## Glossary
 

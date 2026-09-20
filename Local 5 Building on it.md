@@ -124,7 +124,7 @@ A local model is the wrong choice, and it is worth recognising quickly, when:
 - **The task needs the best model there is.** Hard reasoning, large-scale design, long autonomous work. The language models module's method applies: prove the task with the most capable model, then step down. If it fails at the step to local, that is your answer.
 - **The time spent is worth more than the API bill.** For most individuals and small teams, a modest monthly spend on a hosted model costs less than the hours spent keeping a local stack running. Privacy, reproducibility or volume have to justify the difference.
 - **It needs to be available to many people, reliably,** and nobody's job is to keep it so.
-- **Nothing confidential is involved,** and the vendor's terms are acceptable, which part 2 of the AI in the organisation module explains how to check.
+- **Nothing confidential is involved,** and the vendor's terms are acceptable, which part 3 of the AI in the organisation module explains how to check.
 
 And it is the right choice, often the only one, when the data cannot leave, when the result must be reproducible, when the volume is large and the task is narrow, when there is no connection, or when you are building something that ships to a user's own machine.
 

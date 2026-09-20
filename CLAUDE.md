@@ -5,16 +5,18 @@ introduction, and a file for each written part. It is in six modules, each with
 its own parts numbered from 1, in an order the author chose on 20 September
 2026 so that the course starts gently: use it well, then see how it works,
 then explore further. Practical AI comes first, then AI in the organisation
-(two parts, files `Org N ….md`: AI in the team, and strategy and
-communication), then Language models (three parts, files `Part N ….md`, the
+(three parts, files `Org N ….md`: AI across the software lifecycle, AI in
+the team, and strategy and communication), then Language models (three parts, files `Part N ….md`, the
 mechanism alone), then Running AI locally, Generative media and Other AI
-models. AI in the organisation was parts 4 and 5 of Language models until
-that date; its pages are `Org1` and `Org2`, and the ids its links use did
-not change. Because the mechanism now comes after the practice, Practical
+models. AI in the organisation's parts 2 and 3 were parts 4 and 5 of
+Language models until that date, and its part 1, which Claude wrote from
+sources read in September 2026 so that the course is not only about coding,
+was Practical AI part 7 until the author moved it the same day. Its pages
+are `Org1` to `Org3`, and the ids its links use did not change. Because the mechanism now comes after the practice, Practical
 AI part 1 opens with seven things to know about how a model behaves, and
 references from the first two modules to Language models are written as
 pointers forward, in the present tense. Language models part 3, AI in the
-organisation part 2, Practical AI part 7 and Generative media part 7 each
+organisation part 3, Practical AI part 6 and Generative media part 7 each
 end with their module's core explanations and misconceptions. Generative
 media (seven parts, files `Media N ….md`) covers how the
 models work, then images, video, music and audio, and 3D, then shaping
@@ -26,21 +28,17 @@ the hands-on module: hardware, Hugging Face and model names, engines and
 apps, agents and harnesses, and building on a local model. It was written by
 Claude from sources read in September 2026, names products throughout, and
 explains what tools do without giving commands, which date faster than
-anything else here. Practical AI (seven parts, files `Practical N ….md`)
+anything else here. Practical AI (six parts, files `Practical N ….md`)
 covers instruction files; skills, agents and plugins; multi-modal models;
-MCP servers and tool use; retrieval; guardrails and evals; and AI across
-the software lifecycle, which the author asked for so that the module is
-not only about coding, and which opens with the gain from improving the
-whole process. It replaces
+MCP servers and tool use; retrieval; and guardrails and evals. It replaces
 the language module's former part 4, Building with models, whose text is in
-the git history at commit 3617b44. Claude wrote the first six parts around that
+the git history at commit 3617b44. Claude wrote the six parts around that
 text, which the author had accepted, and added what was new from sources
 read in September 2026: the instruction file formats, Agent Skills,
 plugins, the July 2026 revision of MCP, and the whole of part 3. Each
 part's Sources section says which of its claims rest on the drafter's
-knowledge and not on a document. Part 7 closes with the module's core
-explanations and misconceptions, which the language module's part 5 lost
-when part 4 left it. Every mention of "the practical AI module" in the other modules is a
+knowledge and not on a document. Part 6 closes with the module's core
+explanations and misconceptions. Every mention of "the practical AI module" in the other modules is a
 link to the part it means, or to part 1 where it means the whole module. Other AI
 models (four parts, files `Other N ….md`) covers small models, world
 models, diffusion language models and system one models, each part

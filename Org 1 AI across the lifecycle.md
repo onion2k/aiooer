@@ -1,16 +1,16 @@
-# Part 7: AI Across the Software Lifecycle
+# Part 1: AI Across the Software Lifecycle
 
 2026-09-19 · Chris Neale
 
 ## About this part
 
-This is the last of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 40 minutes, not counting the reference sections.
+This is the first of three parts in the AI in the organisation module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 40 minutes, not counting the reference sections.
 
-Most talk about AI in software is about writing code, and so was much of this module. Writing code is one stage in a longer process: finding out what is needed, planning it, building it, reviewing it, testing it, releasing it and keeping it running. This part goes through that process stage by stage and asks what the tools of parts 1 to 6 can do at each. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) makes the argument from the point of view of a team and its ways of working. This part is about what to build and what to use. It closes with the module's two reference sections.
+The practical AI module was about one person and one agent. This module is about everyone else: the team, in [part 2](file/3e89a4fc-a0bc), and the organisation around it, in [part 3](file/bbb9efdd-e221). It starts here, with the work itself. Most talk about AI in software is about writing code, and so was much of the practical AI module. Writing code is one stage in a longer process: finding out what is needed, planning it, building it, reviewing it, testing it, releasing it and keeping it running. This part goes through that process stage by stage and asks what the tools of the practical AI module can do at each. [Part 2](file/3e89a4fc-a0bc) makes the argument from the point of view of a team and its ways of working. This part is about what to build and what to use.
 
-### What part 7 gives you
+### What part 1 gives you
 
-Part 7 builds one idea: the gain from AI is set by the whole process and not by its fastest step. Coding is a small share of the work of delivering software, so even a very large gain there moves the total only a little. A modest gain at every stage moves it a lot, and the stages before and after coding, discovery, planning, review and testing, are where most of the time, most of the waiting and most of the expensive mistakes are found. They are also where AI is used least.
+Part 1 builds one idea: the gain from AI is set by the whole process and not by its fastest step. Coding is a small share of the work of delivering software, so even a very large gain there moves the total only a little. A modest gain at every stage moves it a lot, and the stages before and after coding, discovery, planning, review and testing, are where most of the time, most of the waiting and most of the expensive mistakes are found. They are also where AI is used least.
 
 ## 1. The whole process, not the coding step
 
@@ -41,7 +41,7 @@ The second line is the ceiling. If code wrote itself, in no time, for nothing, a
 
 The sum above counts hours of effort. Delivery is worse than that in ways that favour the whole-process view further.
 
-- **Most elapsed time is waiting.** Part 1 of the AI in the organisation module described flow efficiency: in most teams a change spends well over half its life in a queue, waiting for a review, an answer, a test run or a release slot. Faster coding lengthens those queues. Work on the stage that owns the queue shortens them.
+- **Most elapsed time is waiting.** Part 2 describes flow efficiency: in most teams a change spends well over half its life in a queue, waiting for a review, an answer, a test run or a release slot. Faster coding lengthens those queues. Work on the stage that owns the queue shortens them.
 - **Mistakes cost more the later they are found.** A misunderstanding caught in discovery costs a conversation. Caught in review it costs a rewrite. Caught by a customer it costs an incident, a fix, a release and some trust. Help that improves the early stages pays back at every later one.
 - **The stages feed each other.** A clear specification makes the build faster, the review easier and the tests obvious. A vague one slows all three, however good the tools at each.
 
@@ -69,7 +69,7 @@ The line is drawn straight and is really a loop. What is learned in operation, f
 | --- | --- | --- | --- |
 | Discovery | What is the problem, and for whom? | Reading everything: interviews, tickets, usage data, the old system | 2 |
 | Planning | What exactly will we build, and how? | Specifications, questions nobody asked, impact across the codebase, options | 3 |
-| Building | How do we make it? | The coding agents of [part 2](file/8d27b5e4-c019) | 4 |
+| Building | How do we make it? | The coding agents of [part 2 of the practical AI module](file/8d27b5e4-c019) | 4 |
 | Review | Is this change right, and safe? | A tireless first pass, so that people read what needs a person | 5 |
 | QA and testing | Does it work, and does it still work? | Tests at a scale nobody would write by hand, and testing by using the product | 6 |
 | Release and operations | Is it out, and is it healthy? | Change summaries, risk flags, the first ten minutes of an incident | 7 |
@@ -84,12 +84,12 @@ Discovery is limited by attention. A product manager with four hundred support t
 
 - **Clustering and counting.** Group the tickets by underlying problem, not by the label the customer chose. Say how many fall in each group, and quote examples.
 - **Finding what was not said outright.** People describe their workarounds and frustrations far more readily than the feature that would remove them. A 2026 industrial study of interview transcripts from a security operations team had a model extract the stated requirements and also infer the latent ones, each linked back to the passage that suggested it, so that a person could check the inference.
-- **Joining sources.** What people say in interviews, what they do in the usage data and what they complain about in tickets are usually held by three different teams. The retrieval of [part 5](file/0b8e5d17-f4c2) and the connections of [part 4](file/c9146f3b-27a8) put them side by side.
+- **Joining sources.** What people say in interviews, what they do in the usage data and what they complain about in tickets are usually held by three different teams. The retrieval of [part 5 of the practical AI module](file/0b8e5d17-f4c2) and the connections of [part 4 of the practical AI module](file/c9146f3b-27a8) put them side by side.
 - **Reading the old system.** Much discovery is archaeology: what does the current system do, and why? A coding agent that can search and read the codebase will answer "what happens to an order when payment fails?" with the files and lines, in minutes, where the alternative was finding the one person who remembers.
 
 ### Prototypes as questions
 
-The cheapest way to find out whether people want something is to show it to them. When a working prototype took a fortnight, teams argued about one idea. When it takes an afternoon, as part 2 said, a team can put three in front of users and learn from the reaction. This moves building into discovery, which is where it is most valuable, since the code is thrown away and the knowledge is kept.
+The cheapest way to find out whether people want something is to show it to them. When a working prototype took a fortnight, teams argued about one idea. When it takes an afternoon, as part 2 of the practical AI module said, a team can put three in front of users and learn from the reaction. This moves building into discovery, which is where it is most valuable, since the code is thrown away and the knowledge is kept.
 
 ### What the evidence says about method
 
@@ -99,7 +99,7 @@ That matches the shape of the technology. A model is strong at condensing what i
 
 ### Cautions
 
-- **Quotes must be checked.** A model summarising interviews can produce a quotation that nobody said. Require a pointer to the source for every quote, as part 5 described for citations, and check them.
+- **Quotes must be checked.** A model summarising interviews can produce a quotation that nobody said. Require a pointer to the source for every quote, as part 5 of the practical AI module described for citations, and check them.
 - **Summaries average.** The one customer in forty with a strange, important problem disappears in a summary of themes. Ask for outliers as well as clusters.
 - **Personal data.** Interview transcripts and tickets are full of it. Settle where they may be sent before anyone pastes one into a tool.
 - **It agrees with you.** Ask a model whether your idea fits the evidence and it will tend to say yes. Ask it for the evidence against.
@@ -110,20 +110,20 @@ That matches the shape of the technology. A model is strong at condensing what i
 
 ### Why this stage pays most
 
-[Part 1](file/f3a91c20-6d4e) described working from a specification: intent, then specification, then plan, each reviewed by a person before the next. It was presented there as a way to get better work from an agent. It is also the highest-leverage use of AI in the whole lifecycle, for the reason in section 1: an error caught here costs a sentence. The engineer's effort moves to the two ends of the work, saying precisely what is wanted and judging whether it was delivered, and this is the first of those ends.
+[Part 1 of the practical AI module](file/f3a91c20-6d4e) described working from a specification: intent, then specification, then plan, each reviewed by a person before the next. It was presented there as a way to get better work from an agent. It is also the highest-leverage use of AI in the whole lifecycle, for the reason in section 1: an error caught here costs a sentence. The engineer's effort moves to the two ends of the work, saying precisely what is wanted and judging whether it was delivered, and this is the first of those ends.
 
 ### What to use it for
 
-- **Finding the gaps.** Give the model a draft specification and ask what is ambiguous, what is missing, and what question a developer would have to stop and ask on day three. This is the contractor test from part 1 run in reverse, and it is cheap and consistently useful. Do it before the refinement meeting, not during it.
+- **Finding the gaps.** Give the model a draft specification and ask what is ambiguous, what is missing, and what question a developer would have to stop and ask on day three. This is the contractor test from part 1 of the practical AI module run in reverse, and it is cheap and consistently useful. Do it before the refinement meeting, not during it.
 - **Acceptance criteria.** Turn a description into statements that can be checked, including the unhappy paths: the empty list, the expired session, the second click. These become the tests in section 6.
 - **Impact analysis.** A coding agent can read the codebase and report what a change will touch: which modules, which callers, which tests, which other teams. People are poor at this in large systems, since nobody holds the whole thing in their head.
 - **Options.** Ask for three designs with the trade-offs of each, not one. Record the choice and the reasons in a short decision record, which the next agent, and the next engineer, will read.
-- **Breaking work down.** Small, independent pieces with a clear definition of done are what both agents and reviewers handle best, and part 1 of the AI in the organisation module explained why small batches matter more when AI is writing.
+- **Breaking work down.** Small, independent pieces with a clear definition of done are what both agents and reviewers handle best, and part 2 explains why small batches matter more when AI is writing.
 - **The test plan, first.** Decide how the change will be verified before it is built. If nobody can say, the specification is not finished.
 
 ### Cautions
 
-- **Plausible is not right.** A model will produce a confident, well-formatted plan for a system it has misunderstood. The plan is for a person to review, and the review is the point, as part 1 said.
+- **Plausible is not right.** A model will produce a confident, well-formatted plan for a system it has misunderstood. The plan is for a person to review, and the review is the point, as part 1 of the practical AI module said.
 - **Estimates.** Models have no basis for estimating how long your team takes. Your own tracker does. Use the model to find comparable past work, and the history to estimate.
 - **Volume.** It is now effortless to produce a twelve-page specification. Nobody will read it. Ask for the shortest document that answers the questions.
 
@@ -131,9 +131,9 @@ That matches the shape of the technology. A model is strong at condensing what i
 
 **In plain terms.** This is the stage the rest of the module has covered. **Who should read it:** it is two paragraphs.
 
-Parts 1 and 2 covered it: instruction files, briefs, skills, sub-agents and the working patterns that hold up. The only point to add is about proportion. Building is the stage where AI is already most used and where a further gain is worth least to the whole, by the arithmetic of section 1.
+Parts 1 and 2 of the practical AI module covered it: instruction files, briefs, skills, sub-agents and the working patterns that hold up. The only point to add is about proportion. Building is the stage where AI is already most used and where a further gain is worth least to the whole, by the arithmetic of section 1.
 
-What building well does do is help the stages either side. Code written against a reviewed specification, in small changes, with tests, is quick to review and quick to verify. The practices of part 2 matter as much for what they do to review and testing as for the time they save in writing.
+What building well does do is help the stages either side. Code written against a reviewed specification, in small changes, with tests, is quick to review and quick to verify. The practices of part 2 of the practical AI module matter as much for what they do to review and testing as for the time they save in writing.
 
 ## 5. Review
 
@@ -141,7 +141,7 @@ What building well does do is help the stages either side. Code written against 
 
 ### Why it is the constraint
 
-Section 1's study is the general case. Agents produce more changes, and each human reviewer has the same number of hours. Part 1 of the AI in the organisation module listed review first among the places the bottleneck goes. Whatever is done here decides whether the speed of building reaches the customer.
+Section 1's study is the general case. Agents produce more changes, and each human reviewer has the same number of hours. Part 2 lists review first among the places the bottleneck goes. Whatever is done here decides whether the speed of building reaches the customer.
 
 ### The division of labour
 
@@ -153,7 +153,7 @@ Section 1's study is the general case. Agents produce more changes, and each hum
 | Context | What is in the repository and the specification | What was said in a meeting, what the customer meant, what is about to change |
 | Accountability | None | All of it. A person owns what is merged |
 
-Part 2 recommended review by a fresh session with no knowledge of the author's reasoning, and review by risk: automated checks and AI review on everything, human reading concentrated on design and on the paths where a mistake is expensive. That is the working pattern.
+Part 2 of the practical AI module recommended review by a fresh session with no knowledge of the author's reasoning, and review by risk: automated checks and AI review on everything, human reading concentrated on design and on the paths where a mistake is expensive. That is the working pattern.
 
 ### Signal, or it is worthless
 
@@ -165,11 +165,11 @@ Those are agents running on strangers' projects with default settings. The remed
 - Give it the specification and the instruction file, so that it reviews against intent and not only against taste.
 - Ask for findings ranked by severity, each with the failing case, and cap the number.
 - Have a second pass try to disprove each finding before it is posted. A finding that survives is worth a person's time.
-- Measure it: what share of its comments lead to a change? That figure is the reviewer's eval, in the sense of [part 6](file/7a3f2c68-91de), and it should be watched.
+- Measure it: what share of its comments lead to a change? That figure is the reviewer's eval, in the sense of [part 6 of the practical AI module](file/7a3f2c68-91de), and it should be watched.
 
 ### Review is not only for code
 
-The same first pass works on everything else a team writes and another person must approve: specifications, designs, test plans, database migrations, infrastructure changes, documentation, the instruction files and skills of parts 1 and 2. A model that has read the specification is also well placed to answer the reviewer's first question, which is whether the change does what was asked.
+The same first pass works on everything else a team writes and another person must approve: specifications, designs, test plans, database migrations, infrastructure changes, documentation, the instruction files and skills of parts 1 and 2 of the practical AI module. A model that has read the specification is also well placed to answer the reviewer's first question, which is whether the change does what was asked.
 
 Authors should use it first. A change that has been through an AI review before a colleague sees it arrives without the small problems, and the human review is shorter and about the right things.
 
@@ -179,14 +179,14 @@ Authors should use it first. A change that has been through an AI review before 
 
 ### Why this stage multiplies the others
 
-This course's second idea is that verification converts compute into reliability. Part 2 said the largest single factor in an agent's success is feedback from the environment, which mostly means tests. Every test added makes every later agent run more reliable and every later review lighter. Work on tests is the investment that compounds.
+This course's second idea is that verification converts compute into reliability. Part 2 of the practical AI module said the largest single factor in an agent's success is feedback from the environment, which mostly means tests. Every test added makes every later agent run more reliable and every later review lighter. Work on tests is the investment that compounds.
 
 ### What to use it for
 
 - **Backfilling tests on legacy code.** The job nobody had time for. Done carefully, it turns code that nobody dares touch into code an agent can safely change.
-- **Tests from the specification.** The acceptance criteria from section 3 become tests, written before the code, as part 2's test-first pattern described.
+- **Tests from the specification.** The acceptance criteria from section 3 become tests, written before the code, as the test-first pattern in part 2 of the practical AI module described.
 - **Hunting for gaps.** Meta has published its approach: generate small deliberate faults in the code that the existing tests fail to notice, then generate tests that catch them. Applied to over ten thousand classes in its Android apps, it produced several hundred new tests aimed at privacy faults, and engineers accepted 73% of the tests it proposed.
-- **Testing by using the product.** A model that can see and operate an interface, as [part 3](file/52e0a7c9-b3f6) described, can do exploratory testing: follow a user journey, try the odd inputs, report what broke with screenshots. It is slow and imperfect, and it finds the kind of problem that scripted tests never look for, including visual and accessibility faults.
+- **Testing by using the product.** A model that can see and operate an interface, as [part 3 of the practical AI module](file/52e0a7c9-b3f6) described, can do exploratory testing: follow a user journey, try the odd inputs, report what broke with screenshots. It is slow and imperfect, and it finds the kind of problem that scripted tests never look for, including visual and accessibility faults.
 - **Test data.** Realistic, varied, and containing no real customer's details.
 - **Triage.** Reading a failed pipeline run, deciding whether it is a real failure or a flaky test, and pointing at the likely cause. Flaky tests are a tax on every stage, and an agent can find and fix them in the background.
 
@@ -198,11 +198,11 @@ Three defences:
 
 - **Generate from intent.** The specification, the acceptance criteria, the bug report, the documentation. Not the implementation.
 - **Check that tests can fail.** Put a fault in the code and see that a test catches it. This is mutation testing, it is what Meta's system automates, and it is the only real evidence that a test is worth having.
-- **Watch for tampering.** Part 2 of the language models module describes reward hacking. An agent asked to make the tests pass may weaken the tests. Part 6's grader for coding agents checks that test files were not changed, for this reason.
+- **Watch for tampering.** Part 2 of the language models module describes reward hacking. An agent asked to make the tests pass may weaken the tests. The grader for coding agents in part 6 of the practical AI module checks that test files were not changed, for this reason.
 
 ### The AI features themselves
 
-A product that contains a model needs the evals of part 6 as part of its QA, run in the pipeline like any other test. A change to a prompt, a skill or a model version is a release, and is tested like one.
+A product that contains a model needs the evals of part 6 of the practical AI module as part of its QA, run in the pipeline like any other test. A change to a prompt, a skill or a model version is a release, and is tested like one.
 
 ## 7. Release and operations
 
@@ -224,13 +224,13 @@ Useful jobs, in rising order of risk:
 - gathering context: recent deployments, related past incidents, the relevant runbook, who owns the service
 - proposing likely causes, with the evidence for each
 - drafting the customer update and, afterwards, the first version of the incident review from the timeline
-- carrying out a remediation, which belongs behind the approval gates of part 6 until a great deal of trust has been earned
+- carrying out a remediation, which belongs behind the approval gates of part 6 of the practical AI module until a great deal of trust has been earned
 
-The access this needs, to logs, metrics, deployments and tickets, is what the connections of part 4 provide, and the read-only default there applies with full force to production.
+The access this needs, to logs, metrics, deployments and tickets, is what the connections of part 4 of the practical AI module provide, and the read-only default there applies with full force to production.
 
 ### Documentation, continuously
 
-Documentation rots because updating it is nobody's job. An agent in the pipeline can compare each change with the documents that describe the code, and propose the update in the same pull request. Part 5 showed why this matters beyond tidiness: every retrieval system, and every agent's instruction file, is only as good as the documents behind it.
+Documentation rots because updating it is nobody's job. An agent in the pipeline can compare each change with the documents that describe the code, and propose the update in the same pull request. Part 5 of the practical AI module showed why this matters beyond tidiness: every retrieval system, and every agent's instruction file, is only as good as the documents behind it.
 
 ## 8. Putting it together
 
@@ -238,11 +238,11 @@ Documentation rots because updating it is nobody's job. An agent in the pipeline
 
 ### Start at the constraint
 
-Part 1 of the AI in the organisation module gives the method: take the last thirty completed pieces of work, find where they spent their time waiting, and go there first. For most teams in 2026 that is review, then testing, then decisions, which is to say planning and discovery. It is rarely coding.
+Part 2 gives the method: take the last thirty completed pieces of work, find where they spent their time waiting, and go there first. For most teams in 2026 that is review, then testing, then decisions, which is to say planning and discovery. It is rarely coding.
 
-### The module, applied
+### The practical AI module, applied
 
-| Stage | Instruction files and skills (parts 1 and 2) | Connections and retrieval (parts 4 and 5) | Guardrails and measures (part 6) |
+| Stage | Instruction files and skills (practical AI parts 1 and 2) | Connections and retrieval (practical AI parts 4 and 5) | Guardrails and measures (practical AI part 6) |
 | --- | --- | --- | --- |
 | Discovery | A skill for how you synthesise research | Tickets, interviews, analytics, the old codebase | Quotes traced to sources. Personal data kept in bounds |
 | Planning | The specification format, the decision record template | The codebase, the tracker, past decisions | A person reviews every plan. Count questions raised before build, not after |
@@ -297,61 +297,9 @@ Coding is about a sixth of the work. Make it instant and delivery improves by a 
 
 **What to say:** "We generate tests from what the code should do, not from what it does, and we break the code on purpose to check that the tests notice."
 
-## Core explanations
-
-The ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part. The AI in the organisation module and the language models module keep lists of their own.
-
-| Idea | Say it like this | Part |
-| --- | --- | --- |
-| Context engineering | Writing a good brief. The AI knows only what we put in front of it, so what we include decides the result | 1 |
-| Instruction file | The note we would leave a new colleague on day one, which the AI reads at the start of every session | 1 |
-| Asked versus enforced | We can ask the AI not to do something, and it usually will not. If it must never happen, we lock the door as well | 1 |
-| Agent | An AI that works through a task step by step, checking the result of each step before the next | 2 |
-| Skill | A procedure manual the AI takes off the shelf only when that job comes up | 2 |
-| Sub-agent | A helper sent off to do the legwork, who comes back with the answer and not the pile of paper | 2 |
-| Multi-modal model | An AI that can be shown pictures and played recordings. It reads them well and measures them badly | 3 |
-| Tool use | The AI asks our software to do something. Our software decides whether to do it and hands back the result | 4 |
-| MCP | A standard plug that connects AI tools to our systems, so we build each connection once | 4 |
-| RAG | It looks things up in our documents before answering, and shows where the answer came from | 5 |
-| Guardrails | We do not count on the AI never slipping. We make sure a slip cannot do much harm | 6 |
-| Least privilege | The AI gets the keys to the rooms it needs and no others | 6 |
-| Eval | A test suite for the AI feature. It tells us the success rate, and whether a change helped or hurt | 6 |
-| Baseline | The numbers from before we built it. Without them we can show that it works and never that it helped | 6 |
-| Whole-process gain | Making one step instant helps only as much as that step mattered, and coding is a small step. We improve the whole line | 7 |
-| AI first-pass review | A tireless first reader checks everything, so that people read only what needs a person | 7 |
-| The oracle problem | Ask it to test the code against itself, and it will confirm that the code does what it does. Tests come from what the code should do | 7 |
-
-## Misconceptions quick reference
-
-All twenty-one misconceptions from the practical AI module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
-
-| Claim | Short response | Part |
-| --- | --- | --- |
-| "Prompt engineering is about finding the magic words" | There are no secret phrases. If the output is poor, the brief was missing something, and we fix the brief | 1 |
-| "A longer instruction file makes a better agent" | We write down what it cannot find out for itself, and keep it to a page or two | 1 |
-| "It is in the instruction file, so the agent will not do it" | The file shapes what it does. For anything that must never happen, we also make it impossible | 1 |
-| "An agent is just a smarter model" | The model is the engine. Whether the vehicle gets anywhere depends on what we build around it | 2 |
-| "A skill is only text, so it is safe to install" | For an agent, instructions are code. We install skills the way we install software | 2 |
-| "More agents will get it done faster" | We add a helper when one agent runs out of room or time. One well-briefed agent with good tests beats a committee | 2 |
-| "It sees the image the way I do" | It is an excellent reader and a poor measurer. We check counts, positions and exact figures | 3 |
-| "It watched the whole video" | It saw a frame a second and heard the soundtrack. For anything quick or small, we send the short clip | 3 |
-| "Multi-modal means it can make images and video too" | Understanding a picture and making one are different tools. We check what each model takes in and gives out | 3 |
-| "The AI is running commands on our systems" | The AI proposes and our software disposes. What it can reach is a setting we choose | 4 |
-| "MCP is a standard, so an MCP server is safe to connect" | A standard plug does not make every appliance safe. We approve servers like any supplier | 4 |
-| "The more tools we connect, the more capable the agent" | A short list of clear tools works better and is easier to defend than everything we own | 4 |
-| "RAG eliminates hallucination" | It works from our documents and shows its sources. We still check that the sources say what it claims | 5 |
-| "We need to fine-tune it on our data" | We give it our information at question time. That takes days, and we can see exactly what it was told | 5 |
-| "Context windows are huge now, so retrieval is obsolete" | If it fits comfortably, we paste it in. Most of what we know does not fit, so the AI looks things up | 5 |
-| "We have told it not to, so it will not" | Instructions make good behaviour likely. For what must not happen, we remove the ability | 6 |
-| "A person approves everything, so it is safe" | We save approvals for what cannot be undone, and make the rest safe with limits and checks | 6 |
-| "We tried it and it worked" | A demo shows it can work. Fifty real cases, run on every change, show how often it does | 6 |
-| "AI in software development means AI writing the code" | Writing code was never the slow part. We use AI along the whole line, starting where our work waits longest | 7 |
-| "We have an AI reviewer now, so review is covered" | It does the first pass on everything, so people review design and risk. We track how many of its comments are acted on | 7 |
-| "The AI wrote tests and they all pass, so the code works" | We generate tests from what the code should do, and break the code on purpose to check that the tests notice | 7 |
-
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 to 6 and in the glossaries of the language models module.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of the practical AI module and the language models module.
 
 | Term | Meaning |
 | --- | --- |

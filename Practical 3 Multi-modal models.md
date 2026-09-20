@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the third of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the third of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
 [Part 1](file/f3a91c20-6d4e) said the model knows only what is in front of it. Until recently that meant text. Most current models also accept pictures, many accept documents as pictures, and some accept sound and video. This part explains how that works, what it costs, and what these models reliably miss.
 

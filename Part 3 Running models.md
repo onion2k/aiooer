@@ -40,7 +40,7 @@ Total time is roughly the first plus output length divided by the second. A 1,00
 - **Run independent calls in parallel.** Ten calls take about as long as one. Agent designs that fan work out to sub-agents rely on this.
 - **Use batch processing for non-urgent work.** Vendors give a large discount for jobs that can wait hours, because they can fill idle capacity with them.
 
-The last two points lead somewhere important. An engineer who sits watching an agent work has combined the slowness of decode with the cost of a person. Design the work so that neither waits on the other: dispatch the task, do something else, and come back to a verified result. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) describes working this way.
+The last two points lead somewhere important. An engineer who sits watching an agent work has combined the slowness of decode with the cost of a person. Design the work so that neither waits on the other: dispatch the task, do something else, and come back to a verified result. [Part 2 of the AI in the organisation module](file/3e89a4fc-a0bc) describes working this way.
 
 ### Deep dive (optional): speculative decoding
 
@@ -222,7 +222,7 @@ Four lessons come out of the table.
 
 For scale: a fully loaded engineer costs in the order of a dollar a minute. At about $8 a day, the tool pays for itself if it saves under ten minutes. That is a low bar, and it exposes a common economic mistake. Teams ration tokens, or have an engineer supervise every step, and so save dollars while spending hours.
 
-The real questions are about quality and workflow: how to let the agent run without a person in the loop, and how to trust the result. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) takes those up, and [part 2 of the AI in the organisation module](file/bbb9efdd-e221) turns this model into a full investment case.
+The real questions are about quality and workflow: how to let the agent run without a person in the loop, and how to trust the result. [Part 2 of the AI in the organisation module](file/3e89a4fc-a0bc) takes those up, and [part 3 of the AI in the organisation module](file/bbb9efdd-e221) turns this model into a full investment case.
 
 Expect wide variation between people. Heavy users can consume ten times what light users do. Build the spreadsheet with tasks per day, calls per task, average context, cache hit rate, output per call and price per tier as inputs, and check it against a month of real usage data.
 
@@ -271,7 +271,7 @@ Self-hosting is the right answer in a few cases:
 
 Small models change the sums. A model under about 30 billion parameters runs on a single GPU, or a well-specified laptop, and is cheap and simple to operate.
 
-For most data-sensitivity concerns there is a middle path: a major cloud platform, with regional hosting and contractual terms that exclude training on your data and limit retention. [Part 2 of the AI in the organisation module](file/bbb9efdd-e221) covers how to evaluate those terms.
+For most data-sensitivity concerns there is a middle path: a major cloud platform, with regional hosting and contractual terms that exclude training on your data and limit retention. [Part 3 of the AI in the organisation module](file/bbb9efdd-e221) covers how to evaluate those terms.
 
 ### Deep dive (optional): quantisation
 
@@ -353,7 +353,7 @@ A model that gets each step right 98% of the time completes a 50-step task witho
 
 ### What this means for speed
 
-Every failure in this section has a known cause, and so every one has a defence that can run automatically: grounding and citation checks, schema validation and retries, sandboxing and scoped permissions, tests between steps. A person reading everything the model produces is the fallback for when those defences are missing. It is slow, and [part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) shows it is less reliable than it feels.
+Every failure in this section has a known cause, and so every one has a defence that can run automatically: grounding and citation checks, schema validation and retries, sandboxing and scoped permissions, tests between steps. A person reading everything the model produces is the fallback for when those defences are missing. It is slow, and [part 2 of the AI in the organisation module](file/3e89a4fc-a0bc) shows it is less reliable than it feels.
 
 Build the defences and the person can step back to the decisions that need them. This is the link between understanding how models fail and being able to work at their pace.
 

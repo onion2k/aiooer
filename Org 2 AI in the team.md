@@ -1,14 +1,14 @@
-# Part 1: AI in the Engineering Team
+# Part 2: AI in the Engineering Team
 
 2026-09-18 · Chris Neale
 
 ## About this part
 
-Part 1 is about the team, and it makes one claim: tools do not produce speed, redesigned work does. A team can give every engineer the best model available and see almost no change in what it delivers. Another team with the same tools can ship several times as much. The difference is whether the work was reorganised around what the AI can do, or the AI was fitted into work that stayed the same.
+Part 2 is about the team, and it makes one claim: tools do not produce speed, redesigned work does. A team can give every engineer the best model available and see almost no change in what it delivers. Another team with the same tools can ship several times as much. The difference is whether the work was reorganised around what the AI can do, or the AI was fitted into work that stayed the same.
 
 Parts 1 to 3 of the language models module supply what you need to make that change responsibly: what these systems are good at, how they fail, and how to build checks that do not depend on a person reading everything. This part applies it to how a team plans, builds, reviews, measures and grows.
 
-This is the first of two parts in the AI in the organisation module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 45 minutes.
+This is the second of three parts in the AI in the organisation module. [Part 1](file/d6e2a95b-3f14) showed where in the software lifecycle the gains are. This part is about the team that has to change to reach them. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 45 minutes.
 
 ## 1. Two ways to adopt AI
 
@@ -463,7 +463,7 @@ Product managers and analysts can now build working prototypes and small interna
 
 ### What to expect
 
-Output usually dips in the first few weeks, while people learn and the verification work draws effort. Gains are uneven across people and across kinds of work. When the constraint leaves engineering, the conversation you need is with product, release management or compliance, and part 2 prepares you for it.
+Output usually dips in the first few weeks, while people learn and the verification work draws effort. Gains are uneven across people and across kinds of work. When the constraint leaves engineering, the conversation you need is with product, release management or compliance, and part 3 prepares you for it.
 
 ### What not to do
 

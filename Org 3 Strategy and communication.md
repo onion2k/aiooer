@@ -1,12 +1,12 @@
-# Part 2: Strategy, Risk and Communication
+# Part 3: Strategy, Risk and Communication
 
 2026-09-18 · Chris Neale
 
 ## About this part
 
-Part 2 covers the decisions that sit above the team, and how to talk about everything in this course to people who have not read it. Part 1 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
+Part 3 covers the decisions that sit above the team, and how to talk about everything in this course to people who have not read it. Part 2 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
 
-Sections 1 to 4 cover the market, the build-or-buy decision, the legal and data risks, and governance. Section 5 builds the investment case from the cost model in part 3 of the language models module and the measures in part 1. Section 6 is the communication toolkit. Section 7 covers keeping all of it current.
+Sections 1 to 4 cover the market, the build-or-buy decision, the legal and data risks, and governance. Section 5 builds the investment case from the cost model in part 3 of the language models module and the measures in part 2. Section 6 is the communication toolkit. Section 7 covers keeping all of it current.
 
 Two reference sections follow. They consolidate this module's two-audience explanations and misconceptions, for use on their own.
 
@@ -70,7 +70,7 @@ A practical arrangement is one primary vendor, a second under contract and teste
 
 ### Waiting has a cost
 
-It is sensible to defer a particular product. It is a mistake to defer the change in working practices from part 1. Those take a team months to learn, and the learning does not come bundled with next year's better model. A team that starts a year later starts a year behind on the part that is hardest to buy.
+It is sensible to defer a particular product. It is a mistake to defer the change in working practices from part 2. Those take a team months to learn, and the learning does not come bundled with next year's better model. A team that starts a year later starts a year behind on the part that is hardest to buy.
 
 ## 3. Data, IP and legal risk
 
@@ -106,7 +106,7 @@ A smaller risk is reproduction. A model can occasionally emit a passage close to
 
 ### Sector rules still apply
 
-Regulators hold the licensed business responsible for outcomes, whatever produced them. In iGaming that covers safer-gambling interactions, anti-money-laundering controls, fairness of games and the handling of player data. "The AI did it" is not a defence. This is the practical reason for keeping regulated logic in the high-risk review tier from part 1, and for an audit trail.
+Regulators hold the licensed business responsible for outcomes, whatever produced them. In iGaming that covers safer-gambling interactions, anti-money-laundering controls, fairness of games and the handling of player data. "The AI did it" is not a defence. This is the practical reason for keeping regulated logic in the high-risk review tier from part 2, and for an audit trail.
 
 Check each vendor's acceptable use policy too. Some include restrictions that touch gambling-related uses, and it is better to find that during procurement than afterwards.
 
@@ -155,7 +155,7 @@ Four rows that people can remember are better than forty they cannot.
 
 - which tools are approved, and for which data classes
 - the rule on personal accounts: not for anything above public
-- the ownership principle from part 1: whoever merges it owns it
+- the ownership principle from part 2: whoever merges it owns it
 - the review-by-risk tiers, by reference
 - what to do if something goes wrong, and that reporting it is blame-free
 - who to ask, and how long an answer takes
@@ -198,7 +198,7 @@ An illustrative first year for a team of 20 engineers. It uses the cost model fr
 | Governance, security and legal review | Estimate | $10,000 |
 | Total |  | $190,000 |
 
-Three points stand out. Tools are a fifth of the total. The largest line is the verification groundwork from part 1, and it would have been worth doing without AI. The total is about 9% of what the team costs in a year, which is $2.2 million on these assumptions.
+Three points stand out. Tools are a fifth of the total. The largest line is the verification groundwork from part 2, and it would have been worth doing without AI. The total is about 9% of what the team costs in a year, which is $2.2 million on these assumptions.
 
 ### Three scenarios for the return
 
@@ -222,13 +222,13 @@ The percentages are planning assumptions and not forecasts. Replace them with yo
 
 ### Ask for a staged bet
 
-Match the request to the 90-day plan in part 1.
+Match the request to the 90-day plan in part 2.
 
 1. **Quarter one.** Fund the tools, learning time and verification groundwork. State the baseline, the constraint you will attack and the measures you will report.
-2. **Decision point.** Show the before-and-after measures and the signature from part 1, section 7. Continue, adjust or stop.
+2. **Decision point.** Show the before-and-after measures and the signature from part 2, section 7. Continue, adjust or stop.
 3. **Quarters two to four.** Extend to the whole team and the neighbouring functions, funded against results.
 
-This lowers the risk for the sponsor. It also commits you to measurement, which protects you from the perception gap described in part 1.
+This lowers the risk for the sponsor. It also commits you to measurement, which protects you from the perception gap described in part 2.
 
 ### What not to promise
 
@@ -265,7 +265,7 @@ On these lines, self-hosting rarely wins on cost below very large, steady volume
 | Product | Speed of learning, scope, quality | Prototypes in days and more experiments | Implying that engineering no longer needs clear requirements |
 | Security and compliance | Data, access, auditability, accountability | Data classes, review by risk, the audit trail | Asking for blanket approval |
 | Engineers | Craft, quality, autonomy, job security | Honest limits, what the gains will be used for, their part in designing the checks | Hype, quotas, vendor statistics |
-| Sceptics | Evidence and failure modes | The studies in part 1, including the unflattering ones, and your own baseline | Dismissing their concerns. They are often right about specifics |
+| Sceptics | Evidence and failure modes | The studies in part 2, including the unflattering ones, and your own baseline | Dismissing their concerns. They are often right about specifics |
 | Enthusiasts | New capability and speed | The constraint and the assurance stack | Letting enthusiasm skip the groundwork |
 
 ### Three habits for any audience
@@ -344,29 +344,35 @@ The course makes one argument. These systems are statistical machines with known
 
 ## Core explanations
 
-The four ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the detail. The complete two-audience tables remain at the end of each part. The language models module and the practical AI module keep lists of their own.
+The seven ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the detail. The complete two-audience tables remain at the end of each part. The language models module and the practical AI module keep lists of their own.
 
 | Idea | Say it like this | Part |
 | --- | --- | --- |
-| Effort-saving vs redesign | Doing the same job with less effort, versus changing the job so that the AI's speed reaches the customer | 1 |
-| The constraint | The narrowest part of the pipe decides the flow. Speeding up anything else makes a bigger puddle in front of it | 1 |
-| Assurance stack | Many automatic safety nets, so that people check only what truly needs a person | 1 |
-| Review by risk | Our experts look hardest at payments and player data and lightly at internal tools, in place of reading everything equally | 1 |
+| Whole-process gain | Making one step instant helps only as much as that step mattered, and coding is a small step. We improve the whole line | 1 |
+| AI first-pass review | A tireless first reader checks everything, so that people read only what needs a person | 1 |
+| The oracle problem | Ask it to test the code against itself, and it will confirm that the code does what it does. Tests come from what the code should do | 1 |
+| Effort-saving vs redesign | Doing the same job with less effort, versus changing the job so that the AI's speed reaches the customer | 2 |
+| The constraint | The narrowest part of the pipe decides the flow. Speeding up anything else makes a bigger puddle in front of it | 2 |
+| Assurance stack | Many automatic safety nets, so that people check only what truly needs a person | 2 |
+| Review by risk | Our experts look hardest at payments and player data and lightly at internal tools, in place of reading everything equally | 2 |
 
 ## Misconceptions quick reference
 
-The four misconceptions from this module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in part 1.
+The seven misconceptions from this module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in parts 1 and 2.
 
 | Claim | Short response | Part |
 | --- | --- | --- |
-| "AI makes everyone a 10x developer" | It makes typing ten times faster, and typing is a quarter of delivery. The gain comes from changing the rest | 1 |
-| "Percentage of AI-written code shows success" | That shows the tool is open. I report whether finished work arrives sooner and fails less | 1 |
-| "Reviewing every line is the safe option" | Nobody reviews a thousand lines well. We move safety into automatic checks and keep experts for what counts | 1 |
-| "Juniors no longer need fundamentals" | The tools raise the floor, and raise the value of judgement more. Judgement rests on fundamentals | 1 |
+| "AI in software development means AI writing the code" | Writing code was never the slow part. We use AI along the whole line, starting where our work waits longest | 1 |
+| "We have an AI reviewer now, so review is covered" | It does the first pass on everything, so people review design and risk. We track how many of its comments are acted on | 1 |
+| "The AI wrote tests and they all pass, so the code works" | We generate tests from what the code should do, and break the code on purpose to check that the tests notice | 1 |
+| "AI makes everyone a 10x developer" | It makes typing ten times faster, and typing is a quarter of delivery. The gain comes from changing the rest | 2 |
+| "Percentage of AI-written code shows success" | That shows the tool is open. I report whether finished work arrives sooner and fails less | 2 |
+| "Reviewing every line is the safe option" | Nobody reviews a thousand lines well. We move safety into automatic checks and keep experts for what counts | 2 |
+| "Juniors no longer need fundamentals" | The tools raise the floor, and raise the value of judgement more. Judgement rests on fundamentals | 2 |
 
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of part 1 and of the language models module.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of parts 1 and 2, and of the practical AI and language models modules.
 
 | Term | Meaning |
 | --- | --- |

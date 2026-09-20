@@ -328,7 +328,7 @@ This is the most useful property for day-to-day work, and it is temporary by nat
 
 ### It does not learn from your conversations
 
-Typing into a model does not update it. Weights change only when the vendor runs a new training process. Whether a vendor may use your conversations as training data for a future model is a separate, contractual question. Business and API terms generally exclude it by default, and [part 2 of the AI in the organisation module](file/bbb9efdd-e221) covers how to check.
+Typing into a model does not update it. Weights change only when the vendor runs a new training process. Whether a vendor may use your conversations as training data for a future model is a separate, contractual question. Business and API terms generally exclude it by default, and [part 3 of the AI in the organisation module](file/bbb9efdd-e221) covers how to check.
 
 ### Parameter count is capacity, not quality
 

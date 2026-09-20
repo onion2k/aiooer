@@ -24,17 +24,17 @@ The course is in six modules, in three steps: use it well, see how it works, the
 | [Part 4: MCP servers and tool use](file/c9146f3b-27a8) | Connect a model to your own systems, and decide what it may do there | 25 min |
 | [Part 5: Retrieval](file/0b8e5d17-f4c2) | Have a model answer from your own documents, and diagnose it when it answers badly | 25 min |
 | [Part 6: Guardrails and evals](file/7a3f2c68-91de) | Contain what a model can do, and measure whether it is doing it well | 25 min |
-| [Part 7: AI across the software lifecycle](file/d6e2a95b-3f14) | Apply AI to discovery, planning, review, testing and operations as well as coding, and say why the whole process sets the gain | 40 min |
 
-This module covers the craft of building with models: the instruction files, skills and plugins that shape an agent, models that take more than text, connecting a model to tools and systems, answering from your own documents, keeping the result safe and measured, and applying all of it along the whole software lifecycle and not only to coding. It names products and file formats throughout, and those date quickly. It is where the course starts, and it needs no knowledge of how a model works. Its first part lists the seven things about a model's behaviour that the rest leans on. Its part 6 ends with a design review checklist, and its part 7 with the module's own two reference sections. The whole module is about three and a half hours of reading.
+This module covers the craft of building with models: the instruction files, skills and plugins that shape an agent, models that take more than text, connecting a model to tools and systems, answering from your own documents, and keeping the result safe and measured. It names products and file formats throughout, and those date quickly. It is where the course starts, and it needs no knowledge of how a model works. Its first part lists the seven things about a model's behaviour that the rest leans on. Its part 6 ends with a design review checklist and the module's own two reference sections. The whole module is about three hours of reading.
 
 ### AI in the organisation
 | Part | After it you can | Time |
 | --- | --- | --- |
-| [Part 1: AI in the team](file/3e89a4fc-a0bc) | Redesign how your team works so that AI's speed shows up in delivery | 45 min |
-| [Part 2: Strategy and communication](file/bbb9efdd-e221) | Make and defend an AI investment case to any audience | 45 min |
+| [Part 1: AI across the software lifecycle](file/d6e2a95b-3f14) | Apply AI to discovery, planning, review, testing and operations as well as coding, and say why the whole process sets the gain | 40 min |
+| [Part 2: AI in the team](file/3e89a4fc-a0bc) | Redesign how your team works so that AI's speed shows up in delivery | 45 min |
+| [Part 3: Strategy and communication](file/bbb9efdd-e221) | Make and defend an AI investment case to any audience | 45 min |
 
-This module takes the practice from one person to a team and an organisation. Part 1 is about redesigning how a team works so that the AI's speed reaches delivery, and how to measure whether it has. Part 2 covers the decisions above the team, vendors, risk, governance and the investment case, and how to explain all of it to any audience. It ends with the module's two reference sections. The whole module is about an hour and a half of reading.
+This module takes the practice from one person to a team and an organisation. Part 1 goes along the whole software lifecycle, from discovery to operations, and shows that most of the gain is outside coding. Part 2 is about redesigning how a team works so that the AI's speed reaches delivery, and how to measure whether it has. Part 3 covers the decisions above the team, vendors, risk, governance and the investment case, and how to explain all of it to any audience. It ends with the module's two reference sections. The whole module is about two hours of reading.
 
 ### Language models
 
@@ -93,7 +93,7 @@ This module will grow. Each part stands alone, and each names products and figur
 - **Glossary** at the end of each part defines every technical term introduced there.
 - **Sources** appear where a part quotes study results or legal dates.
 
-Four modules end with two reference sections for use on their own: the explanations you will need most often, each in a line, and every misconception in the module with a one-line response. They close part 7 of practical AI, part 2 of AI in the organisation, part 3 of language models and part 7 of generative media.
+Four modules end with two reference sections for use on their own: the explanations you will need most often, each in a line, and every misconception in the module with a one-line response. They close part 6 of practical AI, part 3 of AI in the organisation, part 3 of language models and part 7 of generative media.
 
 ## Suggested routes
 
@@ -102,10 +102,10 @@ Each module numbers its own parts, so every route names its modules.
 | Reader | Route |
 | --- | --- |
 | Engineering manager or technical lead | Practical AI in order, then AI in the organisation, then language models parts 1 to 3. Read the deep dives in the areas where your engineers will test you |
-| Engineer | Practical AI in order with the deep dives, then language models parts 1 to 3, then AI in the organisation part 1 |
-| Product or delivery lead | Practical AI parts 1 and 7, then AI in the organisation part 1 sections 1, 2 and 7, then the checklist in practical AI part 6 section 3 |
-| Non-technical leader | The "In plain terms" openers throughout practical AI, then AI in the organisation part 1 sections 1 to 3 and part 2 sections 5 and 6 in full |
-| One hour only | Practical AI part 1 sections 1 and 2, AI in the organisation part 1 sections 1 to 3, language models part 3 section 7, and the two reference sections that close practical AI part 7 |
+| Engineer | Practical AI in order with the deep dives, then language models parts 1 to 3, then AI in the organisation parts 1 and 2 |
+| Product or delivery lead | Practical AI part 1, then AI in the organisation part 1 in full and part 2 sections 1, 2 and 7, then the checklist in practical AI part 6 section 3 |
+| Non-technical leader | The "In plain terms" openers throughout practical AI, then AI in the organisation part 1 section 1, part 2 sections 1 to 3 and part 3 sections 5 and 6 in full |
+| One hour only | Practical AI part 1 sections 1 and 2, AI in the organisation part 1 section 1 and part 2 sections 1 to 3, language models part 3 section 7, and the two reference sections that close practical AI part 6 |
 | Engineer building an AI feature | Practical AI parts 1 to 6 in order, with language models part 3 section 7 for why the failures happen. Take the checklist in part 6 section 3 to every design review |
 | Anyone who wants a model on their own machine | Language models part 3, then running AI locally parts 1 to 3. Add part 4 before letting an agent near your files |
 | Designer, marketer or producer making media | Generative media part 7 in full, then the part for your medium from parts 2 to 5, then part 6 sections 4, 7, 9 and 10, with the "In plain terms" openers of part 1 |
@@ -120,4 +120,4 @@ Each module numbers its own parts, so every route names its modules.
 
 ## A note on currency
 
-The course was written in September 2026. The mechanisms the course explains change slowly. Products, prices and regulation change quickly. All prices are illustrative, and the regulatory detail in part 2 of the AI in the organisation module is correct only as of that date. Section 7 of that part describes a quarterly habit for keeping your own picture up to date.
+The course was written in September 2026. The mechanisms the course explains change slowly. Products, prices and regulation change quickly. All prices are illustrative, and the regulatory detail in part 3 of the AI in the organisation module is correct only as of that date. Section 7 of that part describes a quarterly habit for keeping your own picture up to date.

@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the first of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
+This is the first of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
 
 The module is about the system around the model. The same model behaves like two different products in a bare chat window and inside a well-built agent. Most of the gain from AI, and most of the disappointment, is decided here and not by the choice of model.
 
@@ -23,7 +23,7 @@ flowchart LR
   G --> E[Logged<br/>and evaluated]
 ```
 
-Each box belongs to a part of the module. This part and [part 2](file/8d27b5e4-c019) cover the instructions: the files that stand in front of every request, and the packages that are fetched when needed. [Part 3](file/52e0a7c9-b3f6) covers input that is not text. [Part 4](file/c9146f3b-27a8) covers tools and the protocol that connects them. [Part 5](file/0b8e5d17-f4c2) covers retrieved documents. [Part 6](file/7a3f2c68-91de) covers the controls and tests that make the result trustworthy, and ends with a checklist for reviewing any AI feature. [Part 7](file/d6e2a95b-3f14) steps back from the diagram and applies all of it along the whole software lifecycle, from discovery to operations.
+Each box belongs to a part of the module. This part and [part 2](file/8d27b5e4-c019) cover the instructions: the files that stand in front of every request, and the packages that are fetched when needed. [Part 3](file/52e0a7c9-b3f6) covers input that is not text. [Part 4](file/c9146f3b-27a8) covers tools and the protocol that connects them. [Part 5](file/0b8e5d17-f4c2) covers retrieved documents. [Part 6](file/7a3f2c68-91de) covers the controls and tests that make the result trustworthy, and ends with a checklist for reviewing any AI feature. The [AI in the organisation module](file/d6e2a95b-3f14) then steps back from the diagram, and applies all of it along the whole software lifecycle, across a team and up through an organisation.
 
 This is where the course starts, because everyone reading it already uses these tools, and using them well is the quickest thing to get better at. It names products and file names throughout, and those date quickly. The ideas under them have held steady for longer.
 
