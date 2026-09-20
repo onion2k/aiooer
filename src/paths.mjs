@@ -19,7 +19,13 @@ export const CANVAS_PROJECT = path.join(CANVAS, 'project');
 export const HEIGHTS_FILE = path.join(ROOT, 'src', 'heights.json');
 export const CREATED_FILE = path.join(ROOT, 'src', 'canvas-created.json');
 
-// The canvas's page runtime, and the copy of the site the checks render with it.
+// The site itself: the ordinary web pages that ship, and what every check
+// renders. It is the output that matters, so it is the thing held to the
+// promises, rather than a copy of it rendered some other way.
+export const STATIC_SITE = path.join(ROOT, 'dist', 'site');
+
+// The canvas's page runtime, and the copy of the boards it renders. Both are
+// on their way out, and nothing but the canvas build reads them.
 export const RUNTIME = path.join(ROOT, 'vendor', 'design-runtime.js');
 export const RESULTS = path.join(ROOT, 'test-results');
 export const TEST_SITE = path.join(RESULTS, 'site');

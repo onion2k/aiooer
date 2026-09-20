@@ -11,7 +11,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { startSite, openPage, togglePanel, sitePages } from './harness.mjs';
-import { TEST_SITE } from '../src/paths.mjs';
+import { STATIC_SITE } from '../src/paths.mjs';
 
 const PAGES = sitePages();
 const RUNS = 5;
@@ -96,7 +96,7 @@ for (const file of PAGES) {
   }
   rows.push({
     page: file,
-    'file KB': Math.round(fs.statSync(path.join(TEST_SITE, file)).size / 1024),
+    'file KB': Math.round(fs.statSync(path.join(STATIC_SITE, file)).size / 1024),
     elements,
     'fonts KB': median(fontKB),
     'download KB': median(totalKB),

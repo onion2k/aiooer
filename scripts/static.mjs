@@ -12,16 +12,22 @@
 //   node scripts/static.mjs
 import fs from 'node:fs';
 import path from 'node:path';
-import { sitePages } from './harness.mjs';
-import { ROOT, CANVAS, CANVAS_PROJECT } from '../src/paths.mjs';
+import { course, pageName } from './harness.mjs';
+import { ROOT, STATIC_SITE, CANVAS_PROJECT } from '../src/paths.mjs';
 import { expand } from '../src/template.mjs';
 import * as rule from '../src/calculator.mjs';
 
-const OUT = path.join(CANVAS, '..', 'site');
+const OUT = STATIC_SITE;
 const READER = path.join(ROOT, 'src', 'reader.js');
 
-// A board's name as a page's: Main.dc.html is the site's front page.
-const asPage = (file) => (file === 'Main.dc.html' ? 'index.html' : file.replace(/\.dc\.html$/, '.html'));
+// The boards this converts: the home page and every written part. The
+// showcase boards are the canvas's own and are left out.
+const boards = () => [
+  'Main.dc.html',
+  ...course()
+    .parts.filter((p) => p.written)
+    .map((p) => p.out),
+];
 
 // The board's own logic class, run here to get the values it would start with
 // in the browser. It is the same class the canvas runs, so the two cannot
@@ -71,7 +77,7 @@ export function staticPage(board) {
   const html = expand(body, startingValues(script));
   const calc = html.includes('figure calc') ? calcRule : '';
   // Links between boards become links between pages.
-  const linked = html.replace(/href="([A-Za-z0-9-]+)\.dc\.html/g, (m, name) => `href="${asPage(name + '.dc.html')}`);
+  const linked = html.replace(/href="([A-Za-z0-9-]+)\.dc\.html/g, (m, name) => `href="${pageName(name + '.dc.html')}`);
   return `<!doctype html>
 <html lang="en-GB">
 <head>
@@ -93,9 +99,9 @@ fs.mkdirSync(OUT, { recursive: true });
 fs.copyFileSync(READER, path.join(OUT, 'reader.js'));
 
 const written = [];
-for (const file of sitePages()) {
+for (const file of boards()) {
   const board = fs.readFileSync(path.join(CANVAS_PROJECT, file), 'utf8');
-  const name = asPage(file);
+  const name = pageName(file);
   fs.writeFileSync(path.join(OUT, name), staticPage(board));
   written.push(name);
 }

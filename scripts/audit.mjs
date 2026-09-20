@@ -1,5 +1,5 @@
-// The accessibility audit. Renders the built pages with the design runtime
-// and holds them to WCAG 2.2 AAA (bar the reading-level criteria), with a
+// The accessibility audit. Renders the pages that ship, in dist/site, and
+// holds them to WCAG 2.2 AAA (bar the reading-level criteria), with a
 // figure for each check so a regression shows as a number that moved:
 //   axe       axe-core's WCAG A, AA and AAA rules and its best practices,
 //             in every theme, with every panel and deep dive open
@@ -32,9 +32,9 @@
 //             a slider is moved from the keyboard and a day count typed, and
 //             after Start again
 //   name      the course called by one name, its introduction's heading, in
-//             the wordmark, the footer, every page title and the canvas
+//             the wordmark, the footer and every page title
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
-//   node scripts/audit.mjs [--quick] [--only axe,measure,...] [--pages File.dc.html,...] [--mutate name]
+//   node scripts/audit.mjs [--quick] [--only axe,measure,...] [--pages File.html,...] [--mutate name]
 //                           [--jobs 4] [--all]
 //
 // Pages are audited several at a time, since each opens in its own browser
@@ -43,7 +43,7 @@
 //
 // A page that passed is not audited again until something that could change
 // its result has changed: its own built file, this script, the harness, the
-// canvas runtime, the installed packages, the introduction, the list of built
+// reader script, the installed packages, the introduction, the list of built
 // pages, or the flags. The key is a hash of all of those, and the results kept
 // under it are the very lines the last run wrote. A failure is never kept, a
 // mutated run neither reads nor writes what is kept, and --all audits every
@@ -55,8 +55,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { startSite, openPage, setSetting, AXE_PATH, course, sitePages } from './harness.mjs';
-import { RESULTS, CANVAS_PROJECT, TEST_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
+import { startSite, openPage, setSetting, AXE_PATH, course, sitePages, pageName } from './harness.mjs';
+import { RESULTS, STATIC_SITE, CANVAS_PROJECT, ROOT, CONTENT_DIR } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
 import { delivery } from '../src/calculator.mjs';
 const quick = process.argv.includes('--quick');
@@ -92,13 +92,13 @@ const MUTATIONS = {
   pagerchain: {
     js: () => {
       const a = document.querySelector('.pager-link.is-next');
-      if (a) a.setAttribute('href', 'Main.dc.html');
+      if (a) a.setAttribute('href', 'index.html');
     },
   },
   cominglink: {
     js: () => {
       const a = document.querySelector('.footer-links a');
-      if (a) a.setAttribute('href', 'Nowhere9.dc.html');
+      if (a) a.setAttribute('href', 'Nowhere9.html');
     },
   },
   // A wordmark that says something other than the introduction's heading.
@@ -155,10 +155,6 @@ const THEMES = quick ? ['paper', 'dark'] : ['paper', 'white', 'dark', 'contrast'
 // The showcase boards: every board the build made that is not one of the
 // site's own pages. Read from the built index, so a new module's phone board
 // is checked without anyone adding it to a list.
-const COMPS = JSON.parse(fs.readFileSync(path.join(CANVAS_PROJECT, 'canvas.json'), 'utf8')).order.filter(
-  (file) => !FULL_PAGES.includes(file),
-);
-
 const site = await startSite();
 const KINDS = [
   'axe',
@@ -707,7 +703,7 @@ async function auditPage(file) {
   if (run('modules')) {
     const written = COURSE.parts.filter((p) => p.written);
     const built = new Set(FULL_PAGES);
-    const part = written.find((p) => p.out === file);
+    const part = written.find((p) => pageName(p.out) === file);
     const page = await open(file);
     const seen = await page.evaluate(() => ({
       label: document.querySelector('.eyebrow')?.textContent.trim() ?? null,
@@ -751,8 +747,8 @@ async function auditPage(file) {
       if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
         wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
       if (!seen.title.includes(`${part.module}, part ${part.n}: `)) wrong.push(`page title "${seen.title}"`);
-      const next = written[i + 1]?.out ?? 'Main.dc.html';
-      const prev = written[i - 1]?.out ?? 'Main.dc.html';
+      const next = pageName(written[i + 1]?.out ?? 'Main.dc.html');
+      const prev = pageName(written[i - 1]?.out ?? 'Main.dc.html');
       if (seen.next !== next) wrong.push(`next is ${seen.next}, wanted ${next}`);
       if (seen.prev !== prev) wrong.push(`previous is ${seen.prev}, wanted ${prev}`);
     } else {
@@ -792,7 +788,7 @@ async function auditPage(file) {
     const wrong = [];
     if (seen.wordmark !== course) wrong.push(`wordmark "${seen.wordmark}"`);
     if (seen.footer !== course) wrong.push(`footer "${seen.footer}"`);
-    if (file === 'Main.dc.html' && seen.home !== course) wrong.push(`heading "${seen.home}"`);
+    if (file === 'index.html' && seen.home !== course) wrong.push(`heading "${seen.home}"`);
     if (!seen.title.startsWith(`${course}: `) && !seen.title.endsWith(` · ${course}`))
       wrong.push(`page title "${seen.title}"`);
     if (wrong.length) fail('name', `${file}: ${wrong.join('; ')}, not "${course}"`);
@@ -800,7 +796,7 @@ async function auditPage(file) {
   }
 
   // The four ideas' numerals are the text colour, in every theme.
-  for (const theme of run('numerals') && file === 'Main.dc.html' ? THEMES : []) {
+  for (const theme of run('numerals') && file === 'index.html' ? THEMES : []) {
     const page = await open(file);
     if (theme !== 'paper') {
       await setSetting(page, 'theme', theme);
@@ -826,7 +822,7 @@ async function auditPage(file) {
     [390, 844],
     [1440, 3200],
   ];
-  for (const [width, height] of run('spy') && file !== 'Main.dc.html' ? frames : []) {
+  for (const [width, height] of run('spy') && file !== 'index.html' ? frames : []) {
     const page = await open(file, { width, height });
     const count = await page.evaluate(() => document.querySelectorAll('.article > section > h2').length);
     for (const [where, index] of [
@@ -1134,7 +1130,7 @@ async function auditPage(file) {
       );
     else pass('grids', `${file} @${width}: every block the same height (${label})`);
     if (width === 1440) {
-      const kind = file === 'Main.dc.html' ? 'home' : 'part';
+      const kind = file === 'index.html' ? 'home' : 'part';
       const counts = [...(await columnCounts(page, TWELVE[kind])), ...panelTracks];
       const wrong = counts.filter((c) => c.tracks !== 12 || !c.equal);
       if (wrong.length)
@@ -1149,35 +1145,24 @@ async function auditPage(file) {
 }
 
 // A showcase board is a trimmed page at a fixed size, so axe is all it needs.
-async function auditBoard(file) {
-  const phone = file.startsWith('Phone');
-  const page = await open(file, { width: phone ? 390 : 1440, height: 900 });
-  await runAxe(page, `${file} (showcase board)`);
-  await page.close();
-}
-
 // Everything that could change a page's result, other than the page itself.
 const sha = (...parts) => parts.reduce((h, p) => h.update(p), crypto.createHash('sha256')).digest('hex');
 const SHARED = sha(
   fs.readFileSync(new URL(import.meta.url)),
   fs.readFileSync(new URL('./harness.mjs', import.meta.url)),
-  fs.readFileSync(path.join(TEST_SITE, 'support.js')),
+  fs.readFileSync(path.join(ROOT, 'src', 'reader.js')),
   fs.readFileSync(path.join(ROOT, 'package-lock.json')),
   fs.readFileSync(path.join(CONTENT_DIR, 'Course introduction.md')),
-  fs.readdirSync(TEST_SITE).sort().join('|'),
+  fs.readdirSync(STATIC_SITE).sort().join('|'),
   JSON.stringify({ quick, only }),
 );
-const keyOf = (file) => sha(SHARED, fs.readFileSync(path.join(TEST_SITE, file)));
+const keyOf = (file) => sha(SHARED, fs.readFileSync(path.join(STATIC_SITE, file)));
 const KEPT_FILE = path.join(RESULTS, 'audit-kept.json');
 const kept = !mutation && fs.existsSync(KEPT_FILE) ? JSON.parse(fs.readFileSync(KEPT_FILE, 'utf8')) : {};
 
-// The pages and then the boards, several at a time, each into results of its
-// own. A page whose key is unchanged since it last passed gives back the
-// lines it wrote then.
-const work = [
-  ...(pagesArg || FULL_PAGES).map((file) => ({ file, audit: auditPage })),
-  ...(run('axe') ? COMPS : []).map((file) => ({ file, audit: auditBoard })),
-];
+// Every page, several at a time, each into results of its own. A page whose
+// key is unchanged since it last passed gives back the lines it wrote then.
+const work = (pagesArg || FULL_PAGES).map((file) => ({ file, audit: auditPage }));
 let unchanged = 0;
 let next = 0;
 await Promise.all(
@@ -1205,7 +1190,7 @@ for (const job of work) for (const k of KINDS) results[k].push(...job.results[k]
 
 // Saved settings of every shape load, once, on a part with deep dives.
 for (const shape of run('storage') ? SAVED_SHAPES : []) {
-  const page = await openPage(site, 'Part1.dc.html', {
+  const page = await openPage(site, 'Part1.html', {
     beforeLoad: (p) =>
       p.addInitScript(
         ([key, value]) => {

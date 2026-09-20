@@ -10,7 +10,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TEST_SITE } from '../src/paths.mjs';
+import { STATIC_SITE } from '../src/paths.mjs';
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -23,13 +23,13 @@ const TYPES = {
 export function serve(root, port = 0) {
   const server = http.createServer((req, res) => {
     const url = decodeURIComponent(req.url.split('?')[0]);
-    const file = path.join(root, url === '/' ? 'Main.dc.html' : url);
+    const file = path.join(root, url === '/' ? 'index.html' : url);
     if (!file.startsWith(root) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
       res.writeHead(404);
       res.end('not found');
       return;
     }
-    const ext = file.endsWith('.dc.html') ? '.html' : path.extname(file);
+    const ext = path.extname(file);
     res.writeHead(200, { 'content-type': TYPES[ext] || 'application/octet-stream' });
     fs.createReadStream(file).pipe(res);
   });
@@ -37,13 +37,11 @@ export function serve(root, port = 0) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  if (!fs.existsSync(path.join(TEST_SITE, 'support.js'))) {
-    console.error(
-      'Nothing to serve: run npm run build, and put the canvas runtime in vendor/ first (see vendor/README.md).',
-    );
+  if (!fs.existsSync(path.join(STATIC_SITE, 'index.html'))) {
+    console.error('Nothing to serve: run npm run build first.');
     process.exit(1);
   }
   const port = Number(process.argv[2] || process.env.PORT || 5190);
-  await serve(TEST_SITE, port);
-  console.log(`The built site, with the canvas runtime: http://127.0.0.1:${port}/`);
+  await serve(STATIC_SITE, port);
+  console.log(`The site: http://127.0.0.1:${port}/`);
 }

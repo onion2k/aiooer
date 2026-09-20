@@ -1,7 +1,7 @@
-// Builds the canvas: every board under dist/canvas/project/, the canvas
-// index, and a test copy in test-results/site beside the canvas runtime, so
-// the checks render exactly what will be published. Run it after any change
-// to the markdown or the design; nothing in dist/ is edited by hand.
+// Builds the canvas's boards, under dist/canvas/project/, and its index.
+// Nothing renders or checks them any more: scripts/static.mjs reads them to
+// make the site in dist/site, which is the output and what every check
+// renders. Both halves of this file go when the canvas does.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,7 +9,7 @@ import { parsePart, parseIntro } from './content.mjs';
 import { homeFile, partFile } from './pages.mjs';
 import { DIAGRAMS } from './diagrams.mjs';
 import { GRID_GUIDE } from './styles.mjs';
-import { CONTENT_DIR, CANVAS_PROJECT as PROJECT, TEST_SITE, RUNTIME, HEIGHTS_FILE, CREATED_FILE } from './paths.mjs';
+import { CONTENT_DIR, CANVAS_PROJECT as PROJECT, HEIGHTS_FILE, CREATED_FILE } from './paths.mjs';
 
 const heights = fs.existsSync(HEIGHTS_FILE) ? JSON.parse(fs.readFileSync(HEIGHTS_FILE, 'utf8')) : {};
 const MAX_H = 8000;
@@ -180,8 +180,6 @@ const rows = [
 
 fs.rmSync(PROJECT, { recursive: true, force: true });
 fs.mkdirSync(PROJECT, { recursive: true });
-fs.rmSync(TEST_SITE, { recursive: true, force: true });
-fs.mkdirSync(TEST_SITE, { recursive: true });
 
 const boards = {};
 const order = [];
@@ -198,7 +196,6 @@ rows.forEach((row, ri) => {
     const page = { ...b, start: b.start, remember: b.remember, fixed: !!b.fixed };
     const html = b.make(page);
     fs.writeFileSync(path.join(PROJECT, b.file), html);
-    fs.writeFileSync(path.join(TEST_SITE, b.file), html);
     const entry = { x, y: rowY, w: b.w, h: b.h, title: b.title };
     // Desktop boards show the twelve-column grid they are laid out on.
     if (b.w === 1440) entry.guides = [GRID_GUIDE];
@@ -252,13 +249,5 @@ const canvas = {
 };
 fs.writeFileSync(indexFile, JSON.stringify(canvas, null, 2));
 
-// The canvas's runtime is not in the repository, since it carries no licence
-// to republish it. The boards build without it; only the checks, which render
-// the test copy, need it, and they say so if it is missing.
-const hasRuntime = fs.existsSync(RUNTIME);
-if (hasRuntime) fs.copyFileSync(RUNTIME, path.join(TEST_SITE, 'support.js'));
-
 const sizes = order.map((f) => `${f} ${(fs.statSync(path.join(PROJECT, f)).size / 1024).toFixed(0)} KB`);
 console.log(`Built ${order.length} boards:\n  ${sizes.join('\n  ')}`);
-if (!hasRuntime)
-  console.log('No canvas runtime in vendor/, so the checks cannot render the test copy: see vendor/README.md.');

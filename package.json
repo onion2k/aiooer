@@ -5,11 +5,9 @@
   "type": "module",
   "description": "The course Using AI well, built from its markdown into a WCAG AAA website on a Claude Design canvas.",
   "scripts": {
-    "build": "node src/build.mjs",
-    "build:static": "node src/build.mjs && node scripts/static.mjs",
-    "dev": "node src/build.mjs && node scripts/serve.mjs",
+    "build": "node src/build.mjs && node scripts/static.mjs",
+    "dev": "npm run --silent build && node scripts/serve.mjs",
     "look": "node scripts/look.mjs",
-    "heights": "node src/build.mjs && node scripts/look.mjs --heights && node src/build.mjs",
     "contrast": "node scripts/contrast.mjs",
     "audit": "node scripts/audit.mjs",
     "audit:quick": "node scripts/audit.mjs --quick",
@@ -17,7 +15,7 @@
     "links": "node scripts/links.mjs",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "check:quick": "prettier --check . --log-level warn && eslint . && node scripts/contrast.mjs && node src/build.mjs",
+    "check:quick": "prettier --check . --log-level warn && eslint . && node scripts/contrast.mjs && npm run --silent build",
     "check": "npm run --silent check:quick && node scripts/look.mjs && node scripts/audit.mjs",
     "prepare": "git rev-parse --git-dir > /dev/null 2>&1 && git config core.hooksPath .githooks || true"
   },

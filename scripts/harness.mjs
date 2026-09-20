@@ -1,16 +1,18 @@
-// The test API. Serves the built site beside the canvas's own page runtime,
-// opens a board in headless Chromium, and drives it the way a reader does:
-// through the reading settings panel and the page's buttons. Every check and
-// look tool goes through here, so they all see the site exactly as the canvas
-// renders it; without it each script would boot the page its own way and
-// their figures would not agree.
+// The test API. Serves the built site, opens a page in headless Chromium, and
+// drives it the way a reader does: through the reading settings panel and the
+// page's buttons. Every check and look tool goes through here, so they all see
+// the same pages the same way; without it each script would boot the page its
+// own way and their figures would not agree.
+//
+// What it serves is dist/site, the pages that ship. A check that rendered
+// anything else would be holding a copy to the promises and not the thing.
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
 import { serve } from './serve.mjs';
-import { TEST_SITE, CONTENT_DIR } from '../src/paths.mjs';
+import { STATIC_SITE, CONTENT_DIR } from '../src/paths.mjs';
 import { parseIntro } from '../src/content.mjs';
 
 const require = createRequire(import.meta.url);
@@ -23,27 +25,30 @@ export function course() {
   return parseIntro(CONTENT_DIR);
 }
 
-// The site's own pages: the home page and every written part, in course order.
+// The site's own pages: the home page and every written part, in course order,
+// named as they are served. The checks and perf walk this, so a new part is
+// checked the day it is written, without anyone adding it to a list.
 export function sitePages() {
   return [
-    'Main.dc.html',
+    'index.html',
     ...course()
       .parts.filter((p) => p.written)
-      .map((p) => p.out),
+      .map((p) => pageName(p.out)),
   ];
 }
 
+// A board's name as a page's. The build still writes boards, so the one place
+// that knows the two namings is here.
+export function pageName(board) {
+  return board === 'Main.dc.html' ? 'index.html' : board.replace(/\.dc\.html$/, '.html');
+}
+
 // Starts the server and the browser. Close both with site.close().
-// Without the canvas's runtime beside the boards nothing would render, and
-// every check would fail on an empty page; this says why before any does.
-// Serves a folder and opens a browser on it. The default is the test copy of
-// the canvas, which needs the runtime beside it; the static build passes its
-// own folder, which needs nothing.
-export async function startSite(root = TEST_SITE) {
-  if (root === TEST_SITE && !fs.existsSync(path.join(TEST_SITE, 'support.js'))) {
-    throw new Error(
-      'The canvas runtime is missing, so the boards cannot be rendered. It is not in the repository; vendor/README.md says how to get it. Then run npm run build.',
-    );
+// An unbuilt site would fail every check on a missing page, so say why here,
+// once, rather than leaving each script to report it as its own failure.
+export async function startSite(root = STATIC_SITE) {
+  if (!fs.existsSync(path.join(root, 'index.html'))) {
+    throw new Error(`No site at ${root}: run npm run build first.`);
   }
   const server = await serve(root);
   const browser = await chromium.launch();
@@ -57,11 +62,11 @@ export async function startSite(root = TEST_SITE) {
   };
 }
 
-// Opens a board and waits until it has rendered and its typeface is in.
+// Opens a page and waits until it has rendered and its typeface is in.
 // Line lengths and pictures measured in a fallback font would be wrong, so a
 // page whose body face failed to load (offline, or the font service down)
 // stops the run instead of producing figures.
-// beforeLoad(page) runs before the board is requested, for a check that has to
+// beforeLoad(page) runs before the page is requested, for a check that has to
 // watch the load itself or seed the page's storage.
 export async function openPage(site, file, { width = 1440, height = 900, errors = [], beforeLoad } = {}) {
   const page = await site.browser.newPage({ viewport: { width, height } });

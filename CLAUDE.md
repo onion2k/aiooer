@@ -68,11 +68,14 @@ generated modules, sources were checked to
 exist, the tables of models and tools date fast and say so, and no one but
 the author has reviewed their claims. The course's name, its modules and
 their parts all come from the introduction, and the code reads them from
-there. The code here builds the markdown into a website on a Claude Design
-canvas, at
-https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk, held to WCAG 2.2 AAA
+there. The code here builds the markdown into an ordinary website, in
+`dist/site`, to be put on any web server: plain HTML, one page per part, and
+one script. It is held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
-easy to read as possible. The look is Brutalist graphic design: a pale grey
+easy to read as possible. It was built for a Claude Design canvas until 20
+September 2026, when the author decided that would not be published; the
+canvas's boards are still built, because the site is made from them, and
+they and everything that serves them go next. The look is Brutalist graphic design: a pale grey
 ground, near-black type and heavy rules, International Klein Blue and a
 signal yellow, a bright pastel for each module, Archivo 900 for titles over
 Atkinson Hyperlegible Next for
@@ -150,22 +153,22 @@ Baselines as of 19 September 2026, on this machine:
 | ------------------- | -------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
 | `contrast`          | 251 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1             | none           |
 | `audit`, axe        | 361 runs                               | 0 violations, 0 needing review                                               | none           |
-| `audit`, measure    | 29 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
-| `audit`, targets    | 29 pages × desktop and phone           | all 44 × 44 or larger                                                        | none           |
-| `audit`, reflow     | 29 pages × 320px and 200% zoom         | no sideways scroll                                                           | none           |
-| `audit`, spacing    | 29 pages × desktop and phone           | nothing clipped                                                              | none           |
-| `audit`, keyboard   | 29 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
-| `audit`, headings   | 29 pages × desktop and phone           | one h1, no skipped level                                                     | none           |
-| `audit`, corners    | 29 pages, every panel, deep dive open  | none rounder than 2px                                                        | none           |
-| `audit`, grids      | 29 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
+| `audit`, measure    | 35 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
+| `audit`, targets    | 35 pages × desktop and phone           | all 44 × 44 or larger                                                        | none           |
+| `audit`, reflow     | 35 pages × 320px and 200% zoom         | no sideways scroll                                                           | none           |
+| `audit`, spacing    | 35 pages × desktop and phone           | nothing clipped                                                              | none           |
+| `audit`, keyboard   | 35 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
+| `audit`, headings   | 35 pages × desktop and phone           | one h1, no skipped level                                                     | none           |
+| `audit`, corners    | 35 pages, every panel, deep dive open  | none rounder than 2px                                                        | none           |
+| `audit`, grids      | 35 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
 | `audit`, storage    | 5 saved shapes                         | every one loads                                                              | none           |
 | `audit`, numerals   | the home page in four themes           | the four ideas numbered in the text colour                                   | none           |
 | `audit`, spy        | 28 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps                                        | none           |
 | `audit`, modules    | the home page and every written part   | label, breadcrumb, title, ways on, no dead links                             | none           |
-| `audit`, name       | 29 pages and the canvas's index        | the heading's name wherever it is shown                                      | none           |
+| `audit`, name       | 35 pages and the canvas's index        | the heading's name wherever it is shown                                      | none           |
 | `audit`, hues       | every page, everywhere a hue is drawn  | 17 to 21 a page, each beside the words that say the same                     | none           |
 | `audit`, calculator | the one part that has a calculator     | every example, the keyboard, typing and Start again show what the rule gives | none           |
-| `look`              | 42 boards                              | no errors; recorded heights match                                            | 2px on heights |
+| `look`              | 35 pages                               | no errors, no empty page                                                     | none           |
 | `links`             | 151 outside addresses the course cites | 150 ok, 1 unverified, 0 gone                                                 | none gone      |
 | `perf`, not a gate  | render, fonts, repaint, scrolling      | see below                                                                    | not held       |
 
@@ -193,21 +196,19 @@ slowdown is only caught by reading them.
 
 ## Commands
 
-    npm run dev            build, then the site at http://127.0.0.1:5190 with the canvas runtime
-    npm run build          the boards into dist/canvas, and a test copy into test-results/site
-    npm run build:static   build, then the course as an ordinary website in dist/site (~2 min; needs the runtime)
-    npm run check:quick    formatting, lint, contrast, build (the pre-commit hook; ~1 s)
+    npm run dev            build, then the site at http://127.0.0.1:5190
+    npm run build          the course as an ordinary website in dist/site (and, for now, the canvas's boards)
+    npm run check:quick    formatting, lint, contrast, build (the pre-commit hook)
     npm run check          check:quick, look and the full audit; slow, and run by hand now and then, not on every change
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
     npm run audit          the accessibility audit; report in test-results/audit-report.md
     npm run audit:quick    two themes and shorter keyboard walks (~2 min; line length takes most of it)
-    npm run look           every board rendered: errors and stale heights fail it; pictures in test-results/shots
-    npm run heights        build, record the showcase boards' natural heights, then build again
+    npm run look           every page rendered: an error or an empty page fails it; pictures in test-results/shots
     npm run perf           render and repaint times, five runs each, medians
     npm run links          every outside address the course cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator`,
-`--pages Part1.dc.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
+`--pages Part1.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
 `spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
@@ -225,11 +226,13 @@ picture out in columns. Look at every picture.
 
 ## Publishing
 
-There are two outputs: the canvas, and an ordinary website.
+The site is the output, and the canvas is on its way out. Nothing is built
+for the canvas but its boards, nothing renders them, and no check goes near
+them.
 
 ### The website, for a web server
 
-`npm run build:static` writes `dist/site`: one `.html` per page, `index.html`
+`npm run build` writes `dist/site`: one `.html` per page, `index.html`
 for the home page, and `reader.js`. Copy that folder to any static host. It
 needs no server code and no build step at the far end.
 
@@ -248,7 +251,7 @@ those are the only forms the build emits, and they are never nested more than
 one deep. Nothing of the runtime is in what ships. The showcase boards are
 not part of the site and are left out.
 
-It cannot drift from the canvas, and that is measured, not assumed: every
+It could not drift from the canvas, and that was measured, not assumed: every
 page was compared with the same board rendered by the runtime and matched in
 text, structure, classes, inputs, state and links, and screenshots of the
 home page and the lifecycle part were byte-identical. The one difference is
@@ -263,22 +266,19 @@ page still holds the whole course, with the settings the build wrote. The
 static build checks its own output: no hole, loop, event attribute, board
 link or piece of the canvas left, and no dead link between pages.
 
-The audit does not yet cover `dist/site`; it walks the canvas's boards. axe
-found nothing on all 32 static pages in the default theme when the build was
-written, the calculator, settings, panels, deep dives and contents were all
-driven there, and the rest of the guarantees are proved on the boards the
-static pages match.
+The audit walks these pages, and only these. Everything the site promises is
+held against the thing that ships, rather than against a copy of it rendered
+some other way, and no check needs anything that is not in this repository.
 
-### The canvas
+### The canvas, which is going
 
-The canvas is output. `npm run build` writes it to `dist/canvas`, and Claude
-publishes it with the Artifact tool: `url` the canvas, `root` `dist/canvas`,
-`file_path` `dist/canvas/project/canvas.json`, and `files` every
-`project/*.dc.html` by that path. Publish only after
-the quick check is green, the pages the change touched pass their audit,
-and `npm run links` finds no source gone. Anything changed by hand on the canvas is overwritten by the next
-publish, so read the canvas first and bring such changes into `src/`. The
-canvas is private until it is shared from its Share menu.
+The canvas at https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk will not be
+published again. `npm run build` still writes its boards to `dist/canvas`,
+because the static build is made from them, but nothing renders or checks
+them and the showcase boards are gone from every run. The boards, the
+showcase views, `heights.json`, `canvas-created.json`, `GRID_GUIDE` and the
+second implementation of the page's behaviour in `logic.mjs` all go in a
+commit of their own.
 
 ## How the code is laid out
 
@@ -314,9 +314,8 @@ canvas is private until it is shared from its Share menu.
   a part in its contents.
 - `src/build.mjs` is the one place that wires everything together and knows
   the boards and their layout. `src/paths.mjs` says where everything is.
-- `src/heights.json` is measured by `npm run heights`, never typed.
-  `src/canvas-created.json` is the canvas's creation stamp, kept so every
-  build writes the same index.
+- `src/heights.json` and `src/canvas-created.json` are the canvas's, and
+  nothing reads them but its board build.
 - `scripts/links.mjs` asks every outside address the course cites whether it
   still answers. It is not part of `check`, since it depends on other
   people's servers and a gate a stranger's outage can turn red gets ignored;
@@ -326,12 +325,11 @@ canvas is private until it is shared from its Share menu.
   not exist, to prove it still fails, and `--only <text>` checks a few.
 - `scripts/harness.mjs` is the test API. `scripts/` also holds the gates
   and the look tools.
-- `vendor/design-runtime.js` is the canvas's own page runtime, so the checks
-  render exactly what the canvas does. It is not in the repository, since it
-  carries no licence to republish it; each machine gets its own copy, as
-  `vendor/README.md` says, with the hash the baselines were set with.
-  `build` and `check:quick` run without it; everything that renders a page
-  stops and points there until it is in place.
+- `vendor/design-runtime.js` is the canvas's own page runtime. Nothing needs
+  it any more: the build, the checks and the look tools all run without it,
+  because they render `dist/site`, which is plain HTML. It carries no licence
+  to republish, so it is not in the repository and never was; that it was
+  once needed to render a page is why no build server could run the checks.
 
 ## Model features
 
@@ -382,9 +380,9 @@ What to copy the shape of, when building something new:
 
 ## The test API
 
-`scripts/harness.mjs`: `startSite()` serves `test-results/site` beside the
-canvas runtime and launches Chromium; `openPage(site, file, { width,
-height, errors, beforeLoad })` opens a board and stops the run if its
+`scripts/harness.mjs`: `startSite()` serves `dist/site`, the pages that ship,
+and launches Chromium; it stops the run if the site is not built. `openPage(site, file, { width,
+height, errors, beforeLoad })` opens a page and stops the run if its
 typeface did not load, since nothing measured in a fallback font can be
 trusted, and `beforeLoad(page)` runs first, to watch the load or seed the
 page's storage;
@@ -392,8 +390,10 @@ page's storage;
 as a reader would (`theme`, `size`, `spacing`, `measure`, `font`, `deep`);
 `togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel;
 `course()` is the course as the introduction declares it, and `sitePages()`
-the home page and every written part, which is what the audit and `perf`
-walk, so a new part is checked from the day it is written.
+the home page and every written part as they are served (`index.html`,
+`Practical1.html`, and so on), which is what the audit, `look` and `perf`
+walk, so a new part is checked from the day it is written. `pageName()` is
+the one place that knows a board's name as a page's.
 Each page opens in a fresh browser context, so no check ever sees a
 reader's saved settings.
 
@@ -500,8 +500,9 @@ For anything new on a page, check what it does:
 ## Verifying in a browser
 
 Headless, through the harness, for anything seen or measured; never the
-in-app browser pane. The typefaces come from Google Fonts, so the checks
-need the network. The site keeps a reader's settings in local storage under
+in-app browser pane. What every check renders is `dist/site`, the pages that
+ship, so a check holds the thing itself and not a copy of it. The typefaces
+come from Google Fonts, so the checks need the network. The site keeps a reader's settings in local storage under
 `how-frontier-llms-work/reading-settings/v1`, which keeps the course's first
 name on purpose, since a new key would lose every reader's saved choices; a
 test that needs a setting chooses it through the panel.
