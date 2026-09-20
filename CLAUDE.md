@@ -1,6 +1,6 @@
-# Using AI well: the course website
+# The AI field guide: the website
 
-The course is the markdown files in `content/`: the
+The guide is the markdown files in `content/`: the
 introduction, and a file for each written part. An optional primer comes
 first, Intro to AI (three short parts, files `Intro N ….md`: what AI is,
 the basics of using it, and what is possible), which Claude wrote on 20
@@ -8,16 +8,16 @@ September 2026 from general knowledge, for readers without much experience
 of AI. A module is optional when its heading in the introduction ends
 "(optional)": the home page says so beside it, its main button starts at
 the first part that is not optional, and a quieter button offers the primer.
-After it, the course is in six modules, each with
+After it, the guide is in six modules, each with
 its own parts numbered from 1, in an order the author chose on 20 September
-2026 so that the course starts gently: use it well, then see how it works,
+2026 so that the guide starts gently: use it well, then see how it works,
 then explore further. Practical AI comes first, then AI in the organisation
 (three parts, files `Org N ….md`: AI across the software lifecycle, AI in
 the team, and strategy and communication), then Language models (three parts, files `Part N ….md`, the
 mechanism alone), then Running AI locally, Generative media and Other AI
 models. AI in the organisation's parts 2 and 3 were parts 4 and 5 of
 Language models until that date, and its part 1, which Claude wrote from
-sources read in September 2026 so that the course is not only about coding,
+sources read in September 2026 so that the guide is not only about coding,
 was Practical AI part 7 until the author moved it the same day. Its pages
 are `Org1` to `Org3`, and the ids its links use did not change. Because the mechanism now comes after the practice, Practical
 AI part 1 opens with seven things to know about how a model behaves, and
@@ -66,15 +66,20 @@ module is expected to grow; a new part is a new row in its table, linked
 once its file exists. Across the
 generated modules, sources were checked to
 exist, the tables of models and tools date fast and say so, and no one but
-the author has reviewed their claims. The course's name, its modules and
+the author has reviewed their claims. The guide's name, its modules and
 their parts all come from the introduction, and the code reads them from
 there. The code here builds the markdown into an ordinary website, in
 `dist/site`, to be put on any web server: plain HTML, one page per part, and
 one script. It is held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
-easy to read as possible. It was built for a Claude Design canvas until 20
-September 2026, when the author decided that would not be published, and
-every trace of the canvas came out the same day.
+easy to read as possible. It was called How Frontier LLMs Work, then Using
+AI well, and became The AI field guide on 20 September 2026, when the author
+decided the name should not promise advice alone: a directory of models is
+reference, not advice, and a field guide holds both. The word "guide" runs
+through the prose in place of "course" from that date. Readers' saved
+settings still live under the first name's key, on purpose. It was built for
+a Claude Design canvas until the same day, when the author decided that
+would not be published, and every trace of the canvas came out.
 The look is Brutalist graphic design: a pale grey
 ground, near-black type and heavy rules, International Klein Blue and a
 signal yellow, a bright pastel for each module, Archivo 900 for titles over
@@ -117,7 +122,7 @@ was written on 19 September 2026 from what the code does at that date.
   command, the publish folder and the Node version, and the build stops if
   either the command or the folder disagrees with what is actually here.
 - **Every page says what it is.** Each carries a meta description in the
-  course's own words: the home page and a module open with their own prose
+  guide's own words: the home page and a module open with their own prose
   and add their size, and a part says what a reader can do after it, which
   is what the introduction's table already promises. A description that is
   missing, under 50 characters, over 170, or shared with another page stops
@@ -169,9 +174,9 @@ modulecards` proves that check still bites.
   competes with the blue and the yellow, which do carry meaning. A band never
   makes a boundary, either: a card's and a link's own borders stay whole and
   the hue sits inside them, since a pastel is too quiet to be an edge.
-- **One name.** The course is called what the introduction's heading calls
+- **One name.** The guide is called what the introduction's heading calls
   it, in the wordmark, the footer and every page title.
-  `audit` holds it, and a heading without both the course's name and the
+  `audit` holds it, and a heading without both the guide's name and the
   page's stops the build.
 
 ## Gates and baselines
@@ -198,7 +203,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, hues       | every page, everywhere a hue is drawn  | 17 to 21 a page, each beside the words that say the same                     | none           |
 | `audit`, calculator | the one part that has a calculator     | every example, the keyboard, typing and Start again show what the rule gives | none           |
 | `look`              | 42 pages                               | no errors, no empty page                                                     | none           |
-| `links`             | 151 outside addresses the course cites | 150 ok, 1 unverified, 0 gone                                                 | none gone      |
+| `links`             | 151 outside addresses the guide cites  | 150 ok, 1 unverified, 0 gone                                                 | none gone      |
 | `perf`, not a gate  | render, fonts, repaint, scrolling      | see below                                                                    | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
@@ -226,7 +231,7 @@ slowdown is only caught by reading them.
 ## Commands
 
     npm run dev            build, then the site at http://127.0.0.1:5190
-    npm run build          the course as an ordinary website in dist/site
+    npm run build          the guide as an ordinary website in dist/site
     npm run check:quick    formatting, lint, contrast, build (the pre-commit hook)
     npm run check          check:quick, look and the full audit; slow, and run by hand now and then, not on every change
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
@@ -234,7 +239,7 @@ slowdown is only caught by reading them.
     npm run audit:quick    two themes and shorter keyboard walks (~2 min; line length takes most of it)
     npm run look           every page rendered: an error or an empty page fails it; pictures in test-results/shots
     npm run perf           render and repaint times, five runs each, medians
-    npm run links          every outside address the course cites: gone fails it, refused or slow is listed (~2 min, needs the network)
+    npm run links          every outside address the guide cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator`,
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
@@ -281,7 +286,7 @@ the only implementation of that behaviour: the reading settings, the
 header's panels, the deep dives, the contents that follow the reader, and
 the calculator, whose arithmetic is written into the page from
 `calculator.mjs` so that the page and the script cannot disagree. Without
-JavaScript a page still holds the whole course, with the settings the build
+JavaScript a page still holds the whole guide, with the settings the build
 wrote.
 
 The build checks its own output: no hole or loop left unrendered, no unbound
@@ -292,7 +297,7 @@ no check needs anything that is not in this repository.
 
 ### The canvas, which is gone
 
-The course was built for a Claude Design canvas at
+The guide was built for a Claude Design canvas at
 https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk until 20 September 2026,
 when the author decided it would not be published. Everything of it has
 gone: the boards and their index, the fifteen showcase boards, the recorded
@@ -309,14 +314,14 @@ wanted again.
 
 ## How the code is laid out
 
-- **The course** is the markdown in `content/`, which the build reads and
+- **The guide** is the markdown in `content/`, which the build reads and
   never writes, and which Prettier is told to leave alone as a folder, so a
   new module needs nothing but its prefix in `MODULE_FILES`. `CONTENT_DIR` in
   `paths.mjs` is the one place the folder is named.
-- `src/content.mjs` is the course without its picture: the introduction into
-  the course's modules and parts (`MODULE_FILES` there gives each module's
+- `src/content.mjs` is the guide without its picture: the introduction into
+  the guide's modules and parts (`MODULE_FILES` there gives each module's
   file and page prefix; a new module is added to it), and markdown into page
-  models, with the course's devices recognised (In plain terms, deep dives,
+  models, with the guide's devices recognised (In plain terms, deep dives,
   misconceptions, glossaries, questions and answers, bold lines that are
   really headings). It makes no HTML. It is handed the folder to read.
 - `src/inline.mjs` sets inline text as a typesetter would (curly quotes, ×,
@@ -345,7 +350,7 @@ wanted again.
   its behaviour. Plain script, no build step, no dependencies.
 - `src/build.mjs` is the one place that wires everything together and writes
   `dist/site`. `src/paths.mjs` says where everything is.
-- `scripts/links.mjs` asks every outside address the course cites whether it
+- `scripts/links.mjs` asks every outside address the guide cites whether it
   still answers. It is not part of `check`, since it depends on other
   people's servers and a gate a stranger's outage can turn red gets ignored;
   it is run before a publish. A 404, a 410 or a name that does not resolve is
@@ -413,7 +418,7 @@ page's storage;
 `setSetting(page, key, value)` chooses a reading setting through the panel,
 as a reader would (`theme`, `size`, `spacing`, `measure`, `font`, `deep`);
 `togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel;
-`course()` is the course as the introduction declares it, and `sitePages()`
+`guide()` is the guide as the introduction declares it, and `sitePages()`
 the home page, every module with a written part and every written part as
 they are served (`index.html`, `practical-ai/index.html`,
 `practical-ai/1-ai-chat/index.html`, and so on), which is what the audit,
@@ -426,7 +431,7 @@ reader's saved settings.
 
 ## Rules for the code
 
-- **The words are the author's.** A change to what the course says is made
+- **The words are the author's.** A change to what the guide says is made
   in the markdown, and that includes its name, which the code reads from
   the introduction's heading. Typesetting happens in the render, never in
   the files.
@@ -527,7 +532,7 @@ Headless, through the harness, for anything seen or measured; never the
 in-app browser pane. What every check renders is `dist/site`, the pages that
 ship, so a check holds the thing itself and not a copy of it. The typefaces
 come from Google Fonts, so the checks need the network. The site keeps a reader's settings in local storage under
-`how-frontier-llms-work/reading-settings/v1`, which keeps the course's first
+`how-frontier-llms-work/reading-settings/v1`, which keeps the guide's first
 name on purpose, since a new key would lose every reader's saved choices; a
 test that needs a setting chooses it through the panel.
 

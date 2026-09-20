@@ -20,7 +20,7 @@ flowchart LR
 
 Pretraining supplies knowledge and raw capability. The three post-training stages supply the assistant behaviour, the tone and the reasoning habits. By the end of this part you should be able to explain why models flatter, why they are unusually good at code, why releases jump the way they do, and how to read a launch announcement with a cool head.
 
-This matters for the course's main argument. Knowing which behaviours were trained in, and how, tells you what can be handed over and left to run, and what needs an automatic check around it. A model that is strongest where success is checkable, and that sometimes games the check, tells you exactly where to invest: in checks that are hard to game.
+This matters for the guide's main argument. Knowing which behaviours were trained in, and how, tells you what can be handed over and left to run, and what needs an automatic check around it. A model that is strongest where success is checkable, and that sometimes games the check, tells you exactly where to invest: in checks that are hard to game.
 
 The format matches part 1: each numbered section opens with **In plain terms**, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
 
@@ -263,7 +263,7 @@ Writing quality, product judgement and strategy have no automatic checker. They 
 
 The result is uneven ability. A model can solve competition programming problems that defeat most engineers, then make a poor call on an ambiguous design trade-off. Expect strength where success is crisply testable, and ordinary performance where it is a matter of judgement.
 
-There is a practical lever in this, and it is central to the rest of the course. The more checkable you make your own work, through tests, types, schemas and explicit acceptance criteria, the more of the model's strongest capability you can use.
+There is a practical lever in this, and it is central to the rest of the guide. The more checkable you make your own work, through tests, types, schemas and explicit acceptance criteria, the more of the model's strongest capability you can use.
 
 Checkability is also what lets you stop reading everything. Where an automatic check can say whether the work is right, the model can run at its own pace. Where none exists, a person has to stand in for the check, and the work slows to that person's reading speed. [Part 2 of the AI in the organisation module](file/3e89a4fc-a0bc) and [part 5 of the practical AI module](file/1d8f42a6-b93e) build on this.
 

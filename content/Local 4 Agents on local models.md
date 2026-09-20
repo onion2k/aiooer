@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the fourth of five parts in the running AI locally module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the fourth of five parts in the running AI locally module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
 [Part 3](file/6e0f3c81-a247) ended with a model answering requests on your own machine. This part is about software that uses such a model to do things: read and edit files, run commands, search, and keep going until a task is done. [Part 5 of the practical AI module](file/1d8f42a6-b93e) explains how agents work in general. This part is about what changes when the model is small and the computer is yours.
 

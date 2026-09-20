@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the last of five parts in the running AI locally module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the last of five parts in the running AI locally module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
 Parts 1 to 3 got a model running, and [part 4](file/b7d15e92-4c60) put an agent on it. This part is about building things of your own on a local model: calling it from code, searching your own documents, running the other kinds of model, serving colleagues, and knowing when to stop.
 

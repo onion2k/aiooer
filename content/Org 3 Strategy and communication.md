@@ -4,7 +4,7 @@
 
 ## About this part
 
-Part 3 covers the decisions that sit above the team, and how to talk about everything in this course to people who have not read it. Part 2 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
+Part 3 covers the decisions that sit above the team, and how to talk about everything in this guide to people who have not read it. Part 2 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
 
 Sections 1 to 4 cover the market, the build-or-buy decision, the legal and data risks, and governance. Section 5 builds the investment case from the cost model in part 3 of the language models module and the measures in part 2. Section 6 is the communication toolkit. Section 7 covers keeping all of it current.
 
@@ -271,7 +271,7 @@ On these lines, self-hosting rarely wins on cost below very large, steady volume
 ### Three habits for any audience
 
 - **Consequence before mechanism.** Say "long documents make it less accurate, so we give it the right ten pages", and explain attention only if someone asks.
-- **Agree with the true part first.** Every misconception in this course contains one, which is why each entry begins with it.
+- **Agree with the true part first.** Every misconception in this guide contains one, which is why each entry begins with it.
 - **Say what you do not know.** Nobody can forecast this field two years out. "We re-test every quarter" is a stronger position than a confident prediction.
 
 ### Hard questions
@@ -294,7 +294,7 @@ On these lines, self-hosting rarely wins on cost below very large, steady volume
 
 Sooner or later a meeting turns to whether AI will surpass people, take every job or pose an existential danger. You will not settle it, and you do not need to.
 
-Acknowledge that serious, well-informed people disagree widely, both on timescales and on risk, and that you hold your own view loosely. Then bring it back to the decision in the room. The plan in this course does not depend on the answer. If progress is fast, a team that has learned to direct and verify AI work is best placed. If progress stalls, the same team has better tests, faster releases and cleaner code. Re-testing every quarter, and keeping people accountable for outcomes, holds up either way.
+Acknowledge that serious, well-informed people disagree widely, both on timescales and on risk, and that you hold your own view loosely. Then bring it back to the decision in the room. The plan in this guide does not depend on the answer. If progress is fast, a team that has learned to direct and verify AI work is best placed. If progress stalls, the same team has better tests, faster releases and cleaner code. Re-testing every quarter, and keeping people accountable for outcomes, holds up either way.
 
 A useful closing line is: "I can't tell you where this ends. I can tell you what it can do for us this quarter, how we will check, and that we will look again in three months."
 
@@ -340,7 +340,7 @@ Most announcements change little. A few developments would justify rethinking yo
 
 ### In closing
 
-The course makes one argument. These systems are statistical machines with known strengths and predictable failure modes. Because the failures are predictable, you can build checks that do not depend on a person reading everything. Once you have those checks, you can let the AI work at its own pace, reorganise the team around direction and verification, and take on work that was never worth attempting. The tools will keep changing. Understanding the mechanism, measuring honestly and redesigning the work will serve you through every change.
+The guide makes one argument. These systems are statistical machines with known strengths and predictable failure modes. Because the failures are predictable, you can build checks that do not depend on a person reading everything. Once you have those checks, you can let the AI work at its own pace, reorganise the team around direction and verification, and take on work that was never worth attempting. The tools will keep changing. Understanding the mechanism, measuring honestly and redesigning the work will serve you through every change.
 
 ## Core explanations
 

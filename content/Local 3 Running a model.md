@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the third of five parts in the running AI locally module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the third of five parts in the running AI locally module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
 [Part 1](file/a1c4e7f2-5b38) covered the machine and [part 2](file/d92b6a05-8e13) the model file. This part is about the software in between. It describes what each tool is and what to look for, and leaves installation and commands to each tool's own documentation, which changes monthly and will be right when this page is not.
 

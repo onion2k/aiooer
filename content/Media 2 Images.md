@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the second of seven parts in the generative media module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, and a glossary closes the part. Reading time is about 20 minutes.
+This is the second of seven parts in the generative media module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, and a glossary closes the part. Reading time is about 20 minutes.
 
 [Part 1](file/7c41d2a9-1e05) described the machine using pictures as its example, so this part is short. It collects what is particular to still images: where the medium stands, what still goes wrong and why, and which models exist.
 

@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the last of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes, not counting the reference sections.
+This is the last of nine parts in the practical AI module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes, not counting the reference sections.
 
 Parts 3 to 8 built a system: instructions, the files that extend an agent, the agent itself, media, tools and retrieved documents, all feeding a model that acts. This part is about trusting it. Guardrails limit what can go wrong. Evals measure how often it goes right. Section 3 condenses the whole module into a checklist for reviewing any AI feature, and the part closes with two reference sections for the module. [Part 1 of the AI in the organisation module](file/d6e2a95b-3f14) then applies all of it along the whole software lifecycle.
 

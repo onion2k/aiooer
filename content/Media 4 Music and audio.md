@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the fourth of seven parts in the generative media module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the fourth of seven parts in the generative media module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
 [Part 1](file/7c41d2a9-1e05) described two ways of building a generative media model: removing noise from the whole thing at once, and writing it one token at a time. In images and video the first dominates. Music is where you can hear the difference, because both designs are in everyday use.
 

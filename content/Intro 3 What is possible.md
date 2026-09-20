@@ -4,9 +4,9 @@
 
 ## About this part
 
-This is the last of three parts in the intro to AI module, which is optional and written for readers without much experience of AI. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
+This is the last of three parts in the intro to AI module, which is optional and written for readers without much experience of AI. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
 
-[Part 1](file/a7f20c15-9d3e) said what AI is and [part 2](file/4c8be1d6-27fa) how to use it safely. This part is a tour of what it can do in 2026, and what it still cannot, so that you know what is worth trying. It ends by pointing you to the right place in the rest of the course.
+[Part 1](file/a7f20c15-9d3e) said what AI is and [part 2](file/4c8be1d6-27fa) how to use it safely. This part is a tour of what it can do in 2026, and what it still cannot, so that you know what is worth trying. It ends by pointing you to the right place in the rest of the guide.
 
 ### What part 3 gives you
 
@@ -38,7 +38,7 @@ Code is where AI has changed work most, and not only for programmers. It will wr
 
 ## 2. From answering to doing
 
-**In plain terms.** The first AI assistants could only talk. Current ones can be given tools: they can search the web, read your files, run programs, and work inside other software. An AI with tools and a goal, working through a task step by step, is called an agent. This is the biggest change of the last two years, and it is why the course spends so long on it. **Who should read it:** everyone.
+**In plain terms.** The first AI assistants could only talk. Current ones can be given tools: they can search the web, read your files, run programs, and work inside other software. An AI with tools and a goal, working through a task step by step, is called an agent. This is the biggest change of the last two years, and it is why the guide spends so long on it. **Who should read it:** everyone.
 
 ### What tools add
 
@@ -89,7 +89,7 @@ A useful way to think about any task is to ask two questions. Is the work mostly
 
 ## 5. Where to go next
 
-**In plain terms.** You now know enough to start the course proper. It begins with how to use AI well, then explains how it works, then explores further. **Who should read it:** everyone who read this far.
+**In plain terms.** You now know enough to start the guide proper. It begins with how to use AI well, then explains how it works, then explores further. **Who should read it:** everyone who read this far.
 
 | If you want to | Go to |
 | --- | --- |
@@ -100,7 +100,7 @@ A useful way to think about any task is to ask two questions. Is the work mostly
 | Make images, video, music or 3D | Generative media |
 | See the kinds of AI that are not chat assistants | Other AI models |
 
-The [Course introduction](file/0a139f54-ef01) has reading routes for different roles, including one that takes an hour.
+The [Introduction](file/0a139f54-ef01) has reading routes for different roles, including one that takes an hour.
 
 ### The whiteboard version
 
@@ -132,7 +132,7 @@ AI is strongest where the work is made of words or code and the result can be ch
 
 **Misleading:** with tools and good instructions, the same technology carries out multi-step work: analysing data, researching with sources, changing software and testing it. Teams that stop at email are using a fraction of it.
 
-**What to say:** "Email is the shallow end. The larger gains are in work it can carry out and we can check, and that is what the rest of this course is about."
+**What to say:** "Email is the shallow end. The larger gains are in work it can carry out and we can check, and that is what the rest of this guide is about."
 
 ### "It will replace the people who do this work"
 

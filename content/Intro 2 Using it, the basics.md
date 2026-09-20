@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the second of three parts in the intro to AI module, which is optional and written for readers without much experience of AI. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
+This is the second of three parts in the intro to AI module, which is optional and written for readers without much experience of AI. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
 
 [Part 1](file/a7f20c15-9d3e) said what these tools are. This part is about sitting down with one. It covers what a conversation is, how to ask for what you want, how to check what you get, and what should never be typed in. The [practical AI module](file/f3a91c20-6d4e) takes every one of these further.
 

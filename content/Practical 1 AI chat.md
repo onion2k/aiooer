@@ -4,9 +4,9 @@
 
 ## About this part
 
-This is the first of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the first of nine parts in the practical AI module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
-This is where the course starts, because nearly everyone reading it already types into a chat window, and doing that well is the quickest thing to get better at. If you do not, the optional [intro to AI module](file/a7f20c15-9d3e) comes first and takes 45 minutes.
+This is where the guide starts, because nearly everyone reading it already types into a chat window, and doing that well is the quickest thing to get better at. If you do not, the optional [intro to AI module](file/a7f20c15-9d3e) comes first and takes 45 minutes.
 
 The module is about the system around the model. The same model behaves like two different products in a bare chat window and inside a well-built agent. Most of the gain from AI, and most of the disappointment, is decided here and not by the choice of model.
 
@@ -152,7 +152,7 @@ A personal account is outside everything an organisation has arranged. It bypass
 
 ### Say what you used
 
-A quiet habit worth starting: when AI did a material part of a piece of work, say so, in a line. It settles arguments later, it tells reviewers where to look hardest, and it makes the question of what helped answerable rather than a matter of feeling, which is the course's fourth idea.
+A quiet habit worth starting: when AI did a material part of a piece of work, say so, in a line. It settles arguments later, it tells reviewers where to look hardest, and it makes the question of what helped answerable rather than a matter of feeling, which is the guide's fourth idea.
 
 ## 5. When chat is the wrong tool
 

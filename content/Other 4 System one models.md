@@ -4,9 +4,9 @@
 
 ## About this part
 
-This is the fourth of four parts in the other AI models module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the fourth of four parts in the other AI models module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
-This part needs a warning that the others do not. "System One model" is a name coined by one company, TypeSafe AI, for a category that at the time of writing contains one product, its model Jev, announced on 15 September 2026, four days before this was written, and available only to people let in from a waiting list. Every performance figure here is the vendor's own. The part is in the course because the idea behind the product is sound and older than the product, and is worth understanding whether or not this company or this name lasts. Read the description of Jev as an example, and the rest as the lesson.
+This part needs a warning that the others do not. "System One model" is a name coined by one company, TypeSafe AI, for a category that at the time of writing contains one product, its model Jev, announced on 15 September 2026, four days before this was written, and available only to people let in from a waiting list. Every performance figure here is the vendor's own. The part is in the guide because the idea behind the product is sound and older than the product, and is worth understanding whether or not this company or this name lasts. Read the description of Jev as an example, and the rest as the lesson.
 
 ### What part 4 gives you
 
@@ -24,7 +24,7 @@ The analogy is loose. Kahneman's point about System 1 was that it is quick and e
 
 ### How much of AI in software is deciding
 
-Look at the uses this course has recommended for models inside systems. Classification, routing and triage, in part 1 of this module. Guardrail checks and grading outputs, in [part 9 of the practical AI module](file/7a3f2c68-91de). Choosing whether a retrieved passage is relevant. Deciding whether an agent's step succeeded. Each has a known set of possible answers, is made again and again, and feeds straight into an `if` statement.
+Look at the uses this guide has recommended for models inside systems. Classification, routing and triage, in part 1 of this module. Guardrail checks and grading outputs, in [part 9 of the practical AI module](file/7a3f2c68-91de). Choosing whether a retrieved passage is relevant. Deciding whether an agent's step succeeded. Each has a known set of possible answers, is made again and again, and feeds straight into an `if` statement.
 
 Using a general language model for these has four costs.
 
@@ -184,7 +184,7 @@ This is the first-pass pattern that part 1 of this module recommended for small 
 
 ### Adopting one
 
-Treat it like any new instrument, and the house advice of this course applies in full.
+Treat it like any new instrument, and the house advice of this guide applies in full.
 
 - **Run it in shadow.** Let it decide alongside the current process, without acting, and record both.
 - **Label the outcomes**, and check accuracy and calibration on your own data as the deep dive describes.

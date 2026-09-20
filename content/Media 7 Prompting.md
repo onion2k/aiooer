@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the last of seven parts in the generative media module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 45 minutes.
+This is the last of seven parts in the generative media module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 45 minutes.
 
 [Part 1](file/7c41d2a9-1e05) explained that an image model does not read your prompt itself: a separate text encoder does, and encoders differ enormously. [Part 6](file/2f9be6c3-5a17) covered everything that shapes an output other than words. This part is about the words.
 

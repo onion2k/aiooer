@@ -4,9 +4,9 @@
 
 ## About this part
 
-This is the first of five parts in the running AI locally module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the first of five parts in the running AI locally module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
-This module is more practical than the others. It is about running models on hardware you own: what that takes, how to find and choose a model, which software to run it with, what happens when you ask it to act as an agent, and how to build on it. It names products throughout, because there is no other way to be useful, and it moves faster than anything else in the course. Every table says when it was written. The module explains what the tools do and what to look for, and leaves the commands to each tool's own documentation, which will be right after this page is not.
+This module is more practical than the others. It is about running models on hardware you own: what that takes, how to find and choose a model, which software to run it with, what happens when you ask it to act as an agent, and how to build on it. It names products throughout, because there is no other way to be useful, and it moves faster than anything else in the guide. Every table says when it was written. The module explains what the tools do and what to look for, and leaves the commands to each tool's own documentation, which will be right after this page is not.
 
 It leans on [part 3 of the language models module](file/48a4ae01-75ae), which explains quantisation, the KV cache and the economics of self-hosting. You can read this module without it, and it will make more sense with it.
 

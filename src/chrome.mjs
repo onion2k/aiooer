@@ -43,7 +43,7 @@ function partsPanel(modules, current) {
     )
     .join('');
   const introHere = !current;
-  return `<nav class="panel parts-panel" id="parts-panel" aria-label="Course parts" hidden="{{parts.hidden}}" onKeyDown="{{parts.onKeyDown}}"><div class="shell panel-inner"><p class="parts-intro"><a class="parts-home" href="page:Main"${introHere ? ' aria-current="page"' : ''}>${ICONS.book}<span>Course introduction</span></a></p>${groups}<div class="panel-actions"><button type="button" class="btn-line" onClick="{{parts.close}}">${ICONS.close}<span>Close the list of parts</span></button></div></div></nav>`;
+  return `<nav class="panel parts-panel" id="parts-panel" aria-label="Parts of the guide" hidden="{{parts.hidden}}" onKeyDown="{{parts.onKeyDown}}"><div class="shell panel-inner"><p class="parts-intro"><a class="parts-home" href="page:Main"${introHere ? ' aria-current="page"' : ''}>${ICONS.book}<span>Introduction</span></a></p>${groups}<div class="panel-actions"><button type="button" class="btn-line" onClick="{{parts.close}}">${ICONS.close}<span>Close the list of parts</span></button></div></div></nav>`;
 }
 
 // The course's name comes from the introduction's heading, so renaming the
@@ -84,13 +84,13 @@ export function toc(sections, part) {
 // goes to its place on the home page, which is where a module is described.
 export function crumbs(part) {
   const sep = '<span class="crumb-sep" aria-hidden="true">/</span>';
-  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Course introduction</a>${sep}</li><li><a href="page:mod-${part.moduleSlug}">${esc(part.module)}</a>${sep}</li><li><a href="page:${part.out}" aria-current="page">Part ${part.n}: ${esc(part.shortTitle)}</a></li></ol></nav>`;
+  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Introduction</a>${sep}</li><li><a href="page:mod-${part.moduleSlug}">${esc(part.module)}</a>${sep}</li><li><a href="page:${part.out}" aria-current="page">Part ${part.n}: ${esc(part.shortTitle)}</a></li></ol></nav>`;
 }
 
 // A module's own breadcrumb: the introduction, then the module itself.
 export function moduleCrumbs(m) {
   const sep = '<span class="crumb-sep" aria-hidden="true">/</span>';
-  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Course introduction</a>${sep}</li><li><a href="page:mod-${m.slug}" aria-current="page">${esc(m.name)}</a></li></ol></nav>`;
+  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Introduction</a>${sep}</li><li><a href="page:mod-${m.slug}" aria-current="page">${esc(m.name)}</a></li></ol></nav>`;
 }
 
 // The way back and on from a module's page: the modules either side of it, so
@@ -101,10 +101,10 @@ export function modulePager(m, modules) {
   const after = modules[i + 1];
   const prev = before
     ? { href: `page:mod-${before.slug}`, label: before.name, hue: before.hue }
-    : { href: 'page:Main', label: 'Course introduction' };
+    : { href: 'page:Main', label: 'Introduction' };
   const next = after
     ? { href: `page:mod-${after.slug}`, label: after.name, hue: after.hue }
-    : { href: 'page:Main', label: 'Back to the course introduction', dir: 'End of the course' };
+    : { href: 'page:Main', label: 'Back to the introduction', dir: 'End of the guide' };
   return pagerLinks(prev, next);
 }
 
@@ -119,10 +119,10 @@ export function pager(part, parts) {
   const after = written[i + 1];
   const prev = before
     ? { href: `page:${before.out}`, label: name(before), hue: before.hue }
-    : { href: 'page:Main', label: 'Course introduction' };
+    : { href: 'page:Main', label: 'Introduction' };
   const next = after
     ? { href: `page:${after.out}`, label: name(after), hue: after.hue }
-    : { href: 'page:Main', label: 'Back to the course introduction', dir: 'End of the course' };
+    : { href: 'page:Main', label: 'Back to the introduction', dir: 'End of the guide' };
   return pagerLinks(prev, next);
 }
 
@@ -142,5 +142,5 @@ export function footer(modules, currencyNote, course) {
           .join('')}</ul></div>`,
     )
     .join('');
-  return `<footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Course introduction</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
+  return `<footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Introduction</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
 }

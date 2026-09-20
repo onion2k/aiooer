@@ -269,10 +269,10 @@ function collectDeepKeys(sections) {
   return keys;
 }
 
-// The course introduction becomes the home page. Its sections are kept as
+// The introduction becomes the home page. Its sections are kept as
 // token lists, and the home page renderer lays each one out in its own way.
 export function parseIntro(dir) {
-  const tokens = lex(dir, 'Course introduction.md');
+  const tokens = lex(dir, 'Introduction.md');
   const h1 = tokens.find((t) => t.type === 'heading' && t.depth === 1);
   const full = plainText(h1.tokens);
   // The heading names the course and then the page, with a colon between.

@@ -4,11 +4,11 @@
 
 ## About this part
 
-This is the fourth of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the fourth of nine parts in the practical AI module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
 [Part 3](file/f3a91c20-6d4e) covered the instruction file that is loaded in every session. This part covers the three things a team writes to extend an agent beyond it, all of them files in a folder the harness reads: a **skill**, which is know-how fetched when a job calls for it; an **agent**, which is a definition of a helper the main agent can hand work to; and a **plugin**, which bundles both, and hooks, so a whole team installs the same set at once.
 
-"Agent" is a word this course uses three ways, and they are worth keeping apart. In part 3 it is `AGENTS.md`, the file of standing instructions. Here it is an agent definition: a short file declaring a helper's prompt, its tools and its model. In [part 5](file/1d8f42a6-b93e) it is the thing itself, a model running in a loop. This part is about the files. Part 5 is about what happens when one runs.
+"Agent" is a word this guide uses three ways, and they are worth keeping apart. In part 3 it is `AGENTS.md`, the file of standing instructions. Here it is an agent definition: a short file declaring a helper's prompt, its tools and its model. In [part 5](file/1d8f42a6-b93e) it is the thing itself, a model running in a loop. This part is about the files. Part 5 is about what happens when one runs.
 
 ### What part 4 gives you
 

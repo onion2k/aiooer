@@ -4,9 +4,9 @@
 
 ## About this part
 
-This is the first of four parts in the other AI models module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the first of four parts in the other AI models module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
-The module covers kinds of model that the rest of the course passes by. Each part stands alone. This one is about language models made deliberately small: how they are made, what is lost in the making, and what they are for. It builds on three passages elsewhere. [Part 2 of the language models module](file/5086e893-fa85) explains distillation, [part 3 of that module](file/48a4ae01-75ae) explains quantisation, and [part 2 of the running AI locally module](file/d92b6a05-8e13) explains how to read a small model's name and file. This part does not repeat them. It puts them side by side with the methods they left out.
+The module covers kinds of model that the rest of the guide passes by. Each part stands alone. This one is about language models made deliberately small: how they are made, what is lost in the making, and what they are for. It builds on three passages elsewhere. [Part 2 of the language models module](file/5086e893-fa85) explains distillation, [part 3 of that module](file/48a4ae01-75ae) explains quantisation, and [part 2 of the running AI locally module](file/d92b6a05-8e13) explains how to read a small model's name and file. This part does not repeat them. It puts them side by side with the methods they left out.
 
 ### What part 1 gives you
 
@@ -119,7 +119,7 @@ The table was written in September 2026. The figures come from each project's ow
 
 ### What each one teaches
 
-**SmolLM** is the one to study. Almost every other model in this course is open-weight at most: the weights are published and the recipe is not. SmolLM3's makers published the data mixture, the training stages, the configurations and the intermediate checkpoints. If you want to know how a small model is actually made, it is written down.
+**SmolLM** is the one to study. Almost every other model in this guide is open-weight at most: the weights are published and the recipe is not. SmolLM3's makers published the data mixture, the training stages, the configurations and the intermediate checkpoints. If you want to know how a small model is actually made, it is written down.
 
 **Phi** is the one to be careful with. It is a capable family with a permissive licence and a strong record on reasoning for its size. It is also the family for which the gap between benchmark and experience has been most discussed. Treat it like any other candidate: run your own cases.
 

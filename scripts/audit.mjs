@@ -775,7 +775,7 @@ async function auditPage(file) {
       const i = written.indexOf(part);
       const label = `${part.module} · Part ${part.n} of ${part.of}`;
       if (seen.label !== label) wrong.push(`label "${seen.label}", wanted "${label}"`);
-      const crumbs = ['Course introduction', part.module, `Part ${part.n}: ${part.shortTitle}`];
+      const crumbs = ['Introduction', part.module, `Part ${part.n}: ${part.shortTitle}`];
       if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
         wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
       if (!seen.title.includes(`${part.module}, part ${part.n}: `)) wrong.push(`page title "${seen.title}"`);
@@ -791,7 +791,7 @@ async function auditPage(file) {
       const mod = MODULE_PAGES.get(file);
       const modules = COURSE.modules;
       const i = modules.findIndex((x) => x.name === mod.name);
-      const crumbs = ['Course introduction', mod.name];
+      const crumbs = ['Introduction', mod.name];
       if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
         wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
       if (seen.h1 !== mod.name) wrong.push(`heading "${seen.h1}", wanted "${mod.name}"`);
@@ -1212,7 +1212,7 @@ const SHARED = sha(
   fs.readFileSync(new URL('./harness.mjs', import.meta.url)),
   fs.readFileSync(path.join(ROOT, 'src', 'reader.js')),
   fs.readFileSync(path.join(ROOT, 'package-lock.json')),
-  fs.readFileSync(path.join(CONTENT_DIR, 'Course introduction.md')),
+  fs.readFileSync(path.join(CONTENT_DIR, 'Introduction.md')),
   fs.readdirSync(STATIC_SITE).sort().join('|'),
   JSON.stringify({ quick, only }),
 );

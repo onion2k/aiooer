@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the second of five parts in the running AI locally module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the second of five parts in the running AI locally module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
 [Part 1](file/a1c4e7f2-5b38) showed that a model's size decides whether it runs on your machine and how fast. This part is about where models come from and how to tell, from the name alone, what you are looking at.
 

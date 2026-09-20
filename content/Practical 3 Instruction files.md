@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the third of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
+This is the third of nine parts in the practical AI module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
 
 [Parts 1](file/b4e9d0a7-3c81) and [2](file/9f2c5e38-a7b4) were about meeting AI where someone else had written the instructions: a chat window, and the features inside software you already use. This is where you start writing them. The "agents" in its title is `AGENTS.md`, the file of standing instructions most coding tools now read: a file, not a thing that runs. [Part 4](file/8d27b5e4-c019) covers the agent definitions that sit beside it, and [part 5](file/1d8f42a6-b93e) the agents themselves. It is also where the module turns from using AI to building with it, and the diagram in part 1 is the map: this part and [part 4](file/8d27b5e4-c019) cover the instructions that stand in front of every request, the files that are always there and the packages fetched when needed.
 
@@ -143,7 +143,7 @@ The second, from ETH Zurich, measured whether tasks succeeded. It found that con
 
 Both are small studies of a fast-moving target. Read together they say something a practitioner would recognise. An agent can discover a project's structure for itself, and it will do so whether or not you describe it. It cannot discover that your team never uses floats for money. Write down what cannot be found, keep out what can, and keep the file short.
 
-The pair also shows the fourth of the course's four ideas at work: measure, do not feel. A tour of the codebase feels helpful, the tools offer to write one, and the vendors recommend it. Measured, it bought no more successes and a larger bill. The first study would have looked like a plain win had no one measured success as well as speed.
+The pair also shows the fourth of the guide's four ideas at work: measure, do not feel. A tour of the codebase feels helpful, the tools offer to write one, and the vendors recommend it. Measured, it bought no more successes and a larger bill. The first study would have looked like a plain win had no one measured success as well as speed.
 
 ### Keeping it short, and keeping it true
 
@@ -183,7 +183,7 @@ This part names those tools and does not recommend one, because the formats comp
 
 ### Why it works
 
-It works for the reasons given elsewhere in this course. A written acceptance criterion is something an agent can verify its work against, and verification is what turns compute into reliability. A reviewed plan is human attention spent at the start of a task, where a minute saves an hour. And a specification that lives in the repository survives the end of the session, which the conversation does not.
+It works for the reasons given elsewhere in this guide. A written acceptance criterion is something an agent can verify its work against, and verification is what turns compute into reliability. A reviewed plan is human attention spent at the start of a task, where a minute saves an hour. And a specification that lives in the repository survives the end of the session, which the conversation does not.
 
 It also moves the engineer's effort to where it is now most valuable. If an agent can write the code in ten minutes, the scarce skill is saying precisely what the code should do.
 

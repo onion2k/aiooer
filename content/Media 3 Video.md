@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the third of seven parts in the generative media module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the third of seven parts in the generative media module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
 [Part 1](file/7c41d2a9-1e05) described a machine that turns noise into a picture. A video model is that machine with one more dimension. Almost everything in part 1 carries over unchanged, so this part is about what the extra dimension costs and what it breaks.
 

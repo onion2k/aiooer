@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the sixth of seven parts in the generative media module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 50 minutes.
+This is the sixth of seven parts in the generative media module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as before: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 50 minutes.
 
 [Part 1](file/7c41d2a9-1e05) described the machine: noise in, a few dozen steps of cleaning up steered by a prompt, a picture out. It ended on a limit. Every output is a fresh draw, and a prompt alone cannot give you the same character twice, your product as it really looks, or your brand's style. This part is about everything that can.
 

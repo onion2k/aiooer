@@ -8,7 +8,7 @@ Part 3 covers what happens when a model is put to work: how a request is process
 
 It is the hinge of the module. Sections 1 to 6 are about performance and money. Section 7 maps each characteristic failure back to its cause in parts 1 and 2, and across to its mitigation in [part 9 of the practical AI module](file/7a3f2c68-91de).
 
-The numbers in this part also support the course's main argument. Tokens are cheap next to people's time, so the economic question is rarely what the AI costs. It is whether a person is waiting on the AI, or the AI is waiting on a person. And because each failure mode has a known cause, each can be met with an automatic check, which is what allows people to step back.
+The numbers in this part also support the guide's main argument. Tokens are cheap next to people's time, so the economic question is rarely what the AI costs. It is whether a person is waiting on the AI, or the AI is waiting on a person. And because each failure mode has a known cause, each can be met with an automatic check, which is what allows people to step back.
 
 The format is unchanged: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. All prices are illustrative, in US dollars because that is how vendors quote them. Check current price lists before you budget. Reading time is about 40 minutes.
 

@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the first of three parts in the language models module, which explains what is happening behind the tools the practical AI module taught you to use. None of it is needed to use them well. All of it explains why the advice there works. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format here is the one described there: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
+This is the first of three parts in the language models module, which explains what is happening behind the tools the practical AI module taught you to use. None of it is needed to use them well. All of it explains why the advice there works. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format here is the one described there: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
 
 ### What part 1 gives you
 

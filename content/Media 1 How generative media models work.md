@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the first of seven parts in the generative media module, which covers models that make images, video, music and 3D objects. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format here is the one described there: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 45 minutes.
+This is the first of seven parts in the generative media module, which covers models that make images, video, music and 3D objects. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format here is the one described there: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 45 minutes.
 
 You do not need the language models module to read this one. Where an idea was built there, such as attention, this part says so and links to it.
 

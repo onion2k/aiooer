@@ -1,4 +1,4 @@
-// Assembles whole pages: the home page from the course introduction, and a
+// Assembles whole pages: the home page from the introduction, and a
 // page for each part, each with the shared stylesheet and the values its
 // markup starts at. The build fills the holes and writes the file.
 
@@ -29,6 +29,28 @@ function longDate(iso) {
   return `${d} ${MONTHS[m - 1]} ${y}`;
 }
 
+// A section of the introduction, by its heading. The home page is built out
+// of these, so a heading the author renames has to say so plainly rather than
+// failing later on an undefined.
+function section(intro, name) {
+  const found = intro.sections[name];
+  if (!found)
+    throw new Error(
+      `The introduction has no section called "${name}"; it has ${Object.keys(intro.sections)
+        .map((k) => `"${k}"`)
+        .join(', ')}`,
+    );
+  return found;
+}
+
+// A page's own title, as a sentence: the heading gives it in title case and
+// the page title wants it plain. It used to lower-case the lot and put back a
+// capital C, which only worked while every introduction was called "Course
+// Introduction".
+function sentenceCase(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
 function minutes(time) {
   return time.replace(/\bmin\b/, 'minutes');
 }
@@ -38,9 +60,9 @@ function sentences(text) {
 }
 
 export function currencyNote(intro) {
-  const text = intro.sections['A note on currency'].blocks.find((b) => b.type === 'paragraph').text;
+  const text = section(intro, 'A note on currency').blocks.find((b) => b.type === 'paragraph').text;
   const all = sentences(text);
-  const keep = all.filter((s) => /^The course was written/.test(s) || /^All prices are illustrative/.test(s));
+  const keep = all.filter((s) => /^The guide was written/.test(s) || /^All prices are illustrative/.test(s));
   if (keep.length !== 2) throw new Error('The currency note has changed; update the footer sentences');
   return esc(keep.join(' '));
 }
@@ -187,7 +209,7 @@ function courseCount(modules) {
 // is a grid-12 of its own whose rows size to the tallest block.
 function homeMain(intro, parts) {
   const S = intro.sections;
-  const purpose = S['What this course is for'].blocks.filter((b) => b.type === 'paragraph');
+  const purpose = section(intro, 'What this guide is for').blocks.filter((b) => b.type === 'paragraph');
   const lede = renderInline(purpose[0].tokens);
   const purposeRest = purpose
     .slice(1)
@@ -354,9 +376,9 @@ export function homeFile(intro, parts, page) {
   const body = `${header(intro.modules, null, course)}${homeMain(intro, parts)}${footer(intro.modules, currencyNote(intro), course)}`;
   const written = parts.filter((p) => p.written);
   return pageFile({
-    title: `${course}: ${intro.pageTitle.toLowerCase().replace(/^c/, 'C')}`,
+    title: `${course}: ${sentenceCase(intro.pageTitle)}`,
     description: withSize(
-      opening(intro.sections['What this course is for'].blocks),
+      opening(section(intro, 'What this guide is for').blocks),
       `${courseCount(intro.modules)}, about ${hoursOf(written)} of reading.`,
     ),
     body,

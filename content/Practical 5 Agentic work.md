@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the fifth of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the fifth of nine parts in the practical AI module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
 [Part 4](file/8d27b5e4-c019) was about the files that extend an agent: skills, agent definitions and the plugins that bundle them. This part is about what happens when one runs. The word "agent" means something different here from the file called `AGENTS.md` in [part 3](file/f3a91c20-6d4e) and from the agent definition in part 4. Here it means the thing itself: a model in a loop, given tools and a goal, working until it decides it is done.
 
@@ -140,7 +140,7 @@ What to know before adopting one:
 
 A longitudinal study published in January 2026 compared open-source repositories before and after their first agent-generated pull request, against matched controls. It found large early gains in velocity, but only where the agent was the first AI tool the project had used; where an AI-assisted editor was already in use, the throughput gain was small or short-lived. The quality signals moved the other way and stayed moved: static-analysis warnings up by roughly 18% and cognitive complexity by roughly 39%.
 
-Read that as the same lesson the rest of this course keeps arriving at. The agent produces more; whether that reaches anyone depends on the verification around it, and what it costs shows up later, in code nobody wants to touch.
+Read that as the same lesson the rest of this guide keeps arriving at. The agent produces more; whether that reaches anyone depends on the verification around it, and what it costs shows up later, in code nobody wants to touch.
 
 ## 5. Coding agents in practice
 

@@ -1,12 +1,12 @@
-# Using AI well: Course Introduction
+# The AI field guide: Introduction
 
 2026-09-20 · Chris Neale
 
-## What this course is for
+## What this guide is for
 
-This course is about using AI well, and about how it works. It starts with use, because nearly everyone reading it already uses these tools, and using them well is the quickest thing to get better at: the chat window first, then the AI built into software you already have, then what to do when neither is enough. For anyone who does not use them yet, a short optional primer comes before all of it. The course then explains what the tools are doing behind the scenes, which you do not need in order to use them and which explains why the advice works. After that come seams of the subject you may not have met: running models on your own hardware, the models that generate images, video, music and 3D objects, and kinds of AI model that are not chat assistants at all.
+This is a field guide to AI: what it is, how to use it well, how it works underneath, and what is out there. It starts with use, because nearly everyone reading it already uses these tools, and using them well is the quickest thing to get better at: the chat window first, then the AI built into software you already have, then what to do when neither is enough. For anyone who does not use them yet, a short optional primer comes before all of it. The guide then explains what the tools are doing behind the scenes, which you do not need in order to use them and which explains why the advice works. After that come seams of the subject you may not have met: running models on your own hardware, the models that generate images, video, music and 3D objects, and kinds of AI model that are not chat assistants at all. A field guide is also for looking things up, and it will grow reference sections that are not written to be read straight through.
 
-The course is written for people in engineering, product and leadership who need to discuss AI with both technical and non-technical colleagues, accurately and without hype. Most of it is about building software, because that is the work the author knows and where the evidence is best. The two parts it opens with, and the module on generative media, assume no engineering at all.
+The guide is written for people in engineering, product and leadership who need to discuss AI with both technical and non-technical colleagues, accurately and without hype. Most of it is about building software, because that is the work the author knows and where the evidence is best. The two parts it opens with, and the module on generative media, assume no engineering at all.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 
@@ -14,7 +14,7 @@ That change needs confidence about where AI can be trusted, where it cannot, and
 
 ## The modules
 
-The course is in six modules, in three steps: use it well, see how it works, then explore further. An optional primer comes before them, for readers who are new to AI. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
+The guide is in six modules, in three steps: use it well, see how it works, then explore further. An optional primer comes before them, for readers who are new to AI. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
 
 ### Intro to AI (optional)
 
@@ -22,9 +22,9 @@ The course is in six modules, in three steps: use it well, see how it works, the
 | --- | --- | --- |
 | [Part 1: What AI is](file/a7f20c15-9d3e) | Say what today's AI is, what it knows, and why it is sometimes confidently wrong | 15 min |
 | [Part 2: Using it: the basics](file/4c8be1d6-27fa) | Ask for what you want, check what you get, and know what never to type in | 15 min |
-| [Part 3: What is possible](file/e15a9b70-c4d2) | Tell what AI is worth trying on, what it cannot do, and where to go next in the course | 15 min |
+| [Part 3: What is possible](file/e15a9b70-c4d2) | Tell what AI is worth trying on, what it cannot do, and where to go next in the guide | 15 min |
 
-This module is optional. It is a primer for anyone who has come to the course without much experience of AI: what it is, the basics of using it, and what is possible. It needs no technical background and takes about 45 minutes. If you already use an AI assistant most days, start with practical AI.
+This module is optional. It is a primer for anyone who has come to the guide without much experience of AI: what it is, the basics of using it, and what is possible. It needs no technical background and takes about 45 minutes. If you already use an AI assistant most days, start with practical AI.
 
 ### Practical AI
 
@@ -40,7 +40,7 @@ This module is optional. It is a primer for anyone who has come to the course wi
 | [Part 8: Retrieval](file/0b8e5d17-f4c2) | Have a model answer from your own documents, and diagnose it when it answers badly | 25 min |
 | [Part 9: Guardrails and evals](file/7a3f2c68-91de) | Contain what a model can do, and measure whether it is doing it well | 25 min |
 
-This module covers the craft of using and building with models. Parts 1 and 2 are how nearly everyone meets AI: the chat window, and the AI inside software they already use. Parts 3 to 9 are what to do when that is no longer enough: the instruction files, skills and plugins that shape an agent, what happens when one runs, models that take more than text, connecting a model to tools and systems, answering from your own documents, and keeping the result safe and measured. It names products and file formats throughout, and those date quickly. It is where the course starts, and it needs no knowledge of how a model works. Its first part lists the seven things about a model's behaviour that the rest leans on. Its part 9 ends with a design review checklist and the module's own two reference sections. The whole module is about four hours of reading.
+This module covers the craft of using and building with models. Parts 1 and 2 are how nearly everyone meets AI: the chat window, and the AI inside software they already use. Parts 3 to 9 are what to do when that is no longer enough: the instruction files, skills and plugins that shape an agent, what happens when one runs, models that take more than text, connecting a model to tools and systems, answering from your own documents, and keeping the result safe and measured. It names products and file formats throughout, and those date quickly. It is where the guide starts, and it needs no knowledge of how a model works. Its first part lists the seven things about a model's behaviour that the rest leans on. Its part 9 ends with a design review checklist and the module's own two reference sections. The whole module is about four hours of reading.
 
 ### AI in the organisation
 | Part | After it you can | Time |
@@ -135,4 +135,4 @@ Each module numbers its own parts, so every route names its modules. If you are 
 
 ## A note on currency
 
-The course was written in September 2026. The mechanisms the course explains change slowly. Products, prices and regulation change quickly. All prices are illustrative, and the regulatory detail in part 3 of the AI in the organisation module is correct only as of that date. Section 7 of that part describes a quarterly habit for keeping your own picture up to date.
+The guide was written in September 2026. The mechanisms the guide explains change slowly. Products, prices and regulation change quickly. All prices are illustrative, and the regulatory detail in part 3 of the AI in the organisation module is correct only as of that date. Section 7 of that part describes a quarterly habit for keeping your own picture up to date.

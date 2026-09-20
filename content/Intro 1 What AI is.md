@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the first of three parts in the intro to AI module. The module is optional. It is for anyone who has come to the course without much experience of AI, or who uses it a little and has never been told what it is. If you use an AI assistant most days, skip to [part 1 of the practical AI module](file/b4e9d0a7-3c81), which is where the course proper begins. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
+This is the first of three parts in the intro to AI module. The module is optional. It is for anyone who has come to the guide without much experience of AI, or who uses it a little and has never been told what it is. If you use an AI assistant most days, skip to [part 1 of the practical AI module](file/b4e9d0a7-3c81), which is where the guide proper begins. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
 
 The three parts answer three questions. What is this thing? How do I use it without getting into trouble? What can it actually do? None of them needs any technical background.
 
@@ -35,7 +35,7 @@ The ideas are decades old. What changed around 2022 is that models trained on a 
 
 ## 2. What a language model does
 
-**In plain terms.** A language model has read a large share of the text people have published, and learned what tends to follow what. When you type something, it continues it, one small piece at a time, with whatever is most likely to come next. Doing that well across everything humans write about required it to absorb a great deal about language, facts, reasoning and code. It is not looking anything up, and it is not thinking the way you do. **Who should read it:** everyone. This is the idea the rest of the course rests on.
+**In plain terms.** A language model has read a large share of the text people have published, and learned what tends to follow what. When you type something, it continues it, one small piece at a time, with whatever is most likely to come next. Doing that well across everything humans write about required it to absorb a great deal about language, facts, reasoning and code. It is not looking anything up, and it is not thinking the way you do. **Who should read it:** everyone. This is the idea the rest of the guide rests on.
 
 ### Predicting what comes next
 
@@ -63,9 +63,9 @@ The [language models module](file/590c1ae1-8bf3) explains all of this properly, 
 
 ## 3. The kinds you will meet
 
-**In plain terms.** The same technology turns up in several forms. There are chat assistants you talk to, coding tools that write and change software, tools that make images and video, and AI tucked inside products you already use. They share their strengths and their weaknesses. **Who should read it:** everyone. It is a map of the rest of the course.
+**In plain terms.** The same technology turns up in several forms. There are chat assistants you talk to, coding tools that write and change software, tools that make images and video, and AI tucked inside products you already use. They share their strengths and their weaknesses. **Who should read it:** everyone. It is a map of the rest of the guide.
 
-| Kind | What it does | Where the course covers it |
+| Kind | What it does | Where the guide covers it |
 | --- | --- | --- |
 | Chat assistant | Answers questions, drafts and rewrites text, explains, summarises, translates, talks through problems | The practical AI module |
 | Coding assistant or agent | Suggests code as you type, or takes a task and carries it out: reading files, making changes, running tests | [Part 5 of the practical AI module](file/1d8f42a6-b93e) |

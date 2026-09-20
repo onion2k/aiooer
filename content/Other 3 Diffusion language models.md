@@ -4,9 +4,9 @@
 
 ## About this part
 
-This is the third of four parts in the other AI models module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the third of four parts in the other AI models module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
-Two modules of this course describe two machines. The language models module describes a model that writes one token at a time, left to right. The generative media module describes a model that starts from noise and refines a whole picture at once. This part is about what happens when the second machine is pointed at the first one's job. It draws on [part 1 of the language models module](file/590c1ae1-8bf3) and [part 1 of the generative media module](file/7c41d2a9-1e05), and recaps what it needs from each.
+Two modules of this guide describe two machines. The language models module describes a model that writes one token at a time, left to right. The generative media module describes a model that starts from noise and refines a whole picture at once. This part is about what happens when the second machine is pointed at the first one's job. It draws on [part 1 of the language models module](file/590c1ae1-8bf3) and [part 1 of the generative media module](file/7c41d2a9-1e05), and recaps what it needs from each.
 
 ### What part 3 gives you
 

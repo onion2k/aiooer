@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the first of three parts in the AI in the organisation module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 40 minutes, not counting the reference sections.
+This is the first of three parts in the AI in the organisation module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 40 minutes, not counting the reference sections.
 
 The practical AI module was about one person and one agent. This module is about everyone else: the team, in [part 2](file/3e89a4fc-a0bc), and the organisation around it, in [part 3](file/bbb9efdd-e221). It starts here, with the work itself. Most talk about AI in software is about writing code, and so was much of the practical AI module. Writing code is one stage in a longer process: finding out what is needed, planning it, building it, reviewing it, testing it, releasing it and keeping it running. This part goes through that process stage by stage and asks what the tools of the practical AI module can do at each. [Part 2](file/3e89a4fc-a0bc) makes the argument from the point of view of a team and its ways of working. This part is about what to build and what to use.
 
@@ -200,7 +200,7 @@ Authors should use it first. A change that has been through an AI review before 
 
 ### Why this stage multiplies the others
 
-This course's second idea is that verification converts compute into reliability. Part 5 of the practical AI module says the largest single factor in an agent's success is feedback from the environment, which mostly means tests. Every test added makes every later agent run more reliable and every later review lighter. Work on tests is the investment that compounds.
+This guide's second idea is that verification converts compute into reliability. Part 5 of the practical AI module says the largest single factor in an agent's success is feedback from the environment, which mostly means tests. Every test added makes every later agent run more reliable and every later review lighter. Work on tests is the investment that compounds.
 
 ### What to use it for
 
@@ -273,7 +273,7 @@ Part 2 gives the method: take the last thirty completed pieces of work, find whe
 
 ### Measure each stage
 
-The course's fourth idea applies at every row. Each stage has a figure that existed before AI: how long discovery takes and how often the wrong thing is built, how many questions surface after work has started, how long a change waits for review, how many defects escape to production, how long an incident takes to resolve. Record it first. A stage where AI has been added and its figure has not moved is a stage where AI has been added to the activity and not to the outcome.
+The guide's fourth idea applies at every row. Each stage has a figure that existed before AI: how long discovery takes and how often the wrong thing is built, how many questions surface after work has started, how long a change waits for review, how many defects escape to production, how long an incident takes to resolve. Record it first. A stage where AI has been added and its figure has not moved is a stage where AI has been added to the activity and not to the outcome.
 
 ### The whiteboard version
 

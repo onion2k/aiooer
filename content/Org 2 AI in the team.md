@@ -8,7 +8,7 @@ Part 2 is about the team, and it makes one claim: tools do not produce speed, re
 
 Parts 1 to 3 of the language models module supply what you need to make that change responsibly: what these systems are good at, how they fail, and how to build checks that do not depend on a person reading everything. This part applies it to how a team plans, builds, reviews, measures and grows.
 
-This is the second of three parts in the AI in the organisation module. [Part 1](file/d6e2a95b-3f14) showed where in the software lifecycle the gains are. This part is about the team that has to change to reach them. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 45 minutes.
+This is the second of three parts in the AI in the organisation module. [Part 1](file/d6e2a95b-3f14) showed where in the software lifecycle the gains are. This part is about the team that has to change to reach them. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). Reading time is about 45 minutes.
 
 ## 1. Two ways to adopt AI
 

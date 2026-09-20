@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the second of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the second of nine parts in the practical AI module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
 [Part 1](file/b4e9d0a7-3c81) was about the window you go to. This part is about the AI that comes to you: the summarise button in your mail, the assistant in the corner of your documents, the suggestion in your editor, the reply the support tool drafted before you opened the ticket. Most people in an organisation now meet far more AI this way than in any chat window, and meet it without ever choosing to.
 
@@ -90,7 +90,7 @@ Summaries are the most-used in-app feature and the easiest to over-trust, becaus
 
 The two big productivity suites both publish commissioned studies with large returns: figures such as 9 hours saved per user per month, or 105 minutes a week, with returns on investment from tens of per cent into the hundreds. The pattern is worth knowing. They are typically Total Economic Impact studies written by an analyst firm for the vendor, built on a composite organisation assembled from interviews rather than on one real deployment, with the assumptions chosen by people who want a good answer. The spread inside them tells its own story: one of those studies reports a range from 52% to 468% depending on how deeply the thing was adopted, which is another way of saying the result depends almost entirely on what the customer does.
 
-This is the course's fourth idea in the wild. [Part 9](file/7a3f2c68-91de) sets out how to measure an AI feature properly, and [part 2 of the AI in the organisation module](file/3e89a4fc-a0bc) has the evidence on how badly people judge their own productivity gains. For an in-app feature the cheap version is:
+This is the guide's fourth idea in the wild. [Part 9](file/7a3f2c68-91de) sets out how to measure an AI feature properly, and [part 2 of the AI in the organisation module](file/3e89a4fc-a0bc) has the evidence on how badly people judge their own productivity gains. For an in-app feature the cheap version is:
 
 1. **Take the figure before.** How long the job takes now, how often it comes back, how often it is wrong.
 2. **Turn it on for some people and not others,** for a few weeks.

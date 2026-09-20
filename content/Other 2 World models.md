@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the second of four parts in the other AI models module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the second of four parts in the other AI models module. The aims of the guide, the layout every part follows and suggested reading routes are in [Introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
 The generative media module met world models twice in passing. [Its part 3](file/9a63f5d1-7c40) said that video research is turning towards them, and [its part 5](file/1f7a3b94-e652) said that generated 3D scenes are arriving from the same direction. This part is about what they are. It leans on [part 1 of that module](file/7c41d2a9-1e05) for how a model generates video at all, and can be read without it.
 
@@ -18,7 +18,7 @@ Part 2 builds one idea: a video model predicts what a scene looks like next, and
 
 ### Prediction, conditioned on action
 
-Every model in this course predicts. A language model predicts the next token. A video model predicts frames that fit a prompt. A world model predicts the next state of an environment from the current state and an action.
+Every model in this guide predicts. A language model predicts the next token. A video model predicts frames that fit a prompt. A world model predicts the next state of an environment from the current state and an action.
 
 ```
 video model:   prompt                  ->  a whole clip
