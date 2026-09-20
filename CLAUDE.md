@@ -113,6 +113,9 @@ was written on 19 September 2026 from what the code does at that date.
   says it: they head with the module and the part, not "On this page", which
   told a reader nothing they did not know. A screen reader hears "contents"
   and not the part's title twice.
+- **The deploy is in the repository.** `netlify.toml` holds the build
+  command, the publish folder and the Node version, and the build stops if
+  either the command or the folder disagrees with what is actually here.
 - **Every page says what it is.** Each carries a meta description in the
   course's own words: the home page and a module open with their own prose
   and add their size, and a part says what a reader can do after it, which
@@ -260,7 +263,14 @@ every static host does. Every link between pages is relative, so the site
 works at a domain's root, in a folder, or opened from a disk.
 
 It runs in plain Node, with no browser and nothing that is not in this
-repository, so a build server can run it on a push.
+repository, so a build server can run it on a push. `netlify.toml` says how:
+the command, the folder to publish and the Node version, in the repository
+rather than in a dashboard, since Netlify takes a file's settings over its
+UI's. The build checks that file against itself, because this broke once:
+the command lived only in the dashboard, `build:static` was renamed to
+`build`, and nothing here could know until the deploy failed. A command that
+is not a script, or a published folder that is not where the site is
+written, now stops the build.
 
 A page is written in three steps. `pages.mjs` makes its markup, with holes
 where a value goes and loops where a list does; `logic.mjs` says what those

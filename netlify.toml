@@ -1,0 +1,15 @@
+# How the site is built and deployed, in the repository rather than in a
+# dashboard, so that renaming a script cannot quietly break the deploy: a
+# setting only Netlify's UI knows is a setting no check here can see. Netlify
+# takes these in preference to anything set in its UI.
+#
+# The build needs nothing but this repository and Node: no browser, no canvas
+# runtime, nothing fetched by hand.
+
+[build]
+  command = "npm run build"
+  publish = "dist/site"
+
+[build.environment]
+  # Pinned so a build here and a build there are the same build.
+  NODE_VERSION = "22"

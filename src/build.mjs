@@ -142,6 +142,21 @@ for (const name of written) {
   SAID.set(said, name);
 }
 
+// The deploy reads netlify.toml, so what it says has to be true here. This
+// exists because it once was not: the build command lived only in Netlify's
+// dashboard, a script was renamed, and nothing in the repository could know.
+// Now a rename fails here, where it is cheap, instead of on a push.
+const deploy = fs.readFileSync(path.join(ROOT, 'netlify.toml'), 'utf8');
+const says = (key) => new RegExp(`^\\s*${key}\\s*=\\s*"([^"]+)"`, 'm').exec(deploy)?.[1];
+const command = says('command');
+const publish = says('publish');
+const scripts = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).scripts;
+const named = /^npm run (?:--silent )?([\w:-]+)$/.exec(command || '')?.[1];
+if (!named || !scripts[named])
+  throw new Error(`netlify.toml builds with "${command}", which is not a script in package.json`);
+if (publish !== path.relative(ROOT, OUT))
+  throw new Error(`netlify.toml publishes ${publish}, but the site is written to ${path.relative(ROOT, OUT)}`);
+
 const sizes = written.map((f) => `${f} ${(fs.statSync(path.join(OUT, f)).size / 1024).toFixed(0)} KB`);
 console.log(`Built ${written.length} pages in dist/site:\n  ${sizes.join('\n  ')}`);
 console.log(`\nServe that folder with any web server. Its front page is index.html.`);
