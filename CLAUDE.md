@@ -1,7 +1,14 @@
 # Using AI well: the course website
 
 The course is the markdown files at the top of this folder: the
-introduction, and a file for each written part. It is in six modules, each with
+introduction, and a file for each written part. An optional primer comes
+first, Intro to AI (three short parts, files `Intro N ….md`: what AI is,
+the basics of using it, and what is possible), which Claude wrote on 20
+September 2026 from general knowledge, for readers without much experience
+of AI. A module is optional when its heading in the introduction ends
+"(optional)": the home page says so beside it, its main button starts at
+the first part that is not optional, and a quieter button offers the primer.
+After it, the course is in six modules, each with
 its own parts numbered from 1, in an order the author chose on 20 September
 2026 so that the course starts gently: use it well, then see how it works,
 then explore further. Practical AI comes first, then AI in the organisation

@@ -15,6 +15,7 @@ import { plainText, PAGE_FILES } from './inline.mjs';
 // starts "Part 1" and the page Part1.dc.html, which are the names they had
 // before there were modules, so every address a reader has kept still works.
 const MODULE_FILES = {
+  'Intro to AI': 'Intro',
   'AI in the organisation': 'Org',
   'Language models': 'Part',
   'Generative media': 'Media',
@@ -298,11 +299,15 @@ function parseModules(dir, section) {
   let mod = null;
   for (const tok of section.blocks) {
     if (tok.type === 'heading' && tok.depth === 3) {
-      const name = plainText(tok.tokens);
+      // A heading that ends "(optional)" declares a module a reader may skip.
+      // The site says so beside it, and does not send a new reader there first.
+      const heading = plainText(tok.tokens);
+      const optional = / \(optional\)$/.test(heading);
+      const name = heading.replace(/ \(optional\)$/, '');
       const prefix = MODULE_FILES[name];
       if (!prefix) throw new Error(`No file names are known for a module called "${name}"; add it to MODULE_FILES`);
       if (modules.some((m) => m.name === name)) throw new Error(`The module "${name}" is declared twice`);
-      mod = { name, slug: slugify(name), prefix, notes: [], parts: [] };
+      mod = { name, slug: slugify(name), prefix, optional, notes: [], parts: [] };
       modules.push(mod);
     } else if (!mod) lead.push(tok);
     else if (tok.type === 'table') mod.parts.push(...tok.rows.map((row) => parsePartRow(dir, mod, row)));

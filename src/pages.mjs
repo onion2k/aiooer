@@ -146,7 +146,9 @@ function hoursOf(parts) {
     return sum + Number(m[1]);
   }, 0);
   const halves = Math.round(total / 30);
-  if (halves < 2) return `${total} minutes`;
+  // Under an hour is said in minutes, since 45 minutes rounded to the half
+  // hour reads as an hour, which it is not.
+  if (total < 60) return `${total} minutes`;
   const whole = Math.floor(halves / 2);
   return `${word(whole)}${halves % 2 ? ' and a half' : ''} hour${whole === 1 && !(halves % 2) ? '' : 's'}`;
 }
@@ -155,7 +157,7 @@ function moduleMeta(m) {
   const written = m.parts.filter((p) => p.written);
   const coming = m.parts.length - written.length;
   if (!written.length) return `${capital(plural(coming, 'part'))}, all still to come`;
-  return `${capital(plural(written.length, 'part'))}${coming ? `, ${word(coming)} more to come` : ''} · about ${hoursOf(written)}`;
+  return `${m.optional ? 'Optional · ' : ''}${capital(plural(written.length, 'part'))}${coming ? `, ${word(coming)} more to come` : ''} · about ${hoursOf(written)}`;
 }
 
 function courseCount(modules) {
@@ -194,7 +196,14 @@ function homeMain(intro, parts) {
       m.notes,
     )}</div><ol class="part-cards grid-12" role="list">${m.parts.map(card).join('')}</ol></div>`;
   const written = parts.filter((p) => p.written);
-  const first = written[0];
+  // The course starts at its first part that is not in an optional module. A
+  // module a reader may skip gets a quieter way in of its own beside it.
+  const skippable = new Set(intro.modules.filter((m) => m.optional).map((m) => m.name));
+  const first = written.find((p) => !skippable.has(p.module)) || written[0];
+  const primer = written.find((p) => skippable.has(p.module));
+  const primerLink = primer
+    ? `<a class="btn-quiet" href="${primer.out}">New to AI? Start with ${esc(primer.module)}</a>`
+    : '';
 
   const layoutBlocks = S['How each part is laid out'].blocks;
   const legendList = layoutBlocks.find((b) => b.type === 'list');
@@ -230,7 +239,7 @@ function homeMain(intro, parts) {
     intro.courseTitle,
   )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026${intro.author ? ` by ${esc(intro.author)}` : ''}</span></li></ul><div class="cta-row"><a class="btn-primary" href="${first.out}"><span>Start with Part ${first.n}: ${esc(
     first.shortTitle,
-  )}</span>${ICONS.arrowRight}</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
+  )}</span>${ICONS.arrowRight}</a>${primerLink}<a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div class="split-body">${purposeRest}</div></div></section>
 <section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="the-modules">The modules</h2><div class="section-intro">${paragraphs(
     intro.lead,

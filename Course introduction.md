@@ -4,7 +4,7 @@
 
 ## What this course is for
 
-This course is about using AI well in an engineering organisation, and about how it works. It starts with use, because everyone reading it already uses these tools, and using them well is the quickest thing to get better at. It then explains what the tools are doing behind the scenes, which you do not need in order to use them and which explains why the advice works. After that come seams of the subject you may not have met: running models on your own hardware, the models that generate images, video, music and 3D objects, and kinds of AI model that are not chat assistants at all. The course is written for people in engineering, product and leadership who need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
+This course is about using AI well in an engineering organisation, and about how it works. It starts with use, because nearly everyone reading it already uses these tools, and using them well is the quickest thing to get better at. For anyone who does not, a short optional primer comes first. It then explains what the tools are doing behind the scenes, which you do not need in order to use them and which explains why the advice works. After that come seams of the subject you may not have met: running models on your own hardware, the models that generate images, video, music and 3D objects, and kinds of AI model that are not chat assistants at all. The course is written for people in engineering, product and leadership who need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 
@@ -12,7 +12,17 @@ That change needs confidence about where AI can be trusted, where it cannot, and
 
 ## The modules
 
-The course is in six modules, in three steps: use it well, see how it works, then explore further. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
+The course is in six modules, in three steps: use it well, see how it works, then explore further. An optional primer comes before them, for readers who are new to AI. Each numbers its own parts from 1, and a reference to "part 3" inside a part means part 3 of the same module.
+
+### Intro to AI (optional)
+
+| Part | After it you can | Time |
+| --- | --- | --- |
+| [Part 1: What AI is](file/a7f20c15-9d3e) | Say what today's AI is, what it knows, and why it is sometimes confidently wrong | 15 min |
+| [Part 2: Using it: the basics](file/4c8be1d6-27fa) | Ask for what you want, check what you get, and know what never to type in | 15 min |
+| [Part 3: What is possible](file/e15a9b70-c4d2) | Tell what AI is worth trying on, what it cannot do, and where to go next in the course | 15 min |
+
+This module is optional. It is a primer for anyone who has come to the course without much experience of AI: what it is, the basics of using it, and what is possible. It needs no technical background and takes about 45 minutes. If you already use an AI assistant most days, start with practical AI.
 
 ### Practical AI
 
@@ -97,7 +107,7 @@ Four modules end with two reference sections for use on their own: the explanati
 
 ## Suggested routes
 
-Each module numbers its own parts, so every route names its modules.
+Each module numbers its own parts, so every route names its modules. If you are new to AI, read the optional intro to AI module first, whichever route you take.
 
 | Reader | Route |
 | --- | --- |
