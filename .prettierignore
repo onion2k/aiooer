@@ -6,11 +6,4 @@ test-results
 vendor
 
 # the course as its author wrote it, byte for byte
-/Course introduction.md
-/Part *.md
-/Org *.md
-/Intro *.md
-/Media *.md
-/Local *.md
-/Practical *.md
-/Other *.md
+/content

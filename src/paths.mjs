@@ -7,8 +7,9 @@ import { fileURLToPath } from 'node:url';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-// The course itself: the markdown files at the top of the project.
-export const CONTENT_DIR = ROOT;
+// The course itself: one markdown file per part, in a folder of their own,
+// so that the top of the project is the code that builds them.
+export const CONTENT_DIR = path.join(ROOT, 'content');
 
 // What is published to the canvas: the index and one file per board.
 export const CANVAS = path.join(ROOT, 'dist', 'canvas');

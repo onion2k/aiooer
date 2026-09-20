@@ -1,6 +1,6 @@
 # Using AI well: the course website
 
-The course is the markdown files at the top of this folder: the
+The course is the markdown files in `content/`: the
 introduction, and a file for each written part. An optional primer comes
 first, Intro to AI (three short parts, files `Intro N ….md`: what AI is,
 the basics of using it, and what is possible), which Claude wrote on 20
@@ -210,9 +210,10 @@ canvas is private until it is shared from its Share menu.
 
 ## How the code is laid out
 
-- **The course** is the markdown at the top. The build reads it and never
-  writes it, and Prettier is told to leave it alone: a new module's file
-  prefix goes into `.prettierignore` as well as `MODULE_FILES`.
+- **The course** is the markdown in `content/`, which the build reads and
+  never writes, and which Prettier is told to leave alone as a folder, so a
+  new module needs nothing but its prefix in `MODULE_FILES`. `CONTENT_DIR` in
+  `paths.mjs` is the one place the folder is named.
 - `src/content.mjs` is the course without its picture: the introduction into
   the course's modules and parts (`MODULE_FILES` there gives each module's
   file and page prefix; a new module is added to it), and markdown into page
