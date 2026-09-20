@@ -50,6 +50,7 @@ const VAR_NAMES = {
   footerLink: '--footer-link',
   select: '--select',
   selectInk: '--select-ink',
+  mark: '--mark',
 };
 
 function themeBlocks() {
@@ -208,7 +209,11 @@ ${swatches()}
 /* Part pages: the giant number and the contents in the left three columns,
    the title and the text in the right nine. */
 .layout{row-gap:3em;padding-bottom:1em;align-items:start}
-.hero-num{--start:1;--span:3;margin:0.35em 0 0;font-family:var(--font-display);font-weight:900;font-size:12em;line-height:0.8;letter-spacing:-0.07em;color:var(--ink)}
+.hero-num{--start:1;--span:3;margin:0.35em 0 0;color:var(--ink)}
+/* The digits carry the type, and the column carries the placing, so the
+   reticle under them is sized in the reader's own text and not in twelve
+   times it. */
+.hero-num-digits{display:block;font-family:var(--font-display);font-weight:900;font-size:12em;line-height:0.8;letter-spacing:-0.07em}
 .hero{--start:4;--span:9;padding-block:2em 2.4em;border-bottom:var(--bw-heavy) solid var(--ink)}
 /* A part's hero is indented to leave the first three columns for its number.
    A module's page and the directory have no number, so theirs start at the
@@ -692,6 +697,77 @@ ${swatches()}
   .home-section{padding-block:2.6em 3.2em}
 }
 
+/* Decoration: the technical marks in decor.mjs. Two rules hold it, and the
+   audit's decor check holds them both. A mark never sits behind text, so
+   nothing here changes what any word is drawn on; and a mark never says
+   anything, so the high contrast theme and forced colours drop the lot and
+   the guide reads the same without it. The marks are drawn in --mark, which
+   the contrast gate holds to the same quiet window as a module's hue. */
+.decor{color:var(--mark);pointer-events:none;-webkit-user-select:none;user-select:none}
+.decor-mark{display:block;color:inherit;overflow:visible}
+.decor-ring{width:2.2em;height:2.2em}
+.decor-steps{width:2em;height:2em}
+.decor-chevrons{width:2.6em;height:0.9em}
+.decor-bars{width:4.4em;height:1.1em}
+.decor-bars.is-vertical{width:1.1em;height:4.4em}
+.decor-dots{width:4.4em;height:1.1em}
+.decor-code{width:4.6em;height:0.8em}
+.decor-code text{font-family:var(--font-mono);font-weight:700}
+.decor-row{display:flex;align-items:center;gap:0.8em}
+/* The hairline that fills whatever length is left. It is a gradient rather
+   than a drawing, so it stretches without turning a circle into an egg. */
+.decor-ticks{display:block;color:inherit}
+.decor-ticks.is-flex{flex:1 1 2em;min-width:1em;height:0.9em;background:
+  repeating-linear-gradient(to right,currentColor 0 1px,transparent 1px 0.55em) center bottom/100% 0.45em no-repeat,
+  linear-gradient(currentColor,currentColor) left bottom/100% 1px no-repeat}
+.decor-ticks.is-wide{flex:none;width:100%;height:0.9em;background:
+  repeating-linear-gradient(to right,currentColor 0 1px,transparent 1px 0.55em) center bottom/100% 0.45em no-repeat,
+  linear-gradient(currentColor,currentColor) left bottom/100% 1px no-repeat}
+.decor-ticks.is-vertical{flex:1 1 2em;min-height:1em;width:0.9em;background:
+  repeating-linear-gradient(to bottom,currentColor 0 1px,transparent 1px 0.55em) right center/0.45em 100% no-repeat,
+  linear-gradient(currentColor,currentColor) right top/1px 100% no-repeat}
+
+/* A strip: a band of marks in a row of its own, so nothing is beside it and
+   nothing is behind it. */
+.decor-strip{--span:12;display:flex;align-items:center;gap:0.9em;height:2.6em}
+.decor-strip .decor-code{margin-left:auto}
+.decor-strip-wrap{margin-top:5em}
+.decor-strip-wrap + .site-footer{margin-top:1.4em}
+/* Below the point where the grid folds to one column there is no room for a
+   run of marks, so the strip keeps the hairline and the ring alone. */
+@container page (width < 40em){
+  .decor-strip{height:2.2em}
+  .decor-strip .decor-bars,.decor-strip .decor-dots,.decor-strip .decor-chevrons{display:none}
+}
+
+/* The tag: pinned to the top right of a hero, on the line the breadcrumbs or
+   the kicker leave empty. It goes once the page is narrow enough that the
+   line might fill, which is well before it could reach the words. */
+.home-hero,.hero{position:relative}
+.decor-tag{position:absolute;top:2.5em;right:var(--margin);display:flex;align-items:center;gap:0.7em}
+.decor-tag .decor-ring{width:1.6em;height:1.6em}
+.decor-tag .decor-bars{width:3.2em;height:0.9em}
+@container page (width < 62em){.decor-tag{display:none}}
+
+/* The reticle: the mark that registers a part's number, in the three columns
+   the number has to itself. It goes when the number does. */
+.decor-reticle{display:flex;flex-direction:column;align-items:flex-start;gap:1em;margin-top:2.6em}
+.decor-reticle .decor-ring{width:4.4em;height:4.4em}
+.decor-reticle .decor-chevrons{width:3em;height:1em}
+
+/* The rails: a column of marks in each margin, shown only where the page is
+   wide enough that they stand clear of the shell. They are fixed, so they
+   stay with the reader as a drawing's border would. */
+.decor-rail{position:fixed;top:0;bottom:0;width:2.6em;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding-block:2.4em;z-index:0}
+.decor-rail.is-left{right:calc(50vw + 40em + 0.5em)}
+.decor-rail.is-right{left:calc(50vw + 40em + 0.5em)}
+@container page (width < 87em){.decor-rail{display:none}}
+
+/* High contrast keeps to black, white, cyan and yellow, and nothing here
+   carries meaning, so it draws none of it; forced colours do the same. */
+.theme-contrast .decor{display:none}
+@media (forced-colors:active){.decor{display:none}}
+
 /* Windows high contrast and other forced colours: keep edges and rings. */
 @media (forced-colors:active){
   .calc-bar-after{background:CanvasText;forced-color-adjust:none}
@@ -701,6 +777,6 @@ ${swatches()}
   .seq-step{border-bottom-color:CanvasText}
 }
 @media (prefers-reduced-motion:reduce){.reader *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
-@media print{.site-header,.toc,.pager,.site-footer,.skip-link,.hero-num{display:none}.deep-body[hidden]{display:block}.reader{background:#fff;color:#000}}
+@media print{.site-header,.toc,.pager,.site-footer,.skip-link,.hero-num,.decor{display:none}.deep-body[hidden]{display:block}.reader{background:#fff;color:#000}}
 `;
 }

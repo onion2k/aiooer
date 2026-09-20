@@ -7,6 +7,7 @@
 import { esc } from './inline.mjs';
 import { ICONS } from './icons.mjs';
 import { SETTINGS } from './logic.mjs';
+import { decorStrip } from './decor.mjs';
 
 const SETTING_LEGENDS = {
   theme: 'Colours',
@@ -141,7 +142,9 @@ function pagerLinks(prev, next) {
   return `<nav class="pager" aria-label="Previous and next"><a class="pager-link is-prev" href="${prev.href}" style="--hue: ${prev.hue ? `var(--hue-${prev.hue})` : 'var(--ink)'}"><span class="pager-dir label">${ICONS.arrowLeft}<span>Previous</span></span><span class="pager-title">${esc(prev.label)}</span></a><a class="pager-link is-next" href="${next.href}" style="--hue: ${next.hue ? `var(--hue-${next.hue})` : 'var(--ink)'}"><span class="pager-dir label"><span>${next.dir || 'Next'}</span>${ICONS.arrowRight}</span><span class="pager-title">${esc(next.label)}</span></a></nav>`;
 }
 
-// Every written page, a group for each module that has one.
+// Every written page, a group for each module that has one. The strip of
+// marks above it comes from here rather than from each page, so every page
+// gets one and none of them can forget.
 export function footer(modules, currencyNote, course) {
   const groups = modules
     .filter((m) => m.parts.some((p) => p.written))
@@ -153,5 +156,5 @@ export function footer(modules, currencyNote, course) {
           .join('')}</ul></div>`,
     )
     .join('');
-  return `<footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Introduction</a></li><li><a href="page:Models">Models</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
+  return `<div class="shell decor-strip-wrap">${decorStrip()}</div><footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Introduction</a></li><li><a href="page:Models">Models</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
 }

@@ -59,6 +59,7 @@ export const THEMES = {
     footerLink: '#FFE500',
     select: '#FFE500',
     selectInk: '#0A0A0A',
+    mark: '#C0C0BD',
     hue1: '#E0D2BB', // sand
     hue2: '#FFB0A3', // coral
     hue3: '#A9E4C3', // mint
@@ -103,6 +104,7 @@ export const THEMES = {
     footerLink: '#FFE500',
     select: '#FFE500',
     selectInk: '#0A0A0A',
+    mark: '#C8C8C5',
     hue1: '#E0D2BB', // sand
     hue2: '#FFB0A3', // coral
     hue3: '#A9E4C3', // mint
@@ -147,6 +149,7 @@ export const THEMES = {
     footerLink: '#FFE500',
     select: '#FFE500',
     selectInk: '#111111',
+    mark: '#383835',
     hue1: '#403C35', // sand
     hue2: '#4E3632', // coral
     hue3: '#2F4037', // mint
@@ -191,6 +194,7 @@ export const THEMES = {
     footerLink: '#FFFF00',
     select: '#FFFF00',
     selectInk: '#000000',
+    mark: '#000000',
     hue1: '#FFFFFF', // sand
     hue2: '#FFFFFF', // coral
     hue3: '#FFFFFF', // mint
@@ -255,6 +259,16 @@ export const TEXT_PAIRS = [
 // than a floor. Too faint and a band is a smudge; too strong and it competes
 // with the blue and the yellow, which carry meaning and must keep the eye.
 export const HUE_RANGE = { min: 1.15, max: 2.2 };
+
+// The colour the page's decoration is drawn in: the rails in the margins, the
+// strip above the footer and the reticle beside a part's number. It is held to
+// the same window as a hue, and for the same reason. The decoration is never
+// behind text and says nothing, so WCAG asks nothing of it; what it needs is
+// to look deliberate. Fainter and it is dirt on the screen, stronger and it
+// reads as something a reader should attend to. High contrast draws none of
+// it, so its value there is never used.
+export const MARK_RANGE = { min: 1.15, max: 2.2 };
+export const MARK_PAIRS = [['mark', 'bg']];
 export const HUE_PAIRS = Array.from({ length: 7 }, (_, i) => `hue${i + 1}`).flatMap((h) => [
   [h, 'bg'],
   [h, 'surface'],

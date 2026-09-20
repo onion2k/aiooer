@@ -212,6 +212,19 @@ modulecards` proves that check still bites.
   competes with the blue and the yellow, which do carry meaning. A band never
   makes a boundary, either: a card's and a link's own borders stay whole and
   the hue sits inside them, since a pastel is too quiet to be an edge.
+- **The decoration keeps out of the reader's way.** The page carries technical
+  marks in the manner of The Designers Republic's Wipeout work: registration
+  rings, tick rails, stepped bars, hazard chevrons, dot fields and small
+  machine codes, in the margins on a wide window, in a strip above the footer
+  and under the home page's hero, under a part's big number, and in the empty
+  corner of a hero. None of it is ever over a word, at any width or text size;
+  none of it is a tab stop or is read out; none of it is lettering the page
+  sets as text, since the codes are drawn inside the picture; and none of it
+  raises itself above the page. `audit`'s `decor` holds all of that, and
+  `--mutate decor` slides a mark over the prose to prove it bites. It is drawn
+  in `mark`, held like a hue to a quiet window by `contrast`, and the high
+  contrast theme and forced colours draw none of it, since it says nothing
+  that a reader could be missing.
 - **One name.** The guide is called what the introduction's heading calls
   it, in the wordmark, the footer and every page title.
   `audit` holds it, and a heading without both the guide's name and the
@@ -221,28 +234,29 @@ modulecards` proves that check still bites.
 
 Baselines as of 19 September 2026, on this machine:
 
-| Gate                | Holds                                              | Baseline                                                                     | Tolerance      |
-| ------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
-| `contrast`          | 251 colour pairs, four themes                      | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1             | none           |
-| `audit`, axe        | 361 runs                                           | 0 violations, 0 needing review                                               | none           |
-| `audit`, measure    | 43 pages × 3 setting mixes × 3 lengths             | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
-| `audit`, targets    | 43 pages × desktop and phone                       | all 44 × 44 or larger                                                        | none           |
-| `audit`, reflow     | 43 pages × 320px and 200% zoom                     | no sideways scroll                                                           | none           |
-| `audit`, spacing    | 43 pages × desktop and phone                       | nothing clipped                                                              | none           |
-| `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes             | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
-| `audit`, headings   | 43 pages × desktop and phone                       | one h1, no skipped level                                                     | none           |
-| `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                        | none           |
-| `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
-| `audit`, storage    | 5 saved shapes                                     | every one loads                                                              | none           |
-| `audit`, numerals   | the home page in four themes                       | the four ideas numbered in the text colour                                   | none           |
-| `audit`, spy        | 28 parts × 3 frames × top, middle, end             | one current, earlier passed, no jumps                                        | none           |
-| `audit`, modules    | the home page and every written part               | label, breadcrumb, title, ways on, no dead links                             | none           |
-| `audit`, name       | 43 pages                                           | the heading's name wherever it is shown                                      | none           |
-| `audit`, hues       | every page, everywhere a hue is drawn              | 17 to 21 a page, each beside the words that say the same                     | none           |
-| `audit`, calculator | the one part that has a calculator                 | every example, the keyboard, typing and Start again show what the rule gives | none           |
-| `look`              | 43 pages                                           | no errors, no empty page                                                     | none           |
-| `links`             | 235 addresses: the prose, and every model's source | 233 ok, 2 unverified, 0 gone                                                 | none gone      |
-| `perf`, not a gate  | render, fonts, repaint, scrolling                  | see below                                                                    | not held       |
+| Gate                | Holds                                              | Baseline                                                                               | Tolerance      |
+| ------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------- |
+| `contrast`          | 254 colour pairs, four themes                      | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1, marks 1.61 to 1.68:1 | none           |
+| `audit`, axe        | 361 runs                                           | 0 violations, 0 needing review                                                         | none           |
+| `audit`, measure    | 43 pages × 3 setting mixes × 3 lengths             | Short's longest line 73; widths 1:1.5:2                                                | 80; 1% widths  |
+| `audit`, targets    | 43 pages × desktop and phone                       | all 44 × 44 or larger                                                                  | none           |
+| `audit`, reflow     | 43 pages × 320px and 200% zoom                     | no sideways scroll                                                                     | none           |
+| `audit`, spacing    | 43 pages × desktop and phone                       | nothing clipped                                                                        | none           |
+| `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes             | 118 to 119 stops, ringed, uncovered, 7:1                                               | none           |
+| `audit`, headings   | 43 pages × desktop and phone                       | one h1, no skipped level                                                               | none           |
+| `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                                  | none           |
+| `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                            | 1px on heights |
+| `audit`, storage    | 5 saved shapes                                     | every one loads                                                                        | none           |
+| `audit`, numerals   | the home page in four themes                       | the four ideas numbered in the text colour                                             | none           |
+| `audit`, spy        | 28 parts × 3 frames × top, middle, end             | one current, earlier passed, no jumps                                                  | none           |
+| `audit`, modules    | the home page and every written part               | label, breadcrumb, title, ways on, no dead links                                       | none           |
+| `audit`, name       | 43 pages                                           | the heading's name wherever it is shown                                                | none           |
+| `audit`, hues       | every page, everywhere a hue is drawn              | 17 to 21 a page, each beside the words that say the same                               | none           |
+| `audit`, calculator | the one part that has a calculator                 | every example, the keyboard, typing and Start again show what the rule gives           | none           |
+| `audit`, decor      | 43 pages × 1800, 1440 largest and long, 390        | no mark over any word; nothing tabbable, spoken or raised                              | none           |
+| `look`              | 43 pages                                           | no errors, no empty page                                                               | none           |
+| `links`             | 235 addresses: the prose, and every model's source | 233 ok, 2 unverified, 0 gone                                                           | none gone      |
+| `perf`, not a gate  | render, fonts, repaint, scrolling                  | see below                                                                              | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
 85 KB, a theme change 32 to 39 ms, opening every deep dive 19 to 33 ms, and
@@ -308,11 +322,11 @@ prefer the model card as the source where one exists.
     npm run perf           render and repaint times, five runs each, medians
     npm run links          every outside address the guide cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator,directory`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator,directory,decor`,
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`, `decor`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
 the runtime, the packages, the introduction, the list of pages or the flags
@@ -419,6 +433,10 @@ wanted again.
   trusts the file, since a tool will write it: an unknown field, an unknown
   capability, a missing value, a duplicate name or open weights without a
   licence all stop the build. `src/directory.mjs` draws it.
+- `src/decor.mjs` is the page's decoration: the marks themselves, and the four
+  places they go. It knows nothing of the guide's content, every mark leaves
+  through a guard that refuses words set as text, and `styles.mjs` places and
+  sizes them. `decor` in `audit.mjs` holds them off the words.
 - `src/logic.mjs` says what a page starts at: the reading settings, the
   header's panels, the deep dives, the contents that follow the reader, and
   the calculator, each at the value the build writes into the markup. Values
@@ -490,6 +508,11 @@ What to copy the shape of, when building something new:
   `build.mjs` serves it at `models/`, `.filters` and `.models` in
   `styles.mjs` style it, the filtering is in `reader.js`, and `directory` in
   `audit.mjs` holds it against the data with `--mutate models`.
+- **Something that is only a look:** the page's decoration. `decor.mjs` draws
+  the marks and says where they go, `pages.mjs` and `chrome.mjs` put them on
+  the page, `.decor-*` in `styles.mjs` places them, `mark` in `tokens.mjs` is
+  their one colour with its pair in `MARK_PAIRS`, and `decor` in `audit.mjs`
+  holds them clear of every word with `--mutate decor`.
 - **A tool that measures:** the measure check, `longestLine` in
   `audit.mjs`, with its mutation `--mutate measure`.
 
@@ -596,6 +619,9 @@ For anything new on a page, check what it does:
 - **a screen reader:** real buttons, links and labelled inputs, headings in
   order, table roles kept when a table stacks, icons hidden, new-tab links
   announced
+- **the decoration:** nothing new may sit under a mark or push one over a
+  word; the rails appear only on a window wider than 87em, and the high
+  contrast theme and forced colours draw none of it
 - **the 1.4.12 spacing overrides** and **forced colours**
 - **a code block's language:** `python`, `json`, `prompt` and `file` (an instruction file
   such as `AGENTS.md`; both wrap as prose), `names` for a list of model names, or none, which is a formula; any other stops the build until

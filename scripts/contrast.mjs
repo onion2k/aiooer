@@ -3,7 +3,17 @@
 // 1.4.11 and 2.4.13). The palette is only trusted once this passes; a colour
 // changed in tokens.mjs without it could quietly drop a theme below AAA.
 //   node scripts/contrast.mjs [--all]
-import { THEMES, THEME_ORDER, TEXT_PAIRS, UI_PAIRS, HUE_PAIRS, HUE_RANGE, contrast } from '../src/tokens.mjs';
+import {
+  THEMES,
+  THEME_ORDER,
+  TEXT_PAIRS,
+  UI_PAIRS,
+  HUE_PAIRS,
+  HUE_RANGE,
+  MARK_PAIRS,
+  MARK_RANGE,
+  contrast,
+} from '../src/tokens.mjs';
 
 let failures = 0;
 const rows = [];
@@ -32,6 +42,21 @@ for (const name of THEME_ORDER) {
     rows.push({
       theme: name,
       kind: 'hue',
+      pair: `${fg} on ${bg}`,
+      colours: `${t[fg]} / ${t[bg]}`,
+      ratio: r.toFixed(2),
+      ok,
+    });
+  }
+  // The decoration's colour, held to its own window. High contrast draws no
+  // decoration at all, so nothing there is measured.
+  for (const [fg, bg] of name === 'contrast' ? [] : MARK_PAIRS) {
+    const r = t[fg] && t[bg] ? contrast(t[fg], t[bg]) : 0;
+    const ok = r >= MARK_RANGE.min && r <= MARK_RANGE.max;
+    if (!ok) failures++;
+    rows.push({
+      theme: name,
+      kind: 'mark',
       pair: `${fg} on ${bg}`,
       colours: `${t[fg]} / ${t[bg]}`,
       ratio: r.toFixed(2),
@@ -68,6 +93,6 @@ if (bad.length) {
 console.log(
   failures
     ? `${failures} pair(s) fail`
-    : `All ${rows.length} pairs pass (text >= 7:1, boundaries >= 3:1, module hues ${HUE_RANGE.min} to ${HUE_RANGE.max}:1)`,
+    : `All ${rows.length} pairs pass (text >= 7:1, boundaries >= 3:1, module hues and the decoration ${HUE_RANGE.min} to ${HUE_RANGE.max}:1)`,
 );
 process.exit(failures ? 1 : 0);

@@ -33,6 +33,10 @@
 //             after Start again
 //   name      the course called by one name, its introduction's heading, in
 //             the wordmark, the footer and every page title
+//   decor     the page's decoration sits in no reader's way: no mark is ever
+//             over a word, at any width or text size, none of it is reachable
+//             by the keyboard or read out, and none of it is lettering the
+//             page itself sets
 // Exits non-zero if any check fails, and writes test-results/audit-report.md.
 //   node scripts/audit.mjs [--quick] [--only axe,measure,...] [--pages File.html,...] [--mutate name]
 //                           [--jobs 4] [--all]
@@ -143,6 +147,32 @@ const MUTATIONS = {
       if (result) result.replaceWith(result.cloneNode(true));
     },
   },
+  // A mark slid over the prose, which is the one thing the decoration must
+  // never do: text whose background cannot be worked out is text the audit
+  // has to report as needing review.
+  decor: {
+    js: () => {
+      const mark = [...document.querySelectorAll('.decor-mark')].find((el) => el.getClientRects().length);
+      const words = [...document.querySelectorAll('.article p, .home-lede, .module-lede p, .directory-lede p, p')].find(
+        (el) => el.getClientRects().length && el.textContent.trim().length > 20,
+      );
+      if (!mark || !words) return;
+      const r = words.getBoundingClientRect();
+      // A copy of a mark, dropped on the page over the words themselves. It
+      // is hung on the body, which nothing positions, so the coordinates mean
+      // what they say however the page around it is laid out.
+      const slid = document.createElement('div');
+      slid.className = 'decor';
+      slid.setAttribute('aria-hidden', 'true');
+      slid.style.position = 'absolute';
+      slid.style.left = `${r.left + window.scrollX + 8}px`;
+      slid.style.top = `${r.top + window.scrollY + 4}px`;
+      slid.style.width = '6em';
+      slid.style.height = '2em';
+      slid.append(mark.cloneNode(true));
+      document.body.append(slid);
+    },
+  },
   spybold: { css: '.reader .toc-list .is-current a{font-weight:400!important}' },
   spydim: { css: '.reader .toc-list .is-past a{color:var(--ink)!important}' },
   spyjump: { css: '.toc-text::after{display:none!important}' },
@@ -208,6 +238,7 @@ const KINDS = [
   'calculator',
   'hues',
   'directory',
+  'decor',
 ];
 const emptyResults = () => Object.fromEntries(KINDS.map((k) => [k, []]));
 const results = emptyResults();
@@ -222,12 +253,18 @@ async function open(file, { width = 1440, height = 900 } = {}) {
   const errors = [];
   const page = await openPage(site, file, { width, height, errors });
   if (errors.length) fail('axe', `${file}: page errors ${errors.join('; ')}`);
-  if (mutation) {
-    const m = MUTATIONS[mutation];
-    if (m.css) await page.addStyleTag({ content: m.css });
-    if (m.js) await page.evaluate(m.js);
-  }
+  await mutate(page);
   return page;
+}
+
+// Puts the run's defect into a page. A check that moves the page about after
+// it opens — by choosing a reading setting, say — asks for it again, since a
+// defect placed from measurements is in the wrong place once the page reflows.
+async function mutate(page) {
+  if (!mutation) return;
+  const m = MUTATIONS[mutation];
+  if (m.css) await page.addStyleTag({ content: m.css });
+  if (m.js) await page.evaluate(m.js);
 }
 
 async function runAxe(page, label) {
@@ -592,6 +629,115 @@ async function roundCorners(page) {
       }
     }
     return [...new Set(out)];
+  });
+}
+
+// Every mark the decoration draws, and every word on the page, measured
+// against each other. The decoration promises to sit in no reader's way, and
+// a mark over a word would break that twice over: it would put a background
+// under text that nothing can work out the colour of, which axe has to report
+// as needing review, and it would make a reader work to read the guide.
+//
+// Words are measured as the glyphs themselves, through a range over each text
+// node, rather than as the boxes around them: a mark beside a paragraph sits
+// inside that paragraph's box quite legitimately, and it is the letters it
+// must not touch. A mark that is fixed to the window is measured across the
+// page's whole height, since anything it clears now it would meet as soon as
+// the reader scrolled.
+async function decorClashes(page) {
+  return page.evaluate(() => {
+    const name = (el) => (typeof el.className === 'string' ? el.className : el.className.baseVal) || el.tagName;
+    // A word the decoration cannot be behind: something between it and the
+    // page has lifted it above the decoration on its own opaque ground. The
+    // skip link is the one thing on the site that does this — it lands over
+    // whatever is beneath it when a reader tabs to it, in its own yellow
+    // block. Everything else is measured strictly, since the decoration is
+    // drawn under the page and a mark under a word is a mark over it.
+    const liftedAbove = (el) => {
+      for (let at = el; at && at !== document.body; at = at.parentElement) {
+        const cs = getComputedStyle(at);
+        const alpha = /^rgba\([^)]*,\s*([\d.]+)\)$/.exec(cs.backgroundColor);
+        const opaque = cs.backgroundColor !== 'transparent' && (!alpha || Number(alpha[1]) > 0.9);
+        if (cs.position !== 'static' && cs.zIndex !== 'auto' && Number(cs.zIndex) > 0 && opaque) return true;
+      }
+      return false;
+    };
+    // What of a word is actually on the screen. A code block scrolls sideways,
+    // so the line inside it runs on well past the edge of its box: those
+    // letters are not on the page at all, and a mark out there is behind
+    // nothing. Every box that clips takes its bite out of the rectangle.
+    const onScreen = (rect, el) => {
+      let box = { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+      for (let at = el; at && at !== document.documentElement; at = at.parentElement) {
+        const cs = getComputedStyle(at);
+        if (cs.overflowX === 'visible' && cs.overflowY === 'visible') continue;
+        const clip = at.getBoundingClientRect();
+        box = {
+          left: Math.max(box.left, clip.left),
+          right: Math.min(box.right, clip.right),
+          top: Math.max(box.top, clip.top),
+          bottom: Math.min(box.bottom, clip.bottom),
+        };
+      }
+      return box.right - box.left > 0.5 && box.bottom - box.top > 0.5 ? box : null;
+    };
+    const marks = [];
+    for (const el of document.querySelectorAll('.decor, .decor *')) {
+      const fixed = getComputedStyle(el).position === 'fixed' || !!el.closest('.decor-rail');
+      for (const r of el.getClientRects()) {
+        if (r.width < 0.5 || r.height < 0.5) continue;
+        marks.push({
+          left: r.left,
+          right: r.right,
+          top: fixed ? -1e6 : r.top,
+          bottom: fixed ? 1e6 : r.bottom,
+          what: name(el),
+        });
+      }
+    }
+    const words = [];
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let node = walk.nextNode(); node; node = walk.nextNode()) {
+      if (!node.nodeValue.trim()) continue;
+      const el = node.parentElement;
+      // The decoration itself, and the text kept for a screen reader alone,
+      // which is a clipped speck of a box and would collide by accident.
+      if (!el || el.closest('.decor') || el.closest('.sr-only')) continue;
+      // The skip link, which a reader tabs to and which lands on top of
+      // whatever is under it in a block of its own.
+      if (liftedAbove(el)) continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      for (const r of range.getClientRects()) {
+        const seen = onScreen(r, el);
+        if (!seen) continue;
+        words.push({ r: seen, text: node.nodeValue.trim().slice(0, 30) });
+      }
+    }
+    const over = [];
+    for (const m of marks)
+      for (const w of words) {
+        const across = Math.min(m.right, w.r.right) - Math.max(m.left, w.r.left);
+        const down = Math.min(m.bottom, w.r.bottom) - Math.max(m.top, w.r.top);
+        if (across > 0.5 && down > 0.5) over.push(`${m.what} over "${w.text}"`);
+      }
+    // The decoration says nothing and goes nowhere: nothing in it is a tab
+    // stop, everything in it is hidden from a screen reader, and the only
+    // lettering it carries is drawn inside a picture, never set as text.
+    const loud = [];
+    for (const d of document.querySelectorAll('.decor')) {
+      if (d.getAttribute('aria-hidden') !== 'true') loud.push(`${name(d)} is not hidden from a screen reader`);
+      if (d.querySelector('a, button, input, select, textarea, [tabindex]')) loud.push(`${name(d)} can be tabbed to`);
+      for (const el of [d, ...d.querySelectorAll('*')]) {
+        const z = getComputedStyle(el).zIndex;
+        if (z !== 'auto' && Number(z) > 0) loud.push(`${name(el)} is raised above the page at z-index ${z}`);
+      }
+      for (const el of d.querySelectorAll('*'))
+        if (el.tagName !== 'text')
+          for (const kid of el.childNodes)
+            if (kid.nodeType === 3 && kid.nodeValue.trim()) loud.push(`${name(el)} sets words as text`);
+    }
+    return { marks: marks.length, words: words.length, over: [...new Set(over)], loud: [...new Set(loud)] };
   });
 }
 
@@ -1217,6 +1363,33 @@ async function auditPage(file) {
     else if (mute.length) fail('hues', `${file}: ${mute.length} coloured without words, first ${mute[0].where}`);
     else pass('hues', `${file}: ${named.length} hues drawn, every one beside the words that say the same`);
     await page.close();
+  }
+  // The decoration, where it is widest and where it is narrowest, and at the
+  // text size and line length that bring the words closest to it: the rails
+  // only appear on a wide window, and the marks grow with the reader's text,
+  // so a collision would show at one of these and not at the others.
+  if (run('decor')) {
+    for (const [width, big] of [
+      [1800, false],
+      [1440, true],
+      [390, false],
+    ]) {
+      const page = await open(file, { width });
+      if (big) {
+        await setSetting(page, 'size', 'largest');
+        await setSetting(page, 'spacing', 'widest');
+        await setSetting(page, 'measure', 'long');
+        await page.locator('button[aria-controls="settings-panel"]').click();
+        await mutate(page);
+      }
+      const seen = await decorClashes(page);
+      const where = `${file} @${width}${big ? ', largest and long' : ''}`;
+      if (!seen.marks) fail('decor', `${where}: the page draws no decoration`);
+      else if (seen.over.length) fail('decor', `${where}: ${seen.over.length} marks over words, first ${seen.over[0]}`);
+      else if (seen.loud.length) fail('decor', `${where}: ${seen.loud[0]}`);
+      else pass('decor', `${where}: ${seen.marks} marks, clear of all ${seen.words} words`);
+      await page.close();
+    }
   }
   if (run('calculator')) {
     const page = await open(file);

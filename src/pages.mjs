@@ -9,6 +9,7 @@ import { stylesheet, FONT_LINK } from './styles.mjs';
 import { startingVals } from './logic.mjs';
 import { ICONS } from './icons.mjs';
 import { directory } from './directory.mjs';
+import { decorRails, decorStrip, decorReticle, decorTag } from './decor.mjs';
 
 // A section of the introduction, by its heading. The home page is built out
 // of these, so a heading the author renames has to say so plainly rather than
@@ -73,14 +74,19 @@ function partArticle(part, parts) {
     .join('');
 }
 
-// The part's number, set huge in the three left columns above the contents.
+// The part's number, set huge in the three left columns above the contents,
+// with the reticle registering it underneath. A part has no strip of marks
+// under its hero: the reticle is already in that column, and a second ring
+// directly below the first read as clutter rather than as a drawing.
 // It repeats "Part 3 of 6" for the eye only, so it is hidden from screen readers.
 // parts is the whole course's list; a reference table's bare part numbers mean
 // this part's own module.
 export function partMain(part, parts) {
   const own = parts.filter((p) => p.module === part.module);
   const number = String(part.n).padStart(2, '0');
-  return `<main id="main" tabindex="-1"><div class="shell layout grid-12"><div class="hero-num" aria-hidden="true">${number}</div>${partHero(part)}${toc(part.sections, part)}<div class="article">${partArticle(part, own)}${pager(part, parts)}</div></div></main>`;
+  return `<main id="main" tabindex="-1"><div class="shell layout grid-12"><div class="hero-num" aria-hidden="true"><span class="hero-num-digits">${number}</span>${decorReticle()}</div>${partHero(
+    part,
+  )}${toc(part.sections, part)}<div class="article">${partArticle(part, own)}${pager(part, parts)}</div></div></main>`;
 }
 
 // ------------------------------------------------------------------ home page
@@ -243,11 +249,11 @@ function homeMain(intro, parts) {
     .join('');
 
   const kicker = intro.pageTitle.charAt(0) + intro.pageTitle.slice(1).toLowerCase();
-  return `<main id="main" tabindex="-1"><div class="shell home-hero grid-12"><p class="home-kicker label">${esc(kicker)}</p><h1 class="home-title">${esc(
+  return `<main id="main" tabindex="-1"><div class="shell home-hero grid-12"><p class="home-kicker label">${esc(kicker)}</p>${decorTag()}<h1 class="home-title">${esc(
     intro.courseTitle,
   )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026${intro.author ? ` by ${esc(intro.author)}` : ''}</span></li></ul><div class="cta-row"><a class="btn-primary" href="page:${first.out}"><span>Start with Part ${first.n}: ${esc(
     first.shortTitle,
-  )}</span>${ICONS.arrowRight}</a>${primerLink}<a class="btn-quiet" href="page:Models">Browse the model directory</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
+  )}</span>${ICONS.arrowRight}</a>${primerLink}<a class="btn-quiet" href="page:Models">Browse the model directory</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div>${decorStrip()}</div></div>
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div class="split-body">${purposeRest}</div></div></section>
 <section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="the-modules">The modules</h2><div class="section-intro">${paragraphs(
     intro.lead,
@@ -272,7 +278,7 @@ function homeMain(intro, parts) {
 export function directoryFile(dir, intro) {
   const course = intro.courseTitle;
   const checked = longDate(dir.checked);
-  const main = `<main id="main" tabindex="-1"><div class="shell directory-layout grid-12"><div class="hero directory-hero">${pageCrumbs('Models', 'Models')}<p class="eyebrow label">Reference</p><h1 class="title" id="directory-title">Models</h1><ul class="hero-meta label" role="list"><li>${
+  const main = `<main id="main" tabindex="-1"><div class="shell directory-layout grid-12"><div class="hero directory-hero">${pageCrumbs('Models', 'Models')}${decorTag()}<p class="eyebrow label">Reference</p><h1 class="title" id="directory-title">Models</h1><ul class="hero-meta label" role="list"><li>${
     ICONS.models
   }<span>${dir.models.length} models</span></li><li>${ICONS.calendar}<span>Checked ${esc(checked)}</span></li></ul></div><div class="module-lede directory-lede">${dir.about.map((p) => `<p>${esc(smartPlain(p))}</p>`).join('')}</div>${directory(
     dir,
@@ -305,7 +311,7 @@ function moduleMain(m, modules) {
     : '';
   return `<main id="main" tabindex="-1"><div class="shell module-layout grid-12"><div class="hero module-hero" style="--hue: var(--hue-${m.hue})">${moduleCrumbs(
     m,
-  )}<p class="eyebrow label">${esc(m.name)}</p><h1 class="title">${esc(m.name)}</h1><ul class="hero-meta label" role="list"><li>${ICONS.book}<span>${esc(
+  )}${decorTag()}<p class="eyebrow label">${esc(m.name)}</p><h1 class="title">${esc(m.name)}</h1><ul class="hero-meta label" role="list"><li>${ICONS.book}<span>${esc(
     moduleMeta(m),
   )}</span></li></ul></div><div class="module-notes module-lede">${notes}</div>${start}<ol class="part-cards grid-12" role="list">${m.parts
     .map((p) => card(p, 'h2'))
@@ -366,7 +372,7 @@ function pageFile({ title, description, body, page }) {
     title: esc(title),
     description: esc(description),
     helmet: `<link rel="stylesheet" href="${FONT_LINK}">\n<style>${stylesheet()}</style>`,
-    body: `<div class="${rootClass}"><div class="page">${body}</div></div>`,
+    body: `<div class="${rootClass}"><div class="page">${decorRails()}${body}</div></div>`,
     vals: startingVals(page),
     calculator: page.calculator || null,
   };
