@@ -341,7 +341,19 @@ function parseModules(dir, section) {
         throw new Error(
           `The course has more modules than there are hues in tokens.mjs, so "${name}" would share one; add a hue for it`,
         );
-      mod = { name, slug: slugify(name), prefix, optional, hue: modules.length + 1, notes: [], parts: [] };
+      // A module has a page of its own at the root of its parts' folder, so
+      // that a reader who trims a part's address off gets the module rather
+      // than a 404.
+      mod = {
+        name,
+        slug: slugify(name),
+        url: `${slugify(name)}/`,
+        prefix,
+        optional,
+        hue: modules.length + 1,
+        notes: [],
+        parts: [],
+      };
       modules.push(mod);
     } else if (!mod) lead.push(tok);
     else if (tok.type === 'table') mod.parts.push(...tok.rows.map((row) => parsePartRow(dir, mod, row)));

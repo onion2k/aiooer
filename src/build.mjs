@@ -12,7 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parsePart, parseIntro } from './content.mjs';
-import { homeFile, partFile } from './pages.mjs';
+import { homeFile, partFile, moduleFile } from './pages.mjs';
 import { DIAGRAMS } from './diagrams.mjs';
 import { expand } from './template.mjs';
 import { CONTENT_DIR, STATIC_SITE as OUT, ROOT } from './paths.mjs';
@@ -37,11 +37,19 @@ for (const key of Object.keys(DIAGRAMS)) if (!used.has(key)) throw new Error('Dr
 // part in a folder of its own under its module's, so an address says what it
 // leads to. A page's markup links by key, as `page:Practical1`, because only
 // this knows where both ends of a link are served from.
+// Only a module with a written part gets a page: one with none has nothing
+// to list and no address a reader could have reached.
+const liveModules = intro.modules.filter((m) => m.parts.some((p) => p.written));
 const pages = [
   { url: '', make: () => homeFile(intro, parts, {}) },
+  ...liveModules.map((m) => ({ url: m.url, make: () => moduleFile(m, intro) })),
   ...models.map((m) => ({ url: m.url, make: () => partFile(m, parts, intro, {}) })),
 ];
-const addresses = new Map([['Main', ''], ...models.map((m) => [m.out, m.url])]);
+const addresses = new Map([
+  ['Main', ''],
+  ...liveModules.map((m) => [`mod-${m.slug}`, m.url]),
+  ...models.map((m) => [m.out, m.url]),
+]);
 
 // How far a link from a page has to climb to reach the site's root, and the
 // link from one page to another. Every link is relative, so the site works at
@@ -56,7 +64,7 @@ const calcRule = `<script>window.CALC_RULE={${[rule.cleanDays, rule.cleanSaving,
   .map((fn) => `${fn.name}:${String(fn)}`)
   .join(',')}};</script>`;
 
-function page({ title, helmet, body, vals, calculator }, from) {
+function page({ title, description, helmet, body, vals, calculator }, from) {
   const html = expand(body, vals).replace(/href="page:([A-Za-z0-9-]+)/g, (m, key) => {
     const to = addresses.get(key);
     if (to === undefined) throw new Error(`A link to ${key}, which is not a page of the site`);
@@ -68,6 +76,7 @@ function page({ title, helmet, body, vals, calculator }, from) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
+<meta name="description" content="${description}">
 ${helmet}
 </head>
 <body>
@@ -114,6 +123,23 @@ for (const name of written) {
     if (!written.includes(clean))
       throw new Error(`${name} links to ${href}, which lands on ${clean} and was not written`);
   }
+}
+
+// Every page tells a search result what it is, in the course's own words. A
+// description that is missing, too thin to say anything, too long to be shown
+// whole, or shared with another page is worth nothing, and none of that is
+// visible on the page itself, so the build is the only thing that can catch
+// it. The ceiling is loose because a description is never cut mid-sentence.
+const SAID = new Map();
+for (const name of written) {
+  const html = fs.readFileSync(path.join(OUT, name), 'utf8');
+  const said = /<meta name="description" content="([^"]*)">/.exec(html)?.[1];
+  if (!said) throw new Error(`${name} has no description`);
+  if (said.length < 50 || said.length > 170)
+    throw new Error(`${name} has a description of ${said.length} characters, wanted 50 to 170: "${said}"`);
+  const other = SAID.get(said);
+  if (other) throw new Error(`${name} and ${other} share a description: "${said}"`);
+  SAID.set(said, name);
 }
 
 const sizes = written.map((f) => `${f} ${(fs.statSync(path.join(OUT, f)).size / 1024).toFixed(0)} KB`);

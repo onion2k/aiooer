@@ -101,6 +101,13 @@ const MUTATIONS = {
       if (a) a.setAttribute('href', 'Nowhere9.html');
     },
   },
+  // A module's page losing one of the parts it is supposed to list, which
+  // would leave a reader who came to it no way to reach that part.
+  modulecards: {
+    js: () => {
+      document.querySelector('.part-card')?.remove();
+    },
+  },
   // A wordmark that says something other than the introduction's heading.
   name: {
     js: () => {
@@ -154,6 +161,13 @@ const FULL_PAGES = sitePages();
 // folder is served by the index.html inside it.
 const WHERE = pageMap();
 const fileOf = (board) => pageFile(WHERE.get(board));
+// A module's own page, which is neither the home page nor a part: it has no
+// contents to follow and lists its module's parts rather than every module's.
+const MODULE_PAGES = new Map(
+  course()
+    .modules.filter((m) => m.parts.some((p) => p.written))
+    .map((m) => [pageFile(m.url), m]),
+);
 const landing = (p) => {
   const clean = p.replace(/^\//, '');
   return clean === '' || clean.endsWith('/') ? `${clean}index.html` : clean;
@@ -249,7 +263,7 @@ async function runAxe(page, label) {
 async function longestLine(page) {
   return page.evaluate(() => {
     const blocks = document.querySelectorAll(
-      '.article p, .prose-list > li, .article dd, .plain-summary, .plain-who, .home-section p, .home-lede, .qa p',
+      '.article p, .prose-list > li, .article dd, .plain-summary, .plain-who, .home-section p, .home-lede, .module-lede p, .qa p',
     );
     let max = 0;
     let where = '';
@@ -298,9 +312,10 @@ async function longestLine(page) {
 // it fills, and the column it sits in, in pixels.
 async function textWidths(page) {
   return page.evaluate(() => {
-    const p = [...document.querySelectorAll('.article > section > p, .split-body > p')].find(
+    const p = [...document.querySelectorAll('.article > section > p, .split-body > p, .module-lede > p')].find(
       (e) => e.getClientRects().length,
     );
+    if (!p) throw new Error('No running text on this page to measure');
     return {
       measure: Math.round(parseFloat(getComputedStyle(p).maxWidth)),
       rendered: Math.round(p.getBoundingClientRect().width),
@@ -601,6 +616,7 @@ const TWELVE = {
     '.site-footer > .shell',
   ],
   part: ['.header-bar', '.layout', '.site-footer > .shell'],
+  module: ['.header-bar', '.module-layout', '.site-footer > .shell'],
   panels: ['.parts-list', '.settings-grid'],
 };
 // A container is on twelve columns when its grid has exactly twelve tracks
@@ -730,6 +746,10 @@ async function auditPage(file) {
         items: g.querySelectorAll('.parts-item').length,
         coming: g.querySelectorAll('.parts-item.is-coming').length,
       })),
+      h1: document.querySelector('h1')?.textContent.trim() ?? null,
+      cards: document.querySelectorAll('.part-card').length,
+      comingCards: document.querySelectorAll('.part-card.is-coming').length,
+      comingCardLinks: document.querySelectorAll('.part-card.is-coming a').length,
       home: [...document.querySelectorAll('.module')].map((m) => ({
         name: m.querySelector('.module-title')?.textContent.trim(),
         level: m.querySelector('.module-title')?.tagName,
@@ -764,6 +784,31 @@ async function auditPage(file) {
       const went = (h) => (h ? landing(new URL(h).pathname) : null);
       if (went(seen.next) !== next) wrong.push(`next lands on ${went(seen.next)}, wanted ${next}`);
       if (went(seen.prev) !== prev) wrong.push(`previous lands on ${went(seen.prev)}, wanted ${prev}`);
+    } else if (MODULE_PAGES.has(file)) {
+      // A module's page names the module in its breadcrumb, its heading and
+      // its page title, lists every one of its parts, and leads on to the
+      // modules either side of it.
+      const mod = MODULE_PAGES.get(file);
+      const modules = COURSE.modules;
+      const i = modules.findIndex((x) => x.name === mod.name);
+      const crumbs = ['Course introduction', mod.name];
+      if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
+        wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
+      if (seen.h1 !== mod.name) wrong.push(`heading "${seen.h1}", wanted "${mod.name}"`);
+      if (!seen.title.startsWith(`${mod.name} · `)) wrong.push(`page title "${seen.title}"`);
+      if (seen.cards !== mod.parts.length) wrong.push(`${seen.cards} cards, wanted ${mod.parts.length}`);
+      const coming = mod.parts.filter((p) => !p.written).length;
+      if (seen.comingCards !== coming) wrong.push(`${seen.comingCards} cards marked coming, wanted ${coming}`);
+      if (seen.comingCardLinks) wrong.push(`${seen.comingCardLinks} parts still to come are linked`);
+      const side = (m) => (m ? fileOf(`mod-${m.slug}`) : 'index.html');
+      const went = (h) => (h ? landing(new URL(h).pathname) : null);
+      const before = modules
+        .slice(0, i)
+        .reverse()
+        .find((x) => x.parts.some((p) => p.written));
+      const after = modules.slice(i + 1).find((x) => x.parts.some((p) => p.written));
+      if (went(seen.prev) !== side(before)) wrong.push(`previous lands on ${went(seen.prev)}, wanted ${side(before)}`);
+      if (went(seen.next) !== side(after)) wrong.push(`next lands on ${went(seen.next)}, wanted ${side(after)}`);
     } else {
       const wantHome = COURSE.modules.map((m) => {
         const coming = m.parts.filter((p) => !p.written).length;
@@ -778,7 +823,9 @@ async function auditPage(file) {
         'modules',
         part
           ? `${file}: ${part.module}, part ${part.n} of ${part.of}, in its label, breadcrumb and title; ways on and back right`
-          : `${file}: ${seen.home.map((m) => `${m.name} ${m.cards} cards (${m.coming} coming)`).join(', ')}; no dead links`,
+          : MODULE_PAGES.has(file)
+            ? `${file}: ${MODULE_PAGES.get(file).name}, ${seen.cards} parts listed, named in its breadcrumb, heading and title; ways on and back right`
+            : `${file}: ${seen.home.map((m) => `${m.name} ${m.cards} cards (${m.coming} coming)`).join(', ')}; no dead links`,
       );
   }
 
@@ -835,7 +882,7 @@ async function auditPage(file) {
     [390, 844],
     [1440, 3200],
   ];
-  for (const [width, height] of run('spy') && file !== 'index.html' ? frames : []) {
+  for (const [width, height] of run('spy') && file !== 'index.html' && !MODULE_PAGES.has(file) ? frames : []) {
     const page = await open(file, { width, height });
     const count = await page.evaluate(() => document.querySelectorAll('.article > section > h2').length);
     for (const [where, index] of [
@@ -1143,7 +1190,7 @@ async function auditPage(file) {
       );
     else pass('grids', `${file} @${width}: every block the same height (${label})`);
     if (width === 1440) {
-      const kind = file === 'index.html' ? 'home' : 'part';
+      const kind = file === 'index.html' ? 'home' : MODULE_PAGES.has(file) ? 'module' : 'part';
       const counts = [...(await columnCounts(page, TWELVE[kind])), ...panelTracks];
       const wrong = counts.filter((c) => c.tracks !== 12 || !c.equal);
       if (wrong.length)

@@ -534,18 +534,25 @@ ${swatches()}
 /* These outrank the home page's paragraph rule, which would otherwise close
    the gap under the module's name and open one under its last paragraph. */
 .home-section .module-meta{margin:1.7em 0 0;color:var(--ink-2)}
+.module-lede{--start:1;--span:9;margin:1.6em 0 0}
+/* The way in sits under the module's explanation and above its parts, on the
+   grid with them, with room of its own so it does not butt against the text. */
+.module-cta{--start:1;--span:12;margin:1.8em 0 0.4em}
+.module-lede p{margin:0 0 var(--para);max-width:var(--measure)}
+.module-lede > :last-child{margin-bottom:0}
 .home-section .module-notes{margin-top:1.1em}
 .home-section .module-notes > :last-child{margin-bottom:0}
 .home-section .module .part-cards{margin-top:2.2em}
 @container page (width < 40em){.module-title{font-size:1.6em}}
 .part-num{grid-area:num;font-family:var(--font-display);font-weight:900;font-size:3.8em;line-height:0.8;letter-spacing:-0.06em}
-.home-section .part-time{grid-area:time;display:flex;align-items:center;gap:0.4em;margin:0;color:inherit}
+.part-time{grid-area:time;display:flex;align-items:center;gap:0.4em;margin:0;color:inherit}
 .part-title{grid-area:title;margin:1em 0 0.35em;font-family:var(--font-display);font-weight:800;font-size:1.45em;line-height:1.08;letter-spacing:-0.02em}
+.module-title a{display:inline-block;min-height:44px}
 .reader .part-title a{color:inherit;text-decoration-thickness:0.07em}
 .reader .part-title a::after{content:'';position:absolute;inset:0}
 .reader .part-title a:hover{background:none;color:inherit}
 .reader .part-title a:focus-visible{outline:none;background:none!important;box-shadow:none;color:inherit!important}
-.home-section .part-outcome{grid-area:outcome;margin:0}
+.part-outcome{grid-area:outcome;margin:0}
 .idea{--span:3;--span-md:3;margin:0;display:flex;flex-direction:column;gap:0.9em;padding:1.1em 0 0;border-top:var(--bw-heavy) solid var(--ink)}
 .idea-num{font-family:var(--font-display);font-weight:900;font-size:4.2em;line-height:0.8;letter-spacing:-0.06em;color:var(--ink)}
 .home-section .idea p{margin:0}

@@ -30,8 +30,10 @@ export function course() {
 // leads to. The build still writes boards, so this is the one place that knows
 // a board's name as an address.
 export function pageMap() {
+  const c = course();
   const map = new Map([['Main', '']]);
-  for (const p of course().parts.filter((x) => x.written)) map.set(p.out, p.url);
+  for (const m of c.modules.filter((x) => x.parts.some((p) => p.written))) map.set(`mod-${m.slug}`, m.url);
+  for (const p of c.parts.filter((x) => x.written)) map.set(p.out, p.url);
   return map;
 }
 

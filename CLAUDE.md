@@ -113,6 +113,21 @@ was written on 19 September 2026 from what the code does at that date.
   says it: they head with the module and the part, not "On this page", which
   told a reader nothing they did not know. A screen reader hears "contents"
   and not the part's title twice.
+- **Every page says what it is.** Each carries a meta description in the
+  course's own words: the home page and a module open with their own prose
+  and add their size, and a part says what a reader can do after it, which
+  is what the introduction's table already promises. A description that is
+  missing, under 50 characters, over 170, or shared with another page stops
+  the build. Nothing is ever cut mid-sentence, which is why the ceiling is
+  loose: a search engine trims a long one itself, where a sentence broken in
+  half reads as a mistake.
+- **A module has a page of its own.** Every module with a written part is
+  served at `/<module>/`, saying what the module is for in the words the
+  introduction already uses for it and listing every one of its parts, so
+  trimming a part's address back to its module leads somewhere rather than
+  to a 404. `audit`'s `modules` holds its breadcrumb, heading, title, the
+  parts it lists and the modules either side of it, and `--mutate
+modulecards` proves that check still bites.
 - **An address says what it leads to.** A part is served from
   `/<module>/<number>-<part>/`, as
   `/practical-ai/1-ai-chat/`, so a shared link reads as itself. Every link
@@ -164,22 +179,22 @@ Baselines as of 19 September 2026, on this machine:
 | ------------------- | -------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
 | `contrast`          | 251 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1             | none           |
 | `audit`, axe        | 361 runs                               | 0 violations, 0 needing review                                               | none           |
-| `audit`, measure    | 35 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
-| `audit`, targets    | 35 pages × desktop and phone           | all 44 × 44 or larger                                                        | none           |
-| `audit`, reflow     | 35 pages × 320px and 200% zoom         | no sideways scroll                                                           | none           |
-| `audit`, spacing    | 35 pages × desktop and phone           | nothing clipped                                                              | none           |
-| `audit`, keyboard   | 35 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
-| `audit`, headings   | 35 pages × desktop and phone           | one h1, no skipped level                                                     | none           |
-| `audit`, corners    | 35 pages, every panel, deep dive open  | none rounder than 2px                                                        | none           |
-| `audit`, grids      | 35 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
+| `audit`, measure    | 42 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
+| `audit`, targets    | 42 pages × desktop and phone           | all 44 × 44 or larger                                                        | none           |
+| `audit`, reflow     | 42 pages × 320px and 200% zoom         | no sideways scroll                                                           | none           |
+| `audit`, spacing    | 42 pages × desktop and phone           | nothing clipped                                                              | none           |
+| `audit`, keyboard   | 42 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
+| `audit`, headings   | 42 pages × desktop and phone           | one h1, no skipped level                                                     | none           |
+| `audit`, corners    | 42 pages, every panel, deep dive open  | none rounder than 2px                                                        | none           |
+| `audit`, grids      | 42 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
 | `audit`, storage    | 5 saved shapes                         | every one loads                                                              | none           |
 | `audit`, numerals   | the home page in four themes           | the four ideas numbered in the text colour                                   | none           |
 | `audit`, spy        | 28 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps                                        | none           |
 | `audit`, modules    | the home page and every written part   | label, breadcrumb, title, ways on, no dead links                             | none           |
-| `audit`, name       | 35 pages                               | the heading's name wherever it is shown                                      | none           |
+| `audit`, name       | 42 pages                               | the heading's name wherever it is shown                                      | none           |
 | `audit`, hues       | every page, everywhere a hue is drawn  | 17 to 21 a page, each beside the words that say the same                     | none           |
 | `audit`, calculator | the one part that has a calculator     | every example, the keyboard, typing and Start again show what the rule gives | none           |
-| `look`              | 35 pages                               | no errors, no empty page                                                     | none           |
+| `look`              | 42 pages                               | no errors, no empty page                                                     | none           |
 | `links`             | 151 outside addresses the course cites | 150 ok, 1 unverified, 0 gone                                                 | none gone      |
 | `perf`, not a gate  | render, fonts, repaint, scrolling      | see below                                                                    | not held       |
 
@@ -222,7 +237,7 @@ The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,cor
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
 the runtime, the packages, the introduction, the list of pages or the flags
@@ -389,7 +404,8 @@ page's storage;
 as a reader would (`theme`, `size`, `spacing`, `measure`, `font`, `deep`);
 `togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel;
 `course()` is the course as the introduction declares it, and `sitePages()`
-the home page and every written part as they are served (`index.html`,
+the home page, every module with a written part and every written part as
+they are served (`index.html`, `practical-ai/index.html`,
 `practical-ai/1-ai-chat/index.html`, and so on), which is what the audit,
 `look` and `perf` walk, so a new part is checked from the day it is written.
 `pageMap()` is the one place that knows a board's name as an address,

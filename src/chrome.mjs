@@ -84,7 +84,28 @@ export function toc(sections, part) {
 // goes to its place on the home page, which is where a module is described.
 export function crumbs(part) {
   const sep = '<span class="crumb-sep" aria-hidden="true">/</span>';
-  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Course introduction</a>${sep}</li><li><a href="page:Main#module-${part.moduleSlug}">${esc(part.module)}</a>${sep}</li><li><a href="page:${part.out}" aria-current="page">Part ${part.n}: ${esc(part.shortTitle)}</a></li></ol></nav>`;
+  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Course introduction</a>${sep}</li><li><a href="page:mod-${part.moduleSlug}">${esc(part.module)}</a>${sep}</li><li><a href="page:${part.out}" aria-current="page">Part ${part.n}: ${esc(part.shortTitle)}</a></li></ol></nav>`;
+}
+
+// A module's own breadcrumb: the introduction, then the module itself.
+export function moduleCrumbs(m) {
+  const sep = '<span class="crumb-sep" aria-hidden="true">/</span>';
+  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Course introduction</a>${sep}</li><li><a href="page:mod-${m.slug}" aria-current="page">${esc(m.name)}</a></li></ol></nav>`;
+}
+
+// The way back and on from a module's page: the modules either side of it, so
+// a reader can walk the course a module at a time as well as a part at a time.
+export function modulePager(m, modules) {
+  const i = modules.findIndex((x) => x.name === m.name);
+  const before = modules[i - 1];
+  const after = modules[i + 1];
+  const prev = before
+    ? { href: `page:mod-${before.slug}`, label: before.name, hue: before.hue }
+    : { href: 'page:Main', label: 'Course introduction' };
+  const next = after
+    ? { href: `page:mod-${after.slug}`, label: after.name, hue: after.hue }
+    : { href: 'page:Main', label: 'Back to the course introduction', dir: 'End of the course' };
+  return pagerLinks(prev, next);
 }
 
 // The way back and the way on run through every written part in course
@@ -102,6 +123,10 @@ export function pager(part, parts) {
   const next = after
     ? { href: `page:${after.out}`, label: name(after), hue: after.hue }
     : { href: 'page:Main', label: 'Back to the course introduction', dir: 'End of the course' };
+  return pagerLinks(prev, next);
+}
+
+function pagerLinks(prev, next) {
   return `<nav class="pager" aria-label="Previous and next"><a class="pager-link is-prev" href="${prev.href}" style="--hue: ${prev.hue ? `var(--hue-${prev.hue})` : 'var(--ink)'}"><span class="pager-dir label">${ICONS.arrowLeft}<span>Previous</span></span><span class="pager-title">${esc(prev.label)}</span></a><a class="pager-link is-next" href="${next.href}" style="--hue: ${next.hue ? `var(--hue-${next.hue})` : 'var(--ink)'}"><span class="pager-dir label"><span>${next.dir || 'Next'}</span>${ICONS.arrowRight}</span><span class="pager-title">${esc(next.label)}</span></a></nav>`;
 }
 

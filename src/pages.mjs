@@ -4,7 +4,7 @@
 
 import { renderInline, plainText, esc, smartPlain } from './inline.mjs';
 import { renderBlocks, sectionHeading } from './render.mjs';
-import { header, toc, crumbs, pager, footer } from './chrome.mjs';
+import { header, toc, crumbs, moduleCrumbs, pager, modulePager, footer } from './chrome.mjs';
 import { stylesheet, FONT_LINK } from './styles.mjs';
 import { startingVals } from './logic.mjs';
 import { ICONS } from './icons.mjs';
@@ -149,6 +149,20 @@ function hoursOf(parts) {
   return `${word(whole)}${halves % 2 ? ' and a half' : ''} hour${whole === 1 && !(halves % 2) ? '' : 's'}`;
 }
 
+// One part, as a card. A part still to come is shown without a link, since it
+// links nowhere, and says "Coming" where the others give a reading time.
+// `level` is the heading it sits under: h4 inside the home page's h3 modules,
+// h3 on a module's own page, where the module is the h1.
+function card(p, level = 'h4') {
+  const num = `<span class="part-num" aria-hidden="true">${String(p.n).padStart(2, '0')}</span>`;
+  const outcome = `<p class="part-outcome"><span class="sr-only">After it you can: </span>${esc(smartPlain(p.outcome))}</p>`;
+  if (!p.written)
+    return `<li class="part-card is-coming">${num}<${level} class="part-title"><span class="sr-only">Part ${p.n}: </span>${esc(p.shortTitle)}</${level}>${outcome}<p class="part-time label">Coming</p></li>`;
+  return `<li class="part-card">${num}<${level} class="part-title"><a href="page:${p.out}"><span class="sr-only">Part ${p.n}: </span>${esc(
+    p.shortTitle,
+  )}</a></${level}>${outcome}<p class="part-time label">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
+}
+
 function moduleMeta(m) {
   const written = m.parts.filter((p) => p.written);
   const coming = m.parts.length - written.length;
@@ -182,20 +196,12 @@ function homeMain(intro, parts) {
 
   // A card for each part, three to a row, a grid for each module. A part still
   // to come has a card too, so a reader sees what the module will hold, but it
-  // links nowhere and says "Coming" where the others give a reading time.
-  const card = (p) => {
-    const num = `<span class="part-num" aria-hidden="true">${String(p.n).padStart(2, '0')}</span>`;
-    const outcome = `<p class="part-outcome"><span class="sr-only">After it you can: </span>${esc(smartPlain(p.outcome))}</p>`;
-    if (!p.written)
-      return `<li class="part-card is-coming">${num}<h4 class="part-title"><span class="sr-only">Part ${p.n}: </span>${esc(p.shortTitle)}</h4>${outcome}<p class="part-time label">Coming</p></li>`;
-    return `<li class="part-card">${num}<h4 class="part-title"><a href="page:${p.out}"><span class="sr-only">Part ${p.n}: </span>${esc(
-      p.shortTitle,
-    )}</a></h4>${outcome}<p class="part-time label">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
-  };
   const moduleBlock = (m) =>
-    `<div class="module" id="module-${m.slug}" style="--hue: var(--hue-${m.hue})"><h3 class="module-title">${esc(m.name)}</h3><p class="module-meta label">${esc(moduleMeta(m))}</p><div class="module-notes">${paragraphs(
+    `<div class="module" id="module-${m.slug}" style="--hue: var(--hue-${m.hue})"><h3 class="module-title">${
+      m.parts.some((p) => p.written) ? `<a href="page:mod-${m.slug}">${esc(m.name)}</a>` : esc(m.name)
+    }</h3><p class="module-meta label">${esc(moduleMeta(m))}</p><div class="module-notes">${paragraphs(
       m.notes,
-    )}</div><ol class="part-cards grid-12" role="list">${m.parts.map(card).join('')}</ol></div>`;
+    )}</div><ol class="part-cards grid-12" role="list">${m.parts.map((p) => card(p)).join('')}</ol></div>`;
   const written = parts.filter((p) => p.written);
   // The course starts at its first part that is not in an optional module. A
   // module a reader may skip gets a quieter way in of its own beside it.
@@ -257,17 +263,85 @@ function homeMain(intro, parts) {
   )}</div></div></section></main>`;
 }
 
+// --------------------------------------------------------------- module page
+
+// A module's own page, at the root of its parts' folder. It says what the
+// module is for, in the words the introduction already uses for it, and lists
+// its parts as the home page does. Trimming a part's address back to its
+// module leads here rather than nowhere.
+function moduleMain(m, modules) {
+  const notes = m.notes
+    .filter((b) => b.type === 'paragraph')
+    .map((p) => `<p>${renderInline(p.tokens)}</p>`)
+    .join('');
+  const first = m.parts.find((p) => p.written);
+  const start = first
+    ? `<div class="cta-row module-cta"><a class="btn-primary" href="page:${first.out}"><span>Start with Part ${first.n}: ${esc(
+        first.shortTitle,
+      )}</span>${ICONS.arrowRight}</a></div>`
+    : '';
+  return `<main id="main" tabindex="-1"><div class="shell module-layout grid-12"><div class="hero module-hero" style="--hue: var(--hue-${m.hue})">${moduleCrumbs(
+    m,
+  )}<p class="eyebrow label">${esc(m.name)}</p><h1 class="title">${esc(m.name)}</h1><ul class="hero-meta label" role="list"><li>${ICONS.book}<span>${esc(
+    moduleMeta(m),
+  )}</span></li></ul></div><div class="module-notes module-lede">${notes}</div>${start}<ol class="part-cards grid-12" role="list">${m.parts
+    .map((p) => card(p, 'h2'))
+    .join('')}</ol>${modulePager(m, modules)}</div></main>`;
+}
+
+export function moduleFile(m, intro) {
+  const course = intro.courseTitle;
+  const body = `${header(intro.modules, null, course)}${moduleMain(m, intro.modules)}${footer(
+    intro.modules,
+    currencyNote(intro),
+    course,
+  )}`;
+  const written = m.parts.filter((p) => p.written);
+  return pageFile({
+    title: `${m.name} · ${course}`,
+    description: withSize(
+      opening(m.notes),
+      `${capital(plural(written.length, 'part'))}, about ${hoursOf(written)} of reading.`,
+    ),
+    body,
+    page: { deepKeys: [] },
+  });
+}
+
 // ----------------------------------------------------------------- the page
 
 // A page, in the pieces the build assembles: its title, what belongs in the
 // head, the markup with its holes still in it, and the values to fill them
 // with. The build fills the holes and rewrites the links, because only it
 // knows where a page is served from.
-function pageFile({ title, body, page }) {
+// The opening of a piece of the course's own prose, for a search result. The
+// first sentence almost always says what the thing is; where it is too short
+// to say anything ("This module is optional."), the one after it is taken as
+// well. Nothing is ever cut mid-sentence: a description that trails off reads
+// worse than a long one, which a search engine trims itself.
+const SHORT = 40;
+function opening(blocks) {
+  const text = blocks.find((b) => b.type === 'paragraph')?.text ?? '';
+  const sentences = (text.match(/[^.]+\.(?=\s|$)/g) || [text]).map((x) => x.trim());
+  const taken = sentences[0].length < SHORT ? sentences.slice(0, 2) : sentences.slice(0, 1);
+  return smartPlain(taken.join(' '));
+}
+
+// A description with the size of the thing on the end, where that still
+// leaves it short enough for a search result to show whole.
+const LONGEST = 160;
+function withSize(prose, size) {
+  const both = `${prose} ${size}`;
+  return both.length <= LONGEST ? both : prose;
+}
+
+function pageFile({ title, description, body, page }) {
   const rootClass =
     'reader theme-{{s.theme}} size-{{s.size}} spacing-{{s.spacing}} measure-{{s.measure}} font-{{s.font}}';
+  if (!description) throw new Error(`The page "${title}" has no description`);
   return {
     title: esc(title),
+    description: esc(description),
     helmet: `<link rel="stylesheet" href="${FONT_LINK}">\n<style>${stylesheet()}</style>`,
     body: `<div class="${rootClass}"><div class="page">${body}</div></div>`,
     vals: startingVals(page),
@@ -278,8 +352,13 @@ function pageFile({ title, body, page }) {
 export function homeFile(intro, parts, page) {
   const course = intro.courseTitle;
   const body = `${header(intro.modules, null, course)}${homeMain(intro, parts)}${footer(intro.modules, currencyNote(intro), course)}`;
+  const written = parts.filter((p) => p.written);
   return pageFile({
     title: `${course}: ${intro.pageTitle.toLowerCase().replace(/^c/, 'C')}`,
+    description: withSize(
+      opening(intro.sections['What this course is for'].blocks),
+      `${courseCount(intro.modules)}, about ${hoursOf(written)} of reading.`,
+    ),
     body,
     page: { ...page, deepKeys: [] },
   });
@@ -296,6 +375,7 @@ export function partFile(part, parts, intro, page) {
   const spyIds = part.sections.map((s) => s.id);
   return pageFile({
     title: `${part.module}, part ${part.n}: ${part.shortTitle} · ${course}`,
+    description: withSize(`${smartPlain(part.outcome)}.`, `Part ${part.n} of the ${part.module} module.`),
     body,
     page: { ...page, deepKeys, spyIds, calculator: part.calculator || null },
   });
