@@ -41,7 +41,7 @@ export const ICON_NAMES = {
 
 // Reads one drawing and keeps only its shapes: the library's titles, style
 // blocks and the transparent frame some icons carry are dropped, and every
-// shape is closed explicitly, as the canvas's markup rules ask.
+// shape is closed explicitly, so the markup parses the same everywhere.
 export function loadIcon(name, dir = CARBON) {
   const file = path.join(dir, `${name}.svg`);
   if (!fs.existsSync(file)) throw new Error(`Carbon has no icon called "${name}"`);

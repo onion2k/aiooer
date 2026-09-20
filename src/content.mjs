@@ -11,11 +11,12 @@ import { plainText, PAGE_FILES } from './inline.mjs';
 import { parseCalculator } from './calculator.mjs';
 import { HUE_COUNT } from './tokens.mjs';
 
-// What each module's markdown files and pages are called. The modules
-// themselves, their order and their parts come from the introduction; this
-// only says that the language models module's first part is the file that
-// starts "Part 1" and the page Part1.dc.html, which are the names they had
-// before there were modules, so every address a reader has kept still works.
+// What each module's markdown files are called, and the key its pages are
+// known by inside the build. The modules themselves, their order and their
+// parts come from the introduction; this only says that the language models
+// module's first part is the file that starts "Part 1" and the page Part1,
+// which is the name it had before there were modules. The key is internal:
+// what a reader sees is the address in `url`.
 const MODULE_FILES = {
   'Intro to AI': 'Intro',
   'AI in the organisation': 'Org',
@@ -294,6 +295,15 @@ export function parseIntro(dir) {
   }
   const { lead, modules } = parseModules(dir, sections['The modules']);
   const parts = modules.flatMap((m) => m.parts);
+  // Two parts at one address would mean one of them overwriting the other in
+  // the built site, silently. A title that slugs to the same thing as another
+  // in its module has to be changed, which is the author's call, so say so.
+  const seen = new Map();
+  for (const p of parts) {
+    const other = seen.get(p.url);
+    if (other) throw new Error(`${other} and ${p.module} part ${p.n} would both be served at /${p.url}; retitle one`);
+    seen.set(p.url, `${p.module} part ${p.n}`);
+  }
   return {
     courseTitle,
     pageTitle,
@@ -361,7 +371,13 @@ function parsePartRow(dir, mod, row) {
   const mm = /^Part (\d+): (.*)$/.exec(label);
   if (!mm) throw new Error(`${mod.name}: "${label}" should read "Part <number>: <title>"`);
   const n = Number(mm[1]);
-  const out = `${mod.prefix}${n}.dc.html`;
+  const out = `${mod.prefix}${n}`;
+  // Where the part is served: a folder per module, a folder per part, so an
+  // address says what it leads to when somebody shares one. The number keeps
+  // the parts in reading order, and comes first so it reads as "part 3 of the
+  // practical AI module" does. The board name says nothing and is on its way
+  // internal, and readers never see it.
+  const url = `${mod.slug}/${n}-${slugify(mm[2])}/`;
   const files = fs.readdirSync(dir).filter((f) => new RegExp(`^${mod.prefix} ${n} .*\\.md$`).test(f));
   if (files.length > 1) throw new Error(`${mod.name} part ${n} has more than one file: ${files.join(', ')}`);
   if (link && !files.length) throw new Error(`${mod.name} part ${n} is linked in the introduction but has no file`);
@@ -384,5 +400,6 @@ function parsePartRow(dir, mod, row) {
     written: !!link,
     file: files[0] || null,
     out,
+    url,
   };
 }

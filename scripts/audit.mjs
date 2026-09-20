@@ -55,8 +55,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { startSite, openPage, setSetting, AXE_PATH, course, sitePages, pageName } from './harness.mjs';
-import { RESULTS, STATIC_SITE, CANVAS_PROJECT, ROOT, CONTENT_DIR } from '../src/paths.mjs';
+import { startSite, openPage, setSetting, AXE_PATH, course, sitePages, pageMap, pageFile } from './harness.mjs';
+import { RESULTS, STATIC_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
 import { delivery } from '../src/calculator.mjs';
 const quick = process.argv.includes('--quick');
@@ -150,6 +150,14 @@ const MUTATIONS = {
 };
 
 const FULL_PAGES = sitePages();
+// Where each board is served, and the page a link to an address lands on: a
+// folder is served by the index.html inside it.
+const WHERE = pageMap();
+const fileOf = (board) => pageFile(WHERE.get(board));
+const landing = (p) => {
+  const clean = p.replace(/^\//, '');
+  return clean === '' || clean.endsWith('/') ? `${clean}index.html` : clean;
+};
 const COURSE = course();
 const THEMES = quick ? ['paper', 'dark'] : ['paper', 'white', 'dark', 'contrast'];
 // The showcase boards: every board the build made that is not one of the
@@ -703,18 +711,20 @@ async function auditPage(file) {
   if (run('modules')) {
     const written = COURSE.parts.filter((p) => p.written);
     const built = new Set(FULL_PAGES);
-    const part = written.find((p) => pageName(p.out) === file);
+    const part = written.find((p) => fileOf(p.out) === file);
     const page = await open(file);
     const seen = await page.evaluate(() => ({
       label: document.querySelector('.eyebrow')?.textContent.trim() ?? null,
       crumbs: [...document.querySelectorAll('.crumbs li')].map((li) => li.querySelector('a')?.textContent.trim()),
       title: document.title,
-      next: document.querySelector('.pager-link.is-next')?.getAttribute('href') ?? null,
-      prev: document.querySelector('.pager-link.is-prev')?.getAttribute('href') ?? null,
+      next: document.querySelector('.pager-link.is-next')?.href ?? null,
+      prev: document.querySelector('.pager-link.is-prev')?.href ?? null,
+      // Every link between pages is relative, so the browser's own resolution
+      // of it is what a reader would follow. Anything off this origin is
+      // somebody else's site and is the link checker's business, not this.
       links: [...document.querySelectorAll('a[href]')]
-        .map((a) => a.getAttribute('href'))
-        .filter((h) => /\.dc\.html/.test(h))
-        .map((h) => h.split('#')[0]),
+        .filter((a) => a.href.startsWith(location.origin))
+        .map((a) => new URL(a.href).pathname),
       groups: [...document.querySelectorAll('.parts-group')].map((g) => ({
         name: g.querySelector('.parts-group-title')?.textContent.trim(),
         items: g.querySelectorAll('.parts-item').length,
@@ -730,7 +740,9 @@ async function auditPage(file) {
     }));
     await page.close();
     const wrong = [];
-    const dead = [...new Set(seen.links.filter((h) => !built.has(h)))];
+    // A folder address is served by the index.html inside it, so that is the
+    // page a link to it lands on.
+    const dead = [...new Set(seen.links.map(landing).filter((h) => !built.has(h)))];
     if (dead.length) wrong.push(`links to pages that were not built: ${dead.join(', ')}`);
     const wantGroups = COURSE.modules.map((m) => ({
       name: m.name,
@@ -747,10 +759,11 @@ async function auditPage(file) {
       if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
         wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
       if (!seen.title.includes(`${part.module}, part ${part.n}: `)) wrong.push(`page title "${seen.title}"`);
-      const next = pageName(written[i + 1]?.out ?? 'Main.dc.html');
-      const prev = pageName(written[i - 1]?.out ?? 'Main.dc.html');
-      if (seen.next !== next) wrong.push(`next is ${seen.next}, wanted ${next}`);
-      if (seen.prev !== prev) wrong.push(`previous is ${seen.prev}, wanted ${prev}`);
+      const next = fileOf(written[i + 1]?.out ?? 'Main');
+      const prev = fileOf(written[i - 1]?.out ?? 'Main');
+      const went = (h) => (h ? landing(new URL(h).pathname) : null);
+      if (went(seen.next) !== next) wrong.push(`next lands on ${went(seen.next)}, wanted ${next}`);
+      if (went(seen.prev) !== prev) wrong.push(`previous lands on ${went(seen.prev)}, wanted ${prev}`);
     } else {
       const wantHome = COURSE.modules.map((m) => {
         const coming = m.parts.filter((p) => !p.written).length;
@@ -815,7 +828,7 @@ async function auditPage(file) {
   }
 
   // The contents list follows the reader: at the top, in the middle and at
-  // the bottom of a part, at desktop and phone size, and in the canvas's own
+  // the bottom of a part, at desktop and phone size, and in a tall
   // 1440 by 3200 frame, where a short last section never reaches the line.
   const frames = [
     [1440, 900],
@@ -1188,9 +1201,19 @@ await Promise.all(
 // written them.
 for (const job of work) for (const k of KINDS) results[k].push(...job.results[k]);
 
-// Saved settings of every shape load, once, on a part with deep dives.
+// Saved settings of every shape load, once, on a part with deep dives, since
+// one of the shapes has them open and a part without any would pass whatever
+// the page did. Naming a page here would go stale the moment one was renamed,
+// so it is found by what it holds.
+// The class name alone would match the stylesheet, which every page inlines,
+// so this looks for the attribute as the markup writes it.
+const STORAGE_PAGE = FULL_PAGES.find(
+  (f) => f !== 'index.html' && fs.readFileSync(path.join(STATIC_SITE, f), 'utf8').includes('class="deep-toggle"'),
+);
+if (run('storage') && !STORAGE_PAGE)
+  throw new Error('No part has a deep dive, so the storage check would prove nothing');
 for (const shape of run('storage') ? SAVED_SHAPES : []) {
-  const page = await openPage(site, 'Part1.html', {
+  const page = await openPage(site, STORAGE_PAGE, {
     beforeLoad: (p) =>
       p.addInitScript(
         ([key, value]) => {
@@ -1218,14 +1241,6 @@ for (const shape of run('storage') ? SAVED_SHAPES : []) {
       `${shape.name}: loads as ${Object.keys(shape.expect).length ? JSON.stringify(shape.expect) : 'the defaults'}`,
     );
   await page.close();
-}
-
-// The canvas carries the course's name as its title too.
-if (run('name')) {
-  const course = COURSE.courseTitle;
-  const canvas = JSON.parse(fs.readFileSync(path.join(CANVAS_PROJECT, 'canvas.json'), 'utf8'));
-  if (canvas.title !== course) fail('name', `canvas.json: title "${canvas.title}", not "${course}"`);
-  else pass('name', `canvas.json: titled "${course}"`);
 }
 
 await site.close();

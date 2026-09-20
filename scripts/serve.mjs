@@ -1,4 +1,4 @@
-// A small static server for the built site. The canvas's runtime fetches
+// A small static server for the built site. The pages fetch
 // sibling boards over http, so the pages cannot be opened straight from disk.
 // The checks import serve(); run on its own it is the dev server, for reading
 // the built site in a browser. Its port is 5190 unless a PORT variable or an
@@ -23,7 +23,12 @@ const TYPES = {
 export function serve(root, port = 0) {
   const server = http.createServer((req, res) => {
     const url = decodeURIComponent(req.url.split('?')[0]);
-    const file = path.join(root, url === '/' ? 'index.html' : url);
+    // A part's address is a folder, served by the index.html inside it, which
+    // is what every static host does. The checks go through here too, so they
+    // see the same behaviour a reader's host gives.
+    let file = path.join(root, url);
+    if (file.startsWith(root) && fs.existsSync(file) && fs.statSync(file).isDirectory())
+      file = path.join(file, 'index.html');
     if (!file.startsWith(root) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
       res.writeHead(404);
       res.end('not found');

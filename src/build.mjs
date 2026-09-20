@@ -1,19 +1,24 @@
-// Builds the canvas's boards, under dist/canvas/project/, and its index.
-// Nothing renders or checks them any more: scripts/static.mjs reads them to
-// make the site in dist/site, which is the output and what every check
-// renders. Both halves of this file go when the canvas does.
-
+// Builds the course into an ordinary website, in dist/site: the home page at
+// the root and each part in a folder of its own, plus reader.js. Run it after
+// any change to the markdown or the design; nothing in dist/ is edited by hand.
+//
+// It runs in plain Node, with no browser and nothing that is not in this
+// repository, so a build server can run it on a push.
+//
+// A page is written in three steps. pages.mjs makes its markup, with holes
+// where a value goes and loops where a list does; logic.mjs says what those
+// values are as the page loads; template.mjs fills them in. What happens once
+// a reader touches anything is src/reader.js, which the page loads.
 import fs from 'node:fs';
 import path from 'node:path';
 import { parsePart, parseIntro } from './content.mjs';
 import { homeFile, partFile } from './pages.mjs';
 import { DIAGRAMS } from './diagrams.mjs';
-import { GRID_GUIDE } from './styles.mjs';
-import { CONTENT_DIR, CANVAS_PROJECT as PROJECT, HEIGHTS_FILE, CREATED_FILE } from './paths.mjs';
+import { expand } from './template.mjs';
+import { CONTENT_DIR, STATIC_SITE as OUT, ROOT } from './paths.mjs';
+import * as rule from './calculator.mjs';
 
-const heights = fs.existsSync(HEIGHTS_FILE) ? JSON.parse(fs.readFileSync(HEIGHTS_FILE, 'utf8')) : {};
-const MAX_H = 8000;
-const h = (file, fallback) => Math.min(MAX_H, heights[file] || fallback);
+const READER = path.join(ROOT, 'src', 'reader.js');
 
 const intro = parseIntro(CONTENT_DIR);
 const parts = intro.parts;
@@ -28,226 +33,89 @@ for (const m of models)
 for (const key of used) if (!DIAGRAMS[key]) throw new Error('Diagram without a drawing: ' + key);
 for (const key of Object.keys(DIAGRAMS)) if (!used.has(key)) throw new Error('Drawing without a diagram: ' + key);
 
-const partTitle = (m) => `${m.module}, part ${m.n}: ${m.shortTitle}`;
-
-// The boards, row by row. Row one is the website itself; the rows below show
-// it on a phone and in its other reading settings.
-const rows = [
-  {
-    note: 'The website',
-    boards: [
-      {
-        file: 'Main.dc.html',
-        title: 'Home: course introduction',
-        w: 1440,
-        h: h('Main.dc.html', 5200),
-        fill: true,
-        make: (p) => homeFile(intro, parts, p),
-      },
-      ...models.map((m) => ({
-        file: m.out,
-        title: partTitle(m),
-        w: 1440,
-        h: 3200,
-        fill: true,
-        make: (p) => partFile(m, parts, intro, p),
-      })),
-    ],
-  },
-  {
-    note: 'On a phone',
-    boards: [
-      {
-        file: 'Phone-Home.dc.html',
-        title: 'Phone: home',
-        w: 390,
-        h: h('Phone-Home.dc.html', 7000),
-        fixed: true,
-        remember: false,
-        make: (p) => homeFile(intro, parts, p),
-      },
-      {
-        file: 'Phone-Part.dc.html',
-        title: 'Phone: Part 1, opening sections',
-        w: 390,
-        h: h('Phone-Part.dc.html', 6000),
-        fixed: true,
-        remember: false,
-        maxSections: 3,
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-      // The first written part of each later module, so that a module's own
-      // label and breadcrumb are seen at phone width too.
-      ...models
-        .filter((m) => m.n === 1 && m.module !== models[0].module)
-        .map((m) => ({
-          file: `Phone-${m.out}`,
-          title: `Phone: ${m.module}, part 1, opening sections`,
-          w: 390,
-          h: h(`Phone-${m.out}`, 6000),
-          fixed: true,
-          remember: false,
-          maxSections: 3,
-          make: (p) => partFile(m, parts, intro, p),
-        })),
-      {
-        file: 'Phone-Contents.dc.html',
-        title: 'Phone: contents open',
-        w: 390,
-        h: 1560,
-        fixed: true,
-        remember: false,
-        maxSections: 1,
-        tocOpen: true,
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-      {
-        file: 'Phone-Parts.dc.html',
-        title: 'Phone: parts menu open',
-        w: 390,
-        h: h('Phone-Parts.dc.html', 1400),
-        fixed: true,
-        remember: false,
-        maxSections: 1,
-        openAtStart: 'parts',
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-      {
-        file: 'Phone-Settings.dc.html',
-        title: 'Phone: reading settings open',
-        w: 390,
-        h: h('Phone-Settings.dc.html', 2200),
-        fixed: true,
-        remember: false,
-        maxSections: 1,
-        openAtStart: 'settings',
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-    ],
-  },
-  {
-    note: 'Reading settings and themes',
-    boards: [
-      {
-        file: 'Settings-Open.dc.html',
-        title: 'Reading settings open',
-        w: 1440,
-        h: h('Settings-Open.dc.html', 1500),
-        fixed: true,
-        remember: false,
-        maxSections: 1,
-        openAtStart: 'settings',
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-      {
-        file: 'Theme-Dark.dc.html',
-        title: 'Dark, with a deep dive open',
-        w: 1440,
-        h: h('Theme-Dark.dc.html', 3600),
-        fixed: true,
-        remember: false,
-        maxSections: 3,
-        start: { theme: 'dark' },
-        deepOpenAtStart: ['d1'],
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-      {
-        file: 'Theme-Contrast.dc.html',
-        title: 'High contrast',
-        w: 1440,
-        h: h('Theme-Contrast.dc.html', 3600),
-        fixed: true,
-        remember: false,
-        maxSections: 3,
-        start: { theme: 'contrast' },
-        deepOpenAtStart: ['d1'],
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-      {
-        file: 'Theme-Largest.dc.html',
-        title: 'Largest text, widest spacing, serif',
-        w: 1440,
-        h: h('Theme-Largest.dc.html', 3600),
-        fixed: true,
-        remember: false,
-        maxSections: 2,
-        start: { size: 'largest', spacing: 'widest', font: 'serif' },
-        make: (p) => partFile(models[0], parts, intro, p),
-      },
-    ],
-  },
+// Where each page is served from: the home page at the site's root, and each
+// part in a folder of its own under its module's, so an address says what it
+// leads to. A page's markup links by key, as `page:Practical1`, because only
+// this knows where both ends of a link are served from.
+const pages = [
+  { url: '', make: () => homeFile(intro, parts, {}) },
+  ...models.map((m) => ({ url: m.url, make: () => partFile(m, parts, intro, {}) })),
 ];
+const addresses = new Map([['Main', ''], ...models.map((m) => [m.out, m.url])]);
 
-fs.rmSync(PROJECT, { recursive: true, force: true });
-fs.mkdirSync(PROJECT, { recursive: true });
+// How far a link from a page has to climb to reach the site's root, and the
+// link from one page to another. Every link is relative, so the site works at
+// a domain's root, in a folder, or opened from a disk.
+const upTo = (url) => '../'.repeat((url.match(/\//g) || []).length);
+const linkFrom = (from, to) => `${upTo(from)}${to}` || './';
 
-const boards = {};
-const order = [];
-const notes = {};
-let y = 0;
-const GAP_X = 80;
-const ROW_GAP = 120;
-const NOTE_SPACE = 300;
-rows.forEach((row, ri) => {
-  let x = 0;
-  const rowY = ri === 0 ? 0 : y + ROW_GAP + NOTE_SPACE;
-  let rowH = 0;
-  for (const b of row.boards) {
-    const page = { ...b, start: b.start, remember: b.remember, fixed: !!b.fixed };
-    const html = b.make(page);
-    fs.writeFileSync(path.join(PROJECT, b.file), html);
-    const entry = { x, y: rowY, w: b.w, h: b.h, title: b.title };
-    // Desktop boards show the twelve-column grid they are laid out on.
-    if (b.w === 1440) entry.guides = [GRID_GUIDE];
-    if (b.fill) {
-      entry.expand = 'fill';
-      entry.is_interactive = true;
-    }
-    boards[b.file] = entry;
-    order.push(b.file);
-    x += b.w + GAP_X;
-    rowH = Math.max(rowH, b.h);
-  }
-  // The editor saves a title's width and caps maxW at 8000; writing the same
-  // keeps a rebuild from differing from what the canvas holds.
-  notes['row' + (ri + 1)] = {
-    x: 0,
-    y: rowY - 260,
-    text: row.note,
-    kind: 'title1',
-    maxW: Math.min(8000, x - GAP_X),
-    w: 240,
-  };
-  y = rowY + rowH;
-});
+// The calculator's arithmetic, by its source, for the one page that has one:
+// each function under its own name, since String(fn) gives "function name(…)".
+// The page and reader.js work from one rule, so they cannot disagree.
+const calcRule = `<script>window.CALC_RULE={${[rule.cleanDays, rule.cleanSaving, rule.delivery]
+  .map((fn) => `${fn.name}:${String(fn)}`)
+  .join(',')}};</script>`;
 
-// Nothing may link to a page that was not built: a part still to come has an
-// address waiting for it, and a link to it would lead nowhere.
-for (const file of order) {
-  const html = fs.readFileSync(path.join(PROJECT, file), 'utf8');
-  for (const m of html.matchAll(/href="([^"#]+\.dc\.html)/g))
-    if (!boards[m[1]]) throw new Error(`${file} links to ${m[1]}, which was not built`);
+function page({ title, helmet, body, vals, calculator }, from) {
+  const html = expand(body, vals).replace(/href="page:([A-Za-z0-9-]+)/g, (m, key) => {
+    const to = addresses.get(key);
+    if (to === undefined) throw new Error(`A link to ${key}, which is not a page of the site`);
+    return `href="${linkFrom(from, to)}`;
+  });
+  return `<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${title}</title>
+${helmet}
+</head>
+<body>
+${html}
+${calculator ? calcRule : ''}<script src="${upTo(from)}reader.js" defer></script>
+</body>
+</html>
+`;
 }
 
-const indexFile = path.join(PROJECT, 'canvas.json');
-// The canvas was created once; its stamp is kept so every rebuild writes the
-// same index, and a publish never looks like a new canvas.
-const previous = fs.existsSync(CREATED_FILE) ? JSON.parse(fs.readFileSync(CREATED_FILE, 'utf8')) : null;
-const createdOnFiles = previous || { v: 1, at: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z') };
-if (!previous) fs.writeFileSync(CREATED_FILE, JSON.stringify(createdOnFiles));
-const canvas = {
-  v: 3,
-  attachments: {},
-  createdOnFiles,
-  title: intro.courseTitle,
-  launch: { view: 'focused', file: 'Main.dc.html' },
-  pages: [],
-  boards,
-  order,
-  notes,
-  designSystems: [],
-};
-fs.writeFileSync(indexFile, JSON.stringify(canvas, null, 2));
+fs.rmSync(OUT, { recursive: true, force: true });
+fs.mkdirSync(OUT, { recursive: true });
+fs.copyFileSync(READER, path.join(OUT, 'reader.js'));
 
-const sizes = order.map((f) => `${f} ${(fs.statSync(path.join(PROJECT, f)).size / 1024).toFixed(0)} KB`);
-console.log(`Built ${order.length} boards:\n  ${sizes.join('\n  ')}`);
+const written = [];
+for (const { url, make } of pages) {
+  const name = `${url}index.html`;
+  fs.mkdirSync(path.join(OUT, path.dirname(name)), { recursive: true });
+  fs.writeFileSync(path.join(OUT, name), page(make(), url));
+  written.push(name);
+}
+
+// A hole or a loop still standing would be a piece of the page that never
+// rendered, and a link that lands nowhere is one a reader would follow into a
+// 404. Every link between pages is relative, so resolving one against the page
+// it sits on is the only way to know where it lands.
+for (const name of written) {
+  const html = fs.readFileSync(path.join(OUT, name), 'utf8');
+  for (const [re, what] of [
+    [/\{\{[^}]{1,40}\}\}/, 'an unrendered hole'],
+    [/<sc-(for|if)\b/, 'an unrendered loop or branch'],
+    [/\son[A-Z][a-zA-Z]*=/, 'an unbound event attribute'],
+    [/href="page:/, 'a link that was never rewritten'],
+  ]) {
+    const m = re.exec(html);
+    if (m) throw new Error(`${name} still holds ${what}: "${m[0]}"`);
+  }
+  for (const m of html.matchAll(/href="([^"#:]*)(?:#[^"]*)?"/g)) {
+    const href = m[1];
+    if (!href || /^(https?:)?\/\//.test(href)) continue;
+    const landing = path.posix.normalize(path.posix.join(path.posix.dirname(name), href));
+    const target = landing.endsWith('/') || !landing.endsWith('.html') ? `${landing}/index.html` : landing;
+    const clean = path.posix.normalize(target).replace(/^\.\//, '');
+    if (!written.includes(clean))
+      throw new Error(`${name} links to ${href}, which lands on ${clean} and was not written`);
+  }
+}
+
+const sizes = written.map((f) => `${f} ${(fs.statSync(path.join(OUT, f)).size / 1024).toFixed(0)} KB`);
+console.log(`Built ${written.length} pages in dist/site:\n  ${sizes.join('\n  ')}`);
+console.log(`\nServe that folder with any web server. Its front page is index.html.`);

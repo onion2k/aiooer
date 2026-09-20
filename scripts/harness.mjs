@@ -25,22 +25,29 @@ export function course() {
   return parseIntro(CONTENT_DIR);
 }
 
-// The site's own pages: the home page and every written part, in course order,
-// named as they are served. The checks and perf walk this, so a new part is
-// checked the day it is written, without anyone adding it to a list.
-export function sitePages() {
-  return [
-    'index.html',
-    ...course()
-      .parts.filter((p) => p.written)
-      .map((p) => pageName(p.out)),
-  ];
+// Where each board is served from: the home page at the site's root, and each
+// part in a folder of its own under its module's, so an address says what it
+// leads to. The build still writes boards, so this is the one place that knows
+// a board's name as an address.
+export function pageMap() {
+  const map = new Map([['Main', '']]);
+  for (const p of course().parts.filter((x) => x.written)) map.set(p.out, p.url);
+  return map;
 }
 
-// A board's name as a page's. The build still writes boards, so the one place
-// that knows the two namings is here.
-export function pageName(board) {
-  return board === 'Main.dc.html' ? 'index.html' : board.replace(/\.dc\.html$/, '.html');
+// The file an address is written to. A folder address is served by the
+// index.html inside it, which every static host does.
+export const pageFile = (url) => `${url}index.html`;
+
+// How deep a page sits, which is how far a link from it has to climb to reach
+// anything at the site's root.
+export const upTo = (url) => '../'.repeat((url.match(/\//g) || []).length);
+
+// The site's own pages: the home page and every written part, in course order.
+// The checks, look and perf walk this, so a new part is checked the day it is
+// written, without anyone adding it to a list.
+export function sitePages() {
+  return [...pageMap().values()].map(pageFile);
 }
 
 // Starts the server and the browser. Close both with site.close().

@@ -38,7 +38,7 @@ for (const file of sitePages()) {
   // same page furniture repeated, and the audit walks all of it anyway.
   const clipH = Math.min(info.natural, maxShot);
   await page.screenshot({
-    path: path.join(SHOTS, file.replace(/\.html$/, '.png')),
+    path: path.join(SHOTS, `${file.replace(/\/?index\.html$/, '') || 'index'}.png`.replace(/\//g, '-')),
     clip: { x: 0, y: 0, width, height: clipH },
     fullPage: true,
   });

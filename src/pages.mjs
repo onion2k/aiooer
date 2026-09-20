@@ -1,13 +1,12 @@
 // Assembles whole pages: the home page from the course introduction, and a
-// page for each part, each wrapped as a Design Component file with the shared
-// stylesheet and logic. The showcase boards are the same pages started in a
-// different state, so they cannot drift from the real ones.
+// page for each part, each with the shared stylesheet and the values its
+// markup starts at. The build fills the holes and writes the file.
 
 import { renderInline, plainText, esc, smartPlain } from './inline.mjs';
 import { renderBlocks, sectionHeading } from './render.mjs';
 import { header, toc, crumbs, pager, footer } from './chrome.mjs';
 import { stylesheet, FONT_LINK } from './styles.mjs';
-import { logicScript, dataProps } from './logic.mjs';
+import { startingVals } from './logic.mjs';
 import { ICONS } from './icons.mjs';
 
 const MONTHS = [
@@ -60,9 +59,8 @@ function partHero(part) {
   )}.</p></div></div>`;
 }
 
-function partArticle(part, parts, maxSections) {
-  const sections = maxSections ? part.sections.slice(0, maxSections) : part.sections;
-  return sections
+function partArticle(part, parts) {
+  return part.sections
     .map(
       (s) =>
         `<section class="sec sec-${s.kind}">${sectionHeading(s)}${renderBlocks(s.blocks, {
@@ -78,12 +76,10 @@ function partArticle(part, parts, maxSections) {
 // It repeats "Part 3 of 6" for the eye only, so it is hidden from screen readers.
 // parts is the whole course's list; a reference table's bare part numbers mean
 // this part's own module.
-export function partMain(part, parts, opts = {}) {
+export function partMain(part, parts) {
   const own = parts.filter((p) => p.module === part.module);
   const number = String(part.n).padStart(2, '0');
-  return `<main id="main" tabindex="-1"><div class="shell layout grid-12"><div class="hero-num" aria-hidden="true">${number}</div>${partHero(part)}${toc(part.sections)}<div class="article">${partArticle(part, own, opts.maxSections)}${
-    opts.maxSections ? '' : pager(part, parts)
-  }</div></div></main>`;
+  return `<main id="main" tabindex="-1"><div class="shell layout grid-12"><div class="hero-num" aria-hidden="true">${number}</div>${partHero(part)}${toc(part.sections, part)}<div class="article">${partArticle(part, own)}${pager(part, parts)}</div></div></main>`;
 }
 
 // ------------------------------------------------------------------ home page
@@ -192,7 +188,7 @@ function homeMain(intro, parts) {
     const outcome = `<p class="part-outcome"><span class="sr-only">After it you can: </span>${esc(smartPlain(p.outcome))}</p>`;
     if (!p.written)
       return `<li class="part-card is-coming">${num}<h4 class="part-title"><span class="sr-only">Part ${p.n}: </span>${esc(p.shortTitle)}</h4>${outcome}<p class="part-time label">Coming</p></li>`;
-    return `<li class="part-card">${num}<h4 class="part-title"><a href="${p.out}"><span class="sr-only">Part ${p.n}: </span>${esc(
+    return `<li class="part-card">${num}<h4 class="part-title"><a href="page:${p.out}"><span class="sr-only">Part ${p.n}: </span>${esc(
       p.shortTitle,
     )}</a></h4>${outcome}<p class="part-time label">${ICONS.clock}<span>${esc(minutes(p.time))}</span></p></li>`;
   };
@@ -207,7 +203,7 @@ function homeMain(intro, parts) {
   const first = written.find((p) => !skippable.has(p.module)) || written[0];
   const primer = written.find((p) => skippable.has(p.module));
   const primerLink = primer
-    ? `<a class="btn-quiet" href="${primer.out}">New to AI? Start with ${esc(primer.module)}</a>`
+    ? `<a class="btn-quiet" href="page:${primer.out}">New to AI? Start with ${esc(primer.module)}</a>`
     : '';
 
   const layoutBlocks = S['How each part is laid out'].blocks;
@@ -242,7 +238,7 @@ function homeMain(intro, parts) {
   const kicker = intro.pageTitle.charAt(0) + intro.pageTitle.slice(1).toLowerCase();
   return `<main id="main" tabindex="-1"><div class="shell home-hero grid-12"><p class="home-kicker label">${esc(kicker)}</p><h1 class="home-title">${esc(
     intro.courseTitle,
-  )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026${intro.author ? ` by ${esc(intro.author)}` : ''}</span></li></ul><div class="cta-row"><a class="btn-primary" href="${first.out}"><span>Start with Part ${first.n}: ${esc(
+  )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026${intro.author ? ` by ${esc(intro.author)}` : ''}</span></li></ul><div class="cta-row"><a class="btn-primary" href="page:${first.out}"><span>Start with Part ${first.n}: ${esc(
     first.shortTitle,
   )}</span>${ICONS.arrowRight}</a>${primerLink}<a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div class="split-body">${purposeRest}</div></div></section>
@@ -261,41 +257,28 @@ function homeMain(intro, parts) {
   )}</div></div></section></main>`;
 }
 
-// ------------------------------------------------------------- the dc wrapper
+// ----------------------------------------------------------------- the page
 
-function dcFile({ title, body, page }) {
+// A page, in the pieces the build assembles: its title, what belongs in the
+// head, the markup with its holes still in it, and the values to fill them
+// with. The build fills the holes and rewrites the links, because only it
+// knows where a page is served from.
+function pageFile({ title, body, page }) {
   const rootClass =
     'reader theme-{{s.theme}} size-{{s.size}} spacing-{{s.spacing}} measure-{{s.measure}} font-{{s.font}}';
-  const inner = `<div class="${rootClass}"><div class="page">${body}</div></div>`;
-  const root = page.fixed
-    ? `<div style="width: ${page.w}px; height: ${page.h}px; overflow: hidden;">${inner}</div>`
-    : inner;
-  return `<!doctype html>
-<html lang="en-GB">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(title)}</title>
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
-<link rel="stylesheet" href="${FONT_LINK}">
-<style>${stylesheet()}</style>
-</helmet>
-${root}
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='${dataProps(page)}'>${logicScript(page)}</script>
-</body>
-</html>
-`;
+  return {
+    title: esc(title),
+    helmet: `<link rel="stylesheet" href="${FONT_LINK}">\n<style>${stylesheet()}</style>`,
+    body: `<div class="${rootClass}"><div class="page">${body}</div></div>`,
+    vals: startingVals(page),
+    calculator: page.calculator || null,
+  };
 }
 
 export function homeFile(intro, parts, page) {
   const course = intro.courseTitle;
   const body = `${header(intro.modules, null, course)}${homeMain(intro, parts)}${footer(intro.modules, currencyNote(intro), course)}`;
-  return dcFile({
+  return pageFile({
     title: `${course}: ${intro.pageTitle.toLowerCase().replace(/^c/, 'C')}`,
     body,
     page: { ...page, deepKeys: [] },
@@ -307,14 +290,11 @@ export function partFile(part, parts, intro, page) {
   // The header marks the current part by identity, so it needs the
   // introduction's own record of this part, not the parsed page.
   const current = parts.find((p) => p.out === part.out);
-  const body = `${header(intro.modules, current, course)}${partMain(part, parts, page)}${page.maxSections ? '' : footer(intro.modules, currencyNote(intro), course)}`;
+  const body = `${header(intro.modules, current, course)}${partMain(part, parts)}${footer(intro.modules, currencyNote(intro), course)}`;
   const deepKeys = [];
-  const sections = page.maxSections ? part.sections.slice(0, page.maxSections) : part.sections;
-  for (const s of sections) for (const b of s.blocks) if (b.type === 'deep') deepKeys.push(b.key);
-  // The contents list every section, even on a board trimmed to a few, so
-  // the spy follows the same list in the same order.
+  for (const s of part.sections) for (const b of s.blocks) if (b.type === 'deep') deepKeys.push(b.key);
   const spyIds = part.sections.map((s) => s.id);
-  return dcFile({
+  return pageFile({
     title: `${part.module}, part ${part.n}: ${part.shortTitle} · ${course}`,
     body,
     page: { ...page, deepKeys, spyIds, calculator: part.calculator || null },

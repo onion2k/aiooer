@@ -1,13 +1,11 @@
-// Turns a board into a finished page, the way the canvas's runtime does when
-// it first draws one, but in Node. The static build needs this because the
-// runtime is not in the repository and never can be, so a build server has no
-// way to render a board in a browser.
+// Fills a page's holes with the values it starts at, in Node, so that what
+// ships is finished HTML and a reader needs nothing to see the whole course.
 //
 // It handles only the forms this project emits, which are few and never
 // nested more than one deep: `{{dotted.path}}` holes, `<sc-for>` over a list,
-// `<sc-if>` on a value, and the event attributes, which a static page drops
-// because src/reader.js binds its own. Anything else it meets is left alone
-// and caught by the build's own check for holes and loops it did not expand.
+// `<sc-if>` on a value, and the event attributes, which are dropped because
+// src/reader.js binds its own. Anything else it meets is left alone and
+// caught by the build's own check for holes and loops it did not expand.
 
 // A dotted lookup into the values, exactly as a hole is: never an expression.
 export function look(vals, path) {
@@ -23,8 +21,8 @@ export function look(vals, path) {
 }
 
 // What a value looks like in the markup. A handler or anything else that is
-// not worth printing disappears, as it does on the canvas, where an attribute
-// set to a function is a listener and not text.
+// not worth printing disappears: an attribute set to a function is a
+// listener, and reader.js binds those itself.
 function asText(value) {
   if (value === null || value === undefined || value === false) return '';
   if (typeof value === 'function') return '';
@@ -54,10 +52,6 @@ function fillAttrs(tag, vals) {
     return `${name}="${escapeAttr(value.replace(/\{\{([^}]+)\}\}/g, (m, p) => asText(look(vals, p))))}"`;
   });
 }
-
-// The hint-* attributes are the canvas's placeholders while a page streams in.
-// A finished page has nothing to stand in for.
-const dropHints = (tag) => tag.replace(/\s+hint-[a-zA-Z-]+="[^"]*"/g, '');
 
 // The whole of one element, from an opening tag to the matching close, for a
 // tag that may hold others of its own kind.
@@ -116,6 +110,6 @@ export function expand(html, vals) {
 // attributes, and its text takes its holes.
 function fill(html, vals) {
   return html
-    .replace(/<[a-zA-Z][^>]*>/g, (tag) => fillAttrs(dropHints(tag), vals))
+    .replace(/<[a-zA-Z][^>]*>/g, (tag) => fillAttrs(tag, vals))
     .replace(/\{\{([^}]+)\}\}/g, (m, path) => asText(look(vals, path)));
 }

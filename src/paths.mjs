@@ -11,21 +11,11 @@ export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 // so that the top of the project is the code that builds them.
 export const CONTENT_DIR = path.join(ROOT, 'content');
 
-// What is published to the canvas: the index and one file per board.
-export const CANVAS = path.join(ROOT, 'dist', 'canvas');
-export const CANVAS_PROJECT = path.join(CANVAS, 'project');
-
-// Build inputs that are measured or stamped, not written by hand.
-export const HEIGHTS_FILE = path.join(ROOT, 'src', 'heights.json');
-export const CREATED_FILE = path.join(ROOT, 'src', 'canvas-created.json');
-
 // The site itself: the ordinary web pages that ship, and what every check
 // renders. It is the output that matters, so it is the thing held to the
 // promises, rather than a copy of it rendered some other way.
 export const STATIC_SITE = path.join(ROOT, 'dist', 'site');
 
-// The canvas's page runtime, and the copy of the boards it renders. Both are
-// on their way out, and nothing but the canvas build reads them.
-export const RUNTIME = path.join(ROOT, 'vendor', 'design-runtime.js');
+// Where the checks put what they write: reports and pictures, never anything
+// the site is built from.
 export const RESULTS = path.join(ROOT, 'test-results');
-export const TEST_SITE = path.join(RESULTS, 'site');

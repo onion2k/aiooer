@@ -73,9 +73,9 @@ there. The code here builds the markdown into an ordinary website, in
 one script. It is held to WCAG 2.2 AAA
 except the readable-language criteria (3.1.3 to 3.1.6), and made to be as
 easy to read as possible. It was built for a Claude Design canvas until 20
-September 2026, when the author decided that would not be published; the
-canvas's boards are still built, because the site is made from them, and
-they and everything that serves them go next. The look is Brutalist graphic design: a pale grey
+September 2026, when the author decided that would not be published, and
+every trace of the canvas came out the same day.
+The look is Brutalist graphic design: a pale grey
 ground, near-black type and heavy rules, International Klein Blue and a
 signal yellow, a bright pastel for each module, Archivo 900 for titles over
 Atkinson Hyperlegible Next for
@@ -108,6 +108,17 @@ was written on 19 September 2026 from what the code does at that date.
   is bold in the contents and marked `aria-current="location"`, the sections
   already passed are dimmed at 7:1 or better, and the list never changes
   height as it follows. `audit` holds it.
+- **The contents say where the reader is.** They are sticky, so once the
+  page's own title has scrolled away they are the only thing on screen that
+  says it: they head with the module and the part, not "On this page", which
+  told a reader nothing they did not know. A screen reader hears "contents"
+  and not the part's title twice.
+- **An address says what it leads to.** A part is served from
+  `/<module>/<number>-<part>/`, as
+  `/practical-ai/1-ai-chat/`, so a shared link reads as itself. Every link
+  between pages is relative, so the site works at a domain's root, in a
+  folder or off a disk. Two parts that would share an address stop the
+  build. `audit` holds that nothing links to a page that was not built.
 - **On the grid.** At desktop width the page lays out on twelve equal
   columns, stepping to six and then one; every grid of blocks is one height
   at every width; no corner is rounder than 2px. `audit` holds it.
@@ -141,7 +152,7 @@ was written on 19 September 2026 from what the code does at that date.
   makes a boundary, either: a card's and a link's own borders stay whole and
   the hue sits inside them, since a pastel is too quiet to be an edge.
 - **One name.** The course is called what the introduction's heading calls
-  it, in the wordmark, the footer, every page title and the canvas's title.
+  it, in the wordmark, the footer and every page title.
   `audit` holds it, and a heading without both the course's name and the
   page's stops the build.
 
@@ -165,7 +176,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, numerals   | the home page in four themes           | the four ideas numbered in the text colour                                   | none           |
 | `audit`, spy        | 28 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps                                        | none           |
 | `audit`, modules    | the home page and every written part   | label, breadcrumb, title, ways on, no dead links                             | none           |
-| `audit`, name       | 35 pages and the canvas's index        | the heading's name wherever it is shown                                      | none           |
+| `audit`, name       | 35 pages                               | the heading's name wherever it is shown                                      | none           |
 | `audit`, hues       | every page, everywhere a hue is drawn  | 17 to 21 a page, each beside the words that say the same                     | none           |
 | `audit`, calculator | the one part that has a calculator     | every example, the keyboard, typing and Start again show what the rule gives | none           |
 | `look`              | 35 pages                               | no errors, no empty page                                                     | none           |
@@ -197,7 +208,7 @@ slowdown is only caught by reading them.
 ## Commands
 
     npm run dev            build, then the site at http://127.0.0.1:5190
-    npm run build          the course as an ordinary website in dist/site (and, for now, the canvas's boards)
+    npm run build          the course as an ordinary website in dist/site
     npm run check:quick    formatting, lint, contrast, build (the pre-commit hook)
     npm run check          check:quick, look and the full audit; slow, and run by hand now and then, not on every change
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
@@ -208,7 +219,7 @@ slowdown is only caught by reading them.
     npm run links          every outside address the course cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator`,
-`--pages Part1.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
+`--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
 `spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
@@ -219,66 +230,57 @@ change; what it wrote last time is kept in `test-results/audit-kept.json` and
 goes into the report, a failure is never kept, and a mutated run neither
 reads nor writes it. The headings check runs inside the keyboard walk, so
 `--only headings` needs `keyboard` beside it.
-`node scripts/look-parts.mjs <width> <File.dc.html> <selector>...` takes
+`node scripts/look-parts.mjs <width> <page/index.html> <selector>...` takes
 pictures of single elements, with `--theme`, `--size` and the other
 settings; `node scripts/tile.mjs <in.png> <out.png>` lays a tall phone
 picture out in columns. Look at every picture.
 
 ## Publishing
 
-The site is the output, and the canvas is on its way out. Nothing is built
-for the canvas but its boards, nothing renders them, and no check goes near
-them.
-
-### The website, for a web server
-
-`npm run build` writes `dist/site`: one `.html` per page, `index.html`
-for the home page, and `reader.js`. Copy that folder to any static host. It
-needs no server code and no build step at the far end.
+`npm run build` writes `dist/site`: the home page as `index.html`, each part
+as `<module>/<number>-<part>/index.html`, and `reader.js` at the root. Copy
+that folder to any static host. It needs no server code and no build step at
+the far end, only the ordinary serving of a folder's `index.html`, which
+every static host does. Every link between pages is relative, so the site
+works at a domain's root, in a folder, or opened from a disk.
 
 It runs in plain Node, with no browser and nothing that is not in this
-repository, so a build server can run it on a push. That matters: the runtime
-can never be committed, so a static build that needed it could only run on a
-machine that had fetched it by hand.
+repository, so a build server can run it on a push.
 
-A board is not a page. It is markup with holes, loops, branches and a logic
-class, which the runtime turns into a page in the browser.
-`scripts/static.mjs` does that work here: it runs the board's own logic class,
-with a small `DCLogic` stub, to get the values the page starts with, and
-`src/template.mjs` fills the template with them. Dotted holes, `<sc-for>`,
-`<sc-if>`, and the event attributes dropped, since `reader.js` binds its own:
-those are the only forms the build emits, and they are never nested more than
-one deep. Nothing of the runtime is in what ships. The showcase boards are
-not part of the site and are left out.
+A page is written in three steps. `pages.mjs` makes its markup, with holes
+where a value goes and loops where a list does; `logic.mjs` says what those
+values are as the page loads; `template.mjs` fills them in. Dotted holes,
+`<sc-for>` and `<sc-if>` are the only forms, and they are never nested more
+than one deep. What happens once a reader touches anything is `reader.js`,
+the only implementation of that behaviour: the reading settings, the
+header's panels, the deep dives, the contents that follow the reader, and
+the calculator, whose arithmetic is written into the page from
+`calculator.mjs` so that the page and the script cannot disagree. Without
+JavaScript a page still holds the whole course, with the settings the build
+wrote.
 
-It could not drift from the canvas, and that was measured, not assumed: every
-page was compared with the same board rendered by the runtime and matched in
-text, structure, classes, inputs, state and links, and screenshots of the
-home page and the lifecycle part were byte-identical. The one difference is
-that the runtime wraps interpolated text in a `<span class="sc-interp">`,
-which nothing styles; the static pages have 18 fewer elements for it.
+The build checks its own output: no hole or loop left unrendered, no unbound
+event attribute, and no link that lands on a page that was not written. The
+audit then walks those pages, and only those, so everything the site
+promises is held against the thing that ships rather than a copy of it, and
+no check needs anything that is not in this repository.
 
-What the runtime did in the browser, `src/reader.js` does: the reading
-settings, the header's panels, the deep dives, the contents that follow the
-reader, and the calculator, whose arithmetic is written into the page from
-`calculator.mjs` so that both sites work from one rule. Without JavaScript a
-page still holds the whole course, with the settings the build wrote. The
-static build checks its own output: no hole, loop, event attribute, board
-link or piece of the canvas left, and no dead link between pages.
+### The canvas, which is gone
 
-The audit walks these pages, and only these. Everything the site promises is
-held against the thing that ships, rather than against a copy of it rendered
-some other way, and no check needs anything that is not in this repository.
+The course was built for a Claude Design canvas at
+https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk until 20 September 2026,
+when the author decided it would not be published. Everything of it has
+gone: the boards and their index, the fifteen showcase boards, the recorded
+heights, the column guides, the page runtime in `vendor/`, and the logic
+class `logic.mjs` used to write into every page, which was a second
+implementation of everything `reader.js` does. `logic.mjs` is now 133 lines
+saying what a page starts at, where it was 384.
 
-### The canvas, which is going
-
-The canvas at https://claude.ai/artifact/MedAhUDsLXE6G1apbxFAHk will not be
-published again. `npm run build` still writes its boards to `dist/canvas`,
-because the static build is made from them, but nothing renders or checks
-them and the showcase boards are gone from every run. The boards, the
-showcase views, `heights.json`, `canvas-created.json`, `GRID_GUIDE` and the
-second implementation of the page's behaviour in `logic.mjs` all go in a
-commit of their own.
+The removal was proved rather than trusted: the built site was kept, the
+canvas taken out, and the site built again from nothing but this repository.
+All 35 pages and `reader.js` came out byte for byte identical. The text in
+the git history at the commit before it has the boards, if they are ever
+wanted again.
 
 ## How the code is laid out
 
@@ -293,29 +295,31 @@ commit of their own.
   misconceptions, glossaries, questions and answers, bold lines that are
   really headings). It makes no HTML. It is handed the folder to read.
 - `src/inline.mjs` sets inline text as a typesetter would (curly quotes, ×,
-  superscripts) and turns `file/…` links into board links.
+  superscripts) and turns `file/…` links into links between pages.
 - `src/render.mjs` draws blocks, `src/diagrams.mjs` holds the twelve Mermaid
   diagrams redrawn as HTML figures, `src/chrome.mjs` the parts every page
-  shares, and `src/pages.mjs` assembles each page and wraps it as a board.
+  shares, and `src/pages.mjs` assembles each page.
 - `src/styles.mjs` is the stylesheet, and holds the grid: a `grid-12`
   container lays its children on twelve columns, each child placing itself
   with `--start` and `--span` (and `--start-md` and `--span-md` out of six),
   and each module's hue: a block belonging to a module sets `--hue` from the
   `--hue-1` to `--hue-7` every theme defines,
   and every grid of blocks sizes its rows with `grid-auto-rows: 1fr`.
-  `GRID_GUIDE` gives the canvas's desktop boards matching column guides.
 - `src/tokens.mjs` is the only place a colour lives, with the pairs
   `contrast` checks. A theme's key is what a reader's saved settings hold, so
   it never changes; its label and colours can.
 - `src/icons.mjs` inlines IBM Carbon's 32px icons from `@carbon/icons` by
   name when the site builds, and stops the build if a name is missing.
-- `src/logic.mjs` writes the page's logic class: the reading settings, the
-  header's panels, the deep dives, and the spy that follows the reader down
-  a part in its contents.
-- `src/build.mjs` is the one place that wires everything together and knows
-  the boards and their layout. `src/paths.mjs` says where everything is.
-- `src/heights.json` and `src/canvas-created.json` are the canvas's, and
-  nothing reads them but its board build.
+- `src/logic.mjs` says what a page starts at: the reading settings, the
+  header's panels, the deep dives, the contents that follow the reader, and
+  the calculator, each at the value the build writes into the markup. Values
+  only; the behaviour is `src/reader.js`.
+- `src/template.mjs` fills a page's holes, loops and branches with those
+  values, and drops the attributes that would hold a handler.
+- `src/reader.js` is the page in the browser, and the only implementation of
+  its behaviour. Plain script, no build step, no dependencies.
+- `src/build.mjs` is the one place that wires everything together and writes
+  `dist/site`. `src/paths.mjs` says where everything is.
 - `scripts/links.mjs` asks every outside address the course cites whether it
   still answers. It is not part of `check`, since it depends on other
   people's servers and a gate a stranger's outage can turn red gets ignored;
@@ -325,11 +329,6 @@ commit of their own.
   not exist, to prove it still fails, and `--only <text>` checks a few.
 - `scripts/harness.mjs` is the test API. `scripts/` also holds the gates
   and the look tools.
-- `vendor/design-runtime.js` is the canvas's own page runtime. Nothing needs
-  it any more: the build, the checks and the look tools all run without it,
-  because they render `dist/site`, which is plain HTML. It carries no licence
-  to republish, so it is not in the repository and never was; that it was
-  once needed to render a page is why no build server could run the checks.
 
 ## Model features
 
@@ -346,12 +345,13 @@ What to copy the shape of, when building something new:
   in `chrome.mjs`, and the audit's measure check holds Short under 80
   characters in both typefaces and the three widths at 1, 1.5 and 2 times
   Short.
-- **Something that follows the reader:** the contents spy. `sectionInView`
-  in `logic.mjs` reads the page once a frame at most, its state reaches the
-  markup through `renderVals()` into holes on each item of `toc` in
-  `chrome.mjs`, `.is-past` and `.is-current` in `styles.mjs` give it its
-  look with the `past` colour from `tokens.mjs`, and `spyAt` in `audit.mjs`
-  holds it.
+- **Something that follows the reader:** the contents spy. The build marks
+  the first section, from `startingVals()` in `logic.mjs` into holes on each
+  item of `toc` in `chrome.mjs`; `sectionInView` in `reader.js` reads the
+  page once a frame at most and moves the mark, and is called again whenever
+  something moves the headings without a scroll; `.is-past` and
+  `.is-current` in `styles.mjs` give it its look with the `past` colour from
+  `tokens.mjs`, and `spyAt` in `audit.mjs` holds it.
 - **A grid of blocks:** a module's part cards on the home page. An `ol` with
   `grid-12`, each card `--span: 4` and `--span-md: 3`, rows at
   `grid-auto-rows: 1fr`, and the list named in `GRIDS` and `TWELVE` in
@@ -360,14 +360,13 @@ What to copy the shape of, when building something new:
   organisation part 1. Its stages, days and examples are a `calculator`
   fence in the markdown, which `parseCalculator` in `calculator.mjs` reads
   and which stops the build if a line is wrong. Its arithmetic is `delivery`
-  in the same file, which knows nothing of the page; `logic.mjs` writes those
-  functions into the page's class by their source and keeps the reader's
-  values in `state.calc`, `renderCalculator` in `render.mjs` draws it with
-  every number a hole, `.calc-*` in `styles.mjs` styles it from existing
-  tokens, and the audit's `calculator` check works the expectation out from
-  the values on the page with the same `delivery`. A part can hold one. The
-  class is written inside a template literal, so nothing in it may use one,
-  and its helper names must not clash with the ones already there.
+  in the same file, which knows nothing of the page. `logic.mjs` works out
+  what it shows as it opens, `build.mjs` writes the same functions into the
+  page by their source for `reader.js` to use, `renderCalculator` in
+  `render.mjs` draws it with every number a hole, `.calc-*` in `styles.mjs`
+  styles it from existing tokens, and the audit's `calculator` check works
+  the expectation out from the values on the page with the same `delivery`.
+  A part can hold one.
 - **A colour that groups:** a module's hue. `HUE_NAMES` and each theme's
   `hue1` to `hue7` are in `tokens.mjs`, with their pairs in `UI_PAIRS`;
   `content.mjs` numbers each module as the introduction declares it, and
@@ -391,9 +390,11 @@ as a reader would (`theme`, `size`, `spacing`, `measure`, `font`, `deep`);
 `togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel;
 `course()` is the course as the introduction declares it, and `sitePages()`
 the home page and every written part as they are served (`index.html`,
-`Practical1.html`, and so on), which is what the audit, `look` and `perf`
-walk, so a new part is checked from the day it is written. `pageName()` is
-the one place that knows a board's name as a page's.
+`practical-ai/1-ai-chat/index.html`, and so on), which is what the audit,
+`look` and `perf` walk, so a new part is checked from the day it is written.
+`pageMap()` is the one place that knows a board's name as an address,
+`pageFile()` the `index.html` that serves an address, and `upTo()` how far a
+link from a page has to climb to reach the root.
 Each page opens in a fresh browser context, so no check ever sees a
 reader's saved settings.
 
@@ -418,12 +419,11 @@ reader's saved settings.
 - **Sizes are in em, and layout switches are container queries in em,** so
   the text size setting and the reader's zoom reflow the page as well as a
   narrow window does.
-- **No logic in the markup.** A hole is a dotted lookup into
-  `renderVals()`; anything computed is computed there.
-- **A page's listeners are its own.** The canvas swaps in a fresh copy of
-  the logic class when a board is edited, calling `componentWillUnmount` on
-  the old one, so anything added to `window` is removed there. The canvas
-  allows no global keydown handlers.
+- **No logic in the markup.** A hole is a dotted lookup into what
+  `startingVals()` returns; anything computed is computed there.
+- **The page starts where the build leaves it.** `logic.mjs` gives values
+  only, never a handler, and `reader.js` binds every listener itself, by
+  class and position, from the markup the build wrote.
 - **Focus colours win.** The link highlighter's colours are `!important`,
   and everything inside a focused link takes them, because any rule giving
   a link its own colour would otherwise paint that colour on the yellow.
@@ -438,7 +438,7 @@ in `audit.mjs`, or a throw in the build, for any new rule, seen failing
 first and mutation-checked with `--mutate`; every path in the checklist
 below; the quick check green, and the audit green on the pages the change
 touched (`npm run audit -- --pages …`), with the full check left to the
-author's occasional run; the boards touched looked at with `look`,
+author's occasional run; the pages touched looked at with `look`,
 `look-parts` and `tile`; `perf` before and after; and a publish only after
 all of that. There are no unit tests, no type checking and no fuzzer yet,
 so those parts of the nine points have nothing to run until they are added.
@@ -458,8 +458,7 @@ For anything new on a page, check what it does:
   home page keeps its layout for Long
 - **every width:** desktop, tablet, phone at 390px, 320px, and 200% zoom of
   a 1280px window; tables stack below 44em, the header wraps below 40em
-- **every board:** home, each part of each module, and the showcase boards,
-  which are trimmed pages at fixed sizes
+- **every page:** home, and each part of each module
 - **every module:** a part written and a part still to come, on the home
   page's cards, in the parts panel and the footer; the first and last part
   of a module, where previous and next cross into another module; a
@@ -473,11 +472,10 @@ For anything new on a page, check what it does:
 - **the keyboard:** reached by Tab, a visible ring, its text 7:1 or better
   while focused in every theme, and Escape closing a panel back to the
   button that opened it
-- **scrolling:** the top, middle and end of a part; the canvas's 1440 by
-  3200 frame, where a short last section never reaches the reading line; a
-  frame too tall to scroll, like a board drawn at full height; and headings
-  that move without a scroll, as a deep dive opening does in a browser
-  without scroll anchoring
+- **scrolling:** the top, middle and end of a part; a window too short for a
+  last section to reach the reading line; a page too short to scroll at all;
+  and headings that move without a scroll, as a deep dive opening above the
+  reader does, which the contents have to notice for themselves
 - **a screen reader:** real buttons, links and labelled inputs, headings in
   order, table roles kept when a table stacks, icons hidden, new-tab links
   announced

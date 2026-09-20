@@ -1,8 +1,6 @@
-// What the static site needs a browser for. On the canvas the page's runtime
-// does all of this; a page served from an ordinary web server has only this
-// file, so it must do the same work with the same markup: the reading
-// settings, the header's panels, the deep dives, the contents following the
-// reader, and the lifecycle calculator. Plain script, no build step, no
+// The page in the browser, and the only implementation of how it behaves: the
+// reading settings, the header's panels, the deep dives, the contents
+// following the reader, and the lifecycle calculator. Plain script, no build step, no
 // dependencies, and it starts from the markup the build wrote, so a reader
 // with JavaScript turned off still gets the whole course with its default
 // settings.
@@ -13,21 +11,39 @@
   var STORE_KEY = 'how-frontier-llms-work/reading-settings/v1';
   var reader = document.querySelector('.reader');
   if (!reader) return;
-  // The static build asks each page whether this ran.
+  // The build's own check asks each page whether this ran.
   document.documentElement.setAttribute('data-reader', 'on');
 
   // ---- The reading settings. Each is a class on .reader, as the build wrote
   // it, so choosing one swaps that class and nothing else.
   var KEYS = ['theme', 'size', 'spacing', 'measure', 'font'];
 
+  // What the page itself offers for a setting, read from the panel the build
+  // wrote, so the options live in one place and this never has to repeat them.
+  function optionsFor(key) {
+    var out = [];
+    var inputs = document.querySelectorAll('input[name="setting-' + key + '"]');
+    for (var o = 0; o < inputs.length; o++) out.push(inputs[o].value);
+    return out;
+  }
+
+  // Saved settings are a reader's, from whatever version of the site wrote
+  // them, so they are not to be trusted: a setting that has since been
+  // renamed or dropped would otherwise put a class on the page that no
+  // stylesheet knows, and the reader would get a page with no theme at all.
+  // Anything the panel does not offer is discarded and the default stands.
   function readSaved() {
+    var clean = {};
     try {
       var raw = JSON.parse(window.localStorage.getItem(STORE_KEY) || 'null');
-      return raw && typeof raw === 'object' ? raw : {};
+      if (!raw || typeof raw !== 'object') return clean;
+      for (var k in raw) {
+        if (Object.prototype.hasOwnProperty.call(raw, k) && optionsFor(k).indexOf(raw[k]) !== -1) clean[k] = raw[k];
+      }
     } catch (e) {
       // Storage is unavailable in a private window; the defaults still work.
-      return {};
     }
+    return clean;
   }
 
   function writeSaved(saved) {
@@ -60,6 +76,9 @@
   function setAllDives(open) {
     var toggles = document.querySelectorAll('.deep-toggle');
     for (var i = 0; i < toggles.length; i++) setDive(toggles[i], open);
+    // As in toggleExpanded: the headings have all moved, so the contents have
+    // to look again even though the page did not scroll.
+    followSoon();
   }
 
   var saved = readSaved();
@@ -102,6 +121,10 @@
     button.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) panel.removeAttribute('hidden');
     else panel.setAttribute('hidden', '');
+    // Opening a deep dive above the reader pushes every heading below it down
+    // without the page scrolling, so nothing would tell the contents to look
+    // again and they would go on marking the section the reader has left.
+    followSoon();
   }
 
   var expanders = document.querySelectorAll('[aria-expanded][aria-controls]');
@@ -134,7 +157,7 @@
   }
 
   // ---- The contents follow the reader: the section being read is marked, and
-  // the ones passed are dimmed. The rule is the canvas page's, so that both
+  // the ones passed are dimmed. The rule is also the build's, so that both
   // sites mark the same section: the last heading to have risen past a line
   // 30% of the way down the window, the first before any has, and the last
   // when scrolled to the end.
@@ -191,7 +214,7 @@
   follow();
 
   // ---- The lifecycle calculator. Its arithmetic is written in below the
-  // build, from calculator.mjs, so the page and the canvas work from one rule.
+  // build, from calculator.mjs, so the page and this work from one rule.
   var calc = document.querySelector('.calc');
   if (calc && window.CALC_RULE) {
     var rows = [].slice.call(calc.querySelectorAll('.calc-row'));

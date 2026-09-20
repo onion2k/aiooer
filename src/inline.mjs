@@ -6,41 +6,41 @@
 import { ICONS } from './icons.mjs';
 
 export const PAGE_FILES = {
-  '0a139f54-ef01': 'Main.dc.html',
-  '590c1ae1-8bf3': 'Part1.dc.html',
-  '5086e893-fa85': 'Part2.dc.html',
-  '48a4ae01-75ae': 'Part3.dc.html',
-  'd6e2a95b-3f14': 'Org1.dc.html',
-  '3e89a4fc-a0bc': 'Org2.dc.html',
-  'bbb9efdd-e221': 'Org3.dc.html',
-  '7c41d2a9-1e05': 'Media1.dc.html',
-  '4b1e90c7-3d28': 'Media2.dc.html',
-  '9a63f5d1-7c40': 'Media3.dc.html',
-  'c5d82e16-0f9b': 'Media4.dc.html',
-  '1f7a3b94-e652': 'Media5.dc.html',
-  '2f9be6c3-5a17': 'Media6.dc.html',
-  'e08a7d54-9b32': 'Media7.dc.html',
-  'a1c4e7f2-5b38': 'Local1.dc.html',
-  'd92b6a05-8e13': 'Local2.dc.html',
-  '6e0f3c81-a247': 'Local3.dc.html',
-  'b7d15e92-4c60': 'Local4.dc.html',
-  '3a8c9f47-d1e5': 'Local5.dc.html',
-  'a7f20c15-9d3e': 'Intro1.dc.html',
-  '4c8be1d6-27fa': 'Intro2.dc.html',
-  'e15a9b70-c4d2': 'Intro3.dc.html',
-  'b4e9d0a7-3c81': 'Practical1.dc.html',
-  '9f2c5e38-a7b4': 'Practical2.dc.html',
-  'f3a91c20-6d4e': 'Practical3.dc.html',
-  '8d27b5e4-c019': 'Practical4.dc.html',
-  '1d8f42a6-b93e': 'Practical5.dc.html',
-  '52e0a7c9-b3f6': 'Practical6.dc.html',
-  'c9146f3b-27a8': 'Practical7.dc.html',
-  '0b8e5d17-f4c2': 'Practical8.dc.html',
-  '7a3f2c68-91de': 'Practical9.dc.html',
-  'e4b7a1d3-5c92': 'Other1.dc.html',
-  '96c3f08a-d417': 'Other2.dc.html',
-  '2d5e8b61-a3f0': 'Other3.dc.html',
-  'b18f4c27-6e9a': 'Other4.dc.html',
+  '0a139f54-ef01': 'Main',
+  '590c1ae1-8bf3': 'Part1',
+  '5086e893-fa85': 'Part2',
+  '48a4ae01-75ae': 'Part3',
+  'd6e2a95b-3f14': 'Org1',
+  '3e89a4fc-a0bc': 'Org2',
+  'bbb9efdd-e221': 'Org3',
+  '7c41d2a9-1e05': 'Media1',
+  '4b1e90c7-3d28': 'Media2',
+  '9a63f5d1-7c40': 'Media3',
+  'c5d82e16-0f9b': 'Media4',
+  '1f7a3b94-e652': 'Media5',
+  '2f9be6c3-5a17': 'Media6',
+  'e08a7d54-9b32': 'Media7',
+  'a1c4e7f2-5b38': 'Local1',
+  'd92b6a05-8e13': 'Local2',
+  '6e0f3c81-a247': 'Local3',
+  'b7d15e92-4c60': 'Local4',
+  '3a8c9f47-d1e5': 'Local5',
+  'a7f20c15-9d3e': 'Intro1',
+  '4c8be1d6-27fa': 'Intro2',
+  'e15a9b70-c4d2': 'Intro3',
+  'b4e9d0a7-3c81': 'Practical1',
+  '9f2c5e38-a7b4': 'Practical2',
+  'f3a91c20-6d4e': 'Practical3',
+  '8d27b5e4-c019': 'Practical4',
+  '1d8f42a6-b93e': 'Practical5',
+  '52e0a7c9-b3f6': 'Practical6',
+  'c9146f3b-27a8': 'Practical7',
+  '0b8e5d17-f4c2': 'Practical8',
+  '7a3f2c68-91de': 'Practical9',
+  'e4b7a1d3-5c92': 'Other1',
+  '96c3f08a-d417': 'Other2',
+  '2d5e8b61-a3f0': 'Other3',
+  'b18f4c27-6e9a': 'Other4',
 };
 
 export function esc(s) {
@@ -77,9 +77,11 @@ function typeset(text, state) {
 export function linkTarget(href) {
   const m = /^file\/([0-9a-f-]+)$/.exec(href);
   if (m) {
-    const file = PAGE_FILES[m[1]];
-    if (!file) throw new Error('Unknown internal link ' + href);
-    return { href: file, external: false };
+    const page = PAGE_FILES[m[1]];
+    if (!page) throw new Error('Unknown internal link ' + href);
+    // The build turns this into a relative address, since only it knows where
+    // the page linking and the page linked to are served from.
+    return { href: `page:${page}`, external: false };
   }
   if (/^https?:\/\//.test(href)) return { href, external: true };
   throw new Error('Unexpected link ' + href);

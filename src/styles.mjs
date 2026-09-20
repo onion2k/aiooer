@@ -15,10 +15,6 @@ import { THEMES, THEME_ORDER, HUE_COUNT } from './tokens.mjs';
 export const FONT_LINK =
   'https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Atkinson+Hyperlegible+Mono:wght@400;700&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;0,800;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap';
 
-// The desktop grid in pixels at the default text size, for the canvas's
-// column guides: the gutter and margin below are 1.2em and 2.4em of 20px.
-export const GRID_GUIDE = { kind: 'columns', count: 12, gutter: 24, margin: 48 };
-
 const VAR_NAMES = {
   bg: '--bg',
   sunk: '--sunk',
@@ -234,6 +230,12 @@ ${swatches()}
 /* Contents */
 .toc-title{margin:0;font-family:var(--font-body);font-size:1em;line-height:1.3}
 .toc-static{display:none}
+/* Where the reader is, in the sticky contents: the module over the part, so
+   that once the page's own title has scrolled away this still says it. The
+   part's name is set in the title face, since it is a title. */
+.toc-where{display:block;color:var(--ink-2)}
+.toc-page{display:block;font-family:var(--font-display);font-weight:900;font-size:1.15em;line-height:1.15;margin-top:0.15em}
+.toc-toggle .toc-where,.toc-toggle .toc-page{text-align:left}
 .toc-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;gap:1em;min-height:52px;padding:0.6em 1em;border:var(--bw) solid var(--edge);border-radius:var(--r);background:var(--surface);color:var(--ink);font-weight:800;text-align:left}
 .toc-toggle:hover{background:var(--ink);color:var(--bg)}
 .toc-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
@@ -255,7 +257,7 @@ ${swatches()}
 .toc-num{flex:none;min-width:1.6em;font-family:var(--font-mono);font-weight:700;font-size:0.9em}
 @container page (width >= 62em){
   .toc{position:sticky;top:1.5em;max-height:calc(100vh - 3em);overflow-y:auto;padding:0.2em 0.2em 0.5em 0}
-  .toc-static{display:block;padding:0 0 0.6em}
+  .toc-static{display:block;padding:0 0 0.7em;border-bottom:var(--bw-heavy) solid var(--ink);margin-bottom:0.2em}
   .toc-toggle{display:none}
   .toc-list[hidden]{display:block}
 }
