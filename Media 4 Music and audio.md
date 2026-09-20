@@ -1,6 +1,6 @@
 # Part 4: Music and Audio
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 

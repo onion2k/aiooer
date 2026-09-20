@@ -1,6 +1,6 @@
 # Part 5: Strategy, Risk and Communication
 
-2026-09-18 · @Someone
+2026-09-18 · Chris Neale
 
 ## About this part
 
@@ -45,7 +45,7 @@ Total independence is not worth its cost. A few habits keep switching affordable
 | Your verification stack and test suites | Data held only inside a vendor's product |
 | Clean, current documentation |  |
 
-An eval set, which the practical AI module covers, matters most. With it, switching models is an afternoon's test and a configuration change. Without it, every switch is a leap of faith, which in practice means you never switch.
+An eval set, which [part 6 of the practical AI module](file/7a3f2c68-91de) covers, matters most. With it, switching models is an afternoon's test and a configuration change. Without it, every switch is a leap of faith, which in practice means you never switch.
 
 A practical arrangement is one primary vendor, a second under contract and tested, and most tools configured so that the model behind them can be changed.
 
@@ -56,7 +56,7 @@ A practical arrangement is one primary vendor, a second under contract and teste
 | Option | What it means | Right when |
 | --- | --- | --- |
 | Buy | Off-the-shelf products: coding agents, chat assistants, review tools, support tools | The need is common to most companies and the product works with your systems |
-| Assemble | Vendor models through an API, plus your own context, tools, guardrails and evals, which the practical AI module covers | The value comes from your data, your domain rules or your workflow |
+| Assemble | Vendor models through an API, plus your own context, tools, guardrails and evals, which [the practical AI module](file/f3a91c20-6d4e) covers | The value comes from your data, your domain rules or your workflow |
 | Build | Fine-tuned or self-hosted models, or an internal AI platform | You have a narrow, very high-volume task, or a hard data constraint. See part 3 |
 | Wait | Defer this purchase | The need is modest and the products in that niche are changing every quarter |
 
@@ -94,9 +94,9 @@ If approved tools are missing, slow to arrive or worse than the free ones, peopl
 
 ### What goes into prompts
 
-Personal data sent to a model is processed by a third party, and data protection law applies in the usual way: a lawful basis, a processing agreement, data minimisation and attention to international transfers. For most engineering work the simple answer is to keep real customer data out of prompts. Use synthetic or masked data in development, and keep production data behind tools that enforce access control, as the practical AI module describes.
+Personal data sent to a model is processed by a third party, and data protection law applies in the usual way: a lawful basis, a processing agreement, data minimisation and attention to international transfers. For most engineering work the simple answer is to keep real customer data out of prompts. Use synthetic or masked data in development, and keep production data behind tools that enforce access control, as [part 4 of the practical AI module](file/c9146f3b-27a8) describes.
 
-Secrets are a separate matter. Credentials should never appear in a prompt or sit in a repository that an agent reads. The practical AI module explains how to inject them at the tool layer.
+Secrets are a separate matter. Credentials should never appear in a prompt or sit in a repository that an agent reads. [Part 6 of the practical AI module](file/7a3f2c68-91de) explains how to inject them at the tool layer.
 
 ### Who owns the output
 
@@ -166,7 +166,7 @@ New tools appear every week, and some will be worth having. Publish a route with
 
 ### Agents and integrations
 
-The practical AI module sets out the controls. Governance decides who signs them off.
+[Part 6 of the practical AI module](file/7a3f2c68-91de) sets out the controls. Governance decides who signs them off.
 
 - An allow-list of MCP servers, with an owner for each.
 - Default credentials that are read-only and narrowly scoped.

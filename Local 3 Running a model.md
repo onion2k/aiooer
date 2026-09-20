@@ -1,6 +1,6 @@
 # Part 3: Running a Model: Engines, Apps and the Settings That Matter
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 

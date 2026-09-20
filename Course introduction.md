@@ -1,6 +1,6 @@
 # How AI works: Course Introduction
 
-2026-09-18 · @Someone
+2026-09-18 · Chris Neale
 
 ## What this course is for
 
@@ -91,7 +91,7 @@ Part 5 of the language models module ends with two reference sections for use on
 
 ## Suggested routes
 
-The first four routes run through the language models module, the next two through the generative media module, and the last through running AI locally.
+The first four routes run through the language models module, the next two through the generative media module, the next through running AI locally, and the last two through the practical AI module.
 
 | Reader | Route |
 | --- | --- |
@@ -102,6 +102,8 @@ The first four routes run through the language models module, the next two throu
 | Designer, marketer or producer making media | Generative media part 7 in full, then the part for your medium from parts 2 to 5, then part 6 sections 4, 7, 9 and 10, with the "In plain terms" openers of part 1 |
 | Engineer building a media pipeline | Generative media parts 1 to 7 in order, with the deep dives |
 | Anyone who wants a model on their own machine | Language models part 3, then running AI locally parts 1 to 3. Add part 4 before letting an agent near your files |
+| Engineer building an AI feature | Language models part 3 section 7 for the failure modes, then practical AI parts 1 to 6 in order. Take the checklist in part 6 section 3 to every design review |
+| Product or delivery lead | Practical AI part 7, then language models part 4 sections 1, 2 and 7, then the checklist in practical AI part 6 section 3 |
 
 ## Four ideas that run through everything
 

@@ -1,6 +1,6 @@
 # Part 2: Skills, Agents and Plugins
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 

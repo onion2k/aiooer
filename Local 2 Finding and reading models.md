@@ -1,6 +1,6 @@
 # Part 2: Finding and Reading Models: Hugging Face and What a Name Tells You
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 

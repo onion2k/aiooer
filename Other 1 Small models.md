@@ -1,6 +1,6 @@
 # Part 1: Small Models: Quantised, Distilled, Pruned and Trained Small
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 

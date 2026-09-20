@@ -1,6 +1,6 @@
 # Part 5: Building on It: From Your Own Code to a Shared Service
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 
@@ -18,7 +18,7 @@ Part 5 builds one idea: a local model is a component, and the design rules for b
 
 Part 3 described the local server and its compatible format. The practical consequence is that the client libraries published for the hosted services work against a local model when given a different address, and the higher-level libraries treat a local server as one more provider.
 
-The practical AI module covers how to build with models: prompts as code, structured output, tools, retrieval and evaluation. All of it applies. Three points are particular to local models.
+[The practical AI module](file/f3a91c20-6d4e) covers how to build with models: prompts as code, structured output, tools, retrieval and evaluation. All of it applies. Three points are particular to local models.
 
 ### Design for the model you have
 
@@ -37,13 +37,13 @@ Against a paid API, every call is a cost, and designs are shaped by that. Locall
 - **Try several times and check.** Generate five candidates and keep the one that passes a test, or the one most of them agree on. The language models module's idea that verification converts compute into reliability is cheapest to apply here.
 - **Use a second call as a checker.** Ask the model, in a separate request, whether the output meets the instruction.
 - **Process everything.** Tag every document, summarise every ticket, check every commit message. Jobs that would never justify an API bill are an overnight run.
-- **Run your evaluations often.** The practical AI module says to test prompts like code. A local test set of a few hundred examples can be run on every change.
+- **Run your evaluations often.** [Part 1 of the practical AI module](file/f3a91c20-6d4e) says to test prompts like code. A local test set of a few hundred examples can be run on every change.
 
 ## 2. Your own documents
 
 **In plain terms.** A local model knows nothing about your files until they are put in front of it. The usual way is to search your documents for the passages relevant to a question and hand those to the model with the question. Every piece of that, the search included, can run on your own machine, so nothing confidential leaves it. **Who should read it:** anyone who wants a private assistant over their own material.
 
-The practical AI module explains retrieval-augmented generation in full: split documents into passages, turn each into a vector with an embedding model so that similar meanings land close together, search by meaning and by keyword, rerank, and put the best passages in the prompt. Nothing about that changes locally. What changes is that all of it can run beside the model.
+[Part 5 of the practical AI module](file/0b8e5d17-f4c2) explains retrieval-augmented generation in full: split documents into passages, turn each into a vector with an embedding model so that similar meanings land close together, search by meaning and by keyword, rerank, and put the best passages in the prompt. Nothing about that changes locally. What changes is that all of it can run beside the model.
 
 - **Embedding models are small.** Part 2 listed them among the things a name can tell you. Good ones have from a few hundred million to a few billion parameters, run quickly on a processor with no graphics card at all, and are published under the same licences as chat models. The local tools in part 3 serve them alongside chat models.
 - **The index can be a file.** For thousands to a few million passages, a vector index inside an ordinary embedded database is enough. No server is needed.

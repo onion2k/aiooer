@@ -1,6 +1,6 @@
 # Part 1: Intent, Agents and Other Instruction Files
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 

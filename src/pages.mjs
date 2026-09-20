@@ -55,7 +55,7 @@ function partHero(part) {
     : esc(part.title);
   return `<div class="hero">${crumbs(part)}<p class="eyebrow label">${esc(part.module)} · Part ${part.n} of ${part.of}</p><h1 class="title">${title}</h1><ul class="hero-meta label" role="list"><li>${ICONS.clock}<span>About ${esc(
     minutes(meta.time),
-  )}</span></li><li>${ICONS.calendar}<span>Written ${longDate(part.date)}</span></li></ul><div class="outcome"><p class="outcome-label label">${ICONS.outcome}<span>After this part you can</span></p><p class="outcome-text">${esc(
+  )}</span></li><li>${ICONS.calendar}<span>Written ${longDate(part.date)}${part.author ? ` by ${esc(part.author)}` : ''}</span></li></ul><div class="outcome"><p class="outcome-label label">${ICONS.outcome}<span>After this part you can</span></p><p class="outcome-text">${esc(
     smartPlain(meta.outcome),
   )}.</p></div></div>`;
 }
@@ -228,7 +228,7 @@ function homeMain(intro, parts) {
   const kicker = intro.pageTitle.charAt(0) + intro.pageTitle.slice(1).toLowerCase();
   return `<main id="main" tabindex="-1"><div class="shell home-hero grid-12"><p class="home-kicker label">${esc(kicker)}</p><h1 class="home-title">${esc(
     intro.courseTitle,
-  )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026</span></li></ul><div class="cta-row"><a class="btn-primary" href="${first.out}"><span>Start with Part ${first.n}: ${esc(
+  )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026${intro.author ? ` by ${esc(intro.author)}` : ''}</span></li></ul><div class="cta-row"><a class="btn-primary" href="${first.out}"><span>Start with Part ${first.n}: ${esc(
     first.shortTitle,
   )}</span>${ICONS.arrowRight}</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div class="split-body">${purposeRest}</div></div></section>

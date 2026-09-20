@@ -1,6 +1,6 @@
 # Part 3: Diffusion Language Models
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 
@@ -97,7 +97,7 @@ A thousand tokens a second changes the feel of things. A screen of code appears 
 ### What is given up
 
 - **Accuracy where it is hardest.** Google's own figures for its experimental model show it level with a small autoregressive sibling on coding tests and clearly behind on graduate-level science questions, 40% against 57%, and on multilingual tasks. The top of every quality ranking remains autoregressive.
-- **Guaranteed structure.** Part 4 of the practical AI module relied on constrained decoding to guarantee valid JSON. That machinery checks tokens as they arrive in order, and here they do not. Equivalents for diffusion were still being published in mid-2026.
+- **Guaranteed structure.** [Part 4 of the practical AI module](file/c9146f3b-27a8) relied on constrained decoding to guarantee valid JSON. That machinery checks tokens as they arrive in order, and here they do not. Equivalents for diffusion were still being published in mid-2026.
 - **The ecosystem.** Prompt caching, tool-calling formats, serving stacks, quantised builds for laptops and fine-tuning recipes all assume the autoregressive design. Each is being rebuilt, and few are finished.
 - **Familiar behaviour.** Settings such as temperature act differently, and a reply streams in blocks that fill in, not as a steady line of text.
 

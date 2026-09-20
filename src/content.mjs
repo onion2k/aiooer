@@ -39,6 +39,13 @@ function isBylineParagraph(tok) {
   return tok.type === 'paragraph' && /^\d{4}-\d{2}-\d{2} · /.test(tok.text);
 }
 
+// Who the byline names, after the date and its dot. A page says who wrote it
+// beside when, so the name is read from the markdown like every other word.
+function bylineAuthor(byline) {
+  const name = byline ? byline.text.slice(byline.text.indexOf(' · ') + 3).trim() : '';
+  return name || null;
+}
+
 function startsWithStrong(tok, label) {
   const first = tok.tokens?.[0];
   return first?.type === 'strong' && plainText(first.tokens).trim() === label;
@@ -101,6 +108,7 @@ export function parsePart(dir, src) {
   const subtitle = colon >= 0 ? rest.slice(colon + 2) : null;
   const byline = tokens.find(isBylineParagraph);
   const date = byline ? byline.text.slice(0, 10) : null;
+  const author = bylineAuthor(byline);
 
   const sections = [];
   let section = null;
@@ -229,7 +237,7 @@ export function parsePart(dir, src) {
       }
     }
   }
-  return { ...src, title, subtitle, fullTitle: full, date, sections, deepKeys: collectDeepKeys(sections) };
+  return { ...src, title, subtitle, fullTitle: full, date, author, sections, deepKeys: collectDeepKeys(sections) };
 }
 
 function collectDeepKeys(sections) {
@@ -264,7 +272,16 @@ export function parseIntro(dir) {
   }
   const { lead, modules } = parseModules(dir, sections['The modules']);
   const parts = modules.flatMap((m) => m.parts);
-  return { courseTitle, pageTitle, date: byline ? byline.text.slice(0, 10) : null, sections, lead, modules, parts };
+  return {
+    courseTitle,
+    pageTitle,
+    date: byline ? byline.text.slice(0, 10) : null,
+    author: bylineAuthor(byline),
+    sections,
+    lead,
+    modules,
+    parts,
+  };
 }
 
 // The introduction's "The modules" section: some opening paragraphs, then for

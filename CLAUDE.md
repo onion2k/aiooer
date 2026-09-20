@@ -27,8 +27,8 @@ plugins, the July 2026 revision of MCP, and the whole of part 3. Each
 part's Sources section says which of its claims rest on the drafter's
 knowledge and not on a document. Part 7 closes with the module's core
 explanations and misconceptions, which the language module's part 5 lost
-when part 4 left it. Some thirty sentences across the other modules point
-to "the practical AI module" in plain text, without a link. Other AI
+when part 4 left it. Every mention of "the practical AI module" in the other modules is a
+link to the part it means, or to part 1 where it means the whole module. Other AI
 models (four parts, files `Other N ….md`) covers small models, world
 models, diffusion language models and system one models, each part
 standing alone. Claude wrote them from sources read in September 2026.
@@ -92,6 +92,9 @@ was written on 19 September 2026 from what the code does at that date.
   of order, or a link to a page that was not built stops the build. Every
   part page names its module and its place in it, and the previous and next
   links run through every written part across modules. `audit` holds it.
+- **One author line.** Each markdown file's second line is its date and its
+  author, as `2026-09-19 · Chris Neale`, and the page says "Written … by …"
+  from it; a line with no name shows the date alone. Nothing holds this yet.
 - **One name.** The course is called what the introduction's heading calls
   it, in the wordmark, the footer, every page title and the canvas's title.
   `audit` holds it, and a heading without both the course's name and the

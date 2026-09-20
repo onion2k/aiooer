@@ -1,6 +1,6 @@
 # Part 4: System One Models
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 
@@ -102,7 +102,7 @@ A decision with a trustworthy probability can be handled by policy.
 | 70% spam | Deliver it with a warning, or send it to a stronger model |
 | 50% spam | Treat it as unknown. Deliver it, and log it for labelling |
 
-Without the probability, all three are "spam" or "not spam", and the system is either too cautious everywhere or too bold everywhere. With it, automation can be confined to the cases where the model is sure, and part 6 of the practical AI module argued that this is how people get out of the loop safely: not by trusting the model more, but by knowing when to.
+Without the probability, all three are "spam" or "not spam", and the system is either too cautious everywhere or too bold everywhere. With it, automation can be confined to the cases where the model is sure, and [part 6 of the practical AI module](file/7a3f2c68-91de) argued that this is how people get out of the loop safely: not by trusting the model more, but by knowing when to.
 
 ### What it does not mean
 
@@ -166,7 +166,7 @@ The vendor's own guidance is a good test for any tool of this kind. Reach for it
 ### Good fits
 
 - routing and triage of messages, tickets and documents
-- the guardrail checks of part 6 of the practical AI module: is this input an injection attempt, is this output on topic, does this action need approval
+- the guardrail checks of [part 6 of the practical AI module](file/7a3f2c68-91de): is this input an injection attempt, is this output on topic, does this action need approval
 - grading in evals, where part 6 warned about the biases of chat models as judges, and a calibrated score is worth more than an eloquent one
 - filtering and labelling very large sets of records, where cost for each record decides whether the job is possible
 - decisions in the middle of an interaction, where a second's wait is too long

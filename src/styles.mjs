@@ -505,8 +505,9 @@ ${swatches()}
 .section-outro{--span:7;--span-md:6}
 .route{--span:3;--span-md:3;margin:0;display:flex;flex-direction:column;gap:0.6em;padding:1.2em 1.3em 1.4em;background:var(--surface);border:var(--bw) solid var(--edge)}
 /* Four routes sit four across. Six sit three and three, since four and two
-   would leave half a row empty. */
-.routes:has(> :nth-child(6):last-child) > .route{--span:4}
+   would leave half a row empty, and nine sit three by three, since four, four
+   and one would leave most of one. */
+.routes:has(> :nth-child(6):last-child) > .route,.routes:has(> :nth-child(9):last-child) > .route{--span:4}
 .routes:has(> :nth-child(7):last-child) > .route:nth-child(n+5){--span:4}
 .route-reader{margin:0;font-family:var(--font-display);font-weight:800;font-size:1.3em;line-height:1.12;letter-spacing:-0.015em}
 .home-section .route p{margin:0}

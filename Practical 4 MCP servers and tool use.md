@@ -1,6 +1,6 @@
 # Part 4: MCP Servers and Tool Use
 
-2026-09-19 · @Someone
+2026-09-19 · Chris Neale
 
 ## About this part
 
