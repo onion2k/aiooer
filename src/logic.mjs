@@ -304,6 +304,8 @@ class Component extends DCLogic {
       note,
       presets: CALC.presets.map((p) => ({
         label: p.label,
+        // The static site has no renderVals(), so it reads the example here.
+        savedList: CALC.stages.map((st) => (st.name in p.saved ? p.saved[st.name] : p.saved.all || 0)).join(','),
         apply: () =>
           this.setState({
             calc: {

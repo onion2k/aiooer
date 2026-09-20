@@ -18,5 +18,12 @@ export default [
   },
   // The checks hand functions to the page, where the browser's globals exist.
   { files: ['scripts/**'], languageOptions: { globals: { ...globals.node, ...globals.browser } } },
+  // src/reader.js is the static site's own script: it runs in a browser, not
+  // in Node, and its caught-and-ignored storage errors are deliberate.
+  {
+    files: ['src/reader.js'],
+    languageOptions: { sourceType: 'script', globals: { ...globals.browser } },
+    rules: { 'no-unused-vars': ['error', { caughtErrors: 'none' }] },
+  },
   prettier,
 ];

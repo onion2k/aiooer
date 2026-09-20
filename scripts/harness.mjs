@@ -36,13 +36,16 @@ export function sitePages() {
 // Starts the server and the browser. Close both with site.close().
 // Without the canvas's runtime beside the boards nothing would render, and
 // every check would fail on an empty page; this says why before any does.
-export async function startSite() {
-  if (!fs.existsSync(path.join(TEST_SITE, 'support.js'))) {
+// Serves a folder and opens a browser on it. The default is the test copy of
+// the canvas, which needs the runtime beside it; the static build passes its
+// own folder, which needs nothing.
+export async function startSite(root = TEST_SITE) {
+  if (root === TEST_SITE && !fs.existsSync(path.join(TEST_SITE, 'support.js'))) {
     throw new Error(
       'The canvas runtime is missing, so the boards cannot be rendered. It is not in the repository; vendor/README.md says how to get it. Then run npm run build.',
     );
   }
-  const server = await serve(TEST_SITE);
+  const server = await serve(root);
   const browser = await chromium.launch();
   return {
     browser,

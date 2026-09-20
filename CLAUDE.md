@@ -170,6 +170,7 @@ slowdown is only caught by reading them.
 
     npm run dev            build, then the site at http://127.0.0.1:5190 with the canvas runtime
     npm run build          the boards into dist/canvas, and a test copy into test-results/site
+    npm run build:static   build, then the course as an ordinary website in dist/site (~2 min; needs the runtime)
     npm run check:quick    formatting, lint, contrast, build (the pre-commit hook; ~1 s)
     npm run check          check:quick, look and the full audit; slow, and run by hand now and then, not on every change
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
@@ -198,6 +199,39 @@ settings; `node scripts/tile.mjs <in.png> <out.png>` lays a tall phone
 picture out in columns. Look at every picture.
 
 ## Publishing
+
+There are two outputs: the canvas, and an ordinary website.
+
+### The website, for a web server
+
+`npm run build:static` writes `dist/site`: one `.html` per page, `index.html`
+for the home page, and `reader.js`. Copy that folder to any static host. It
+needs no server code and no build step at the far end.
+
+It is taken from the canvas build rather than written separately, so it
+cannot drift: `scripts/static.mjs` opens each board with the runtime, exactly
+as the checks do, saves the rendered page, and cuts the canvas out of it, the
+placeholder styles, the `support.js` tag and the logic class. None of the
+runtime goes into it, so nothing unlicensed is republished; what ships is
+this project's own markup, rendered. The showcase boards are not part of the
+site and are left out.
+
+What the runtime did in the browser, `src/reader.js` does: the reading
+settings, the header's panels, the deep dives, the contents that follow the
+reader, and the calculator, whose arithmetic is written into the page from
+`calculator.mjs` so that both sites work from one rule. Without JavaScript a
+page still holds the whole course, with the settings the build wrote. The
+static build checks its own output: no holes, loops, runtime or board links
+left, no dead link between pages, and every page opened again from the folder
+it wrote, failing on any error, any missing file, or a page whose script did
+not run.
+
+The audit does not yet cover `dist/site`; it walks the canvas's boards. axe
+found nothing on all 32 static pages in the default theme when the build was
+written, and the rest of the guarantees are proved on the boards the static
+pages are taken from.
+
+### The canvas
 
 The canvas is output. `npm run build` writes it to `dist/canvas`, and Claude
 publishes it with the Artifact tool: `url` the canvas, `root` `dist/canvas`,

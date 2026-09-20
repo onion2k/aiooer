@@ -6,6 +6,7 @@
   "description": "The course Using AI well, built from its markdown into a WCAG AAA website on a Claude Design canvas.",
   "scripts": {
     "build": "node src/build.mjs",
+    "build:static": "node src/build.mjs && node scripts/static.mjs",
     "dev": "node src/build.mjs && node scripts/serve.mjs",
     "look": "node scripts/look.mjs",
     "heights": "node src/build.mjs && node scripts/look.mjs --heights && node src/build.mjs",
