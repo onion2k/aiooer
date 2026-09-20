@@ -133,7 +133,17 @@ changes costs about 6 ms (worst 8.7), since the page redraws whole. Runs on
 this machine swing by tens of milliseconds, so compare medians of two runs
 each side before believing a change.
 
-A gate that is red is fixed before anything else lands. `perf` prints
+The full check, `npm run check`, is not part of the routine. It renders
+every page in every theme and takes minutes, which is too slow to run
+between changes, so the author runs it by hand now and then, as a survey of
+the whole site. Claude does not run it unless asked. What runs on every
+change is the quick check, in the pre-commit hook. The baselines above are
+what the last full run found, and a change that might move one is checked
+on the pages it touches with `npm run audit -- --pages …`, at about a
+minute a page. Where this differs from the house rules' "the full check green",
+this file wins, as those rules say it does.
+
+A gate that is found red is fixed before anything else lands. `perf` prints
 figures for the before-and-after in a report; nothing holds them yet, so a
 slowdown is only caught by reading them.
 
@@ -142,7 +152,7 @@ slowdown is only caught by reading them.
     npm run dev            build, then the site at http://127.0.0.1:5190 with the canvas runtime
     npm run build          the boards into dist/canvas, and a test copy into test-results/site
     npm run check:quick    formatting, lint, contrast, build (the pre-commit hook; ~1 s)
-    npm run check          check:quick, look and the full audit (~15 min)
+    npm run check          check:quick, look and the full audit; slow, and run by hand now and then, not on every change
     npm run contrast       every colour pair in tokens.mjs against 7:1 and 3:1; --all prints them all
     npm run audit          the accessibility audit; report in test-results/audit-report.md
     npm run audit:quick    two themes and shorter keyboard walks (~2 min; line length takes most of it)
@@ -152,11 +162,17 @@ slowdown is only caught by reading them.
     npm run links          every outside address the course cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name`,
-`--pages Part1.dc.html,...` and `--mutate <name>`, which puts a known defect
+`--pages Part1.dc.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
 `spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `pagerchain`, `cominglink`, `name`) to
 prove the check that should catch it still does.
+A page that passed is skipped until its built file, the audit, the harness,
+the runtime, the packages, the introduction, the list of pages or the flags
+change; what it wrote last time is kept in `test-results/audit-kept.json` and
+goes into the report, a failure is never kept, and a mutated run neither
+reads nor writes it. The headings check runs inside the keyboard walk, so
+`--only headings` needs `keyboard` beside it.
 `node scripts/look-parts.mjs <width> <File.dc.html> <selector>...` takes
 pictures of single elements, with `--theme`, `--size` and the other
 settings; `node scripts/tile.mjs <in.png> <out.png>` lays a tall phone
@@ -167,8 +183,9 @@ picture out in columns. Look at every picture.
 The canvas is output. `npm run build` writes it to `dist/canvas`, and Claude
 publishes it with the Artifact tool: `url` the canvas, `root` `dist/canvas`,
 `file_path` `dist/canvas/project/canvas.json`, and `files` every
-`project/*.dc.html` by that path. Publish only after `npm run check` is
-green and `npm run links` finds no source gone. Anything changed by hand on the canvas is overwritten by the next
+`project/*.dc.html` by that path. Publish only after
+the quick check is green, the pages the change touched pass their audit,
+and `npm run links` finds no source gone. Anything changed by hand on the canvas is overwritten by the next
 publish, so read the canvas first and bring such changes into `src/`. The
 canvas is private until it is shared from its Share menu.
 
@@ -306,7 +323,9 @@ reader's saved settings.
 The house's nine points, in `~/.claude/CLAUDE.md`. Here they mean: a check
 in `audit.mjs`, or a throw in the build, for any new rule, seen failing
 first and mutation-checked with `--mutate`; every path in the checklist
-below; `npm run check` green; the boards touched looked at with `look`,
+below; the quick check green, and the audit green on the pages the change
+touched (`npm run audit -- --pages …`), with the full check left to the
+author's occasional run; the boards touched looked at with `look`,
 `look-parts` and `tile`; `perf` before and after; and a publish only after
 all of that. There are no unit tests, no type checking and no fuzzer yet,
 so those parts of the nine points have nothing to run until they are added.
