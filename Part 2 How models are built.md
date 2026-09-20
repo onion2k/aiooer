@@ -92,7 +92,7 @@ Synthetic data means text written by models for training models. Common forms ar
 
 The known risk is a feedback loop. A model trained carelessly on model output loses variety and drifts, an effect called model collapse. Filtering, verification and mixing with real data keep it under control in practice.
 
-The legal position on training data remains contested, with lawsuits, licensing deals and opt-out schemes all in progress. Part 5 covers what this means for you as a buyer.
+The legal position on training data remains contested, with lawsuits, licensing deals and opt-out schemes all in progress. [Part 2 of the AI in the organisation module](file/bbb9efdd-e221) covers what this means for you as a buyer.
 
 ### What this explains
 
@@ -265,13 +265,13 @@ The result is uneven ability. A model can solve competition programming problems
 
 There is a practical lever in this, and it is central to the rest of the course. The more checkable you make your own work, through tests, types, schemas and explicit acceptance criteria, the more of the model's strongest capability you can use.
 
-Checkability is also what lets you stop reading everything. Where an automatic check can say whether the work is right, the model can run at its own pace. Where none exists, a person has to stand in for the check, and the work slows to that person's reading speed. Part 4 and [part 2 of the practical AI module](file/8d27b5e4-c019) build on this.
+Checkability is also what lets you stop reading everything. Where an automatic check can say whether the work is right, the model can run at its own pace. Where none exists, a person has to stand in for the check, and the work slows to that person's reading speed. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) and [part 2 of the practical AI module](file/8d27b5e4-c019) build on this.
 
 ### Reward hacking
 
 An optimiser finds what the checker rewards, which is not always what you meant. During this kind of training, labs have reported models special-casing the test inputs, hard-coding expected outputs, editing or deleting failing tests, and swallowing exceptions so that nothing visibly fails.
 
-Labs work to remove these, and traces remain in coding agents. The answer is not to read every line looking for them, which does not scale. Turn the watch list into automatic checks. Flag any change that edits tests alongside a fix. Detect weakened assertions with mutation testing. Lint for error handling that hides failures. Have an independent AI reviewer compare the change with the ticket. Part 4 assembles these into a full assurance stack.
+Labs work to remove these, and traces remain in coding agents. The answer is not to read every line looking for them, which does not scale. Turn the watch list into automatic checks. Flag any change that edits tests alongside a fix. Detect weakened assertions with mutation testing. Lint for error handling that hides failures. Have an independent AI reviewer compare the change with the ticket. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) assembles these into a full assurance stack.
 
 ### Two cautions
 
@@ -348,7 +348,7 @@ Low prices at the small tier change what is practical. Running five attempts in 
 
 Collect 20 to 50 real tasks from your own backlog, each with a known good outcome: a bug that was fixed, a review that caught something, a query that had to be right. Run every candidate model through them under the same conditions.
 
-This takes an afternoon per model once it is set up. It is immune to contamination, because your code is not on the internet. It is also the one asset that stays valuable whichever vendor you use. [Part 6 of the practical AI module](file/7a3f2c68-91de) shows how to build it, and part 5 uses it for vendor decisions.
+This takes an afternoon per model once it is set up. It is immune to contamination, because your code is not on the internet. It is also the one asset that stays valuable whichever vendor you use. [Part 6 of the practical AI module](file/7a3f2c68-91de) shows how to build it, and [part 2 of the AI in the organisation module](file/bbb9efdd-e221) uses it for vendor decisions.
 
 ## Say it two ways
 

@@ -25,7 +25,21 @@ flowchart LR
 
 Each box belongs to a part of the module. This part and [part 2](file/8d27b5e4-c019) cover the instructions: the files that stand in front of every request, and the packages that are fetched when needed. [Part 3](file/52e0a7c9-b3f6) covers input that is not text. [Part 4](file/c9146f3b-27a8) covers tools and the protocol that connects them. [Part 5](file/0b8e5d17-f4c2) covers retrieved documents. [Part 6](file/7a3f2c68-91de) covers the controls and tests that make the result trustworthy, and ends with a checklist for reviewing any AI feature. [Part 7](file/d6e2a95b-3f14) steps back from the diagram and applies all of it along the whole software lifecycle, from discovery to operations.
 
-The module assumes the failure modes from [part 3 of the language models module](file/48a4ae01-75ae), section 7, and supplies a defence for each. It names products and file names throughout, and those date quickly. The ideas under them have held steady for longer.
+This is where the course starts, because everyone reading it already uses these tools, and using them well is the quickest thing to get better at. It names products and file names throughout, and those date quickly. The ideas under them have held steady for longer.
+
+### Seven things to know about the model first
+
+The module needs no knowledge of how a model works. It does lean on seven facts about how one behaves, and supplies a defence for each of the last six.
+
+- **It knows two things.** What it absorbed in training, which is broad, fuzzy and stops at a date, and what is in front of it now, which is exact and limited. It knows nothing about you, your company or your code unless it is told.
+- **It makes things up.** Where it lacks a fact it supplies a plausible one, in the same confident voice as the rest. This is called hallucination.
+- **It answers differently each time.** The same request twice can give two different results.
+- **It cannot tell an instruction from a document.** Any text it reads, from a web page, a ticket or a file, can steer it. This is called prompt injection.
+- **It is out of date.** It suggests last year's versions and does not know what has changed since it was trained.
+- **It agrees with you.** It was trained on what people liked, and people like being agreed with.
+- **Its small errors add up.** A task of fifty steps, each done right 98 times in 100, comes out right about one time in three.
+
+The [language models module](file/590c1ae1-8bf3) explains why each of these is so, and [its part 3](file/48a4ae01-75ae) sets the six failures out in full. You do not need the why to use what follows. It will make more sense of it afterwards.
 
 ### What part 1 gives you
 
@@ -53,7 +67,7 @@ Before sending a prompt, ask one question. Could a bright contractor with no kno
 
 - Say what to do, not only what to avoid. "Write in plain paragraphs" works better than "no bullet points".
 - Separate instructions from material with clear delimiters, such as tagged sections or headings, so the model can tell a document from a directive.
-- Put long documents first and the question last, as part 3 of the language models module advised.
+- Put long documents first and the question last, as part 3 of the language models module advises.
 - For a model without a thinking mode, ask for reasoning before the conclusion.
 - Fix problems at the source. When output is wrong, ask what the brief failed to say, and add that. Do not pile on capital letters.
 
@@ -85,7 +99,7 @@ Teams control the middle of the table, and that is where their effort belongs. T
 
 ### Always there, or fetched when needed
 
-The most useful way to sort the layers is by when they load. Anything loaded in every session costs context in every session, whether the task needs it or not. Part 3 of the language models module showed that a filling context costs money and quality. So each layer has a budget.
+The most useful way to sort the layers is by when they load. Anything loaded in every session costs context in every session, whether the task needs it or not. Part 3 of the language models module shows that a filling context costs money and quality. So each layer has a budget.
 
 Standing instructions should be short and should hold what is always true: the commands, the conventions, the things never to do. Reference material that is needed sometimes, such as the full API style guide or the release procedure, belongs in something fetched on demand. That is the job of scoped rules and of the skills in part 2. One vendor's documentation puts the dividing line plainly: put it in the standing file if the agent should always know it, and in a skill if it needs it sometimes.
 

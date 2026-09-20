@@ -147,7 +147,7 @@ None of this is particular to local models. It matters more with them, for two r
 ### Habits that help
 
 - **Write the task down precisely,** including how success is checked. A small model follows a clear instruction well and guesses badly.
-- **Give it the means to check itself:** a test command, a linter, a type checker. Part 4 of the language models module is about this.
+- **Give it the means to check itself:** a test command, a linter, a type checker. Part 1 of the AI in the organisation module is about this.
 - **One task per session.** Start fresh, and do not let the context fill with the debris of the last job.
 - **Put standing knowledge in a short file** the harness loads at the start, such as the build and test commands and the project's conventions, so that it is not rediscovered every time. Keep it short, since it costs context on every request.
 - **Watch the first few runs of any new task.** You learn what the model gets wrong, and whether the harness is doing what you think.

@@ -63,7 +63,7 @@ The third level is safe only where nothing in reach can do lasting harm and the 
 
 ### Managing context
 
-Part 3 of the language models module showed that a filling context degrades quality and raises cost. Agents counter this in four ways:
+Part 3 of the language models module shows that a filling context degrades quality and raises cost. Agents counter this in four ways:
 
 - **Compaction.** Summarise progress and continue from the summary.
 - **Notes files.** The agent records decisions and progress in a file and re-reads it. This is memory outside the context, and it survives a restart.
@@ -72,7 +72,7 @@ Part 3 of the language models module showed that a filling context degrades qual
 
 ### Compounding error
 
-Part 3 of the language models module gave the arithmetic: 98% reliability per step gives 36% over 50 steps. The counters are checkpoints to return to, such as a commit after each working step, and automatic verification between steps. Human attention is best spent at the start, on the plan, where a minute of review prevents an hour of wasted work. Review at the end should be proportional to risk, which section 6 sets out.
+Part 3 of the language models module gives the arithmetic: 98% reliability per step gives 36% over 50 steps. The counters are checkpoints to return to, such as a commit after each working step, and automatic verification between steps. Human attention is best spent at the start, on the plan, where a minute of review prevents an hour of wasted work. Review at the end should be proportional to risk, which section 6 sets out.
 
 ### Multi-agent systems
 
@@ -258,9 +258,9 @@ Teams that get much more from these tools change the shape of the work:
 - **Invest in verification you can trust.** Reading every line is a substitute for tests, types and checks you do not have. Each improvement to automated verification reduces how much must be read.
 - **Do what was not worth doing before.** Build three prototypes to choose between instead of debating one. Backfill tests on legacy code. Complete the migration that was always deferred. Write the internal tool nobody had time for.
 
-Measure whether it worked. Directing five agents at once feels enormously productive, and that feeling is not evidence. In the best-known trial, experienced developers took 19% longer with AI tools and still believed they had been 20% faster. Before changing how the team works, record a baseline: how long work takes from start to release, how much comes back as rework, how many defects escape. Then watch those figures and not the activity, since pull requests opened, lines written and tokens spent all soar whether or not anything reaches a customer sooner. Section 7 of [part 4 of the language models module](file/3e89a4fc-a0bc) sets out the evidence and the measures.
+Measure whether it worked. Directing five agents at once feels enormously productive, and that feeling is not evidence. In the best-known trial, experienced developers took 19% longer with AI tools and still believed they had been 20% faster. Before changing how the team works, record a baseline: how long work takes from start to release, how much comes back as rework, how many defects escape. Then watch those figures and not the activity, since pull requests opened, lines written and tokens spent all soar whether or not anything reaches a customer sooner. Section 7 of [part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) sets out the evidence and the measures.
 
-None of this removes accountability. It changes where assurance comes from. Skipping review without stronger automated verification simply moves the cost to production. [Part 4 of the language models module](file/3e89a4fc-a0bc) covers how to make this shift across a team.
+None of this removes accountability. It changes where assurance comes from. Skipping review without stronger automated verification simply moves the cost to production. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) covers how to make this shift across a team.
 
 ### Where they still struggle
 

@@ -1,14 +1,14 @@
-# Part 5: Strategy, Risk and Communication
+# Part 2: Strategy, Risk and Communication
 
 2026-09-18 · Chris Neale
 
 ## About this part
 
-Part 5 covers the decisions that sit above the team, and how to talk about everything in this course to people who have not read it. Part 4 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
+Part 2 covers the decisions that sit above the team, and how to talk about everything in this course to people who have not read it. Part 1 ended with the constraint leaving engineering. When that happens, progress depends on procurement, legal, security, finance and senior leadership, and on your ability to make the case to each in their own terms.
 
-Sections 1 to 4 cover the market, the build-or-buy decision, the legal and data risks, and governance. Section 5 builds the investment case from the cost model in part 3 and the measures in part 4. Section 6 is the communication toolkit. Section 7 covers keeping all of it current.
+Sections 1 to 4 cover the market, the build-or-buy decision, the legal and data risks, and governance. Section 5 builds the investment case from the cost model in part 3 of the language models module and the measures in part 1. Section 6 is the communication toolkit. Section 7 covers keeping all of it current.
 
-Two reference sections follow. They consolidate the two-audience explanations and the misconceptions from all five parts, for use on their own.
+Two reference sections follow. They consolidate this module's two-audience explanations and misconceptions, for use on their own.
 
 A caution on sections 3 and 4. They describe the questions to ask and the shape of good answers. They are not legal advice, and the regulatory detail is correct only as of the date above. Confirm specifics with your own legal and compliance colleagues. Reading time is about 45 minutes.
 
@@ -23,13 +23,13 @@ A caution on sections 3 and 4. They describe the questions to ask and the shape 
 | Model labs | A few labs building the most capable models, mostly in the US and China | Direct API access and their own assistants and coding agents |
 | Cloud platforms | The major cloud providers | The same models under your existing contract, with regional hosting |
 | Tool makers | Hundreds of companies, from start-ups to established vendors | Coding assistants, review tools, support bots, search and meeting tools built on the labs' models |
-| Open-weight ecosystem | Labs that publish weights, plus hosting services | Models you can run yourself or rent cheaply, as part 3 described |
+| Open-weight ecosystem | Labs that publish weights, plus hosting services | Models you can run yourself or rent cheaply, as part 3 of the language models module describes |
 
 ### How the market behaves
 
-- **The lead rotates.** The best model for coding this quarter is often not the best next quarter. Part 2 explained why: each lab's gains arrive in steps.
+- **The lead rotates.** The best model for coding this quarter is often not the best next quarter. Part 2 of the language models module explains why: each lab's gains arrive in steps.
 - **Features converge.** A capability one vendor launches is usually matched by the others within about six months.
-- **Prices fall.** Part 2 put the fall at around tenfold a year for a fixed level of quality.
+- **Prices fall.** Part 2 of the language models module puts the fall at around tenfold a year for a fixed level of quality.
 - **Tool makers are fragile.** Many will be acquired, outcompeted by the labs or closed. Prefer tools whose configuration and data you can export.
 - **Outages happen.** Every major provider has had them. Anything important needs a fallback.
 
@@ -57,7 +57,7 @@ A practical arrangement is one primary vendor, a second under contract and teste
 | --- | --- | --- |
 | Buy | Off-the-shelf products: coding agents, chat assistants, review tools, support tools | The need is common to most companies and the product works with your systems |
 | Assemble | Vendor models through an API, plus your own context, tools, guardrails and evals, which [the practical AI module](file/f3a91c20-6d4e) covers | The value comes from your data, your domain rules or your workflow |
-| Build | Fine-tuned or self-hosted models, or an internal AI platform | You have a narrow, very high-volume task, or a hard data constraint. See part 3 |
+| Build | Fine-tuned or self-hosted models, or an internal AI platform | You have a narrow, very high-volume task, or a hard data constraint. See part 3 of the language models module |
 | Wait | Defer this purchase | The need is modest and the products in that niche are changing every quarter |
 
 ### Five questions
@@ -70,7 +70,7 @@ A practical arrangement is one primary vendor, a second under contract and teste
 
 ### Waiting has a cost
 
-It is sensible to defer a particular product. It is a mistake to defer the change in working practices from part 4. Those take a team months to learn, and the learning does not come bundled with next year's better model. A team that starts a year later starts a year behind on the part that is hardest to buy.
+It is sensible to defer a particular product. It is a mistake to defer the change in working practices from part 1. Those take a team months to learn, and the learning does not come bundled with next year's better model. A team that starts a year later starts a year behind on the part that is hardest to buy.
 
 ## 3. Data, IP and legal risk
 
@@ -86,7 +86,7 @@ The same model is sold under very different terms depending on how you buy it.
 | Team and enterprise plans | Not used for training by default | Admin console, single sign-on, audit logs, retention settings |
 | API and cloud platform access | Not used for training by default | Contractual data processing terms, regional hosting, retention options |
 
-Part 1 explained that a model does not learn from your conversations as you type. Whether a vendor may later train on them is a matter of contract, and this table is where it is decided.
+Part 1 of the language models module explains that a model does not learn from your conversations as you type. Whether a vendor may later train on them is a matter of contract, and this table is where it is decided.
 
 ### Shadow AI is the real leak
 
@@ -106,7 +106,7 @@ A smaller risk is reproduction. A model can occasionally emit a passage close to
 
 ### Sector rules still apply
 
-Regulators hold the licensed business responsible for outcomes, whatever produced them. In iGaming that covers safer-gambling interactions, anti-money-laundering controls, fairness of games and the handling of player data. "The AI did it" is not a defence. This is the practical reason for keeping regulated logic in the high-risk review tier from part 4, and for an audit trail.
+Regulators hold the licensed business responsible for outcomes, whatever produced them. In iGaming that covers safer-gambling interactions, anti-money-laundering controls, fairness of games and the handling of player data. "The AI did it" is not a defence. This is the practical reason for keeping regulated logic in the high-risk review tier from part 1, and for an audit trail.
 
 Check each vendor's acceptable use policy too. Some include restrictions that touch gambling-related uses, and it is better to find that during procurement than afterwards.
 
@@ -122,7 +122,7 @@ A checklist for the contract and the data processing agreement.
 - **Security.** Which certifications are held, such as SOC 2 and ISO 27001? What are the breach notification terms?
 - **Output rights.** Is ownership of output assigned to us?
 - **Indemnity.** Is there intellectual property indemnity for output, and which conditions void it, such as switching off filters?
-- **Model changes.** How much notice is given before a model version is retired? Part 2 explained why versions need pinning.
+- **Model changes.** How much notice is given before a model version is retired? Part 2 of the language models module explains why versions need pinning.
 - **Service levels.** What uptime commitment, what remedies, and what cap on liability?
 - **Acceptable use.** Are there sector restrictions that affect us?
 
@@ -155,7 +155,7 @@ Four rows that people can remember are better than forty they cannot.
 
 - which tools are approved, and for which data classes
 - the rule on personal accounts: not for anything above public
-- the ownership principle from part 4: whoever merges it owns it
+- the ownership principle from part 1: whoever merges it owns it
 - the review-by-risk tiers, by reference
 - what to do if something goes wrong, and that reporting it is blame-free
 - who to ask, and how long an answer takes
@@ -187,7 +187,7 @@ Track the time taken to approve a tool, the share of staff with access to an app
 
 ### Count all the costs
 
-An illustrative first year for a team of 20 engineers. It uses the cost model from part 3 and a loaded cost of $500 per engineer-day. Substitute your own figures.
+An illustrative first year for a team of 20 engineers. It uses the cost model from part 3 of the language models module and a loaded cost of $500 per engineer-day. Substitute your own figures.
 
 | Cost line | Basis | Year one |
 | --- | --- | --- |
@@ -198,7 +198,7 @@ An illustrative first year for a team of 20 engineers. It uses the cost model fr
 | Governance, security and legal review | Estimate | $10,000 |
 | Total |  | $190,000 |
 
-Three points stand out. Tools are a fifth of the total. The largest line is the verification groundwork from part 4, and it would have been worth doing without AI. The total is about 9% of what the team costs in a year, which is $2.2 million on these assumptions.
+Three points stand out. Tools are a fifth of the total. The largest line is the verification groundwork from part 1, and it would have been worth doing without AI. The total is about 9% of what the team costs in a year, which is $2.2 million on these assumptions.
 
 ### Three scenarios for the return
 
@@ -222,13 +222,13 @@ The percentages are planning assumptions and not forecasts. Replace them with yo
 
 ### Ask for a staged bet
 
-Match the request to the 90-day plan in part 4.
+Match the request to the 90-day plan in part 1.
 
 1. **Quarter one.** Fund the tools, learning time and verification groundwork. State the baseline, the constraint you will attack and the measures you will report.
-2. **Decision point.** Show the before-and-after measures and the signature from part 4, section 7. Continue, adjust or stop.
+2. **Decision point.** Show the before-and-after measures and the signature from part 1, section 7. Continue, adjust or stop.
 3. **Quarters two to four.** Extend to the whole team and the neighbouring functions, funded against results.
 
-This lowers the risk for the sponsor. It also commits you to measurement, which protects you from the perception gap described in part 4.
+This lowers the risk for the sponsor. It also commits you to measurement, which protects you from the perception gap described in part 1.
 
 ### What not to promise
 
@@ -239,7 +239,7 @@ This lowers the risk for the sponsor. It also commits you to measurement, which 
 
 ### Deep dive (optional): the total cost of self-hosting
 
-Part 3 gave the headline: a server for a large open model rents for $15,000 to $20,000 a month, and internal traffic keeps it under 20% utilised. A full comparison adds the lines that are easy to forget.
+Part 3 of the language models module gives the headline: a server for a large open model rents for $15,000 to $20,000 a month, and internal traffic keeps it under 20% utilised. A full comparison adds the lines that are easy to forget.
 
 | Cost line | Self-hosted | API or cloud platform |
 | --- | --- | --- |
@@ -265,7 +265,7 @@ On these lines, self-hosting rarely wins on cost below very large, steady volume
 | Product | Speed of learning, scope, quality | Prototypes in days and more experiments | Implying that engineering no longer needs clear requirements |
 | Security and compliance | Data, access, auditability, accountability | Data classes, review by risk, the audit trail | Asking for blanket approval |
 | Engineers | Craft, quality, autonomy, job security | Honest limits, what the gains will be used for, their part in designing the checks | Hype, quotas, vendor statistics |
-| Sceptics | Evidence and failure modes | The studies in part 4, including the unflattering ones, and your own baseline | Dismissing their concerns. They are often right about specifics |
+| Sceptics | Evidence and failure modes | The studies in part 1, including the unflattering ones, and your own baseline | Dismissing their concerns. They are often right about specifics |
 | Enthusiasts | New capability and speed | The constraint and the assurance stack | Letting enthusiasm skip the groundwork |
 
 ### Three habits for any audience
@@ -340,59 +340,33 @@ Most announcements change little. A few developments would justify rethinking yo
 
 ### In closing
 
-The course has made one argument in five parts. These systems are statistical machines with known strengths and predictable failure modes. Because the failures are predictable, you can build checks that do not depend on a person reading everything. Once you have those checks, you can let the AI work at its own pace, reorganise the team around direction and verification, and take on work that was never worth attempting. The tools will keep changing. Understanding the mechanism, measuring honestly and redesigning the work will serve you through every change.
+The course makes one argument. These systems are statistical machines with known strengths and predictable failure modes. Because the failures are predictable, you can build checks that do not depend on a person reading everything. Once you have those checks, you can let the AI work at its own pace, reorganise the team around direction and verification, and take on work that was never worth attempting. The tools will keep changing. Understanding the mechanism, measuring honestly and redesigning the work will serve you through every change.
 
 ## Core explanations
 
-The 20 ideas you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part.
+The four ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the detail. The complete two-audience tables remain at the end of each part. The language models module and the practical AI module keep lists of their own.
 
 | Idea | Say it like this | Part |
 | --- | --- | --- |
-| What an LLM is | It writes one word-piece at a time, each time choosing what is most likely to come next given everything so far | 1 |
-| Tokens | The chunks it reads and writes in, a bit shorter than a word. We pay per chunk | 1 |
-| Parameters | The dials tuned during training. More dials means more capacity, not automatically better answers | 1 |
-| What it knows | Two things: what it absorbed in training, broad but fuzzy, and what we put in front of it, exact but limited | 1 |
-| Pretraining | It read a vast library and practised guessing what comes next until it had absorbed how language, facts and code work | 2 |
-| Post-training | Finishing school. It is shown good answers, then rewarded for the ones people prefer | 2 |
-| Sycophancy | It was trained on what people liked, and people like being agreed with. So it leans towards telling us what we want to hear | 2 |
-| Reasoning model | It practised on problems with checkable answers and learned to work things out on scratch paper first | 2 |
-| Knowledge cutoff | The day it stopped reading. It knows nothing after that unless we tell it | 2 |
-| Model tiers | Large, medium and small versions. We use the smallest that passes our tests for each job | 2 |
-| Context window | How much it can hold in view at once. A focused brief beats a document dump | 3 |
-| Prompt caching | If each request starts with the same material, the vendor remembers it briefly and charges about a tenth for that part | 3 |
-| Thinking budget | How long we let it think before replying. More helps on hard problems and costs more | 3 |
-| Hallucination | It fills gaps with plausible inventions, in the same confident voice as the facts | 3 |
-| Non-determinism | Ask twice and you may get two different answers. We design for that | 3 |
-| Prompt injection | Text hidden in a document or web page that tells the AI to do something else, and it may obey | 3 |
-| Effort-saving vs redesign | Doing the same job with less effort, versus changing the job so that the AI's speed reaches the customer | 4 |
-| The constraint | The narrowest part of the pipe decides the flow. Speeding up anything else makes a bigger puddle in front of it | 4 |
-| Assurance stack | Many automatic safety nets, so that people check only what truly needs a person | 4 |
-| Review by risk | Our experts look hardest at payments and player data and lightly at internal tools, in place of reading everything equally | 4 |
+| Effort-saving vs redesign | Doing the same job with less effort, versus changing the job so that the AI's speed reaches the customer | 1 |
+| The constraint | The narrowest part of the pipe decides the flow. Speeding up anything else makes a bigger puddle in front of it | 1 |
+| Assurance stack | Many automatic safety nets, so that people check only what truly needs a person | 1 |
+| Review by risk | Our experts look hardest at payments and player data and lightly at internal tools, in place of reading everything equally | 1 |
+
 ## Misconceptions quick reference
 
-All sixteen misconceptions from parts 1 to 4, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
+The four misconceptions from this module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in part 1.
 
 | Claim | Short response | Part |
 | --- | --- | --- |
-| "It's just autocomplete" | Yes, and to predict well across all human writing it had to learn a great deal. Judge it by tested results | 1 |
-| "It looks things up in a database" | On its own it works from memory. When accuracy matters, we hand it the documents | 1 |
-| "It learns from our conversations" | It does not change as we use it. What the vendor may do with our data is set by contract | 1 |
-| "Bigger is always better" | We pick the smallest model that passes our tests, and spend the saving where the biggest one counts | 1 |
-| "It was trained on the whole internet" | A filtered slice of public text plus a lot of code. It has never seen anything of ours | 2 |
-| "Fine-tuning teaches it our facts" | Fine-tuning changes behaviour. For our information, we supply documents at question time | 2 |
-| "A higher benchmark score means better for us" | League tables say what is worth trying. Our own test set says what to use | 2 |
-| "AI progress has hit a wall" | One route slowed and two opened. We plan for neither a stall nor a leap, and re-test quarterly | 2 |
-| "A million-token window reads everything equally well" | It can take it all in, and does better with the right ten pages | 3 |
-| "Hallucination will be patched out" | It is getting rarer, not going away. We supply sources and check in proportion to the stakes | 3 |
-| "Self-hosting will be cheaper" | We would pay around the clock for a weaker model we use a few hours a day | 3 |
-| "Temperature zero makes it reliable" | That reduces variety. Reliability comes from checking outputs over many runs | 3 |
-| "AI makes everyone a 10x developer" | It makes typing ten times faster, and typing is a quarter of delivery. The gain comes from changing the rest | 4 |
-| "Percentage of AI-written code shows success" | That shows the tool is open. I report whether finished work arrives sooner and fails less | 4 |
-| "Reviewing every line is the safe option" | Nobody reviews a thousand lines well. We move safety into automatic checks and keep experts for what counts | 4 |
-| "Juniors no longer need fundamentals" | The tools raise the floor, and raise the value of judgement more. Judgement rests on fundamentals | 4 |
+| "AI makes everyone a 10x developer" | It makes typing ten times faster, and typing is a quarter of delivery. The gain comes from changing the rest | 1 |
+| "Percentage of AI-written code shows success" | That shows the tool is open. I report whether finished work arrives sooner and fails less | 1 |
+| "Reviewing every line is the safe option" | Nobody reviews a thousand lines well. We move safety into automatic checks and keep experts for what counts | 1 |
+| "Juniors no longer need fundamentals" | The tools raise the floor, and raise the value of judgement more. Judgement rests on fundamentals | 1 |
+
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of parts 1 to 4.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in the glossaries of part 1 and of the language models module.
 
 | Term | Meaning |
 | --- | --- |
@@ -422,7 +396,7 @@ Terms introduced in this part, in plain language and in alphabetical order. Earl
 
 ## Sources
 
-The EU AI Act dates in section 3 were checked against these pages. Figures in section 5 are illustrative arithmetic built on the part 3 cost model.
+The EU AI Act dates in section 3 were checked against these pages. Figures in section 5 are illustrative arithmetic built on the cost model in part 3 of the language models module.
 
 - [EU AI Act's High-Risk Deadline: Deferred, Not Cancelled](https://labs.cloudsecurityalliance.org/research/csa-research-note-eu-ai-act-high-risk-deadline-omnibus-20260/), Cloud Security Alliance, for the amending regulation's entry into force on 27 July 2026 and the new dates of 2 December 2027 and 2 August 2028
 - [EU AI Act Omnibus Agreement: Postponed High-Risk Deadlines and Other Key Changes](https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/), Gibson Dunn, for the transparency obligations applying from 2 August 2026

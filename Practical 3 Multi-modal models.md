@@ -49,7 +49,7 @@ The line is blurring. A few models now generate images or speech from the same n
 
 ### From pixels to tokens
 
-Part 1 of the language models module showed text becoming tokens, and each token becoming a vector. An image takes a parallel path to the same place. It is divided into patches, a small network turns each patch into a vector, and those vectors are placed in the sequence beside the vectors for your words. From there on the transformer treats them alike. Attention lets a word in your question look at a patch of the image in the same way it looks at another word.
+Part 1 of the language models module shows text becoming tokens, and each token becoming a vector. An image takes a parallel path to the same place. It is divided into patches, a small network turns each patch into a vector, and those vectors are placed in the sequence beside the vectors for your words. From there on the transformer treats them alike. Attention lets a word in your question look at a patch of the image in the same way it looks at another word.
 
 This explains the general shape of what these models can do. They are good at what an image is about, how its parts relate, and what the text in it says, because those survive being turned into a few thousand vectors. They are weaker at exact positions, exact counts and fine detail, because those often do not.
 
@@ -172,7 +172,7 @@ This is hallucination, from part 3 of the language models module, with a picture
 
 ### Images carry instructions
 
-Part 3 of the language models module described prompt injection: text the model reads as data is obeyed as an instruction. A model that reads images reads the text in them. Instructions can sit in a screenshot, in a scanned letter, in small pale type on a web page that a person would never notice, or in a frame of a video.
+Part 3 of the language models module describes prompt injection: text the model reads as data is obeyed as an instruction. A model that reads images reads the text in them. Instructions can sit in a screenshot, in a scanned letter, in small pale type on a web page that a person would never notice, or in a frame of a video.
 
 For a model that only answers questions, the damage is a wrong answer. For an agent with tools, and above all for computer use, it is the full risk described in [part 6](file/7a3f2c68-91de), with a larger attack surface, since filters built for text do not inspect pixels. Treat every image from outside as untrusted content.
 

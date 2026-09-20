@@ -16,7 +16,7 @@ Part 4 builds one idea: the model asks, and your code acts. Every tool call pass
 
 **In plain terms.** When a program, not a person, will read the AI's answer, you can require the answer to follow an exact format. The format is then guaranteed. The content is not, so it is checked like any other input. **Who should read it:** engineers. Others can move to section 2.
 
-When code will consume the answer, ask for JSON that follows a schema. Part 1 of the language models module explained how the sampler can be constrained so that the syntax is guaranteed valid. Use this for extraction, classification and any hand-off to another system.
+When code will consume the answer, ask for JSON that follows a schema. Part 1 of the language models module explains how the sampler can be constrained so that the syntax is guaranteed valid. Use this for extraction, classification and any hand-off to another system.
 
 ```json
 {
@@ -80,7 +80,7 @@ Tool use is still next-token prediction. The tool definitions are serialised int
 
 The serving layer watches for that marker. When it appears, generation stops, the text is parsed into a structured tool-call object, and that is what your application receives. Your result goes back in as a specially marked turn, and generation resumes.
 
-Three consequences follow. Tool definitions are tokens, so every tool costs context on every call. When a model requests several tools at once, it has simply written several call blocks in one turn. And tool results are ordinary tokens in the context, which makes them a route for prompt injection, as part 3 of the language models module warned. [Part 4 of the running AI locally module](file/b7d15e92-4c60) explains why small models find this format hard to keep to.
+Three consequences follow. Tool definitions are tokens, so every tool costs context on every call. When a model requests several tools at once, it has simply written several call blocks in one turn. And tool results are ordinary tokens in the context, which makes them a route for prompt injection, as part 3 of the language models module warns. [Part 4 of the running AI locally module](file/b7d15e92-4c60) explains why small models find this format hard to keep to.
 
 ## 3. The Model Context Protocol
 
@@ -138,7 +138,7 @@ The model never talks to a server directly. The host application sits between th
 
 ### Context
 
-Every connected server's tool definitions are tokens. Part 3 of the language models module noted that a generous set can consume tens of thousands of tokens before any work starts, and a crowded list also makes the model choose worse.
+Every connected server's tool definitions are tokens. Part 3 of the language models module notes that a generous set can consume tens of thousands of tokens before any work starts, and a crowded list also makes the model choose worse.
 
 Hosts have responded by loading definitions on demand. In Claude Code, for example, only tool names are loaded at the start, and the full description and schema of a tool are fetched when the model searches for it. That removes most of the standing cost. It does not remove the reason for restraint: enable the servers a task needs, and prefer a server with six well-made tools to one that mirrors every endpoint of an API.
 
@@ -146,7 +146,7 @@ Hosts have responded by loading definitions on demand. In Claude Code, for examp
 
 The specification is direct about this. It says tools represent arbitrary code execution and must be treated with caution, and that descriptions of a tool's behaviour should be considered untrusted unless they come from a trusted server. The risks fall into four groups.
 
-- **What comes back is untrusted.** A tool result is text from the outside world: an issue someone filed, a web page, an email. Part 3 of the language models module explained what that means for prompt injection. An agent that reads a poisoned ticket through one server and can act through another has been given both the instruction and the means.
+- **What comes back is untrusted.** A tool result is text from the outside world: an issue someone filed, a web page, an email. Part 3 of the language models module explains what that means for prompt injection. An agent that reads a poisoned ticket through one server and can act through another has been given both the instruction and the means.
 - **The server itself may lie.** A tool's description is a prompt, and a malicious server can use it to instruct the model, for example to pass the contents of a file along with every call. This is called tool poisoning. A server can also change its descriptions after you approved it.
 - **A local server is code you run.** Installing one from a public catalogue is the same act as installing any package, with the same supply-chain risk that part 2 described for skills. The specification's own guidance says a host offering one-click installation must show the exact command first.
 - **Credentials are usually too broad.** A token that can read and write everything turns any of the problems above into a serious one. The specification's guidance forbids a server from passing a client's token through to another service, and recommends starting with minimal scopes and asking for more only when an operation needs them.

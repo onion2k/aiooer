@@ -6,7 +6,7 @@
 
 Part 3 covers what happens when a model is put to work: how a request is processed, what it costs, how fast it runs, and how it fails. Parts 1 and 2 explained the machine and its training. This part turns that into numbers you can budget with and failure patterns you can predict.
 
-It is the hinge of the course. Sections 1 to 6 are about performance and money. Section 7 maps each characteristic failure back to its cause in parts 1 and 2, and forward to its mitigation in [part 6 of the practical AI module](file/7a3f2c68-91de).
+It is the hinge of the module. Sections 1 to 6 are about performance and money. Section 7 maps each characteristic failure back to its cause in parts 1 and 2, and across to its mitigation in [part 6 of the practical AI module](file/7a3f2c68-91de).
 
 The numbers in this part also support the course's main argument. Tokens are cheap next to people's time, so the economic question is rarely what the AI costs. It is whether a person is waiting on the AI, or the AI is waiting on a person. And because each failure mode has a known cause, each can be met with an automatic check, which is what allows people to step back.
 
@@ -40,7 +40,7 @@ Total time is roughly the first plus output length divided by the second. A 1,00
 - **Run independent calls in parallel.** Ten calls take about as long as one. Agent designs that fan work out to sub-agents rely on this.
 - **Use batch processing for non-urgent work.** Vendors give a large discount for jobs that can wait hours, because they can fill idle capacity with them.
 
-The last two points lead somewhere important. An engineer who sits watching an agent work has combined the slowness of decode with the cost of a person. Design the work so that neither waits on the other: dispatch the task, do something else, and come back to a verified result. Part 4 describes working this way.
+The last two points lead somewhere important. An engineer who sits watching an agent work has combined the slowness of decode with the cost of a person. Design the work so that neither waits on the other: dispatch the task, do something else, and come back to a verified result. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) describes working this way.
 
 ### Deep dive (optional): speculative decoding
 
@@ -222,7 +222,7 @@ Four lessons come out of the table.
 
 For scale: a fully loaded engineer costs in the order of a dollar a minute. At about $8 a day, the tool pays for itself if it saves under ten minutes. That is a low bar, and it exposes a common economic mistake. Teams ration tokens, or have an engineer supervise every step, and so save dollars while spending hours.
 
-The real questions are about quality and workflow: how to let the agent run without a person in the loop, and how to trust the result. Part 4 takes those up, and part 5 turns this model into a full investment case.
+The real questions are about quality and workflow: how to let the agent run without a person in the loop, and how to trust the result. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) takes those up, and [part 2 of the AI in the organisation module](file/bbb9efdd-e221) turns this model into a full investment case.
 
 Expect wide variation between people. Heavy users can consume ten times what light users do. Build the spreadsheet with tasks per day, calls per task, average context, cache hit rate, output per call and price per tier as inputs, and check it against a month of real usage data.
 
@@ -271,7 +271,7 @@ Self-hosting is the right answer in a few cases:
 
 Small models change the sums. A model under about 30 billion parameters runs on a single GPU, or a well-specified laptop, and is cheap and simple to operate.
 
-For most data-sensitivity concerns there is a middle path: a major cloud platform, with regional hosting and contractual terms that exclude training on your data and limit retention. Part 5 covers how to evaluate those terms.
+For most data-sensitivity concerns there is a middle path: a major cloud platform, with regional hosting and contractual terms that exclude training on your data and limit retention. [Part 2 of the AI in the organisation module](file/bbb9efdd-e221) covers how to evaluate those terms.
 
 ### Deep dive (optional): quantisation
 
@@ -353,7 +353,7 @@ A model that gets each step right 98% of the time completes a 50-step task witho
 
 ### What this means for speed
 
-Every failure in this section has a known cause, and so every one has a defence that can run automatically: grounding and citation checks, schema validation and retries, sandboxing and scoped permissions, tests between steps. A person reading everything the model produces is the fallback for when those defences are missing. It is slow, and part 4 shows it is less reliable than it feels.
+Every failure in this section has a known cause, and so every one has a defence that can run automatically: grounding and citation checks, schema validation and retries, sandboxing and scoped permissions, tests between steps. A person reading everything the model produces is the fallback for when those defences are missing. It is slow, and [part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) shows it is less reliable than it feels.
 
 Build the defences and the person can step back to the decisions that need them. This is the link between understanding how models fail and being able to work at their pace.
 
@@ -419,6 +419,48 @@ The working conclusion: temperature 0 makes output far more consistent, and you 
 **Misleading:** consistent is not the same as correct. A model can be consistently wrong. Even at zero, hosted models are not perfectly repeatable.
 
 **What to say:** "That setting reduces variety. Reliability comes from checking the output, and from measuring how often it is right across many runs."
+
+## Core explanations
+
+The sixteen ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part. The practical AI module and the AI in the organisation module keep lists of their own.
+
+| Idea | Say it like this | Part |
+| --- | --- | --- |
+| What an LLM is | It writes one word-piece at a time, each time choosing what is most likely to come next given everything so far | 1 |
+| Tokens | The chunks it reads and writes in, a bit shorter than a word. We pay per chunk | 1 |
+| Parameters | The dials tuned during training. More dials means more capacity, not automatically better answers | 1 |
+| What it knows | Two things: what it absorbed in training, broad but fuzzy, and what we put in front of it, exact but limited | 1 |
+| Pretraining | It read a vast library and practised guessing what comes next until it had absorbed how language, facts and code work | 2 |
+| Post-training | Finishing school. It is shown good answers, then rewarded for the ones people prefer | 2 |
+| Sycophancy | It was trained on what people liked, and people like being agreed with. So it leans towards telling us what we want to hear | 2 |
+| Reasoning model | It practised on problems with checkable answers and learned to work things out on scratch paper first | 2 |
+| Knowledge cutoff | The day it stopped reading. It knows nothing after that unless we tell it | 2 |
+| Model tiers | Large, medium and small versions. We use the smallest that passes our tests for each job | 2 |
+| Context window | How much it can hold in view at once. A focused brief beats a document dump | 3 |
+| Prompt caching | If each request starts with the same material, the vendor remembers it briefly and charges about a tenth for that part | 3 |
+| Thinking budget | How long we let it think before replying. More helps on hard problems and costs more | 3 |
+| Hallucination | It fills gaps with plausible inventions, in the same confident voice as the facts | 3 |
+| Non-determinism | Ask twice and you may get two different answers. We design for that | 3 |
+| Prompt injection | Text hidden in a document or web page that tells the AI to do something else, and it may obey | 3 |
+
+## Misconceptions quick reference
+
+All twelve misconceptions from this module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
+
+| Claim | Short response | Part |
+| --- | --- | --- |
+| "It's just autocomplete" | Yes, and to predict well across all human writing it had to learn a great deal. Judge it by tested results | 1 |
+| "It looks things up in a database" | On its own it works from memory. When accuracy matters, we hand it the documents | 1 |
+| "It learns from our conversations" | It does not change as we use it. What the vendor may do with our data is set by contract | 1 |
+| "Bigger is always better" | We pick the smallest model that passes our tests, and spend the saving where the biggest one counts | 1 |
+| "It was trained on the whole internet" | A filtered slice of public text plus a lot of code. It has never seen anything of ours | 2 |
+| "Fine-tuning teaches it our facts" | Fine-tuning changes behaviour. For our information, we supply documents at question time | 2 |
+| "A higher benchmark score means better for us" | League tables say what is worth trying. Our own test set says what to use | 2 |
+| "AI progress has hit a wall" | One route slowed and two opened. We plan for neither a stall nor a leap, and re-test quarterly | 2 |
+| "A million-token window reads everything equally well" | It can take it all in, and does better with the right ten pages | 3 |
+| "Hallucination will be patched out" | It is getting rarer, not going away. We supply sources and check in proportion to the stakes | 3 |
+| "Self-hosting will be cheaper" | We would pay around the clock for a weaker model we use a few hours a day | 3 |
+| "Temperature zero makes it reliable" | That reduces variety. Reliability comes from checking outputs over many runs | 3 |
 
 ## Glossary
 

@@ -1,15 +1,28 @@
 # How AI works: the course website
 
 The course is the markdown files at the top of this folder: the
-introduction, and a file for each written part. It is in modules, each with
-its own parts numbered from 1: Language models (five parts, files `Part N
-….md`) and Generative media (seven parts, files `Media N ….md`): how the
+introduction, and a file for each written part. It is in six modules, each with
+its own parts numbered from 1, in an order the author chose on 20 September
+2026 so that the course starts gently: use it well, then see how it works,
+then explore further. Practical AI comes first, then AI in the organisation
+(two parts, files `Org N ….md`: AI in the team, and strategy and
+communication), then Language models (three parts, files `Part N ….md`, the
+mechanism alone), then Running AI locally, Generative media and Other AI
+models. AI in the organisation was parts 4 and 5 of Language models until
+that date; its pages are `Org1` and `Org2`, and the ids its links use did
+not change. Because the mechanism now comes after the practice, Practical
+AI part 1 opens with seven things to know about how a model behaves, and
+references from the first two modules to Language models are written as
+pointers forward, in the present tense. Language models part 3, AI in the
+organisation part 2, Practical AI part 7 and Generative media part 7 each
+end with their module's core explanations and misconceptions. Generative
+media (seven parts, files `Media N ….md`) covers how the
 models work, then images, video, music and audio, and 3D, then shaping
 models and prompting. The media parts were drafted by Claude in the
 author's voice. Parts 1, 6 and 7 grew out of a three-part image module the
 author had accepted; parts 3 to 5 were written from sources read in
 September 2026. Running AI locally (five parts, files `Local N ….md`) is
-the practical module: hardware, Hugging Face and model names, engines and
+the hands-on module: hardware, Hugging Face and model names, engines and
 apps, agents and harnesses, and building on a local model. It was written by
 Claude from sources read in September 2026, names products throughout, and
 explains what tools do without giving commands, which date faster than

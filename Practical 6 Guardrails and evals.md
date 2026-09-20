@@ -46,7 +46,7 @@ Work from the bottom of that table upwards. The strongest control is the one fur
 Start from the assumption that an injection will sometimes succeed, and limit what it can achieve. The routes in have multiplied through this module: a web page, a tool result or a tool's own description from [part 4](file/c9146f3b-27a8), a retrieved passage from [part 5](file/0b8e5d17-f4c2), text inside an image from [part 3](file/52e0a7c9-b3f6), and an installed skill from [part 2](file/8d27b5e4-c019).
 
 - **Least privilege.** Read-only by default. Narrowly scoped tokens. No production credentials in a development agent.
-- **Break the dangerous combination.** Part 3 of the language models module named it: private data, untrusted content and an outbound channel, all in one agent. Remove at least one. An agent that browses the web gets no secrets. An agent with repository access gets a network allow-list.
+- **Break the dangerous combination.** Part 3 of the language models module names it: private data, untrusted content and an outbound channel, all in one agent. Remove at least one. An agent that browses the web gets no secrets. An agent with repository access gets a network allow-list.
 - **Approval gates.** A person confirms consequential actions: sending messages, merging, deploying, deleting, spending money.
 - **Isolate untrusted content.** Process it in a separate model call that has no tools, and pass on only a structured result, such as a category or extracted fields. A sub-agent with no tools and no private context is a convenient way to do it.
 - **Sandboxing.** Run agent actions in a container or virtual machine with no access to the host file system and restricted network access.
@@ -56,7 +56,7 @@ Classifiers that detect injection attempts are a useful extra layer. They are no
 
 ### Treat output as untrusted input
 
-Model output that flows into another system needs the same handling as user input. Validate it against a schema. Escape it before rendering in a browser. Use parameterised queries, and never build SQL from it directly. Never pass it to `eval`. Before installing a package the model suggested, check that it exists and is the one you meant, because part 3 of the language models module described how invented package names are exploited.
+Model output that flows into another system needs the same handling as user input. Validate it against a schema. Escape it before rendering in a browser. Use parameterised queries, and never build SQL from it directly. Never pass it to `eval`. Before installing a package the model suggested, check that it exists and is the one you meant, because part 3 of the language models module describes how invented package names are exploited.
 
 ### Handling variability
 
@@ -83,10 +83,10 @@ A unit test asserts one exact result. An AI feature has many acceptable outputs,
 ### Build the dataset
 
 - Start with 20 to 50 cases. A small, real set beats a large synthetic one.
-- Draw them from real usage or your backlog. This is the same asset part 2 of the language models module recommended for comparing models.
+- Draw them from real usage or your backlog. This is the same asset part 2 of the language models module recommends for comparing models.
 - Include easy, typical, hard and adversarial cases, including an injection attempt if the feature reads untrusted content, and ugly scans if it reads documents.
 - Turn every production failure into a new case. The set becomes your regression suite.
-- Hold some cases back, and do not tune prompts against them. Otherwise you fit the prompt to the test, the same fault part 2 of the language models module criticised in public benchmarks.
+- Hold some cases back, and do not tune prompts against them. Otherwise you fit the prompt to the test, the same fault part 2 of the language models module criticises in public benchmarks.
 
 ### Three kinds of grader
 
@@ -135,7 +135,7 @@ Watch the signals users give without being asked: whether suggestions are accept
 
 ### Working is not the same as helping
 
-An eval answers "does it do the task?". It cannot answer "was the task worth doing this way?". A feature can pass nine cases in ten and leave the work around it no faster, because the time went to checking its output, or because the step it sped up was never the constraint. That second question needs a figure from before the feature existed: how long the job took, how often it went wrong, what it cost. Take it before launch, because it cannot be recovered afterwards, and people's sense of how much a tool helps them is reliably generous. Then report the outcome, such as tickets resolved or time to release, and not the usage. Section 7 of [part 4 of the language models module](file/3e89a4fc-a0bc) covers the measures.
+An eval answers "does it do the task?". It cannot answer "was the task worth doing this way?". A feature can pass nine cases in ten and leave the work around it no faster, because the time went to checking its output, or because the step it sped up was never the constraint. That second question needs a figure from before the feature existed: how long the job took, how often it went wrong, what it cost. Take it before launch, because it cannot be recovered afterwards, and people's sense of how much a tool helps them is reliably generous. Then report the outcome, such as tickets resolved or time to release, and not the usage. Section 7 of [part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) covers the measures.
 
 ### Deep dive (optional): biases in LLM judges
 

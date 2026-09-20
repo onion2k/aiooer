@@ -15,6 +15,7 @@ import { plainText, PAGE_FILES } from './inline.mjs';
 // starts "Part 1" and the page Part1.dc.html, which are the names they had
 // before there were modules, so every address a reader has kept still works.
 const MODULE_FILES = {
+  'AI in the organisation': 'Org',
   'Language models': 'Part',
   'Generative media': 'Media',
   'Running AI locally': 'Local',

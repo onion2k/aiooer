@@ -6,7 +6,7 @@
 
 This is the last of seven parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 40 minutes, not counting the reference sections.
 
-Most talk about AI in software is about writing code, and so was much of this module. Writing code is one stage in a longer process: finding out what is needed, planning it, building it, reviewing it, testing it, releasing it and keeping it running. This part goes through that process stage by stage and asks what the tools of parts 1 to 6 can do at each. [Part 4 of the language models module](file/3e89a4fc-a0bc) makes the argument from the point of view of a team and its ways of working. This part is about what to build and what to use. It closes with the module's two reference sections.
+Most talk about AI in software is about writing code, and so was much of this module. Writing code is one stage in a longer process: finding out what is needed, planning it, building it, reviewing it, testing it, releasing it and keeping it running. This part goes through that process stage by stage and asks what the tools of parts 1 to 6 can do at each. [Part 1 of the AI in the organisation module](file/3e89a4fc-a0bc) makes the argument from the point of view of a team and its ways of working. This part is about what to build and what to use. It closes with the module's two reference sections.
 
 ### What part 7 gives you
 
@@ -41,7 +41,7 @@ The second line is the ceiling. If code wrote itself, in no time, for nothing, a
 
 The sum above counts hours of effort. Delivery is worse than that in ways that favour the whole-process view further.
 
-- **Most elapsed time is waiting.** Part 4 of the language models module described flow efficiency: in most teams a change spends well over half its life in a queue, waiting for a review, an answer, a test run or a release slot. Faster coding lengthens those queues. Work on the stage that owns the queue shortens them.
+- **Most elapsed time is waiting.** Part 1 of the AI in the organisation module described flow efficiency: in most teams a change spends well over half its life in a queue, waiting for a review, an answer, a test run or a release slot. Faster coding lengthens those queues. Work on the stage that owns the queue shortens them.
 - **Mistakes cost more the later they are found.** A misunderstanding caught in discovery costs a conversation. Caught in review it costs a rewrite. Caught by a customer it costs an incident, a fix, a release and some trust. Help that improves the early stages pays back at every later one.
 - **The stages feed each other.** A clear specification makes the build faster, the review easier and the tests obvious. A vague one slows all three, however good the tools at each.
 
@@ -118,7 +118,7 @@ That matches the shape of the technology. A model is strong at condensing what i
 - **Acceptance criteria.** Turn a description into statements that can be checked, including the unhappy paths: the empty list, the expired session, the second click. These become the tests in section 6.
 - **Impact analysis.** A coding agent can read the codebase and report what a change will touch: which modules, which callers, which tests, which other teams. People are poor at this in large systems, since nobody holds the whole thing in their head.
 - **Options.** Ask for three designs with the trade-offs of each, not one. Record the choice and the reasons in a short decision record, which the next agent, and the next engineer, will read.
-- **Breaking work down.** Small, independent pieces with a clear definition of done are what both agents and reviewers handle best, and part 4 of the language models module explained why small batches matter more when AI is writing.
+- **Breaking work down.** Small, independent pieces with a clear definition of done are what both agents and reviewers handle best, and part 1 of the AI in the organisation module explained why small batches matter more when AI is writing.
 - **The test plan, first.** Decide how the change will be verified before it is built. If nobody can say, the specification is not finished.
 
 ### Cautions
@@ -141,7 +141,7 @@ What building well does do is help the stages either side. Code written against 
 
 ### Why it is the constraint
 
-Section 1's study is the general case. Agents produce more changes, and each human reviewer has the same number of hours. Part 4 of the language models module listed review first among the places the bottleneck goes. Whatever is done here decides whether the speed of building reaches the customer.
+Section 1's study is the general case. Agents produce more changes, and each human reviewer has the same number of hours. Part 1 of the AI in the organisation module listed review first among the places the bottleneck goes. Whatever is done here decides whether the speed of building reaches the customer.
 
 ### The division of labour
 
@@ -198,7 +198,7 @@ Three defences:
 
 - **Generate from intent.** The specification, the acceptance criteria, the bug report, the documentation. Not the implementation.
 - **Check that tests can fail.** Put a fault in the code and see that a test catches it. This is mutation testing, it is what Meta's system automates, and it is the only real evidence that a test is worth having.
-- **Watch for tampering.** Part 2 of the language models module described reward hacking. An agent asked to make the tests pass may weaken the tests. Part 6's grader for coding agents checks that test files were not changed, for this reason.
+- **Watch for tampering.** Part 2 of the language models module describes reward hacking. An agent asked to make the tests pass may weaken the tests. Part 6's grader for coding agents checks that test files were not changed, for this reason.
 
 ### The AI features themselves
 
@@ -238,7 +238,7 @@ Documentation rots because updating it is nobody's job. An agent in the pipeline
 
 ### Start at the constraint
 
-Part 4 of the language models module gives the method: take the last thirty completed pieces of work, find where they spent their time waiting, and go there first. For most teams in 2026 that is review, then testing, then decisions, which is to say planning and discovery. It is rarely coding.
+Part 1 of the AI in the organisation module gives the method: take the last thirty completed pieces of work, find where they spent their time waiting, and go there first. For most teams in 2026 that is review, then testing, then decisions, which is to say planning and discovery. It is rarely coding.
 
 ### The module, applied
 
@@ -299,7 +299,7 @@ Coding is about a sixth of the work. Make it instant and delivery improves by a 
 
 ## Core explanations
 
-The ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part. The language models module keeps its own list at the end of its part 5.
+The ideas from this module that you will explain most often, each in one line for a non-technical listener, with the part that holds the technical version and the detail. The complete two-audience tables remain at the end of each part. The AI in the organisation module and the language models module keep lists of their own.
 
 | Idea | Say it like this | Part |
 | --- | --- | --- |
