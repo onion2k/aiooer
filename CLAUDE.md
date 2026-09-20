@@ -122,6 +122,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, modules   | the home page and every written part   | label, breadcrumb, title, ways on, no dead links | none           |
 | `audit`, name      | 29 pages and the canvas's index        | the heading's name wherever it is shown          | none           |
 | `look`             | 42 boards                              | no errors; recorded heights match                | 2px on heights |
+| `links`            | 151 outside addresses the course cites | 150 ok, 1 unverified, 0 gone                     | none gone      |
 | `perf`, not a gate | render, fonts, repaint, scrolling      | see below                                        | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
@@ -148,6 +149,7 @@ slowdown is only caught by reading them.
     npm run look           every board rendered: errors and stale heights fail it; pictures in test-results/shots
     npm run heights        build, record the showcase boards' natural heights, then build again
     npm run perf           render and repaint times, five runs each, medians
+    npm run links          every outside address the course cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name`,
 `--pages Part1.dc.html,...` and `--mutate <name>`, which puts a known defect
@@ -166,7 +168,7 @@ The canvas is output. `npm run build` writes it to `dist/canvas`, and Claude
 publishes it with the Artifact tool: `url` the canvas, `root` `dist/canvas`,
 `file_path` `dist/canvas/project/canvas.json`, and `files` every
 `project/*.dc.html` by that path. Publish only after `npm run check` is
-green. Anything changed by hand on the canvas is overwritten by the next
+green and `npm run links` finds no source gone. Anything changed by hand on the canvas is overwritten by the next
 publish, so read the canvas first and bring such changes into `src/`. The
 canvas is private until it is shared from its Share menu.
 
@@ -183,7 +185,7 @@ canvas is private until it is shared from its Share menu.
   really headings). It makes no HTML. It is handed the folder to read.
 - `src/inline.mjs` sets inline text as a typesetter would (curly quotes, ×,
   superscripts) and turns `file/…` links into board links.
-- `src/render.mjs` draws blocks, `src/diagrams.mjs` holds the six Mermaid
+- `src/render.mjs` draws blocks, `src/diagrams.mjs` holds the twelve Mermaid
   diagrams redrawn as HTML figures, `src/chrome.mjs` the parts every page
   shares, and `src/pages.mjs` assembles each page and wraps it as a board.
 - `src/styles.mjs` is the stylesheet, and holds the grid: a `grid-12`
@@ -204,6 +206,13 @@ canvas is private until it is shared from its Share menu.
 - `src/heights.json` is measured by `npm run heights`, never typed.
   `src/canvas-created.json` is the canvas's creation stamp, kept so every
   build writes the same index.
+- `scripts/links.mjs` asks every outside address the course cites whether it
+  still answers. It is not part of `check`, since it depends on other
+  people's servers and a gate a stranger's outage can turn red gets ignored;
+  it is run before a publish. A 404, a 410 or a name that does not resolve is
+  gone and fails it; a refusal, a rate limit, a server error or a timeout is
+  unverified and only listed. `--mutate dead` adds a page and a host that do
+  not exist, to prove it still fails, and `--only <text>` checks a few.
 - `scripts/harness.mjs` is the test API. `scripts/` also holds the gates
   and the look tools.
 - `vendor/design-runtime.js` is the canvas's own page runtime, so the checks
