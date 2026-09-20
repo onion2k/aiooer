@@ -1,14 +1,16 @@
 # Using AI well: Course Introduction
 
-2026-09-18 · Chris Neale
+2026-09-20 · Chris Neale
 
 ## What this course is for
 
-This course is about using AI well in an engineering organisation, and about how it works. It starts with use, because nearly everyone reading it already uses these tools, and using them well is the quickest thing to get better at. For anyone who does not, a short optional primer comes first. It then explains what the tools are doing behind the scenes, which you do not need in order to use them and which explains why the advice works. After that come seams of the subject you may not have met: running models on your own hardware, the models that generate images, video, music and 3D objects, and kinds of AI model that are not chat assistants at all. The course is written for people in engineering, product and leadership who need to discuss AI with both technical and non-technical colleagues, accurately and without hype.
+This course is about using AI well, and about how it works. It starts with use, because nearly everyone reading it already uses these tools, and using them well is the quickest thing to get better at: the chat window first, then the AI built into software you already have, then what to do when neither is enough. For anyone who does not use them yet, a short optional primer comes before all of it. The course then explains what the tools are doing behind the scenes, which you do not need in order to use them and which explains why the advice works. After that come seams of the subject you may not have met: running models on your own hardware, the models that generate images, video, music and 3D objects, and kinds of AI model that are not chat assistants at all.
+
+The course is written for people in engineering, product and leadership who need to discuss AI with both technical and non-technical colleagues, accurately and without hype. Most of it is about building software, because that is the work the author knows and where the evidence is best. The two parts it opens with, and the module on generative media, assume no engineering at all.
 
 It has a point of view. Most people use AI to lower their own effort on work they would have done anyway, and then check everything by hand, which slows the AI to human pace. The larger prize is to change how work is done so that the AI's speed shows up in delivery, and to take on things that were never worth attempting before.
 
-That change needs confidence about where AI can be trusted, where it cannot, and what must be built to close the gap. The first two modules supply the practice. The language models module supplies the reasons.
+That change needs confidence about where AI can be trusted, where it cannot, and what must be built to close the gap. Practical AI and AI in the organisation supply the practice. The language models module supplies the reasons.
 
 ## The modules
 
@@ -28,14 +30,17 @@ This module is optional. It is a primer for anyone who has come to the course wi
 
 | Part | After it you can | Time |
 | --- | --- | --- |
-| [Part 1: Intent, agents and other instruction files](file/f3a91c20-6d4e) | Write the standing instructions that tell a model what you want, and know which file does what | 35 min |
-| [Part 2: Skills, agents and plugins](file/8d27b5e4-c019) | Package know-how so that an agent can use it, and choose between a skill, a sub-agent and a plugin | 35 min |
-| [Part 3: Multi-modal models](file/52e0a7c9-b3f6) | Use models that read images, audio and video as well as text, and know what they miss | 30 min |
-| [Part 4: MCP servers and tool use](file/c9146f3b-27a8) | Connect a model to your own systems, and decide what it may do there | 25 min |
-| [Part 5: Retrieval](file/0b8e5d17-f4c2) | Have a model answer from your own documents, and diagnose it when it answers badly | 25 min |
-| [Part 6: Guardrails and evals](file/7a3f2c68-91de) | Contain what a model can do, and measure whether it is doing it well | 25 min |
+| [Part 1: AI chat](file/b4e9d0a7-3c81) | Get far more out of a chat assistant, and know when you have outgrown it | 30 min |
+| [Part 2: AI in apps](file/9f2c5e38-a7b4) | Judge the AI built into the software you already use, and what it may see | 25 min |
+| [Part 3: Intent, AGENTS.md and other instruction files](file/f3a91c20-6d4e) | Write the standing instructions that tell a model what you want, and know which file does what | 35 min |
+| [Part 4: Skills, agents and plugins](file/8d27b5e4-c019) | Package know-how so an agent can use it, and choose between a skill, an agent definition and a plugin | 25 min |
+| [Part 5: Agentic work](file/1d8f42a6-b93e) | Brief an agent, keep it on course over a long task, and decide where it should run | 30 min |
+| [Part 6: Multi-modal models](file/52e0a7c9-b3f6) | Use models that read images, audio and video as well as text, and know what they miss | 30 min |
+| [Part 7: MCP servers and tool use](file/c9146f3b-27a8) | Connect a model to your own systems, and decide what it may do there | 25 min |
+| [Part 8: Retrieval](file/0b8e5d17-f4c2) | Have a model answer from your own documents, and diagnose it when it answers badly | 25 min |
+| [Part 9: Guardrails and evals](file/7a3f2c68-91de) | Contain what a model can do, and measure whether it is doing it well | 25 min |
 
-This module covers the craft of building with models: the instruction files, skills and plugins that shape an agent, models that take more than text, connecting a model to tools and systems, answering from your own documents, and keeping the result safe and measured. It names products and file formats throughout, and those date quickly. It is where the course starts, and it needs no knowledge of how a model works. Its first part lists the seven things about a model's behaviour that the rest leans on. Its part 6 ends with a design review checklist and the module's own two reference sections. The whole module is about three hours of reading.
+This module covers the craft of using and building with models. Parts 1 and 2 are how nearly everyone meets AI: the chat window, and the AI inside software they already use. Parts 3 to 9 are what to do when that is no longer enough: the instruction files, skills and plugins that shape an agent, what happens when one runs, models that take more than text, connecting a model to tools and systems, answering from your own documents, and keeping the result safe and measured. It names products and file formats throughout, and those date quickly. It is where the course starts, and it needs no knowledge of how a model works. Its first part lists the seven things about a model's behaviour that the rest leans on. Its part 9 ends with a design review checklist and the module's own two reference sections. The whole module is about four hours of reading.
 
 ### AI in the organisation
 | Part | After it you can | Time |
@@ -103,7 +108,7 @@ This module will grow. Each part stands alone, and each names products and figur
 - **Glossary** at the end of each part defines every technical term introduced there.
 - **Sources** appear where a part quotes study results or legal dates.
 
-Four modules end with two reference sections for use on their own: the explanations you will need most often, each in a line, and every misconception in the module with a one-line response. They close part 6 of practical AI, part 3 of AI in the organisation, part 3 of language models and part 7 of generative media.
+Four modules end with two reference sections for use on their own: the explanations you will need most often, each in a line, and every misconception in the module with a one-line response. They close part 9 of practical AI, part 3 of AI in the organisation, part 3 of language models and part 7 of generative media.
 
 ## Suggested routes
 
@@ -113,10 +118,10 @@ Each module numbers its own parts, so every route names its modules. If you are 
 | --- | --- |
 | Engineering manager or technical lead | Practical AI in order, then AI in the organisation, then language models parts 1 to 3. Read the deep dives in the areas where your engineers will test you |
 | Engineer | Practical AI in order with the deep dives, then language models parts 1 to 3, then AI in the organisation parts 1 and 2 |
-| Product or delivery lead | Practical AI part 1, then AI in the organisation part 1 in full and part 2 sections 1, 2 and 7, then the checklist in practical AI part 6 section 3 |
+| Product or delivery lead | Practical AI parts 1 and 2, then AI in the organisation part 1 in full and part 2 sections 1, 2 and 7, then the checklist in practical AI part 9 section 3 |
 | Non-technical leader | The "In plain terms" openers throughout practical AI, then AI in the organisation part 1 section 1, part 2 sections 1 to 3 and part 3 sections 5 and 6 in full |
-| One hour only | Practical AI part 1 sections 1 and 2, AI in the organisation part 1 section 1 and part 2 sections 1 to 3, language models part 3 section 7, and the two reference sections that close practical AI part 6 |
-| Engineer building an AI feature | Practical AI parts 1 to 6 in order, with language models part 3 section 7 for why the failures happen. Take the checklist in part 6 section 3 to every design review |
+| One hour only | Practical AI part 1, AI in the organisation part 1 section 1 and part 2 sections 1 to 3, language models part 3 section 7, and the two reference sections that close practical AI part 9 |
+| Engineer building an AI feature | Practical AI parts 3 to 9 in order, with language models part 3 section 7 for why the failures happen. Take the checklist in part 9 section 3 to every design review |
 | Anyone who wants a model on their own machine | Language models part 3, then running AI locally parts 1 to 3. Add part 4 before letting an agent near your files |
 | Designer, marketer or producer making media | Generative media part 7 in full, then the part for your medium from parts 2 to 5, then part 6 sections 4, 7, 9 and 10, with the "In plain terms" openers of part 1 |
 | Engineer building a media pipeline | Generative media parts 1 to 7 in order, with the deep dives |

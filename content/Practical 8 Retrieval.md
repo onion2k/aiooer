@@ -1,16 +1,16 @@
-# Part 5: Retrieval
+# Part 8: Retrieval
 
 2026-09-19 · Chris Neale
 
 ## About this part
 
-This is the fifth of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the eighth of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
-[Part 1](file/f3a91c20-6d4e) covered the instructions that stand in the context, and [part 4](file/c9146f3b-27a8) the tool results that arrive in it. This part covers the third source: your own documents, found and placed there at the moment of the question. The technique is called retrieval-augmented generation, or RAG. It is how a model comes to know your codebase, your wiki and your tickets without any retraining.
+[Part 3](file/f3a91c20-6d4e) covered the instructions that stand in the context, and [part 7](file/c9146f3b-27a8) the tool results that arrive in it. This part covers the third source: your own documents, found and placed there at the moment of the question. The technique is called retrieval-augmented generation, or RAG. It is how a model comes to know your codebase, your wiki and your tickets without any retraining.
 
-### What part 5 gives you
+### What part 8 gives you
 
-Part 5 builds one idea: retrieval is a search problem with a model on the end. When an answer is bad, the cause is usually that the right passage never reached the model, and no model can answer from a passage it was not given. So most of the craft is in finding, and most of the rest is in the state of the documents being searched. RAG does not so much fix your documentation as publish it.
+Part 8 builds one idea: retrieval is a search problem with a model on the end. When an answer is bad, the cause is usually that the right passage never reached the model, and no model can answer from a passage it was not given. So most of the craft is in finding, and most of the rest is in the state of the documents being searched. RAG does not so much fix your documentation as publish it.
 
 ## 1. Whether to retrieve at all
 
@@ -61,7 +61,7 @@ Embeddings were introduced in part 1 of the language models module: a passage be
 
 ### Beyond text
 
-Two extensions are worth knowing. The multi-modal models of [part 3](file/52e0a7c9-b3f6) mean that pages can be indexed as images, which keeps tables and diagrams that text extraction destroys, at a higher cost for each page. And for questions about how things connect, such as which services depend on a library, some teams build a graph of entities and relations alongside the passages. Both are refinements to reach for when a plain pipeline has been measured and found wanting.
+Two extensions are worth knowing. The multi-modal models of [part 6](file/52e0a7c9-b3f6) mean that pages can be indexed as images, which keeps tables and diagrams that text extraction destroys, at a higher cost for each page. And for questions about how things connect, such as which services depend on a library, some teams build a graph of entities and relations alongside the passages. Both are refinements to reach for when a plain pipeline has been measured and found wanting.
 
 ### Deep dive (optional): how a vector index finds neighbours fast
 
@@ -87,7 +87,7 @@ The two-stage design takes the best of each: fast, rough search to collect 50 to
 
 ### Search as a tool
 
-The one-shot pipeline is no longer the only pattern. Give the model a search tool, as part 4 described, and let it search, read, refine its query and search again. This handles questions that need several hops, such as "which of the services that use the old authentication library had incidents last quarter?", where the second search depends on the result of the first.
+The one-shot pipeline is no longer the only pattern. Give the model a search tool, as part 7 described, and let it search, read, refine its query and search again. This handles questions that need several hops, such as "which of the services that use the old authentication library had incidents last quarter?", where the second search depends on the result of the first.
 
 Coding agents mostly work this way, using plain text search and file reads and no vector index at all. It is simpler and never stale. For many internal uses, a tool that wraps the search you already have, in the wiki, the tracker or the document store, is enough. Such a tool also inherits that system's permissions, which section 5 shows is worth a great deal. Build an embedding pipeline when you have evidence that simple search falls short.
 
@@ -98,10 +98,10 @@ Coding agents mostly work this way, using plain text search and file reads and n
 | Latency and cost | One search, one model call. Fast and predictable | Several rounds. Slower and variable |
 | Hard questions | Fails when the first search misses | Recovers by rephrasing and following leads |
 | Infrastructure | An index to build and keep fresh | Whatever search already exists |
-| Behaviour | Testable stage by stage | An agent, with the variability part 2 described |
+| Behaviour | Testable stage by stage | An agent, with the variability part 5 described |
 | Suits | High-volume questions with a known shape: a support assistant, a documentation helper | Research, investigation, anything across several systems |
 
-The two combine. A good retrieval pipeline makes an excellent tool for an agent, and a sub-agent from part 2 is a good place to run a long search, since only its findings come back to the main context.
+The two combine. A good retrieval pipeline makes an excellent tool for an agent, and a sub-agent from part 5 is a good place to run a long search, since only its findings come back to the main context.
 
 ## 4. Diagnosing a bad answer
 
@@ -109,7 +109,7 @@ The two combine. A good retrieval pipeline makes an excellent tool for an agent,
 
 ### Look at the passages first
 
-A RAG failure has one of two causes, and they need different fixes. Either the right passage was never retrieved, or it was retrieved and the model misused it. Always look at the retrieved passages first. Most failures are retrieval failures. This is only possible if the passages are logged with each answer, which is one reason for the tracing in [part 6](file/7a3f2c68-91de).
+A RAG failure has one of two causes, and they need different fixes. Either the right passage was never retrieved, or it was retrieved and the model misused it. Always look at the retrieved passages first. Most failures are retrieval failures. This is only possible if the passages are logged with each answer, which is one reason for the tracing in [part 9](file/7a3f2c68-91de).
 
 | What you see in the log | Likely cause | Fix |
 | --- | --- | --- |
@@ -128,7 +128,7 @@ This is the most useful non-technical finding in this part. Projects to "add AI 
 
 ### Measuring it
 
-Retrieval can be measured separately from answers, and should be. Collect fifty real questions and mark, for each, the passage that answers it. Then the proportion of questions for which that passage appears in the top results is a number you can watch while changing the chunking, the search and the reranker, without a model in the loop at all. Part 6 covers the rest of evaluation.
+Retrieval can be measured separately from answers, and should be. Collect fifty real questions and mark, for each, the passage that answers it. Then the proportion of questions for which that passage appears in the top results is a number you can watch while changing the chunking, the search and the reranker, without a model in the loop at all. Part 9 covers the rest of evaluation.
 
 ## 5. Permissions, poisoning and limits
 
@@ -192,7 +192,7 @@ Look it up, then answer. The looking up is where it goes right or wrong. Start w
 
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 to 4 and in the glossaries of the language models module.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 to 6 and in the glossaries of the language models module.
 
 | Term | Meaning |
 | --- | --- |

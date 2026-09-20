@@ -416,7 +416,7 @@ Three rules sit behind the table.
 
 **Put people where models are weak.** Composition, exact products and lettering are cheap for a person and unreliable for a model. Rendering, lighting, texture and variation are the reverse. The strongest workflows hand each side the work it is good at: a person blocks out the layout and supplies the real logo, the model renders the scene, and a person fixes what is left.
 
-**Treat a working setup as an asset.** A model file, its add-ons and their strengths, a prompt template, the settings and a control workflow together are a piece of production tooling. Pin the versions, store them with the project, and record them with every image. This is the image counterpart of the rule in [part 1 of the practical AI module](file/f3a91c20-6d4e) that prompts are code.
+**Treat a working setup as an asset.** A model file, its add-ons and their strengths, a prompt template, the settings and a control workflow together are a piece of production tooling. Pin the versions, store them with the project, and record them with every image. This is the image counterpart of the rule in [part 3 of the practical AI module](file/f3a91c20-6d4e) that prompts are code.
 
 ### The whiteboard version
 

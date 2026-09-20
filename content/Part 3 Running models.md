@@ -6,7 +6,7 @@
 
 Part 3 covers what happens when a model is put to work: how a request is processed, what it costs, how fast it runs, and how it fails. Parts 1 and 2 explained the machine and its training. This part turns that into numbers you can budget with and failure patterns you can predict.
 
-It is the hinge of the module. Sections 1 to 6 are about performance and money. Section 7 maps each characteristic failure back to its cause in parts 1 and 2, and across to its mitigation in [part 6 of the practical AI module](file/7a3f2c68-91de).
+It is the hinge of the module. Sections 1 to 6 are about performance and money. Section 7 maps each characteristic failure back to its cause in parts 1 and 2, and across to its mitigation in [part 9 of the practical AI module](file/7a3f2c68-91de).
 
 The numbers in this part also support the course's main argument. Tokens are cheap next to people's time, so the economic question is rarely what the AI costs. It is whether a person is waiting on the AI, or the AI is waiting on a person. And because each failure mode has a known cause, each can be met with an automatic check, which is what allows people to step back.
 
@@ -130,13 +130,13 @@ The causes trace back to parts 1 and 2. Attention weights must sum to 1, so more
 
 A long working session fills the context with dead ends, superseded instructions and old versions of files. The model cannot tell which version is current as reliably as you can. The symptoms are distinctive: repeating a mistake you already corrected, forgetting a constraint from early on, or contradicting itself.
 
-The fix is procedural. Start a fresh session for each task. When a session must continue, have the model summarise the state, then restart from the summary. Keep durable instructions in a file that is loaded every time, not in chat history. [Part 2 of the practical AI module](file/8d27b5e4-c019) covers how agents automate this.
+The fix is procedural. Start a fresh session for each task. When a session must continue, have the model summarise the state, then restart from the summary. Keep durable instructions in a file that is loaded every time, not in chat history. [Part 5 of the practical AI module](file/1d8f42a6-b93e) covers how agents automate this.
 
 ### Working rules
 
 - Put documents before the question, and the key instruction at the very start or very end.
 - Curate. Every irrelevant token costs money and a little accuracy.
-- Prefer fetching the relevant parts over loading everything. [Part 5 of the practical AI module](file/0b8e5d17-f4c2) covers retrieval.
+- Prefer fetching the relevant parts over loading everything. [Part 8 of the practical AI module](file/0b8e5d17-f4c2) covers retrieval.
 - Use long context for what it is good at: one-off reading of a whole specification, contract or log file.
 - Treat a vendor's maximum as a ceiling for emergencies, not as an operating point.
 
@@ -328,7 +328,7 @@ The closest analogy is SQL injection, with one painful difference: there is no e
 
 The risk scales with what the model is able to do. A chatbot that gets injected gives a wrong answer. An agent with tools can leak data or take destructive action. The combination to avoid is an agent that has all three of: access to private data, exposure to untrusted content, and a way to send data out.
 
-For coding agents, untrusted content includes a README in a dependency, a comment in a pull request from outside, or the body of a public issue. [Part 6 of the practical AI module](file/7a3f2c68-91de) covers the defences: least privilege, human approval for consequential actions, sandboxing, and keeping secrets out of the context.
+For coding agents, untrusted content includes a README in a dependency, a comment in a pull request from outside, or the body of a public issue. [Part 9 of the practical AI module](file/7a3f2c68-91de) covers the defences: least privilege, human approval for consequential actions, sandboxing, and keeping secrets out of the context.
 
 ### Stale knowledge
 
@@ -344,7 +344,7 @@ Ask without signalling the answer you want. Request the strongest objections exp
 
 ### Compounding errors in long tasks
 
-A model that gets each step right 98% of the time completes a 50-step task without error only 36% of the time. Agents therefore need verification between steps, such as running tests, checking types and confirming that a file really changed, and they need checkpoints to return to. This is why [part 2 of the practical AI module](file/8d27b5e4-c019) treats fast automatic feedback as the foundation of agent work.
+A model that gets each step right 98% of the time completes a 50-step task without error only 36% of the time. Agents therefore need verification between steps, such as running tests, checking types and confirming that a file really changed, and they need checkpoints to return to. This is why [part 5 of the practical AI module](file/1d8f42a6-b93e) treats fast automatic feedback as the foundation of agent work.
 
 ### Two smaller habits
 

@@ -97,7 +97,7 @@ A thousand tokens a second changes the feel of things. A screen of code appears 
 ### What is given up
 
 - **Accuracy where it is hardest.** Google's own figures for its experimental model show it level with a small autoregressive sibling on coding tests and clearly behind on graduate-level science questions, 40% against 57%, and on multilingual tasks. The top of every quality ranking remains autoregressive.
-- **Guaranteed structure.** [Part 4 of the practical AI module](file/c9146f3b-27a8) relied on constrained decoding to guarantee valid JSON. That machinery checks tokens as they arrive in order, and here they do not. Equivalents for diffusion were still being published in mid-2026.
+- **Guaranteed structure.** [Part 7 of the practical AI module](file/c9146f3b-27a8) relied on constrained decoding to guarantee valid JSON. That machinery checks tokens as they arrive in order, and here they do not. Equivalents for diffusion were still being published in mid-2026.
 - **The ecosystem.** Prompt caching, tool-calling formats, serving stacks, quantised builds for laptops and fine-tuning recipes all assume the autoregressive design. Each is being rebuilt, and few are finished.
 - **Familiar behaviour.** Settings such as temperature act differently, and a reply streams in blocks that fill in, not as a steady line of text.
 
@@ -125,7 +125,7 @@ The list dates quickly and is not complete.
 
 And when not to: the hardest reasoning, knowledge-heavy questions, strict structured output, and anywhere your existing tooling does the heavy lifting.
 
-Test it as [part 6 of the practical AI module](file/7a3f2c68-91de) describes, on your own cases, and measure what the user experiences, which is time to a complete, correct answer. A fast wrong answer followed by a retry is slower than a slow right one.
+Test it as [part 9 of the practical AI module](file/7a3f2c68-91de) describes, on your own cases, and measure what the user experiences, which is time to a complete, correct answer. A fast wrong answer followed by a retry is slower than a slow right one.
 
 ### Where it is going
 

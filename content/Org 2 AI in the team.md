@@ -438,7 +438,7 @@ Product managers and analysts can now build working prototypes and small interna
 
 - Pull baseline measures from existing tools: cycle time by stage, pull request size, review wait, change failure rate, rework rate.
 - Map the value stream for the last 30 tickets and name the constraint, as in section 2.
-- Settle the basics: approved tools, licences, and an instruction file in each main repository, as [part 1 of the practical AI module](file/f3a91c20-6d4e) describes.
+- Settle the basics: approved tools, licences, and an instruction file in each main repository, as [part 3 of the practical AI module](file/f3a91c20-6d4e) describes.
 - Agree the risk tiers from section 3 with security and compliance. Write them down.
 - Choose two or three champions and give them time.
 - Start the "not worth it before" list from section 5.
@@ -449,7 +449,7 @@ Product managers and analysts can now build working prototypes and small interna
 - Close the biggest gap in "what must be true first" from section 3.
 - Pilot spec-first work and background agents with the champions, on the low-risk tier only.
 - Pick one long-deferred migration or debt item as a showcase, and finish it.
-- Build a small eval set for your coding agent on your own repository, as [part 6 of the practical AI module](file/7a3f2c68-91de) describes.
+- Build a small eval set for your coding agent on your own repository, as [part 9 of the practical AI module](file/7a3f2c68-91de) describes.
 - Hold the weekly show-and-tell.
 
 ### Days 61 to 90: spread and embed

@@ -45,7 +45,7 @@ Total independence is not worth its cost. A few habits keep switching affordable
 | Your verification stack and test suites | Data held only inside a vendor's product |
 | Clean, current documentation |  |
 
-An eval set, which [part 6 of the practical AI module](file/7a3f2c68-91de) covers, matters most. With it, switching models is an afternoon's test and a configuration change. Without it, every switch is a leap of faith, which in practice means you never switch.
+An eval set, which [part 9 of the practical AI module](file/7a3f2c68-91de) covers, matters most. With it, switching models is an afternoon's test and a configuration change. Without it, every switch is a leap of faith, which in practice means you never switch.
 
 A practical arrangement is one primary vendor, a second under contract and tested, and most tools configured so that the model behind them can be changed.
 
@@ -94,9 +94,9 @@ If approved tools are missing, slow to arrive or worse than the free ones, peopl
 
 ### What goes into prompts
 
-Personal data sent to a model is processed by a third party, and data protection law applies in the usual way: a lawful basis, a processing agreement, data minimisation and attention to international transfers. For most engineering work the simple answer is to keep real customer data out of prompts. Use synthetic or masked data in development, and keep production data behind tools that enforce access control, as [part 4 of the practical AI module](file/c9146f3b-27a8) describes.
+Personal data sent to a model is processed by a third party, and data protection law applies in the usual way: a lawful basis, a processing agreement, data minimisation and attention to international transfers. For most engineering work the simple answer is to keep real customer data out of prompts. Use synthetic or masked data in development, and keep production data behind tools that enforce access control, as [part 7 of the practical AI module](file/c9146f3b-27a8) describes.
 
-Secrets are a separate matter. Credentials should never appear in a prompt or sit in a repository that an agent reads. [Part 6 of the practical AI module](file/7a3f2c68-91de) explains how to inject them at the tool layer.
+Secrets are a separate matter. Credentials should never appear in a prompt or sit in a repository that an agent reads. [Part 9 of the practical AI module](file/7a3f2c68-91de) explains how to inject them at the tool layer.
 
 ### Who owns the output
 
@@ -166,7 +166,7 @@ New tools appear every week, and some will be worth having. Publish a route with
 
 ### Agents and integrations
 
-[Part 6 of the practical AI module](file/7a3f2c68-91de) sets out the controls. Governance decides who signs them off.
+[Part 9 of the practical AI module](file/7a3f2c68-91de) sets out the controls. Governance decides who signs them off.
 
 - An allow-list of MCP servers, with an owner for each.
 - Default credentials that are read-only and narrowly scoped.

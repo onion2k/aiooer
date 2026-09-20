@@ -34,7 +34,7 @@ Part 3 builds one idea: AI is strongest where the work is made of language and t
 
 ### Working with code and data
 
-Code is where AI has changed work most, and not only for programmers. It will write a spreadsheet formula, a script to rename five hundred files, or a query against a database, and explain what each line does. Many assistants can also run code themselves, which means they can analyse a spreadsheet you upload, draw the chart, and show their working. For software teams, coding agents now take on whole tasks, and [part 2 of the practical AI module](file/8d27b5e4-c019) covers them.
+Code is where AI has changed work most, and not only for programmers. It will write a spreadsheet formula, a script to rename five hundred files, or a query against a database, and explain what each line does. Many assistants can also run code themselves, which means they can analyse a spreadsheet you upload, draw the chart, and show their working. For software teams, coding agents now take on whole tasks, and [part 5 of the practical AI module](file/1d8f42a6-b93e) covers them.
 
 ## 2. From answering to doing
 
@@ -52,7 +52,7 @@ Code is where AI has changed work most, and not only for programmers. It will wr
 
 Tools fix some of the weaknesses from part 1. An assistant that searches is no longer limited to what it remembered. One that runs code no longer guesses at sums.
 
-They also raise the stakes. An assistant that can only talk can at worst say something wrong. An agent that can send, delete, buy or deploy can do something wrong. That is why [part 4](file/c9146f3b-27a8) and [part 6](file/7a3f2c68-91de) of the practical AI module are about deciding what an AI may reach and what it must ask permission for.
+They also raise the stakes. An assistant that can only talk can at worst say something wrong. An agent that can send, delete, buy or deploy can do something wrong. That is why [part 7](file/c9146f3b-27a8) and [part 9](file/7a3f2c68-91de) of the practical AI module are about deciding what an AI may reach and what it must ask permission for.
 
 ### What agents are doing now
 
@@ -62,7 +62,7 @@ In software teams, agents fix bugs, write tests, review each other's changes and
 
 **In plain terms.** The same family of technology can look at pictures, listen to recordings and watch video, and separate tools can create images, video, speech, music and 3D models from a description. **Who should read it:** everyone. It is short.
 
-- **Taking media in.** You can show an assistant a photograph of a whiteboard, a scanned invoice, a chart or a screenshot of an error, and ask about it. Some will transcribe and summarise a meeting recording. [Part 3 of the practical AI module](file/52e0a7c9-b3f6) covers what they see well and what they miss.
+- **Taking media in.** You can show an assistant a photograph of a whiteboard, a scanned invoice, a chart or a screenshot of an error, and ask about it. Some will transcribe and summarise a meeting recording. [Part 6 of the practical AI module](file/52e0a7c9-b3f6) covers what they see well and what they miss.
 - **Making media.** Image generators produce illustrations, product mock-ups and photographs of things that never existed. Video, voice, music and 3D tools are less mature and improving fast. The generative media module explains how they work, how to ask them for what you want, and the questions of rights and honesty they raise.
 
 The caution from part 1 carries over. A generated image can look entirely real and be entirely invented, and the same is now true of voices and video.

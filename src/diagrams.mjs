@@ -163,8 +163,8 @@ export const DIAGRAMS = {
     ],
     loop: 'When the model makes a tool call, your code runs the tool, and its result goes back into the context as tool results.',
   },
-  // Practical AI part 4, section 2. sequenceDiagram with three participants.
-  'practical4-1': {
+  // Practical AI part 7, section 2. sequenceDiagram with three participants.
+  'practical7-1': {
     kind: 'sequence',
     caption: 'The tool-use loop',
     participants: ['Your application', 'Model', 'Tool'],
@@ -193,9 +193,9 @@ export const DIAGRAMS = {
     ],
     loop: 'What customers and incidents show in operation goes back to step 1, discovery, for the next round.',
   },
-  // Practical AI part 5, section 2. Two rows: indexing ahead of time, answering
+  // Practical AI part 8, section 2. Two rows: indexing ahead of time, answering
   // per question.
-  'practical5-1': {
+  'practical8-1': {
     kind: 'lanes',
     caption: 'The RAG pipeline',
     lanes: [

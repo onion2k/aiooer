@@ -1,18 +1,18 @@
-# Part 3: Multi-modal Models
+# Part 6: Multi-modal Models
 
 2026-09-19 · Chris Neale
 
 ## About this part
 
-This is the third of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
+This is the sixth of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 30 minutes.
 
-[Part 1](file/f3a91c20-6d4e) said the model knows only what is in front of it. Until recently that meant text. Most current models also accept pictures, many accept documents as pictures, and some accept sound and video. This part explains how that works, what it costs, and what these models reliably miss.
+[Part 3](file/f3a91c20-6d4e) said the model knows only what is in front of it. Until recently that meant text. Most current models also accept pictures, many accept documents as pictures, and some accept sound and video. This part explains how that works, what it costs, and what these models reliably miss.
 
 It is about models that take in media. Models that produce media are the subject of the [generative media module](file/7c41d2a9-1e05), and the two are different machines that are easy to confuse, as section 1 explains.
 
-### What part 3 gives you
+### What part 6 gives you
 
-Part 3 builds one idea: to the model, a picture or a sound is more tokens. Everything follows from that. It is why an image has a price, why a detail too small for the grid is simply absent, why a model can discuss a chart and still misread a number on it, and why text inside an image can give the model orders. A multi-modal model reads your media. It does not look at it the way you do.
+Part 6 builds one idea: to the model, a picture or a sound is more tokens. Everything follows from that. It is why an image has a price, why a detail too small for the grid is simply absent, why a model can discuss a chart and still misread a number on it, and why text inside an image can give the model orders. A multi-modal model reads your media. It does not look at it the way you do.
 
 ## 1. What multi-modal means
 
@@ -29,7 +29,7 @@ A mode is a kind of data: text, image, audio, video. A model has a list of modes
 | Omni model | Text, images, audio and video | Text, and sometimes speech | This part |
 | Generative media model | Text, and sometimes media to start from | Images, video, music or 3D | The generative media module |
 
-When a chat product appears to do everything, it is usually a language model with tools. It reads your photograph itself, and when you ask for a picture it writes a prompt and calls an image model, as [part 4](file/c9146f3b-27a8) describes. The join matters when something goes wrong, because the model that understood your request is not the one that drew the result.
+When a chat product appears to do everything, it is usually a language model with tools. It reads your photograph itself, and when you ask for a picture it writes a prompt and calls an image model, as [part 7](file/c9146f3b-27a8) describes. The join matters when something goes wrong, because the model that understood your request is not the one that drew the result.
 
 The line is blurring. A few models now generate images or speech from the same network that reads them, and the token-based design described in the generative media module is the route by which that is happening. For practical purposes in 2026, check the two lists for the model in front of you.
 
@@ -66,7 +66,7 @@ tokens = ceil(width / 28) x ceil(height / 28)
 
 Each model has a ceiling. On the current high-resolution models it is a long edge of 2,576 pixels and 4,784 tokens, and on older ones 1,568 pixels and 1,568 tokens. A larger image is scaled down to fit before the model sees it. So a 4K screenshot costs no more than the ceiling, and its small text may no longer be legible after the shrink.
 
-At a few dollars per million input tokens, a thousand one-megapixel images cost single-digit dollars. That is cheap for a task and adds up in a loop. An agent that takes a screenshot at every step, and resends the conversation each turn, pays for every earlier screenshot again unless the harness clears them, which is one more reason for the compaction in [part 2](file/8d27b5e4-c019).
+At a few dollars per million input tokens, a thousand one-megapixel images cost single-digit dollars. That is cheap for a task and adds up in a loop. An agent that takes a screenshot at every step, and resends the conversation each turn, pays for every earlier screenshot again unless the harness clears them, which is one more reason for the compaction in [part 5](file/1d8f42a6-b93e).
 
 ### Getting a good reading
 
@@ -93,11 +93,11 @@ Either way the practical behaviour is the same: a fixed grid, a token budget for
 
 A PDF may hold real text, pictures of text, or both. Sending only the extracted text loses the tables, the charts and anything scanned. The documented approach for Claude is to do both: each page is converted to an image, the text of the page is extracted, and the model receives the two together. The published estimate is 1,500 to 3,000 tokens a page for the text, plus the image cost from section 2. A hundred-page report can therefore run to several hundred thousand tokens, and dense documents can fill the context before any page limit is reached.
 
-So the questions from [part 5](file/0b8e5d17-f4c2) apply. For one report, put it in the context. For ten thousand, retrieve the pages that matter first.
+So the questions from [part 8](file/0b8e5d17-f4c2) apply. For one report, put it in the context. For ten thousand, retrieve the pages that matter first.
 
 ### Extraction
 
-Turning documents into data is the workhorse use. Ask for structured output against a schema, as part 4 describes, and apply two rules from it with extra force. Give every field an honest way out, such as null or "unreadable", because a smudged total will otherwise be given a plausible value. And validate what comes back: totals that should add up, dates that should be dates, identifiers that should match a pattern.
+Turning documents into data is the workhorse use. Ask for structured output against a schema, as part 7 describes, and apply two rules from it with extra force. Give every field an honest way out, such as null or "unreadable", because a smudged total will otherwise be given a plausible value. And validate what comes back: totals that should add up, dates that should be dates, identifiers that should match a pattern.
 
 For long runs of clean, printed text, a conventional OCR or PDF parser is cheaper and exact, and the model can work from its output. The model earns its cost where layout carries meaning, where the scan is poor, or where the task needs understanding as well as reading.
 
@@ -147,7 +147,7 @@ The generative media module explains why generated video is short and drifts. Un
 | Calls where tone, speakers or background matter | A model with native audio input |
 | A long recording and one question | Find the relevant minutes first, by transcript, then send that portion |
 | Screen recordings of a bug | Native video at high resolution and a short clip, or a handful of chosen frames as images |
-| A spoken assistant | A speech-in, speech-out model, with the guardrails of part 6 decided before launch |
+| A spoken assistant | A speech-in, speech-out model, with the guardrails of part 9 decided before launch |
 
 ## 5. What they miss
 
@@ -174,13 +174,13 @@ This is hallucination, from part 3 of the language models module, with a picture
 
 Part 3 of the language models module describes prompt injection: text the model reads as data is obeyed as an instruction. A model that reads images reads the text in them. Instructions can sit in a screenshot, in a scanned letter, in small pale type on a web page that a person would never notice, or in a frame of a video.
 
-For a model that only answers questions, the damage is a wrong answer. For an agent with tools, and above all for computer use, it is the full risk described in [part 6](file/7a3f2c68-91de), with a larger attack surface, since filters built for text do not inspect pixels. Treat every image from outside as untrusted content.
+For a model that only answers questions, the damage is a wrong answer. For an agent with tools, and above all for computer use, it is the full risk described in [part 9](file/7a3f2c68-91de), with a larger attack surface, since filters built for text do not inspect pixels. Treat every image from outside as untrusted content.
 
 ### Working with the grain
 
 - Ask for what the model is good at: meaning, structure, text, comparison. Verify what it is weak at: counts, positions, exact values.
 - Where a number matters, have the model quote the text it read, and check that against the source or a second method.
-- Build an eval set of your own documents, including ugly ones, as part 6 describes. Public scores say little about your invoices.
+- Build an eval set of your own documents, including ugly ones, as part 9 describes. Public scores say little about your invoices.
 - When the answer is wrong, look at what was sent. Most failures are a detail that did not survive resizing.
 - Keep a person on the cases where a misreading is expensive.
 
@@ -232,7 +232,7 @@ Everything becomes tokens. A picture is a grid of patches, a sound is a string o
 
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 and 2 and in the glossaries of the language models module.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 3 and 4 and in the glossaries of the language models module.
 
 | Term | Meaning |
 | --- | --- |

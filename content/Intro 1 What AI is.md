@@ -4,7 +4,7 @@
 
 ## About this part
 
-This is the first of three parts in the intro to AI module. The module is optional. It is for anyone who has come to the course without much experience of AI, or who uses it a little and has never been told what it is. If you use an AI assistant most days, skip to [part 1 of the practical AI module](file/f3a91c20-6d4e), which is where the course proper begins. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
+This is the first of three parts in the intro to AI module. The module is optional. It is for anyone who has come to the course without much experience of AI, or who uses it a little and has never been told what it is. If you use an AI assistant most days, skip to [part 1 of the practical AI module](file/b4e9d0a7-3c81), which is where the course proper begins. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). Reading time is about 15 minutes.
 
 The three parts answer three questions. What is this thing? How do I use it without getting into trouble? What can it actually do? None of them needs any technical background.
 
@@ -68,7 +68,7 @@ The [language models module](file/590c1ae1-8bf3) explains all of this properly, 
 | Kind | What it does | Where the course covers it |
 | --- | --- | --- |
 | Chat assistant | Answers questions, drafts and rewrites text, explains, summarises, translates, talks through problems | The practical AI module |
-| Coding assistant or agent | Suggests code as you type, or takes a task and carries it out: reading files, making changes, running tests | [Part 2 of the practical AI module](file/8d27b5e4-c019) |
+| Coding assistant or agent | Suggests code as you type, or takes a task and carries it out: reading files, making changes, running tests | [Part 5 of the practical AI module](file/1d8f42a6-b93e) |
 | AI inside other products | Summaries in your email, search in your documents, replies in a support window | The practical AI module, on connecting AI to your own systems |
 | Image, video, music and 3D generators | Make media from a description | The generative media module |
 | Models you run yourself | Smaller models that run on your own computer, with nothing sent anywhere | The running AI locally module |

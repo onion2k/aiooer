@@ -141,7 +141,7 @@ Reasoning over many steps goes early too. Part 3 of the language models module g
 - extracting fields from text into a schema
 - choosing and filling in a tool call, as the first, cheap step of a larger system
 - rewriting, summarising and tidying short texts, where the facts are all in the input
-- embeddings and reranking for the retrieval described in [part 5 of the practical AI module](file/0b8e5d17-f4c2)
+- embeddings and reranking for the retrieval described in [part 8 of the practical AI module](file/0b8e5d17-f4c2)
 - autocomplete and other work inside an interaction
 - a first pass that handles the easy majority and passes the rest up to a larger model
 
@@ -159,7 +159,7 @@ The pattern in that list is that the model is handed what it needs to know, and 
 - **Fine-tune it.** Part 2 of the language models module said fine-tuning changes behaviour well and knowledge poorly. A small model's weakness is knowledge, which you will supply in the prompt, and its task is behaviour. A few thousand good examples of your task often lift a small model past a general model many times its size, on that task alone.
 - **Write for it.** Short, explicit prompts. One job for each call. Steps in your code, not in the prompt. Structured output forced with a schema, which the local engines support.
 - **Keep the bits.** Use the highest precision that fits. The smaller the model, the more it matters.
-- **Measure it.** Build the eval set described in [part 6 of the practical AI module](file/7a3f2c68-91de) before choosing. With small models the differences between candidates on your task are large and do not follow the public rankings.
+- **Measure it.** Build the eval set described in [part 9 of the practical AI module](file/7a3f2c68-91de) before choosing. With small models the differences between candidates on your task are large and do not follow the public rankings.
 - **Give it a way up.** Let it say it does not know, and route those cases to something bigger.
 
 ### The whiteboard version

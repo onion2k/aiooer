@@ -1,16 +1,16 @@
-# Part 6: Guardrails and Evals
+# Part 9: Guardrails and Evals
 
 2026-09-19 · Chris Neale
 
 ## About this part
 
-This is the last of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes, not counting the reference sections.
+This is the last of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes, not counting the reference sections.
 
-Parts 1 to 5 built a system: instructions, skills, media, tools and retrieved documents, all feeding a model that acts. This part is about trusting it. Guardrails limit what can go wrong. Evals measure how often it goes right. Section 3 condenses the whole module into a checklist for reviewing any AI feature, and the part closes with two reference sections for the module. [Part 1 of the AI in the organisation module](file/d6e2a95b-3f14) then applies all of it along the whole software lifecycle.
+Parts 3 to 8 built a system: instructions, the files that extend an agent, the agent itself, media, tools and retrieved documents, all feeding a model that acts. This part is about trusting it. Guardrails limit what can go wrong. Evals measure how often it goes right. Section 3 condenses the whole module into a checklist for reviewing any AI feature, and the part closes with two reference sections for the module. [Part 1 of the AI in the organisation module](file/d6e2a95b-3f14) then applies all of it along the whole software lifecycle.
 
-### What part 6 gives you
+### What part 9 gives you
 
-Part 6 builds one idea: you cannot make a model reliable, and you can make a system reliable. Do not depend on the model behaving well. Arrange things so that misbehaviour cannot do much harm, and measure how often the whole thing succeeds on real cases. Both are ordinary engineering, and both are what allow a person to step out of the loop, which is where the speed is.
+Part 9 builds one idea: you cannot make a model reliable, and you can make a system reliable. Do not depend on the model behaving well. Arrange things so that misbehaviour cannot do much harm, and measure how often the whole thing succeeds on real cases. Both are ordinary engineering, and both are what allow a person to step out of the loop, which is where the speed is.
 
 ## 1. Guardrails
 
@@ -29,7 +29,7 @@ Part 6 builds one idea: you cannot make a model reliable, and you can make a sys
 
 ### Asked, or enforced
 
-[Part 1](file/f3a91c20-6d4e) made a distinction that this section depends on. A line in an instruction file or a skill is a request. The model usually honours it, and it is not a control. A guardrail is something that holds whatever the model decides.
+[Part 3](file/f3a91c20-6d4e) made a distinction that this section depends on. A line in an instruction file or a skill is a request. The model usually honours it, and it is not a control. A guardrail is something that holds whatever the model decides.
 
 | Layer | Example | Holds if the model is manipulated |
 | --- | --- | --- |
@@ -43,7 +43,7 @@ Work from the bottom of that table upwards. The strongest control is the one fur
 
 ### Defending against prompt injection
 
-Start from the assumption that an injection will sometimes succeed, and limit what it can achieve. The routes in have multiplied through this module: a web page, a tool result or a tool's own description from [part 4](file/c9146f3b-27a8), a retrieved passage from [part 5](file/0b8e5d17-f4c2), text inside an image from [part 3](file/52e0a7c9-b3f6), and an installed skill from [part 2](file/8d27b5e4-c019).
+Start from the assumption that an injection will sometimes succeed, and limit what it can achieve. The routes in have multiplied through this module: a web page, a tool result or a tool's own description from [part 7](file/c9146f3b-27a8), a retrieved passage from [part 8](file/0b8e5d17-f4c2), text inside an image from [part 6](file/52e0a7c9-b3f6), and an installed skill from [part 4](file/8d27b5e4-c019).
 
 - **Least privilege.** Read-only by default. Narrowly scoped tokens. No production credentials in a development agent.
 - **Break the dangerous combination.** Part 3 of the language models module names it: private data, untrusted content and an outbound channel, all in one agent. Remove at least one. An agent that browses the web gets no secrets. An agent with repository access gets a network allow-list.
@@ -70,7 +70,7 @@ Remember too that every approval gate is a point where the system runs at human 
 
 ### Observability
 
-Log prompts, tool calls, outputs, approvals, token counts and cost, grouped into one trace per task. Include what was retrieved and which skills were loaded, since part 5 showed that most diagnosis starts there. You need this to debug failures, which cannot otherwise be reproduced. You need it for audit, which matters in any regulated business. And you need it as the raw material for the evals in the next section.
+Log prompts, tool calls, outputs, approvals, token counts and cost, grouped into one trace per task. Include what was retrieved and which skills were loaded, since part 8 showed that most diagnosis starts there. You need this to debug failures, which cannot otherwise be reproduced. You need it for audit, which matters in any regulated business. And you need it as the raw material for the evals in the next section.
 
 ## 2. System-level evals
 
@@ -107,7 +107,7 @@ This module's pieces can each be measured alone, and a failure is much easier to
 | Instruction file or prompt | Did the change help? | Success rate on the set, before and after |
 | Skill | Is it loaded when it should be, and only then? Does it improve the result? | Activation rate on prompts that should and should not trigger it. Success with and without the skill |
 | Tool | Does the model pick the right tool and fill in valid arguments? | Share of cases with the correct call |
-| Retrieval | Did the right passage reach the context? | Share of questions whose marked passage is in the top results, as part 5 described |
+| Retrieval | Did the right passage reach the context? | Share of questions whose marked passage is in the top results, as part 8 described |
 | Document reading | Are the extracted fields right? | Field-by-field accuracy against hand-labelled documents |
 
 Some harnesses now ship this for their own extensions. Claude Code, for example, can run a plugin against a set of test prompts several times with and without the plugin loaded, to show what the plugin contributes.
@@ -246,49 +246,62 @@ The ideas from this module that you will explain most often, each in one line fo
 
 | Idea | Say it like this | Part |
 | --- | --- | --- |
-| Context engineering | Writing a good brief. The AI knows only what we put in front of it, so what we include decides the result | 1 |
-| Instruction file | The note we would leave a new colleague on day one, which the AI reads at the start of every session | 1 |
-| Asked versus enforced | We can ask the AI not to do something, and it usually will not. If it must never happen, we lock the door as well | 1 |
-| Agent | An AI that works through a task step by step, checking the result of each step before the next | 2 |
-| Skill | A procedure manual the AI takes off the shelf only when that job comes up | 2 |
-| Sub-agent | A helper sent off to do the legwork, who comes back with the answer and not the pile of paper | 2 |
-| Multi-modal model | An AI that can be shown pictures and played recordings. It reads them well and measures them badly | 3 |
-| Tool use | The AI asks our software to do something. Our software decides whether to do it and hands back the result | 4 |
-| MCP | A standard plug that connects AI tools to our systems, so we build each connection once | 4 |
-| RAG | It looks things up in our documents before answering, and shows where the answer came from | 5 |
-| Guardrails | We do not count on the AI never slipping. We make sure a slip cannot do much harm | 6 |
-| Least privilege | The AI gets the keys to the rooms it needs and no others | 6 |
-| Eval | A test suite for the AI feature. It tells us the success rate, and whether a change helped or hurt | 6 |
-| Baseline | The numbers from before we built it. Without them we can show that it works and never that it helped | 6 |
+| The window is a product | The box is the small part. Someone chose the engine, the house rules and what happens to what you type | 1 |
+| Outgrowing chat | When you do it every day, or it has to run without you, the window is no longer the right shape | 1 |
+| In-app AI | The AI built into software we already use. Someone else wrote its instructions | 2 |
+| Vendor study | Their numbers, from their consultants, about a company that does not exist | 2 |
+| Context engineering | Writing a good brief. The AI knows only what we put in front of it, so what we include decides the result | 3 |
+| Instruction file | The note we would leave a new colleague on day one, which the AI reads at the start of every session | 3 |
+| Asked versus enforced | We can ask the AI not to do something, and it usually will not. If it must never happen, we lock the door as well | 3 |
+| Agent | An AI that works through a task step by step, checking the result of each step before the next | 5 |
+| Skill | A procedure manual the AI takes off the shelf only when that job comes up | 4 |
+| Sub-agent | A helper sent off to do the legwork, who comes back with the answer and not the pile of paper | 4 |
+| Multi-modal model | An AI that can be shown pictures and played recordings. It reads them well and measures them badly | 6 |
+| Tool use | The AI asks our software to do something. Our software decides whether to do it and hands back the result | 7 |
+| MCP | A standard plug that connects AI tools to our systems, so we build each connection once | 7 |
+| RAG | It looks things up in our documents before answering, and shows where the answer came from | 8 |
+| Guardrails | We do not count on the AI never slipping. We make sure a slip cannot do much harm | 9 |
+| Least privilege | The AI gets the keys to the rooms it needs and no others | 9 |
+| Eval | A test suite for the AI feature. It tells us the success rate, and whether a change helped or hurt | 9 |
+| Baseline | The numbers from before we built it. Without them we can show that it works and never that it helped | 9 |
 
 ## Misconceptions quick reference
 
-All eighteen misconceptions from the practical AI module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
+All twenty-seven misconceptions from the practical AI module, each with a one-line response. Every one contains some truth, so open by agreeing with that. The full entries, with what is true and what is misleading, are in each part.
 
 | Claim | Short response | Part |
 | --- | --- | --- |
-| "Prompt engineering is about finding the magic words" | There are no secret phrases. If the output is poor, the brief was missing something, and we fix the brief | 1 |
-| "A longer instruction file makes a better agent" | We write down what it cannot find out for itself, and keep it to a page or two | 1 |
-| "It is in the instruction file, so the agent will not do it" | The file shapes what it does. For anything that must never happen, we also make it impossible | 1 |
-| "An agent is just a smarter model" | The model is the engine. Whether the vehicle gets anywhere depends on what we build around it | 2 |
-| "A skill is only text, so it is safe to install" | For an agent, instructions are code. We install skills the way we install software | 2 |
-| "More agents will get it done faster" | We add a helper when one agent runs out of room or time. One well-briefed agent with good tests beats a committee | 2 |
-| "It sees the image the way I do" | It is an excellent reader and a poor measurer. We check counts, positions and exact figures | 3 |
-| "It watched the whole video" | It saw a frame a second and heard the soundtrack. For anything quick or small, we send the short clip | 3 |
-| "Multi-modal means it can make images and video too" | Understanding a picture and making one are different tools. We check what each model takes in and gives out | 3 |
-| "The AI is running commands on our systems" | The AI proposes and our software disposes. What it can reach is a setting we choose | 4 |
-| "MCP is a standard, so an MCP server is safe to connect" | A standard plug does not make every appliance safe. We approve servers like any supplier | 4 |
-| "The more tools we connect, the more capable the agent" | A short list of clear tools works better and is easier to defend than everything we own | 4 |
-| "RAG eliminates hallucination" | It works from our documents and shows its sources. We still check that the sources say what it claims | 5 |
-| "We need to fine-tune it on our data" | We give it our information at question time. That takes days, and we can see exactly what it was told | 5 |
-| "Context windows are huge now, so retrieval is obsolete" | If it fits comfortably, we paste it in. Most of what we know does not fit, so the AI looks things up | 5 |
-| "We have told it not to, so it will not" | Instructions make good behaviour likely. For what must not happen, we remove the ability | 6 |
-| "A person approves everything, so it is safe" | We save approvals for what cannot be undone, and make the rest safe with limits and checks | 6 |
-| "We tried it and it worked" | A demo shows it can work. Fifty real cases, run on every change, show how often it does | 6 |
+| "The model is the product" | We are choosing a product, not just a model. The instructions, the memory and the contract matter as much as the engine | 1 |
+| "You have to word it just right" | There are no secret phrases. Say what you want, who it is for, and hand it what it needs to know | 1 |
+| "It is only a chat, so nothing leaves the room" | The question is not whether the tool is allowed. It is which account, under what terms | 1 |
+| "The AI in our tools is safer, because we already use those tools" | Being an existing supplier is a good start, not an answer. We ask what each feature can see | 2 |
+| "The vendor's study shows it pays for itself" | Their figure is about a company that does not exist. Ours takes a fortnight to measure | 2 |
+| "It summarised the thread, so I know what happened" | Good enough to catch up. Before I act on it, I open the thread | 2 |
+| "Prompt engineering is about finding the magic words" | There are no secret phrases. If the output is poor, the brief was missing something, and we fix the brief | 3 |
+| "A longer instruction file makes a better agent" | We write down what it cannot find out for itself, and keep it to a page or two | 3 |
+| "It is in the instruction file, so the agent will not do it" | The file shapes what it does. For anything that must never happen, we also make it impossible | 3 |
+| "An agent is just a smarter model" | The model is the engine. Whether the vehicle gets anywhere depends on what we build around it | 5 |
+| "Agents, skills and plugins are three names for the same thing" | A skill is something it knows, an agent is somewhere it sends work, and a plugin is the box they ship in | 4 |
+| "If the agent ignored my skill, the skill is broken" | It picks by the description. If ours is not chosen, we rewrite it in the words someone would use | 4 |
+| "A skill is only text, so it is safe to install" | For an agent, instructions are code. We install skills the way we install software | 4 |
+| "More agents will get it done faster" | We add a helper when one agent runs out of room or time. One well-briefed agent with good tests beats a committee | 5 |
+| "Cloud agents mean we ship more" | They change what we can attempt. Whether it reaches a customer depends on review, so we widen that first | 5 |
+| "It sees the image the way I do" | It is an excellent reader and a poor measurer. We check counts, positions and exact figures | 6 |
+| "It watched the whole video" | It saw a frame a second and heard the soundtrack. For anything quick or small, we send the short clip | 6 |
+| "Multi-modal means it can make images and video too" | Understanding a picture and making one are different tools. We check what each model takes in and gives out | 6 |
+| "The AI is running commands on our systems" | The AI proposes and our software disposes. What it can reach is a setting we choose | 7 |
+| "MCP is a standard, so an MCP server is safe to connect" | A standard plug does not make every appliance safe. We approve servers like any supplier | 7 |
+| "The more tools we connect, the more capable the agent" | A short list of clear tools works better and is easier to defend than everything we own | 7 |
+| "RAG eliminates hallucination" | It works from our documents and shows its sources. We still check that the sources say what it claims | 8 |
+| "We need to fine-tune it on our data" | We give it our information at question time. That takes days, and we can see exactly what it was told | 8 |
+| "Context windows are huge now, so retrieval is obsolete" | If it fits comfortably, we paste it in. Most of what we know does not fit, so the AI looks things up | 8 |
+| "We have told it not to, so it will not" | Instructions make good behaviour likely. For what must not happen, we remove the ability | 9 |
+| "A person approves everything, so it is safe" | We save approvals for what cannot be undone, and make the rest safe with limits and checks | 9 |
+| "We tried it and it worked" | A demo shows it can work. Fifty real cases, run on every change, show how often it does | 9 |
 
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 to 5 and in the glossaries of the language models module.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 to 8 and in the glossaries of the language models module.
 
 | Term | Meaning |
 | --- | --- |

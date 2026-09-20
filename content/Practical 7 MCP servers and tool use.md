@@ -1,16 +1,16 @@
-# Part 4: MCP Servers and Tool Use
+# Part 7: MCP Servers and Tool Use
 
 2026-09-19 · Chris Neale
 
 ## About this part
 
-This is the fourth of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
+This is the seventh of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 25 minutes.
 
-[Part 2](file/8d27b5e4-c019) described an agent as a model in a loop, choosing actions. This part is about the actions. It explains how a model that only produces text comes to search, run code and change records, why your software stays in charge while it does, and how the Model Context Protocol lets one integration serve every AI application. It also covers what each connection costs, in context and in risk.
+[Part 5](file/1d8f42a6-b93e) described an agent as a model in a loop, choosing actions. This part is about the actions. It explains how a model that only produces text comes to search, run code and change records, why your software stays in charge while it does, and how the Model Context Protocol lets one integration serve every AI application. It also covers what each connection costs, in context and in risk.
 
-### What part 4 gives you
+### What part 7 gives you
 
-Part 4 builds one idea: the model asks, and your code acts. Every tool call passes through software you control, and that point is where permissions, checks, approvals and logs belong. A standard protocol makes connections cheap to build, which is good, and cheap to add without thought, which is not. Each one is a route for data and instructions to flow in and out.
+Part 7 builds one idea: the model asks, and your code acts. Every tool call passes through software you control, and that point is where permissions, checks, approvals and logs belong. A standard protocol makes connections cheap to build, which is good, and cheap to add without thought, which is not. Each one is a route for data and instructions to flow in and out.
 
 ## 1. Structured output
 
@@ -51,11 +51,11 @@ sequenceDiagram
   M->>App: Final answer, or another tool call
 ```
 
-The model's part is limited to choosing a tool and writing its arguments. Your application decides whether to run it, runs it, and returns the result as more context. The loop repeats until the model answers without asking for a tool. This is the inner step of the agent loop from part 2.
+The model's part is limited to choosing a tool and writing its arguments. Your application decides whether to run it, runs it, and returns the result as more context. The loop repeats until the model answers without asking for a tool. This is the inner step of the agent loop from part 5.
 
 ### The description is a prompt
 
-A tool is defined by a name, a description and a schema for its parameters. The model chooses among tools by reading those descriptions, so they deserve the same care as any prompt. Most tool-selection mistakes trace back to vague or overlapping descriptions. Part 2 made the same point about skills, and for the same reason.
+A tool is defined by a name, a description and a schema for its parameters. The model chooses among tools by reading those descriptions, so they deserve the same care as any prompt. Most tool-selection mistakes trace back to vague or overlapping descriptions. Part 4 made the same point about skills, and for the same reason.
 
 Good tool design follows a few rules:
 
@@ -68,11 +68,11 @@ Good tool design follows a few rules:
 
 ### The control point
 
-Because your code executes every call, that is where authorisation, validation, approval and logging belong. The model may ask for anything. The application decides what it gets. [Part 6](file/7a3f2c68-91de) builds on this.
+Because your code executes every call, that is where authorisation, validation, approval and logging belong. The model may ask for anything. The application decides what it gets. [Part 9](file/7a3f2c68-91de) builds on this.
 
 ### Built-in tools
 
-Vendors offer ready-made tools alongside your own: web search, a sandbox for running code, file handling, and computer use, where the model operates a graphical interface through screenshots and clicks, as [part 3](file/52e0a7c9-b3f6) described. Some run on the vendor's servers, so the control point for those is a setting and not your code. Know which of your tools are which.
+Vendors offer ready-made tools alongside your own: web search, a sandbox for running code, file handling, and computer use, where the model operates a graphical interface through screenshots and clicks, as [part 6](file/52e0a7c9-b3f6) described. Some run on the vendor's servers, so the control point for those is a setting and not your code. Know which of your tools are which.
 
 ### Deep dive (optional): tool calls at the token level
 
@@ -88,7 +88,7 @@ Three consequences follow. Tool definitions are tokens, so every tool costs cont
 
 ### What it is
 
-MCP is an open protocol. Anthropic introduced it in late 2024, the other major vendors and developer tools adopted it during 2025, and it is now governed through the Agentic AI Foundation under the Linux Foundation, alongside the `AGENTS.md` format from [part 1](file/f3a91c20-6d4e). Three roles are defined. The host is the AI application. It runs a client for each connection. Each connected system is a server offering three kinds of thing:
+MCP is an open protocol. Anthropic introduced it in late 2024, the other major vendors and developer tools adopted it during 2025, and it is now governed through the Agentic AI Foundation under the Linux Foundation, alongside the `AGENTS.md` format from [part 3](file/f3a91c20-6d4e). Three roles are defined. The host is the AI application. It runs a client for each connection. Each connected system is a server offering three kinds of thing:
 
 - **Tools:** actions the model can request, such as "create ticket" or "run query"
 - **Resources:** data the application can read, such as files or records
@@ -148,7 +148,7 @@ The specification is direct about this. It says tools represent arbitrary code e
 
 - **What comes back is untrusted.** A tool result is text from the outside world: an issue someone filed, a web page, an email. Part 3 of the language models module explains what that means for prompt injection. An agent that reads a poisoned ticket through one server and can act through another has been given both the instruction and the means.
 - **The server itself may lie.** A tool's description is a prompt, and a malicious server can use it to instruct the model, for example to pass the contents of a file along with every call. This is called tool poisoning. A server can also change its descriptions after you approved it.
-- **A local server is code you run.** Installing one from a public catalogue is the same act as installing any package, with the same supply-chain risk that part 2 described for skills. The specification's own guidance says a host offering one-click installation must show the exact command first.
+- **A local server is code you run.** Installing one from a public catalogue is the same act as installing any package, with the same supply-chain risk that part 4 described for skills. The specification's own guidance says a host offering one-click installation must show the exact command first.
 - **Credentials are usually too broad.** A token that can read and write everything turns any of the problems above into a serious one. The specification's guidance forbids a server from passing a client's token through to another service, and recommends starting with minimal scopes and asking for more only when an operation needs them.
 
 Sensible governance is straightforward:
@@ -165,7 +165,7 @@ Sensible governance is straightforward:
 
 ### Access and know-how
 
-MCP gives an agent access to a system. It does not tell the agent how your team uses that system. The skills from part 2 do that: your release process, your incident template, which of the tracker's forty fields you actually fill in. Access and know-how are separate, and a useful integration needs both. A server for the database and a skill describing the schema and the queries that matter is a common and effective pair.
+MCP gives an agent access to a system. It does not tell the agent how your team uses that system. The skills from part 4 do that: your release process, your incident template, which of the tracker's forty fields you actually fill in. Access and know-how are separate, and a useful integration needs both. A server for the database and a skill describing the schema and the queries that matter is a common and effective pair.
 
 ### Choosing
 
@@ -175,9 +175,9 @@ MCP gives an agent access to a system. It does not tell the agent how your team 
 | A system that several AI applications should use, or that needs per-user sign-in | An MCP server | Build once, and authorisation is handled in a standard way |
 | A coding agent with a shell, and a system with a good command-line program | The command line, and a skill saying how you use it | The agent already has the access. It costs no standing context, and the model knows common programs from training |
 | A procedure, not a connection | A skill | There is nothing to connect |
-| A product with no API at all | Computer use, from part 3, reluctantly | Slow and brittle, and sometimes the only way |
+| A product with no API at all | Computer use, from part 6, reluctantly | Slow and brittle, and sometimes the only way |
 
-A pattern that has grown through 2026 is to let an agent with a code sandbox write small programs that call tools, in place of calling them one at a time through the model. A job that needs two hundred rows fetched, filtered and summed then moves the data through code, and only the answer enters the context. It is cheaper and less error-prone for bulk work. It needs a sandbox you trust, which part 6 covers.
+A pattern that has grown through 2026 is to let an agent with a code sandbox write small programs that call tools, in place of calling them one at a time through the model. A job that needs two hundred rows fetched, filtered and summed then moves the data through code, and only the answer enters the context. It is cheaper and less error-prone for bulk work. It needs a sandbox you trust, which part 9 covers.
 
 ### The whiteboard version
 
@@ -223,7 +223,7 @@ The model writes a request. Your software decides, acts and reports back. MCP ma
 
 ## Glossary
 
-Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 to 3 and in the glossaries of the language models module.
+Terms introduced in this part, in plain language and in alphabetical order. Earlier terms are defined in parts 1 to 5 and in the glossaries of the language models module.
 
 | Term | Meaning |
 | --- | --- |

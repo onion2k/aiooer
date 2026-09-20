@@ -160,15 +160,20 @@ function moduleMeta(m) {
   return `${m.optional ? 'Optional · ' : ''}${capital(plural(written.length, 'part'))}${coming ? `, ${word(coming)} more to come` : ''} · about ${hoursOf(written)}`;
 }
 
+// The course's size, for the hero. It says how many of the modules a reader
+// may skip, because the introduction counts only the modules it expects to be
+// read and puts the optional ones before them, and a bare total would
+// contradict the sentence a few lines below it.
 function courseCount(modules) {
   const all = modules.flatMap((m) => m.parts);
   const written = all.filter((p) => p.written).length;
   const coming = all.length - written;
-  return `${capital(plural(modules.length, 'module'))}, ${plural(written, 'part')}${coming ? `, ${word(coming)} more to come` : ''}`;
+  const optional = modules.filter((m) => m.optional).length;
+  return `${capital(plural(modules.length, 'module'))}${optional ? `, ${word(optional)} optional` : ''}, ${plural(written, 'part')}${coming ? `, ${word(coming)} more to come` : ''}`;
 }
 
 // The home page on the twelve-column grid: every section is a grid-12, and
-// every set of blocks (the six parts, the four ideas, the legend, the routes)
+// every set of blocks (a module's parts, the four ideas, the legend, the routes)
 // is a grid-12 of its own whose rows size to the tallest block.
 function homeMain(intro, parts) {
   const S = intro.sections;

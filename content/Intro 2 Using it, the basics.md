@@ -64,7 +64,7 @@ The second takes a minute longer to write and saves ten minutes of going back an
 
 The first reply is a draft. Say what is wrong with it, specifically: "too long", "the second paragraph is the important one, lead with that", "less cheerful". You can also ask it to help you ask: "What else would you need to know to do this well?" is one of the most useful questions there is.
 
-[Part 1 of the practical AI module](file/f3a91c20-6d4e) turns this into a method, under the name context engineering.
+[Part 3 of the practical AI module](file/f3a91c20-6d4e) turns this into a method, under the name context engineering.
 
 ## 3. Checking what you get
 

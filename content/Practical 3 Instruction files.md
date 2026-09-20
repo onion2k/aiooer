@@ -1,49 +1,18 @@
-# Part 1: Intent, Agents and Other Instruction Files
+# Part 3: Intent, AGENTS.md and Other Instruction Files
 
 2026-09-19 · Chris Neale
 
 ## About this part
 
-This is the first of six parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
+This is the third of nine parts in the practical AI module. The aims of the course, the layout every part follows and suggested reading routes are in [Course introduction](file/0a139f54-ef01). The format is the same as elsewhere: **In plain terms** opens each numbered section, deep dives are optional, and a glossary closes the part. Reading time is about 35 minutes.
 
-The module is about the system around the model. The same model behaves like two different products in a bare chat window and inside a well-built agent. Most of the gain from AI, and most of the disappointment, is decided here and not by the choice of model.
+[Parts 1](file/b4e9d0a7-3c81) and [2](file/9f2c5e38-a7b4) were about meeting AI where someone else had written the instructions: a chat window, and the features inside software you already use. This is where you start writing them. The "agents" in its title is `AGENTS.md`, the file of standing instructions most coding tools now read: a file, not a thing that runs. [Part 4](file/8d27b5e4-c019) covers the agent definitions that sit beside it, and [part 5](file/1d8f42a6-b93e) the agents themselves. It is also where the module turns from using AI to building with it, and the diagram in part 1 is the map: this part and [part 4](file/8d27b5e4-c019) cover the instructions that stand in front of every request, the files that are always there and the packages fetched when needed.
 
-There is a second purpose running through the module. A model can produce in minutes what takes a person a day. That speed is lost if a person then inspects every step and every line by hand, because the whole system slows to reading pace. The engineering described here exists to replace human checkpoints with automatic ones wherever that is safe, so that people spend their attention on direction and on the risky few percent, and the AI runs at its own pace on the rest.
+The seven things about a model's behaviour that this module leans on are listed in [part 1](file/b4e9d0a7-3c81). It names products and file names throughout, and those date quickly. The ideas under them have held steady for longer.
 
-```mermaid
-flowchart LR
-  A[Instructions<br/>and examples] --> C[Context]
-  B[Retrieved<br/>documents] --> C
-  T[Tool results] --> C
-  C --> M[Model]
-  M -->|tool call| X[Your code<br/>runs the tool]
-  X --> T
-  M --> O[Output]
-  O --> G[Validation<br/>and approval]
-  G --> E[Logged<br/>and evaluated]
-```
+### What part 3 gives you
 
-Each box belongs to a part of the module. This part and [part 2](file/8d27b5e4-c019) cover the instructions: the files that stand in front of every request, and the packages that are fetched when needed. [Part 3](file/52e0a7c9-b3f6) covers input that is not text. [Part 4](file/c9146f3b-27a8) covers tools and the protocol that connects them. [Part 5](file/0b8e5d17-f4c2) covers retrieved documents. [Part 6](file/7a3f2c68-91de) covers the controls and tests that make the result trustworthy, and ends with a checklist for reviewing any AI feature. The [AI in the organisation module](file/d6e2a95b-3f14) then steps back from the diagram, and applies all of it along the whole software lifecycle, across a team and up through an organisation.
-
-This is where the course starts, because nearly everyone reading it already uses these tools, and using them well is the quickest thing to get better at. If you do not, the optional [intro to AI module](file/a7f20c15-9d3e) comes first and takes 45 minutes. It names products and file names throughout, and those date quickly. The ideas under them have held steady for longer.
-
-### Seven things to know about the model first
-
-The module needs no knowledge of how a model works. It does lean on seven facts about how one behaves, and supplies a defence for each of the last six.
-
-- **It knows two things.** What it absorbed in training, which is broad, fuzzy and stops at a date, and what is in front of it now, which is exact and limited. It knows nothing about you, your company or your code unless it is told.
-- **It makes things up.** Where it lacks a fact it supplies a plausible one, in the same confident voice as the rest. This is called hallucination.
-- **It answers differently each time.** The same request twice can give two different results.
-- **It cannot tell an instruction from a document.** Any text it reads, from a web page, a ticket or a file, can steer it. This is called prompt injection.
-- **It is out of date.** It suggests last year's versions and does not know what has changed since it was trained.
-- **It agrees with you.** It was trained on what people liked, and people like being agreed with.
-- **Its small errors add up.** A task of fifty steps, each done right 98 times in 100, comes out right about one time in three.
-
-The [language models module](file/590c1ae1-8bf3) explains why each of these is so, and [its part 3](file/48a4ae01-75ae) sets the six failures out in full. You do not need the why to use what follows. It will make more sense of it afterwards.
-
-### What part 1 gives you
-
-Part 1 builds one idea: the model knows only what is in front of it, so the most valuable thing a team writes is the standing text that is put in front of it every time. That text now lives in files with names, and the names have multiplied. This part says what each file is for, what belongs in it, what the evidence says about whether it helps, and where a file stops being enough.
+Part 3 builds one idea: the model knows only what is in front of it, so the most valuable thing a team writes is the standing text that is put in front of it every time. That text now lives in files with names, and the names have multiplied. This part says what each file is for, what belongs in it, what the evidence says about whether it helps, and where a file stops being enough.
 
 ## 1. Context engineering
 
@@ -73,7 +42,7 @@ Before sending a prompt, ask one question. Could a bright contractor with no kno
 
 ### Prompts are code
 
-A prompt that runs in production is part of the system. Keep it in version control. Review changes to it. Test it with the evals from part 6 before release. Pin the model version it was tuned for, because a prompt tuned on one model often behaves differently on the next.
+A prompt that runs in production is part of the system. Keep it in version control. Review changes to it. Test it with the evals from part 9 before release. Pin the model version it was tuned for, because a prompt tuned on one model often behaves differently on the next.
 
 Shared prompts and instruction files are team assets. A good project instruction file improves every session for every engineer who uses it. The rest of this part is about those files.
 
@@ -91,9 +60,9 @@ Shared prompts and instruction files are team assets. A good project instruction
 | Personal instructions | You | Every session, in every project | Yes |
 | Project instruction file | The team | Every session in that repository | Yes, and you should review it like code |
 | Scoped rules | The team | When the agent works on matching files | Yes |
-| Skills | Anyone | When a task calls for one. Part 2 covers them | Yes |
+| Skills | Anyone | When a task calls for one. Part 4 covers them | Yes |
 | The message | You | Now | Yes |
-| Tool results | Whatever the tool read | As they arrive | No, and they are not to be trusted. Part 4 explains |
+| Tool results | Whatever the tool read | As they arrive | No, and they are not to be trusted. Part 7 explains |
 
 Teams control the middle of the table, and that is where their effort belongs. The layers are additive: a tool that reads several of these files puts all of them into the context at once. When two layers disagree, no rule in the software settles it. The model reads both and uses its judgement, usually favouring the more specific instruction. That is one reason contradictions between an organisation's rules and a project's file are worth hunting down.
 
@@ -101,13 +70,13 @@ Teams control the middle of the table, and that is where their effort belongs. T
 
 The most useful way to sort the layers is by when they load. Anything loaded in every session costs context in every session, whether the task needs it or not. Part 3 of the language models module shows that a filling context costs money and quality. So each layer has a budget.
 
-Standing instructions should be short and should hold what is always true: the commands, the conventions, the things never to do. Reference material that is needed sometimes, such as the full API style guide or the release procedure, belongs in something fetched on demand. That is the job of scoped rules and of the skills in part 2. One vendor's documentation puts the dividing line plainly: put it in the standing file if the agent should always know it, and in a skill if it needs it sometimes.
+Standing instructions should be short and should hold what is always true: the commands, the conventions, the things never to do. Reference material that is needed sometimes, such as the full API style guide or the release procedure, belongs in something fetched on demand. That is the job of scoped rules and of the skills in part 4. One vendor's documentation puts the dividing line plainly: put it in the standing file if the agent should always know it, and in a skill if it needs it sometimes.
 
 ### A request, not a guarantee
 
 Every layer in the table is text the model reads. None of them is enforced. A line saying "never edit the generated files" makes that edit much less likely. It does not make it impossible, and an agent deep in a long task can lose track of a line it read at the start.
 
-If a rule must hold every time, it needs a mechanism that does not depend on the model: a file permission, a pre-commit check, a hook in the harness that blocks the action, a credential the agent was never given. Part 6 builds on this. The instruction file is for shaping behaviour. It is the wrong tool for preventing harm.
+If a rule must hold every time, it needs a mechanism that does not depend on the model: a file permission, a pre-commit check, a hook in the harness that blocks the action, a credential the agent was never given. Part 9 builds on this. The instruction file is for shaping behaviour. It is the wrong tool for preventing harm.
 
 ## 3. The project instruction file
 
@@ -115,7 +84,7 @@ If a rule must hold every time, it needs a mechanism that does not depend on the
 
 ### One file, many names
 
-Every coding tool invented its own file, and for a while a repository that wanted to serve them all carried five copies of the same advice. In August 2025 OpenAI and others proposed a common one: `AGENTS.md`, plain Markdown at the repository root, with no required structure. Its own site calls it a README for agents. It is now stewarded by the Agentic AI Foundation under the Linux Foundation, the same body that looks after the Model Context Protocol from part 4. The site says more than 60,000 open-source projects use it and lists more than thirty tools that read it.
+Every coding tool invented its own file, and for a while a repository that wanted to serve them all carried five copies of the same advice. In August 2025 OpenAI and others proposed a common one: `AGENTS.md`, plain Markdown at the repository root, with no required structure. Its own site calls it a README for agents. It is now stewarded by the Agentic AI Foundation under the Linux Foundation, the same body that looks after the Model Context Protocol from part 7. The site says more than 60,000 open-source projects use it and lists more than thirty tools that read it.
 
 | File | Read by | Notes |
 | --- | --- | --- |

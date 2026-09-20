@@ -23,7 +23,7 @@ are `Org1` to `Org3`, and the ids its links use did not change. Because the mech
 AI part 1 opens with seven things to know about how a model behaves, and
 references from the first two modules to Language models are written as
 pointers forward, in the present tense. Language models part 3, AI in the
-organisation part 3, Practical AI part 6 and Generative media part 7 each
+organisation part 3, Practical AI part 9 and Generative media part 7 each
 end with their module's core explanations and misconceptions. Generative
 media (seven parts, files `Media N ….md`) covers how the
 models work, then images, video, music and audio, and 3D, then shaping
@@ -35,17 +35,26 @@ the hands-on module: hardware, Hugging Face and model names, engines and
 apps, agents and harnesses, and building on a local model. It was written by
 Claude from sources read in September 2026, names products throughout, and
 explains what tools do without giving commands, which date faster than
-anything else here. Practical AI (six parts, files `Practical N ….md`)
-covers instruction files; skills, agents and plugins; multi-modal models;
-MCP servers and tool use; retrieval; and guardrails and evals. It replaces
+anything else here. Practical AI (nine parts, files `Practical N ….md`)
+covers AI chat and AI in apps, which the author added on 20 September 2026 as
+the two ways nearly everyone meets AI, and then instruction files; skills,
+agents and plugins; agentic work; multi-modal models; MCP servers and tool
+use; retrieval; and guardrails and evals. "Agent" means three things in this
+module and each part says which: in part 3 it is `AGENTS.md`, a file of
+standing instructions; in part 4 it is an agent definition, a file declaring
+a helper; in part 5 it is the thing itself, a model in a loop. The author
+asked for that separation on 20 September 2026, and part 5 was made from
+sections that had been part 4's. Its first part carries the module's map and the
+seven things about a model's behaviour the rest leans on, which were part 1's
+until the two new parts went in front. It replaces
 the language module's former part 4, Building with models, whose text is in
-the git history at commit 3617b44. Claude wrote the six parts around that
+the git history at commit 3617b44. Claude wrote parts 3 to 9 around that
 text, which the author had accepted, and added what was new from sources
 read in September 2026: the instruction file formats, Agent Skills,
 plugins, the July 2026 revision of MCP, and the whole of part 3. Each
 part's Sources section says which of its claims rest on the drafter's
-knowledge and not on a document. Part 6 closes with the module's core
-explanations and misconceptions. Every mention of "the practical AI module" in the other modules is a
+knowledge and not on a document. Part 9 closes with the module's core
+explanations and misconceptions, twenty-seven of them, three to a part. Every mention of "the practical AI module" in the other modules is a
 link to the part it means, or to part 1 where it means the whole module. Other AI
 models (four parts, files `Other N ….md`) covers small models, world
 models, diffusion language models and system one models, each part
@@ -345,7 +354,7 @@ What to copy the shape of, when building something new:
   `chrome.mjs`, `.is-past` and `.is-current` in `styles.mjs` give it its
   look with the `past` colour from `tokens.mjs`, and `spyAt` in `audit.mjs`
   holds it.
-- **A grid of blocks:** the six part cards on the home page. An `ol` with
+- **A grid of blocks:** a module's part cards on the home page. An `ol` with
   `grid-12`, each card `--span: 4` and `--span-md: 3`, rows at
   `grid-auto-rows: 1fr`, and the list named in `GRIDS` and `TWELVE` in
   `audit.mjs` so the grids check holds it.

@@ -24,12 +24,12 @@ The analogy is loose. Kahneman's point about System 1 was that it is quick and e
 
 ### How much of AI in software is deciding
 
-Look at the uses this course has recommended for models inside systems. Classification, routing and triage, in part 1 of this module. Guardrail checks and grading outputs, in [part 6 of the practical AI module](file/7a3f2c68-91de). Choosing whether a retrieved passage is relevant. Deciding whether an agent's step succeeded. Each has a known set of possible answers, is made again and again, and feeds straight into an `if` statement.
+Look at the uses this course has recommended for models inside systems. Classification, routing and triage, in part 1 of this module. Guardrail checks and grading outputs, in [part 9 of the practical AI module](file/7a3f2c68-91de). Choosing whether a retrieved passage is relevant. Deciding whether an agent's step succeeded. Each has a known set of possible answers, is made again and again, and feeds straight into an `if` statement.
 
 Using a general language model for these has four costs.
 
 - **Speed and price.** Part 3 of the language models module showed that output is generated one token at a time and is the expensive part. A model asked for one word still carries the machinery for writing essays.
-- **Parsing.** The answer comes as text. [Part 4 of the practical AI module](file/c9146f3b-27a8) showed how structured output forces the shape, and the content inside the shape is still generated text.
+- **Parsing.** The answer comes as text. [Part 7 of the practical AI module](file/c9146f3b-27a8) showed how structured output forces the shape, and the content inside the shape is still generated text.
 - **Invented options.** Asked to choose among five teams, a text generator can name a sixth. Constrained decoding prevents that, and not every system uses it.
 - **No usable confidence.** This is the important one. Ask a chat model how sure it is and it will write "90%", because that is a plausible thing to write. The number is more text. It was not measured, and studies have repeatedly found such stated confidence to be poorly matched to accuracy. So the program cannot tell a safe decision from a coin toss, and every decision must be treated alike.
 
@@ -102,7 +102,7 @@ A decision with a trustworthy probability can be handled by policy.
 | 70% spam | Deliver it with a warning, or send it to a stronger model |
 | 50% spam | Treat it as unknown. Deliver it, and log it for labelling |
 
-Without the probability, all three are "spam" or "not spam", and the system is either too cautious everywhere or too bold everywhere. With it, automation can be confined to the cases where the model is sure, and [part 6 of the practical AI module](file/7a3f2c68-91de) argued that this is how people get out of the loop safely: not by trusting the model more, but by knowing when to.
+Without the probability, all three are "spam" or "not spam", and the system is either too cautious everywhere or too bold everywhere. With it, automation can be confined to the cases where the model is sure, and [part 9 of the practical AI module](file/7a3f2c68-91de) argued that this is how people get out of the loop safely: not by trusting the model more, but by knowing when to.
 
 ### What it does not mean
 
@@ -166,7 +166,7 @@ The vendor's own guidance is a good test for any tool of this kind. Reach for it
 ### Good fits
 
 - routing and triage of messages, tickets and documents
-- the guardrail checks of [part 6 of the practical AI module](file/7a3f2c68-91de): is this input an injection attempt, is this output on topic, does this action need approval
+- the guardrail checks of [part 9 of the practical AI module](file/7a3f2c68-91de): is this input an injection attempt, is this output on topic, does this action need approval
 - grading in evals, where part 6 warned about the biases of chat models as judges, and a calibrated score is worth more than an eloquent one
 - filtering and labelling very large sets of records, where cost for each record decides whether the job is possible
 - decisions in the middle of an interaction, where a second's wait is too long
