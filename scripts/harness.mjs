@@ -66,29 +66,42 @@ export async function openPage(site, file, { width = 1440, height = 900, errors 
   if (beforeLoad) await beforeLoad(page);
   await page.goto(site.url(file));
   await page.waitForSelector('.reader', { timeout: 15000 });
-  await page.evaluate(() => document.fonts.ready);
-  const face = await page.evaluate(() => {
+  await bodyFaceLoaded(page, file);
+  await page.waitForTimeout(150);
+  return page;
+}
+
+// Waits for the face the page's text is set in, in each of the weights and
+// slants it is drawn with, and stops the run if it is not there. The browser
+// only fetches a face when something is first drawn in it, so a page that has
+// just changed typeface is in a fallback for a moment, and lines measured in
+// that moment are lines of a different face.
+async function bodyFaceLoaded(page, what) {
+  const face = await page.evaluate(async () => {
     const family = getComputedStyle(document.querySelector('.reader'))
       .fontFamily.split(',')[0]
       .replace(/["']/g, '')
       .trim();
+    for (const style of ['400', '700', 'italic 400'])
+      await document.fonts.load(`${style} 1em "${family}"`).catch(() => {});
+    await document.fonts.ready;
     const loaded = [...document.fonts].some((f) => f.family.replace(/["']/g, '') === family && f.status === 'loaded');
     return { family, loaded };
   });
   if (!face.loaded)
     throw new Error(
-      `${file}: the body typeface "${face.family}" did not load, so nothing measured here can be trusted`,
+      `${what}: the body typeface "${face.family}" did not load, so nothing measured here can be trusted`,
     );
-  await page.waitForTimeout(150);
-  return page;
 }
 
 // Chooses a reading setting through the panel, opening it if it is shut.
 // The panel is left open; close it with togglePanel(page, 'settings').
+// Choosing a typeface waits for it, as opening a page does.
 export async function setSetting(page, key, value) {
   const button = page.locator('button[aria-controls="settings-panel"]');
   if ((await button.getAttribute('aria-expanded')) !== 'true') await button.click();
   await page.locator(`input[name="setting-${key}"][value="${value}"]`).check();
+  if (key === 'font') await bodyFaceLoaded(page, `font=${value}`);
 }
 
 // Opens or shuts the header's panels: 'settings' or 'parts'.
