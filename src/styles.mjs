@@ -158,6 +158,11 @@ ${swatches()}
 .header-bar{align-items:center;min-height:4.75em;padding-block:0.6em;row-gap:0.6em}
 .reader .wordmark{--span:6;--span-md:3;justify-self:start;display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-weight:900;font-size:1.45em;line-height:1;letter-spacing:-0.025em;color:var(--ink);text-decoration:none}
 .reader .wordmark:hover{color:var(--ink);text-decoration:underline;text-decoration-thickness:0.08em}
+/* One of the header's items is a link and the others are buttons, and they
+   have to look like each other: without this the link takes the link colour
+   and an underline, and sits among two things that take neither. */
+.reader a.header-btn{color:var(--ink);text-decoration:none}
+.reader a.header-btn:hover{color:var(--bg);text-decoration:none}
 .header-actions{--start:7;--span:6;--start-md:4;--span-md:3;justify-self:end;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:0.6em}
 @container page (width < 40em){
   .header-actions{justify-self:stretch}
@@ -205,6 +210,10 @@ ${swatches()}
 .layout{row-gap:3em;padding-bottom:1em;align-items:start}
 .hero-num{--start:1;--span:3;margin:0.35em 0 0;font-family:var(--font-display);font-weight:900;font-size:12em;line-height:0.8;letter-spacing:-0.07em;color:var(--ink)}
 .hero{--start:4;--span:9;padding-block:2em 2.4em;border-bottom:var(--bw-heavy) solid var(--ink)}
+/* A part's hero is indented to leave the first three columns for its number.
+   A module's page and the directory have no number, so theirs start at the
+   first column and line up with the text and the table below them. */
+.module-hero,.directory-hero{--start:1;--span:12}
 .crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:0 0.5em}
 .crumbs li{display:flex;align-items:center;gap:0.5em;margin:0}
 .reader .crumbs a{display:inline-flex;align-items:center;min-height:44px}
@@ -345,6 +354,98 @@ ${swatches()}
   .data td + td,.data th + td{padding-top:0.55em}
   .cell-label{display:block;font-family:var(--font-mono);font-size:0.82em;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-2)}
   .data td.is-empty{display:none}
+}
+
+/* The model directory. A table of reference, so it is denser than the prose
+   pages and sits across the whole grid rather than in a reading column. */
+.directory-layout .directory-lede{--start:1;--span:9}
+/* The filters fold away, and start folded at every width: a reader comes to
+   the directory to look at models, and meets the table rather than a screen
+   of controls. */
+.filter-panel{--start:1;--span:12;margin:2em 0 0}
+.filter-toggle{display:flex;align-items:center;justify-content:space-between;gap:1em;min-height:48px;padding:0.4em 1em;border:var(--bw) solid var(--edge);border-radius:var(--r);background:var(--surface);font-weight:800;cursor:pointer;list-style:none}
+.filter-toggle::-webkit-details-marker{display:none}
+.filter-toggle:hover{background:var(--ink);color:var(--bg)}
+.filter-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.filter-panel[open] .filter-toggle .chev{transform:rotate(180deg)}
+.filter-panel[open] .filters{margin-top:0.6em}
+.filters{display:flex;flex-direction:column;gap:1.2em;margin:0;padding:1.2em 1.3em 1.4em;background:var(--surface);border:var(--bw) solid var(--edge)}
+/* Each group takes a row of its own and its choices run across it. They were
+   laid out in equal columns, which gave a group of two choices as much width
+   as a group of ten, and wrapped the ten into a ragged stack beside an empty
+   half of the panel. */
+.filter-group{margin:0;padding:0;border:0;min-width:0}
+.filter-group .choices{display:flex;flex-wrap:wrap;gap:0.5em}
+.filter-actions{display:flex}
+.filter-choice{min-height:44px}
+.search-field{display:flex;align-items:center;gap:0.5em;padding:0 0.7em;background:var(--bg);border:var(--bw) solid var(--edge)}
+.search-field input{flex:1;min-height:44px;padding:0.3em 0;border:0;background:none;color:var(--ink);font:inherit;font-size:1em}
+.search-field input:focus-visible{outline:3px solid var(--focus);outline-offset:-1px}
+.search-field input{min-width:0}
+.model-count{--start:1;--span:12;margin:1.2em 0 0;font-family:var(--font-mono);font-size:0.9em;color:var(--ink-2)}
+.model-none{--start:1;--span:12;margin:1.5em 0 0}
+/* A table inside prose is capped at the reading width. This one is the page,
+   so it takes all twelve columns. */
+.directory-layout .table-wrap{--start:1;--span:12;max-width:none;margin-top:0.8em}
+.models{font-size:0.95em}
+/* The columns are sized so a model's name does not wrap and the list of what
+   it does has room to run across rather than down. Only while the table is a
+   table: below 44em every row becomes a card, and a width meant for a column
+   would squeeze a name to one letter a line. */
+@container page (width >= 44em){
+  .models th:nth-child(1){width:17%}
+  .models th:nth-child(2){width:11%}
+  .models th:nth-child(3){width:12%}
+  .models th:nth-child(4){width:13%}
+  .models th:nth-child(5){width:11%}
+  .models th:nth-child(6){width:11%}
+  .models th:nth-child(7){width:14%}
+  .models th:nth-child(8){width:11%}
+}
+/* The control sits in the model's row; what it opens is the row beneath,
+   spanning every column, because a panel inside one cell was a column wide
+   and twenty lines tall. */
+.model-toggle{display:flex;align-items:center;justify-content:space-between;gap:0.5em;width:100%;min-height:44px;padding:0.3em 0.7em;border:var(--bw) solid var(--edge);border-radius:var(--r);background:var(--bg);color:var(--ink);font:inherit;font-weight:800;cursor:pointer}
+.model-toggle:hover{background:var(--ink);color:var(--bg)}
+.model-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.model-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.model-extra[data-shut]{display:none}
+.model-extra > td{padding-top:0;padding-bottom:0.9em}
+.models tbody th{vertical-align:top}
+.models td{vertical-align:top}
+.does{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0.3em 0.7em}
+/* In a row the icons stand alone, so they get room to be told apart. */
+.does-icons{gap:0.45em 0.6em}
+.does-icons .icon{width:1.35em;height:1.35em}
+.does-named{gap:0.4em 1.2em;margin-top:0.3em}
+.model-released-value{margin:0.1em 0 0}
+/* A model that has been passed or switched off says so in its own column, so
+   that saying it never makes one row taller than the rest. */
+.model-state.is-superseded,.model-state.is-retired{color:var(--ink-2)}
+.model-source{margin:0.9em 0 0}
+.model-fact-label{margin:0;font-family:var(--font-mono);font-size:0.82em;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-2)}
+/* After the list above it, which wraps, so it needs the room said here and
+   not in the rule above, which would lose to the margin reset. */
+.model-released-label{margin-top:1.4em}
+.does-item{display:flex;align-items:center;gap:0.3em;white-space:nowrap}
+.does-item .icon,.access-mark .icon{width:1.1em;height:1.1em;flex:none}
+.does-word{font-size:0.9em}
+.access-mark{display:flex;align-items:center;gap:0.35em;white-space:nowrap}
+.model-body{margin:0.7em 0 0.3em;padding:1em 1.1em 1.1em;background:var(--sunk);border:var(--bw) solid var(--edge);row-gap:1.1em}
+/* Three columns of four: what the model is, what it does and when it came,
+   then the facts and where they came from. Each starts at the top, so the
+   labels across the three line up. */
+.model-col{align-self:start}
+.model-col-notes{--start:1;--span:4;--start-md:1;--span-md:6}
+.model-col-does{--start:5;--span:4;--start-md:1;--span-md:3}
+.model-col-facts{--start:9;--span:4;--start-md:4;--span-md:3}
+.model-notes{margin:0;max-width:var(--measure)}
+/* Label and value in two columns, so every value starts at the same place. */
+.model-facts{margin:0;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:0.35em 1em}
+.model-facts dt{font-family:var(--font-mono);font-size:0.82em;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-2);line-height:1.45}
+.model-facts dd{margin:0}
+@container page (width < 62em){
+  .directory-layout .directory-lede{--span:12}
 }
 
 /* Code */

@@ -213,6 +213,92 @@
   window.addEventListener('resize', followSoon);
   follow();
 
+  // ---- The model directory's search and filters. The table is whole in the
+  // HTML, so this only hides rows: a reader without JavaScript still has every
+  // model, and a reader with it gets a way through them. The count is a live
+  // region, because hiding rows is silent otherwise.
+  var filterForm = document.getElementById('model-filters');
+  if (filterForm) {
+    // Each model's details are open in the markup, so a reader without this
+    // script gets them all. With it they start shut and the row's own button
+    // opens one. Shut is its own attribute rather than `hidden`, which the
+    // filters use, so a model hidden by a filter comes back as it was.
+    var toggles = [].slice.call(document.querySelectorAll('.model-toggle'));
+    toggles.forEach(function (button) {
+      var area = document.getElementById(button.getAttribute('aria-controls'));
+      if (!area) return;
+      area.setAttribute('data-shut', '');
+      button.setAttribute('aria-expanded', 'false');
+      button.addEventListener('click', function () {
+        var shut = area.hasAttribute('data-shut');
+        if (shut) area.removeAttribute('data-shut');
+        else area.setAttribute('data-shut', '');
+        button.setAttribute('aria-expanded', shut ? 'true' : 'false');
+      });
+    });
+
+    // The filters are open in the markup so that they are there without this
+    // script, and start folded with it, so what a reader meets is the table.
+    var panel = filterForm.closest('details.filter-panel');
+    if (panel) panel.open = false;
+    var modelRows = [].slice.call(document.querySelectorAll('.model-row'));
+    var count = document.querySelector('.model-count');
+    var none = document.querySelector('.model-none');
+    var total = Number(count.getAttribute('data-total'));
+    var search = document.getElementById('model-search');
+
+    var ticked = function (name) {
+      var on = [];
+      var boxes = filterForm.querySelectorAll('input[name="' + name + '"]:checked');
+      for (var i = 0; i < boxes.length; i++) on.push(boxes[i].value);
+      return on;
+    };
+
+    var sift = function () {
+      var words = (search.value || '').trim().toLowerCase();
+      var kinds = ticked('access');
+      var does = ticked('does');
+      var providers = ticked('provider');
+      var states = ticked('status');
+      var shown = 0;
+      for (var i = 0; i < modelRows.length; i++) {
+        var row = modelRows[i];
+        var name = row.getAttribute('data-name');
+        var provider = row.getAttribute('data-provider');
+        var can = row.getAttribute('data-does').split(' ');
+        var slug = provider.replace(/[^a-z0-9]+/g, '-');
+        var ok =
+          (!words || name.indexOf(words) !== -1 || provider.indexOf(words) !== -1) &&
+          (!kinds.length || kinds.indexOf(row.getAttribute('data-access')) !== -1) &&
+          (!providers.length || providers.indexOf(slug) !== -1) &&
+          (!states.length || states.indexOf(row.getAttribute('data-status')) !== -1);
+        // Every capability ticked has to be present, not just one of them:
+        // asking for chat and vision means a model that does both.
+        for (var d = 0; ok && d < does.length; d++) if (can.indexOf(does[d]) === -1) ok = false;
+        row.hidden = !ok;
+        // The details sit in a row of their own beneath, which has to go with
+        // it or a hidden model leaves its panel behind.
+        var extra = row.nextElementSibling;
+        if (extra && extra.className.indexOf('model-extra') !== -1) extra.hidden = !ok;
+        if (ok) shown++;
+      }
+      count.textContent =
+        shown === total ? 'Showing all ' + total + ' models.' : 'Showing ' + shown + ' of ' + total + ' models.';
+      none.hidden = shown !== 0;
+    };
+
+    filterForm.addEventListener('input', sift);
+    filterForm.addEventListener('change', sift);
+    // A reset empties the fields after this event, so the sift waits a tick.
+    filterForm.addEventListener('reset', function () {
+      window.setTimeout(sift, 0);
+    });
+    // The form does nothing on its own; filtering happens as you type.
+    filterForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+    });
+  }
+
   // ---- The lifecycle calculator. Its arithmetic is written in below the
   // build, from calculator.mjs, so the page and this work from one rule.
   var calc = document.querySelector('.calc');

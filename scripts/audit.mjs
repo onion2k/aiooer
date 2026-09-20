@@ -58,6 +58,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { startSite, openPage, setSetting, AXE_PATH, course, sitePages, pageMap, pageFile } from './harness.mjs';
 import { RESULTS, STATIC_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
+import { parseModels, CAPABILITIES } from '../src/models.mjs';
 import { delivery } from '../src/calculator.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
@@ -106,6 +107,13 @@ const MUTATIONS = {
   modulecards: {
     js: () => {
       document.querySelector('.part-card')?.remove();
+    },
+  },
+  // A model dropped from the directory, which is the one thing a directory
+  // must never do quietly.
+  models: {
+    js: () => {
+      document.querySelector('.model-row')?.remove();
     },
   },
   // A wordmark that says something other than the introduction's heading.
@@ -163,6 +171,10 @@ const WHERE = pageMap();
 const fileOf = (board) => pageFile(WHERE.get(board));
 // A module's own page, which is neither the home page nor a part: it has no
 // contents to follow and lists its module's parts rather than every module's.
+// The directory of models: reference rather than reading, so it has no
+// contents to follow and is neither the home page nor a part.
+const CATALOGUE = parseModels(CONTENT_DIR);
+const DIRECTORY = 'models/index.html';
 const MODULE_PAGES = new Map(
   course()
     .modules.filter((m) => m.parts.some((p) => p.written))
@@ -195,6 +207,7 @@ const KINDS = [
   'modules',
   'calculator',
   'hues',
+  'directory',
 ];
 const emptyResults = () => Object.fromEntries(KINDS.map((k) => [k, []]));
 const results = emptyResults();
@@ -617,6 +630,7 @@ const TWELVE = {
   ],
   part: ['.header-bar', '.layout', '.site-footer > .shell'],
   module: ['.header-bar', '.module-layout', '.site-footer > .shell'],
+  directory: ['.header-bar', '.directory-layout', '.site-footer > .shell'],
   panels: ['.parts-list', '.settings-grid'],
 };
 // A container is on twelve columns when its grid has exactly twelve tracks
@@ -784,6 +798,14 @@ async function auditPage(file) {
       const went = (h) => (h ? landing(new URL(h).pathname) : null);
       if (went(seen.next) !== next) wrong.push(`next lands on ${went(seen.next)}, wanted ${next}`);
       if (went(seen.prev) !== prev) wrong.push(`previous lands on ${went(seen.prev)}, wanted ${prev}`);
+    } else if (file === DIRECTORY) {
+      // The directory names itself in its breadcrumb, its heading and its
+      // page title, the way every other page does.
+      const crumbs = ['Introduction', 'Models'];
+      if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
+        wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
+      if (seen.h1 !== 'Models') wrong.push(`heading "${seen.h1}"`);
+      if (!seen.title.startsWith('Models · ')) wrong.push(`page title "${seen.title}"`);
     } else if (MODULE_PAGES.has(file)) {
       // A module's page names the module in its breadcrumb, its heading and
       // its page title, lists every one of its parts, and leads on to the
@@ -823,9 +845,11 @@ async function auditPage(file) {
         'modules',
         part
           ? `${file}: ${part.module}, part ${part.n} of ${part.of}, in its label, breadcrumb and title; ways on and back right`
-          : MODULE_PAGES.has(file)
-            ? `${file}: ${MODULE_PAGES.get(file).name}, ${seen.cards} parts listed, named in its breadcrumb, heading and title; ways on and back right`
-            : `${file}: ${seen.home.map((m) => `${m.name} ${m.cards} cards (${m.coming} coming)`).join(', ')}; no dead links`,
+          : file === DIRECTORY
+            ? `${file}: the directory, named in its breadcrumb, heading and title; no dead links`
+            : MODULE_PAGES.has(file)
+              ? `${file}: ${MODULE_PAGES.get(file).name}, ${seen.cards} parts listed, named in its breadcrumb, heading and title; ways on and back right`
+              : `${file}: ${seen.home.map((m) => `${m.name} ${m.cards} cards (${m.coming} coming)`).join(', ')}; no dead links`,
       );
   }
 
@@ -874,6 +898,93 @@ async function auditPage(file) {
     await page.close();
   }
 
+  // The directory lists every model in models.json, says how many it is
+  // showing, and filters down to exactly the models that match. The
+  // expectation is worked out from the data, not written down here, so a
+  // model added to models.json is checked from the day it is added.
+  if (run('directory') && file === DIRECTORY) {
+    const page = await open(file);
+    const seen = await page.evaluate(() => ({
+      names: [...document.querySelectorAll('.model-row .model-name-text')].map((el) => el.textContent.trim()),
+      details: document.querySelectorAll('.model-extra .model-body').length,
+      toggles: document.querySelectorAll('.model-row .model-toggle').length,
+      shut: document.querySelectorAll('.model-extra[data-shut]').length,
+      count: document.querySelector('.model-count')?.textContent.trim() ?? null,
+      filtersFolded: !document.querySelector('details.filter-panel')?.open,
+    }));
+    const wrong = [];
+    const want = CATALOGUE.models.map((m) => m.name);
+    const missing = want.filter((n) => !seen.names.includes(n));
+    if (missing.length) wrong.push(`missing ${missing.join(', ')}`);
+    if (seen.names.length !== want.length) wrong.push(`${seen.names.length} rows, wanted ${want.length}`);
+    if (seen.details !== want.length) wrong.push(`${seen.details} details panels, wanted ${want.length}`);
+    if (seen.toggles !== want.length) wrong.push(`${seen.toggles} details buttons, wanted ${want.length}`);
+    // Every panel starts shut, and each one's button says so.
+    if (seen.shut !== want.length) wrong.push(`${seen.shut} panels shut at rest, wanted ${want.length}`);
+    if (seen.count !== `Showing all ${want.length} models.`) wrong.push(`count says "${seen.count}"`);
+    // The filters start folded, so a reader meets the table and not a screen
+    // of controls. The count sits outside the fold and stays visible.
+    if (!seen.filtersFolded) wrong.push('the filters are not folded as the page opens');
+
+    // Everything below drives the filters, which means opening them first.
+    await page.click('.filter-toggle');
+    await page.waitForTimeout(40);
+
+    // Filtering, driven as a reader drives it. Every capability in the data
+    // is tried, so a new one cannot arrive unchecked.
+    for (const key of CATALOGUE.capabilities) {
+      await page.evaluate(() => document.querySelector('.filters').reset());
+      await page.check(`#filter-does-${key}`);
+      await page.waitForTimeout(30);
+      const got = await page.evaluate(
+        () => [...document.querySelectorAll('.model-row')].filter((r) => !r.hidden).length,
+      );
+      const expected = CATALOGUE.models.filter((m) => m.does.includes(key)).length;
+      if (got !== expected) wrong.push(`${CAPABILITIES[key].label} shows ${got}, wanted ${expected}`);
+    }
+    // The button in a model's row opens the area beneath it, and says so.
+    // The loop above leaves its last filter on, so the rows come back first:
+    // clicking a row a filter is hiding would wait for a button that is not
+    // there, which is what this check did when it was first written.
+    await page.evaluate(() => document.querySelector('.filters').reset());
+    await page.waitForTimeout(40);
+    await page.click('.model-row:first-child .model-toggle');
+    await page.waitForTimeout(40);
+    const opened = await page.evaluate(() => {
+      const button = document.querySelector('.model-row:first-child .model-toggle');
+      const area = document.getElementById(button.getAttribute('aria-controls'));
+      return {
+        says: button.getAttribute('aria-expanded'),
+        shown: !area.hasAttribute('data-shut') && !!area.offsetParent,
+        wide: Math.round(area.getBoundingClientRect().width),
+        table: Math.round(document.querySelector('table.models').getBoundingClientRect().width),
+      };
+    });
+    if (opened.says !== 'true' || !opened.shown)
+      wrong.push(`the first details button says ${opened.says}, shown ${opened.shown}`);
+    // The area spans the table, which is the point of it being a row.
+    if (Math.abs(opened.wide - opened.table) > 2)
+      wrong.push(`the opened area is ${opened.wide}px against a ${opened.table}px table`);
+
+    // A search that matches nothing says so rather than showing an empty table.
+    await page.evaluate(() => document.querySelector('.filters').reset());
+    await page.fill('#model-search', 'zzzzzz');
+    await page.waitForTimeout(30);
+    const empty = await page.evaluate(() => ({
+      rows: [...document.querySelectorAll('.model-row')].filter((r) => !r.hidden).length,
+      told: !document.querySelector('.model-none').hidden,
+    }));
+    if (empty.rows !== 0 || !empty.told)
+      wrong.push(`a search matching nothing shows ${empty.rows} rows, told ${empty.told}`);
+    await page.close();
+    if (wrong.length) fail('directory', `${file}: ${wrong.join('; ')}`);
+    else
+      pass(
+        'directory',
+        `${file}: ${want.length} models, each with details; ${CATALOGUE.capabilities.length} filters show what the data says`,
+      );
+  }
+
   // The contents list follows the reader: at the top, in the middle and at
   // the bottom of a part, at desktop and phone size, and in a tall
   // 1440 by 3200 frame, where a short last section never reaches the line.
@@ -882,7 +993,8 @@ async function auditPage(file) {
     [390, 844],
     [1440, 3200],
   ];
-  for (const [width, height] of run('spy') && file !== 'index.html' && !MODULE_PAGES.has(file) ? frames : []) {
+  const follows = file !== 'index.html' && file !== DIRECTORY && !MODULE_PAGES.has(file);
+  for (const [width, height] of run('spy') && follows ? frames : []) {
     const page = await open(file, { width, height });
     const count = await page.evaluate(() => document.querySelectorAll('.article > section > h2').length);
     for (const [where, index] of [
@@ -1190,7 +1302,8 @@ async function auditPage(file) {
       );
     else pass('grids', `${file} @${width}: every block the same height (${label})`);
     if (width === 1440) {
-      const kind = file === 'index.html' ? 'home' : MODULE_PAGES.has(file) ? 'module' : 'part';
+      const kind =
+        file === 'index.html' ? 'home' : file === DIRECTORY ? 'directory' : MODULE_PAGES.has(file) ? 'module' : 'part';
       const counts = [...(await columnCounts(page, TWELVE[kind])), ...panelTracks];
       const wrong = counts.filter((c) => c.tracks !== 12 || !c.equal);
       if (wrong.length)

@@ -1,0 +1,1433 @@
+{
+  "checked": "2026-09-20",
+  "about": [
+    "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
+    "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
+  ],
+  "models": [
+    {
+      "name": "Claude Fable 5.1",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 128K output",
+      "price": "$10 / $50 per million tokens",
+      "cutoff": "June 2026",
+      "notes": "The top of Anthropic's range, above Opus 5, for demanding reasoning and long-horizon agentic work. Its thinking is adaptive and always on, and cache reads cost a quarter of the usual rate. Anthropic's own advice is to start with Opus 5 and move here only when that model at higher effort still falls short.",
+      "source": "https://platform.claude.com/docs/en/models/fable-5-1/overview"
+    },
+    {
+      "name": "Claude Opus 5",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-07",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 128K output",
+      "price": "$5 / $25 per million tokens",
+      "cutoff": "May 2026",
+      "notes": "Anthropic's model for agentic coding and long enterprise work, sitting below Fable 5.1 and above Sonnet 5. Its thinking adapts to an effort setting rather than a manual budget. It arrived at the same price as the Opus 4.8 it replaced.",
+      "source": "https://www.anthropic.com/news/claude-opus-5"
+    },
+    {
+      "name": "Claude Sonnet 5",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-06",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 128K output",
+      "price": "$2 / $10 per million tokens",
+      "cutoff": "January 2026",
+      "notes": "The middle of Anthropic's range and the default on the free and Pro plans, meant as the balance of speed and intelligence. It shares Opus 5's million-token window and adaptive thinking at less than half the price.",
+      "source": "https://www-cdn.anthropic.com/9e6a1044980d8c4ed85669faf9c2a8342e2e9f1e/Claude%20Sonnet%205%20System%20Card.pdf"
+    },
+    {
+      "name": "Claude Haiku 4.5",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-10",
+      "does": [
+        "chat",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "200K tokens, up to 64K output",
+      "price": "$1 / $5 per million tokens",
+      "cutoff": "July 2025, reliable to February 2025",
+      "notes": "The fastest and cheapest model in the Claude range, for high volume and for the sub-agents inside a larger system. It is the only one still on the older 200K window and the manual extended-thinking mode.",
+      "source": "https://assets.anthropic.com/m/99128ddd009bdcb/original/Claude-Haiku-4-5-System-Card.pdf"
+    },
+    {
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-07",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1.05M tokens, up to 128K output",
+      "price": "$4 / $20 per million tokens",
+      "cutoff": "February 2026",
+      "notes": "The top of OpenAI's workhorse tier, below GPT-6 Astra, and the model behind most paid ChatGPT conversations. It came with two cheaper siblings, Terra as the balanced default and Luna as the fast one, whose prices were cut in July 2026. Sol has the highest reasoning ceiling of the three.",
+      "source": "https://developers.openai.com/api/docs/models"
+    },
+    {
+      "name": "o3",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-04",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "200K tokens, up to 100K output",
+      "price": "$2 / $8 per million tokens",
+      "cutoff": "June 2024",
+      "notes": "A reasoning model that works through a problem in text, code and images before answering, aimed at maths, science and visual reasoning. Its April 2025 snapshot is deprecated with a shutdown date of 11 December 2026, and OpenAI names a GPT-5.6 model as the replacement.",
+      "source": "https://developers.openai.com/api/docs/models/o3"
+    },
+    {
+      "name": "GPT-4.1",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-04",
+      "does": [
+        "chat",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "1M tokens, up to 32K output",
+      "price": "$2 / $8 per million tokens",
+      "cutoff": "June 2024",
+      "notes": "An API-only successor to GPT-4o, described by OpenAI as its strongest non-reasoning model, with better instruction following and tool calling. It raised the window to about a million tokens. It has gone from ChatGPT, though the API model has no announced shutdown.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-4.1"
+    },
+    {
+      "name": "GPT-4o",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2024-05",
+      "does": [
+        "chat",
+        "tools",
+        "code",
+        "vision",
+        "audio"
+      ],
+      "status": "superseded",
+      "context": "128K tokens, up to 16K output",
+      "price": "$2.50 / $10 per million tokens",
+      "cutoff": "October 2023",
+      "notes": "The model that made speech in and speech out ordinary, and brought native multimodal handling to the GPT-4 line. It was withdrawn from ChatGPT in April 2026, but the API snapshots are still served with no announced shutdown.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-4o"
+    },
+    {
+      "name": "Whisper large-v3",
+      "provider": "OpenAI",
+      "access": "open",
+      "size": "1.55B",
+      "released": "2023-11",
+      "does": [
+        "audio"
+      ],
+      "status": "superseded",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Apache-2.0",
+      "notes": "Speech recognition and speech-to-English translation across 99 languages, trained on more than five million hours of audio. It takes 30 seconds at a time, so longer recordings are chunked. OpenAI's hosted endpoint is being removed in February 2027, but the open weights remain the last major Whisper release.",
+      "source": "https://github.com/openai/whisper/blob/main/model-card.md"
+    },
+    {
+      "name": "DALL·E 3",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2023-10",
+      "does": [
+        "images"
+      ],
+      "status": "retired",
+      "context": "Not applicable",
+      "price": "Was $0.04 an image, no longer purchasable",
+      "cutoff": "Not published",
+      "notes": "The image model that followed long prompts closely and rewrote a short request before generating. OpenAI removed it from the API on 12 May 2026 and points developers at its GPT Image line instead.",
+      "source": "https://developers.openai.com/api/docs/models/dall-e-3"
+    },
+    {
+      "name": "Sora",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2024-12",
+      "does": [
+        "video"
+      ],
+      "status": "retired",
+      "context": "Not applicable",
+      "price": "Was billed per second of video",
+      "cutoff": "Not published",
+      "notes": "The model that made text to video widely known. It was replaced by Sora 2 in September 2025, the apps closed in April 2026, and the API stops accepting requests on 24 September 2026.",
+      "source": "https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation"
+    },
+    {
+      "name": "Gemini 2.5 Pro",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-06",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision",
+        "audio",
+        "video"
+      ],
+      "status": "superseded",
+      "context": "1M tokens",
+      "price": "$1.25 / $10 per million tokens up to 200K, $2.50 / $15 above",
+      "cutoff": "January 2025",
+      "notes": "Google's reasoning model in the 2.5 family, which thinks before answering and takes long documents, code and video. It is still served with no announced shutdown, but Google now fronts the Gemini 3 series.",
+      "source": "https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+      "name": "Gemini 2.5 Flash",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-06",
+      "does": [
+        "chat",
+        "tools",
+        "code",
+        "vision",
+        "audio",
+        "video"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 64K output",
+      "price": "$0.30 / $2.50 per million tokens, audio input $1.00",
+      "cutoff": "January 2025",
+      "notes": "Google's price-performance model for high volume work that still needs some reasoning. It takes text, images, audio and video, and its thinking budget can be turned down to trade depth for cost.",
+      "source": "https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+      "name": "Gemma 2 27B",
+      "provider": "Google",
+      "access": "open",
+      "size": "27B",
+      "released": "2024-06",
+      "does": [
+        "chat",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "8K tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Gemma",
+      "notes": "A text-only open model built on the research behind Gemini, sized to run on a single desktop or a modest cloud instance. Its 8K window is short by current standards, and Google has since released Gemma 3 and 4.",
+      "source": "https://ai.google.dev/gemma/docs/model_card_2"
+    },
+    {
+      "name": "Imagen 3",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2024-08",
+      "does": [
+        "images"
+      ],
+      "status": "retired",
+      "context": "Not applicable",
+      "price": "Was about $0.04 an image, no longer listed",
+      "cutoff": "Not published",
+      "notes": "Google DeepMind's text to image model on Vertex AI, with standard and fast tiers, editing and upscaling, and SynthID watermarking. Google has deprecated the Imagen endpoints and routes image work to its Gemini-native models.",
+      "source": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes"
+    },
+    {
+      "name": "Veo 2",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2024-12",
+      "does": [
+        "video"
+      ],
+      "status": "retired",
+      "context": "Not applicable",
+      "price": "Was $0.50 a second, no longer purchasable",
+      "cutoff": "Not published",
+      "notes": "Text and image to video at up to 1080p, silent, with control over the first and last frame. Google shut it down on 30 June 2026 and directs users to Veo 3.1.",
+      "source": "https://ai.google.dev/gemini-api/docs/models/veo-2.0-generate-001"
+    },
+    {
+      "name": "Grok 4",
+      "provider": "xAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-07",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "retired",
+      "context": "256K tokens",
+      "price": "Was $3 / $15 per million tokens",
+      "cutoff": "Not published",
+      "notes": "xAI's flagship of mid 2025, with native tool use and live search over X and the web. It was retired from the API on 15 May 2026; the old name still resolves but is served by Grok 4.3 and billed at its rates.",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "name": "Nova Pro",
+      "provider": "Amazon",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2024-12",
+      "does": [
+        "chat",
+        "tools",
+        "code",
+        "vision",
+        "video"
+      ],
+      "status": "superseded",
+      "context": "300K tokens, up to 5K output",
+      "price": "$0.80 / $3.20 per million tokens",
+      "cutoff": "October 2024",
+      "notes": "Amazon's mid-tier multimodal model on Bedrock, taking text, images and video. Its model card still shows it active, but Amazon has announced Nova 2 and moved several sibling models to legacy.",
+      "source": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-amazon-nova-pro.html"
+    },
+    {
+      "name": "Command A",
+      "provider": "Cohere",
+      "access": "open",
+      "size": "111B",
+      "released": "2025-03",
+      "does": [
+        "chat",
+        "tools",
+        "embedding"
+      ],
+      "status": "superseded",
+      "context": "256K tokens, up to 8K output",
+      "price": "Free to run, or $2.50 / $10 per million tokens hosted",
+      "cutoff": "Not published",
+      "licence": "CC-BY-NC with Cohere terms",
+      "notes": "Cohere's enterprise model for retrieval, tool use and multilingual work. Unusually for its size it runs on as few as two datacentre cards, which is why organisations pick it for private deployment. It has been overtaken by Command A+.",
+      "source": "https://docs.cohere.com/docs/models"
+    },
+    {
+      "name": "Kimi K3",
+      "provider": "Moonshot AI",
+      "access": "open",
+      "size": "2.8T total, 104B active",
+      "released": "2026-07",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Kimi K3",
+      "notes": "An open-weight mixture-of-experts model with native image and video understanding, built for long agentic coding and research sessions. It has 896 experts with 16 active per token, and is the first open-weight model in the trillion-parameter class to be published at this scale.",
+      "source": "https://huggingface.co/moonshotai/Kimi-K3"
+    },
+    {
+      "name": "Qwen3.8-Max",
+      "provider": "Alibaba",
+      "access": "open",
+      "size": "2.4T total, 95B active",
+      "released": "2026-08",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code"
+      ],
+      "status": "current",
+      "context": "256K tokens, extensible to about 1M",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Qwen3.8-Max",
+      "notes": "The largest model Qwen has published, and the first of its Max tier released as weights rather than kept behind the API. Thinking mode is always on, so every reply begins with reasoning. The hosted version adds multimodal input the open weights do not have.",
+      "source": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B"
+    },
+    {
+      "name": "DeepSeek-V4-Flash",
+      "provider": "DeepSeek",
+      "access": "open",
+      "size": "304B total",
+      "released": "2026-07",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "1M tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "The small, fast member of DeepSeek's V4 family, under a plain MIT licence with a million-token window. Reasoning effort can be set low, high or max. DeepSeek has since released a V4.1 Flash with native vision.",
+      "source": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731"
+    },
+    {
+      "name": "DeepSeek-R1",
+      "provider": "DeepSeek",
+      "access": "open",
+      "size": "671B total, 37B active",
+      "released": "2025-01",
+      "does": [
+        "chat",
+        "reasoning",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "128K tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "A reasoning model built on the V3 architecture and trained with reinforcement learning, which works through a chain of thought before answering. It was the first widely available open-weight model to match OpenAI's o1 on reasoning, and shipped with six smaller distilled versions.",
+      "source": "https://huggingface.co/deepseek-ai/DeepSeek-R1"
+    },
+    {
+      "name": "DeepSeek-V3",
+      "provider": "DeepSeek",
+      "access": "open",
+      "size": "671B total, 37B active",
+      "released": "2024-12",
+      "does": [
+        "chat",
+        "tools",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "128K tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "DeepSeek Model License",
+      "notes": "A mixture-of-experts chat model pre-trained on 14.8 trillion tokens in FP8. Its interest was cost: near-frontier quality for a fraction of the usual training compute. The original weights carry DeepSeek's own licence, not the MIT that arrived with the March 2025 refresh.",
+      "source": "https://huggingface.co/deepseek-ai/DeepSeek-V3"
+    },
+    {
+      "name": "Llama 3.1 405B",
+      "provider": "Meta",
+      "access": "open",
+      "size": "405B",
+      "released": "2024-07",
+      "does": [
+        "chat",
+        "tools",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "128K tokens",
+      "price": "Free to run",
+      "cutoff": "December 2023",
+      "licence": "Llama 3.1 Community",
+      "notes": "The first openly released model at frontier scale, trained on about 15 trillion tokens across eight languages. Running it needs several hundred gigabytes of accelerator memory, so most people reach it through a host rather than their own hardware.",
+      "source": "https://huggingface.co/meta-llama/Llama-3.1-405B-Instruct"
+    },
+    {
+      "name": "Llama 3.1 70B",
+      "provider": "Meta",
+      "access": "open",
+      "size": "70B",
+      "released": "2024-07",
+      "does": [
+        "chat",
+        "tools",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "128K tokens",
+      "price": "Free to run",
+      "cutoff": "December 2023",
+      "licence": "Llama 3.1 Community",
+      "notes": "The middle size of the Llama 3.1 family, which fits on a single high-memory node when quantised. Meta's own Llama 3.3 70B matches much of the 405B model's quality at this size and has largely displaced it.",
+      "source": "https://huggingface.co/meta-llama/Llama-3.1-70B-Instruct"
+    },
+    {
+      "name": "Llama 3.1 8B",
+      "provider": "Meta",
+      "access": "open",
+      "size": "8B",
+      "released": "2024-07",
+      "does": [
+        "chat",
+        "tools",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "128K tokens",
+      "price": "Free to run",
+      "cutoff": "December 2023",
+      "licence": "Llama 3.1 Community",
+      "notes": "The smallest Llama 3.1, for local and on-device use and for fine-tuning on narrow tasks. It runs on a consumer graphics card when quantised. Its long life as the default local model owes more to its size than its quality, which later small models have passed.",
+      "source": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct"
+    },
+    {
+      "name": "Qwen 2.5 72B",
+      "provider": "Alibaba",
+      "access": "open",
+      "size": "72.7B",
+      "released": "2024-09",
+      "does": [
+        "chat",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "128K tokens, up to 8K output",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Qwen",
+      "notes": "The largest of the Qwen2.5 series, covering more than 29 languages and strong at code, mathematics and structured output. It reaches its long window by extrapolation rather than native training. Unlike the smaller Qwen2.5 models it is not Apache-licensed.",
+      "source": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct"
+    },
+    {
+      "name": "Qwen 2.5 Coder 32B",
+      "provider": "Alibaba",
+      "access": "open",
+      "size": "32.5B",
+      "released": "2024-11",
+      "does": [
+        "code"
+      ],
+      "status": "superseded",
+      "context": "128K tokens by extension, 32K as shipped",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Apache-2.0",
+      "notes": "A code-specialised model trained on about 5.5 trillion tokens of source and synthetic code. At release it was the strongest open-weight coding model of its size and small enough for one machine. Alibaba has since moved to the Qwen3-Coder line.",
+      "source": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct"
+    },
+    {
+      "name": "Mistral Small 3",
+      "provider": "Mistral",
+      "access": "open",
+      "size": "24B",
+      "released": "2025-01",
+      "does": [
+        "chat",
+        "tools",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "32K tokens",
+      "price": "Free to run",
+      "cutoff": "October 2023",
+      "licence": "Apache-2.0",
+      "notes": "A dense 24B model under a permissive licence, tuned for low latency rather than maximum capability, with native function calling. Later revisions moved quickly: 3.1 extended the window to 128K and added vision.",
+      "source": "https://huggingface.co/mistralai/Mistral-Small-24B-Instruct-2501"
+    },
+    {
+      "name": "Mixtral 8x7B",
+      "provider": "Mistral",
+      "access": "open",
+      "size": "46.7B total, 12.9B active",
+      "released": "2023-12",
+      "does": [
+        "chat",
+        "code"
+      ],
+      "status": "superseded",
+      "context": "32K tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Apache-2.0",
+      "notes": "A sparse mixture of experts in which a router picks two of eight expert groups per token, so it costs about as much to run as a 13B model while holding far more. It made open-weight mixture-of-experts designs ordinary.",
+      "source": "https://mistral.ai/news/mixtral-of-experts/"
+    },
+    {
+      "name": "Phi-4",
+      "provider": "Microsoft",
+      "access": "open",
+      "size": "14B",
+      "released": "2024-12",
+      "does": [
+        "chat",
+        "reasoning",
+        "code"
+      ],
+      "status": "current",
+      "context": "16K tokens",
+      "price": "Free to run",
+      "cutoff": "June 2024",
+      "licence": "MIT",
+      "notes": "Microsoft's open-weight small model, trained heavily on synthetic and curated data so that fourteen billion parameters perform above their size on reasoning and maths. It is still the current generation: there is no Phi-5, and the family has grown sideways instead, adding mini, multimodal, reasoning and vision variants.",
+      "source": "https://huggingface.co/microsoft/phi-4"
+    },
+    {
+      "name": "nomic-embed-text-v1.5",
+      "provider": "Nomic AI",
+      "access": "open",
+      "size": "0.1B",
+      "released": "2024-02",
+      "does": [
+        "embedding"
+      ],
+      "status": "current",
+      "context": "8K tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Apache-2.0",
+      "notes": "A small embedding model for retrieval and semantic search, with a long window for its size. Its vectors can be truncated from 768 dimensions to as few as 64 with only a small loss of accuracy. Queries and documents must carry a task prefix.",
+      "source": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5"
+    },
+    {
+      "name": "FLUX 3",
+      "provider": "Black Forest Labs",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-07",
+      "does": [
+        "images",
+        "video",
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Not published",
+      "cutoff": "Not published",
+      "notes": "One flow model covering image generation and editing, text to video, image to video and video to video with native audio up to twenty seconds. It launched in early access through the API; an open-weight version was announced but not yet available.",
+      "source": "https://bfl.ai/blog/flux-3"
+    },
+    {
+      "name": "FLUX.1 [dev]",
+      "provider": "Black Forest Labs",
+      "access": "open",
+      "size": "12B",
+      "released": "2024-08",
+      "does": [
+        "images"
+      ],
+      "status": "superseded",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "FLUX.1 [dev] Non-Commercial",
+      "notes": "A rectified flow transformer distilled from the hosted model, so it runs in fewer steps. At release it was the largest openly available text to image model, and notably better at text inside an image than what came before. The licence forbids commercial and production use.",
+      "source": "https://huggingface.co/black-forest-labs/FLUX.1-dev"
+    },
+    {
+      "name": "Stable Diffusion 3.5 Large",
+      "provider": "Stability AI",
+      "access": "open",
+      "size": "8.1B",
+      "released": "2024-10",
+      "does": [
+        "images"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Stability AI Community",
+      "notes": "A text to image diffusion transformer generating at up to about a megapixel, with better text rendering and prompt adherence than Stable Diffusion 3. The licence is free below a revenue threshold and paid above it, so it is not open source in the usual sense. It remains Stability's current open image release.",
+      "source": "https://stability.ai/news-updates/introducing-stable-diffusion-3-5"
+    },
+    {
+      "name": "Stable Video Diffusion",
+      "provider": "Stability AI",
+      "access": "open",
+      "size": "2B",
+      "released": "2023-11",
+      "does": [
+        "video"
+      ],
+      "status": "superseded",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Stable Video Diffusion Community",
+      "notes": "A latent diffusion model turning a single still into a short clip, 25 frames at 576 by 1024 in the XT variant. It was released as a research preview and was one of the first open-weight video models of any quality. Stability has withdrawn it from its own API.",
+      "source": "https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt"
+    },
+    {
+      "name": "Hunyuan3D 2.0",
+      "provider": "Tencent",
+      "access": "open",
+      "size": "Not published",
+      "released": "2025-01",
+      "does": [
+        "3d"
+      ],
+      "status": "superseded",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Tencent Hunyuan Community",
+      "notes": "A two-stage system generating textured 3D assets from an image or a prompt: a shape model makes the geometry and a separate model paints it, so either stage can be used alone. Tencent has since released 2.1 and a 3.0 generation.",
+      "source": "https://huggingface.co/tencent/Hunyuan3D-2"
+    },
+    {
+      "name": "Gemini 3.1 Pro",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-02",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision",
+        "audio",
+        "video"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 64K output",
+      "price": "$2 / $12 per million tokens up to 200K, $4 / $18 above",
+      "cutoff": "Not published",
+      "notes": "Google's top general model, taking text, images, audio, video and whole code repositories and answering in text. It is built for long reasoning and agentic work, with a Deep Think mode for harder problems. It was still labelled a preview in the Gemini API when this was checked.",
+      "source": "https://deepmind.google/models/model-cards/gemini-3-1-pro/"
+    },
+    {
+      "name": "Gemma 3 27B",
+      "provider": "Google",
+      "access": "open",
+      "size": "27B",
+      "released": "2025-03",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "128K tokens",
+      "price": "Free to run",
+      "cutoff": "August 2024",
+      "licence": "Gemma Terms of Use",
+      "notes": "The largest of the Gemma 3 open models, meant to run on a single card while taking both text and images. It was trained on 14 trillion tokens across more than 140 languages. Gemma 4 arrived in March 2026, so this is no longer the generation to start from.",
+      "source": "https://ai.google.dev/gemma/docs/core/model_card_3"
+    },
+    {
+      "name": "Llama 4 Scout",
+      "provider": "Meta",
+      "access": "open",
+      "size": "109B total, 17B active",
+      "released": "2025-04",
+      "does": [
+        "chat",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "10M tokens",
+      "price": "Free to run",
+      "cutoff": "August 2024",
+      "licence": "Llama 4 Community",
+      "notes": "The smaller of the two released Llama 4 models, a mixture of experts with about 17 billion parameters active per token. It takes text and images and writes text and code. Its headline feature is a context window of ten million tokens, far beyond anything else here.",
+      "source": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md"
+    },
+    {
+      "name": "MusicGen",
+      "provider": "Meta",
+      "access": "open",
+      "size": "300M, 1.5B and 3.3B",
+      "released": "2023-06",
+      "does": [
+        "music"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "CC-BY-NC-4.0",
+      "notes": "A text to music model that writes short instrumental pieces from a written description, optionally following a melody you give it. It was trained on 20,000 hours of licensed music with vocals stripped out. It cannot sing, and it was trained on English descriptions only.",
+      "source": "https://github.com/facebookresearch/audiocraft/blob/main/model_cards/MUSICGEN_MODEL_CARD.md"
+    },
+    {
+      "name": "GPT-5",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-08",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "400K tokens, up to 128K output",
+      "price": "$1.25 / $10 per million tokens",
+      "cutoff": "September 2024",
+      "notes": "OpenAI's August 2025 flagship, built as a router that sends a request either to a fast general model or to a deeper reasoning one, with reasoning effort as a dial. OpenAI's own documentation now marks it superseded. The system card at openai.com refuses to be fetched, so this rests on the developer documentation.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5"
+    },
+    {
+      "name": "GPT-5.4 Thinking",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-03",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "1.05M tokens, up to 128K output",
+      "price": "$2.50 / $15 per million tokens",
+      "cutoff": "August 2025",
+      "notes": "OpenAI's model for professional work from March 2026, folding the Codex line's coding ability into the main series and adding computer use. Thinking is the reasoning variant. Prompts over 272K tokens are charged at double the input rate for the whole session.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.4"
+    },
+    {
+      "name": "Claude Opus 4.7",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-04",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "1M tokens, up to 128K output",
+      "price": "$5 / $25 per million tokens",
+      "cutoff": "January 2026",
+      "notes": "Anthropic's top model of April 2026, for complex agentic coding and enterprise work. It introduced the tokenizer the current Claude models still use, so a million of its tokens holds rather more text than on earlier models. Anthropic lists it as legacy and still available.",
+      "source": "https://platform.claude.com/docs/en/models/opus-4-7/overview"
+    },
+    {
+      "name": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-02",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "1M tokens, up to 128K output",
+      "price": "$3 / $15 per million tokens",
+      "cutoff": "January 2026, reliable to August 2025",
+      "notes": "The February 2026 middle of Anthropic's range. It was the last generation to accept the older manual extended thinking mode, which is deprecated on it in favour of adaptive thinking steered by an effort setting. Claude Sonnet 5 replaced it at a lower price.",
+      "source": "https://platform.claude.com/docs/en/models/sonnet-4-6/overview"
+    },
+    {
+      "name": "GPT-2",
+      "provider": "OpenAI",
+      "access": "open",
+      "size": "1.5B",
+      "released": "2019-02",
+      "does": [
+        "chat"
+      ],
+      "status": "superseded",
+      "context": "1K tokens",
+      "price": "Free to run",
+      "cutoff": "December 2017",
+      "licence": "Modified MIT",
+      "notes": "A text completion model trained on a corpus drawn from 45 million links posted to Reddit. OpenAI released it in stages through 2019 because it feared the largest version would be misused, and that decision set off the first serious public argument about whether weights should be published.",
+      "source": "https://github.com/openai/gpt-2/blob/master/model_card.md"
+    },
+    {
+      "name": "GPT-3",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "175B",
+      "released": "2020-06",
+      "does": [
+        "chat"
+      ],
+      "status": "retired",
+      "context": "2K tokens",
+      "price": "No longer sold",
+      "cutoff": "Not published",
+      "notes": "The first very large language model sold as a service, reachable only through an API under controlled access. Its demonstration that a model could learn a task from a few examples in the prompt, with no fine-tuning, is what made prompting a discipline. The base models were shut down in January 2024.",
+      "source": "https://github.com/openai/gpt-3/blob/master/model-card.md"
+    },
+    {
+      "name": "GPT-4",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2023-03",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "superseded",
+      "context": "8K tokens",
+      "price": "$30 / $60 per million tokens",
+      "cutoff": "September 2021",
+      "notes": "The model that made language models ordinary office equipment, passing professional exams and accepting images as well as text. Its system card described the safety testing but withheld the architecture, parameter count and training data, which marked the point where frontier labs stopped describing their models. Its last snapshot shuts down on 23 October 2026.",
+      "source": "https://cdn.openai.com/papers/gpt-4-system-card.pdf"
+    },
+    {
+      "name": "CLIP",
+      "provider": "OpenAI",
+      "access": "open",
+      "size": "Not published",
+      "released": "2021-01",
+      "does": [
+        "vision",
+        "embedding"
+      ],
+      "status": "superseded",
+      "context": "77 tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "A model that learned to put images and their captions in one shared space, so it could classify pictures against categories it had never been trained on, described in plain words. Its text encoder went on to steer most of the first generation of text to image models, Stable Diffusion among them.",
+      "source": "https://github.com/openai/CLIP/blob/main/model-card.md"
+    },
+    {
+      "name": "DALL·E 2",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2022-04",
+      "does": [
+        "images"
+      ],
+      "status": "retired",
+      "context": "Not applicable",
+      "price": "No longer sold",
+      "cutoff": "Not published",
+      "notes": "Generated images from text and could edit a region of an uploaded picture or produce variations of it. It opened to roughly 400 vetted users, and the wait list and the quality of the results together started the public excitement about generative images. It left the API in May 2026.",
+      "source": "https://github.com/openai/dalle-2-preview/blob/main/system-card.md"
+    },
+    {
+      "name": "Stable Diffusion 1.5",
+      "provider": "CompVis and Runway",
+      "access": "open",
+      "size": "About 0.9B",
+      "released": "2022-10",
+      "does": [
+        "images"
+      ],
+      "status": "superseded",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "CreativeML OpenRAIL-M",
+      "notes": "A latent text to image model trained on the LAION-2B English dataset with a frozen CLIP text encoder. Because the weights were published and small enough for a consumer graphics card, it became the base that thousands of fine-tunes and local image tools were built on. Its training data also made it the focus of the first copyright disputes over image models.",
+      "source": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+    },
+    {
+      "name": "Llama 2 70B",
+      "provider": "Meta",
+      "access": "open",
+      "size": "70B",
+      "released": "2023-07",
+      "does": [
+        "chat"
+      ],
+      "status": "superseded",
+      "context": "4K tokens",
+      "price": "Free to run",
+      "cutoff": "September 2022",
+      "licence": "Llama 2 Community",
+      "notes": "The largest of Meta's second Llama release, pretrained on two trillion tokens and offered as a base model and a chat-tuned one. Unlike the first Llama it came with a licence permitting commercial use, which is the moment open-weight models became a serious alternative to hosted APIs for ordinary work.",
+      "source": "https://ai.meta.com/research/publications/llama-2-open-foundation-and-fine-tuned-chat-models/"
+    },
+    {
+      "name": "OPT-175B",
+      "provider": "Meta",
+      "access": "open",
+      "size": "175B",
+      "released": "2022-05",
+      "does": [
+        "chat"
+      ],
+      "status": "superseded",
+      "context": "2K tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "OPT-175B non-commercial research",
+      "notes": "Meta's open replication of GPT-3, released to researchers with the training code and a logbook of what went wrong during the run. That logbook was as valuable as the weights: it was the first candid public account of what training a model at that scale actually involves.",
+      "source": "https://arxiv.org/abs/2205.01068"
+    },
+    {
+      "name": "GALACTICA",
+      "provider": "Meta",
+      "access": "open",
+      "size": "120B",
+      "released": "2022-11",
+      "does": [
+        "chat"
+      ],
+      "status": "retired",
+      "context": "2K tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "CC-BY-NC-4.0",
+      "notes": "Trained on 106 billion tokens of open-access scientific text for citation prediction, scientific question answering and molecular property prediction. Meta withdrew the public demo after three days because the model produced confident, fluent and entirely invented scientific claims. It is the standard example of why fluency in a specialist register is not the same as being right.",
+      "source": "https://github.com/paperswithcode/galai/blob/main/docs/model_card.md"
+    },
+    {
+      "name": "PaLM 2",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2023-05",
+      "does": [
+        "chat",
+        "reasoning",
+        "code"
+      ],
+      "status": "retired",
+      "context": "Not published",
+      "price": "No longer sold",
+      "cutoff": "Not published",
+      "notes": "The model behind Bard and Google's first generation of hosted language APIs, sold in four sizes named Gecko, Otter, Bison and Unicorn. Its technical report withheld the parameter count, the dataset size and the context length, which drew criticism at the time. Google replaced it with Gemini and shut the API down in 2024.",
+      "source": "https://arxiv.org/abs/2305.10403"
+    },
+    {
+      "name": "Claude 3 Opus",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2024-03",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "retired",
+      "context": "200K tokens",
+      "price": "No longer sold",
+      "cutoff": "August 2023",
+      "notes": "The largest of the three Claude 3 models and the first Anthropic model to read images as well as text. Its long window and its writing made it the model many people reached for when a task needed long documents held in mind at once. It was retired in January 2026, the first model to go through Anthropic's full preservation and retirement process.",
+      "source": "https://www-cdn.anthropic.com/de8ba9b01c9ab7cbabf5c33b80b7bbc618857627/Model_Card_Claude_3.pdf"
+    },
+    {
+      "name": "GPT-6 Astra",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1.05M tokens, up to 128K output",
+      "price": "$10 / $50 per million tokens",
+      "cutoff": "April 2026",
+      "notes": "OpenAI's flagship, at the top of its range for long work carried to completion: multi-step reasoning, software engineering, computer use and research. It takes text and images and returns text only, so it generates no media itself, though it can call image generation and other tools. What separates it from the GPT-5.6 tier is that it is built to finish a task over many steps rather than answer one turn well.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+    },
+    {
+      "name": "Krea 2",
+      "provider": "Krea AI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-05",
+      "does": [
+        "images"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$0.03 an image, $0.06 for the large size",
+      "cutoff": "Not published",
+      "notes": "Krea's first foundation image model, built from scratch. It is aimed at style rather than at transcribing a prompt literally, with a style transfer system that takes up to ten reference images and lets each be weighted. It ships in three sizes, and Krea has since published open-weight siblings.",
+      "source": "https://www.krea.ai/blog/krea-2-image-model"
+    },
+    {
+      "name": "Z-Image-Turbo",
+      "provider": "Alibaba",
+      "access": "open",
+      "size": "6B",
+      "released": "2025-11",
+      "does": [
+        "images"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Apache-2.0",
+      "notes": "A distilled text to image model that reaches a usable image in about eight steps. It fits in 16GB of video memory, so it runs on consumer hardware, and it renders both English and Chinese text inside the image unusually well.",
+      "source": "https://huggingface.co/Tongyi-MAI/Z-Image-Turbo"
+    },
+    {
+      "name": "FLUX.2 [klein] 9B",
+      "provider": "Black Forest Labs",
+      "access": "open",
+      "size": "9B, with an 8B text embedder",
+      "released": "2026-01",
+      "does": [
+        "images",
+        "vision"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Free to run for non-commercial use, or paid through the maker's API",
+      "cutoff": "Not published",
+      "licence": "FLUX Non-Commercial",
+      "notes": "A rectified flow transformer doing text to image and reference-based editing in one model. It is step distilled to four inference steps and generates in under a second on suitable hardware, needing about 29GB of video memory. The 4B sibling is Apache licensed, but these 9B weights are non-commercial only.",
+      "source": "https://huggingface.co/black-forest-labs/FLUX.2-klein-9B"
+    },
+    {
+      "name": "LTX-2.3",
+      "provider": "Lightricks",
+      "access": "open",
+      "size": "22B",
+      "released": "2026-03",
+      "does": [
+        "video",
+        "audio"
+      ],
+      "status": "superseded",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "LTX-2 Community",
+      "notes": "A diffusion transformer that generates video and matching audio together in one model, from text or from an image. It came with a desktop editor so the whole thing runs on a single consumer graphics card. LTX-2.5 replaced it in August 2026.",
+      "source": "https://huggingface.co/Lightricks/LTX-2.3"
+    },
+    {
+      "name": "Nano Banana Pro",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-11",
+      "does": [
+        "images",
+        "vision"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$0.134 an image at 1K or 2K, $0.24 at 4K",
+      "cutoff": "Not published",
+      "notes": "Google's image generation and editing model, formally Gemini 3 Pro Image, built on Gemini 3 Pro so that it can reason about what it is drawing. It is the one most often reached for when an image has to carry legible text, such as a poster or an annotated diagram, and it holds several characters consistent across edits. A cheaper Flash tier sits below it.",
+      "source": "https://deepmind.google/models/gemini-image/pro/"
+    },
+    {
+      "name": "Midjourney V8.2",
+      "provider": "Midjourney",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-07",
+      "does": [
+        "images"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Subscription, no published per-image rate",
+      "cutoff": "Not published",
+      "notes": "Midjourney's default model, reached through its web app and Discord rather than a public API. It generates at 1024 by 1024 by default and doubles that through its upscalers. It is bought as a subscription, so there is no published per-image rate.",
+      "source": "https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version"
+    },
+    {
+      "name": "Qwen-Image",
+      "provider": "Alibaba",
+      "access": "open",
+      "size": "20B",
+      "released": "2025-08",
+      "does": [
+        "images"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Apache-2.0",
+      "notes": "The Qwen team's first open-weight image model, under a fully permissive licence. Its distinguishing strength is rendering long passages of text inside an image, in Chinese as well as English, which most open models handle badly. It runs locally and has companion editing checkpoints.",
+      "source": "https://huggingface.co/Qwen/Qwen-Image"
+    },
+    {
+      "name": "Veo 3.1",
+      "provider": "Google",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-10",
+      "does": [
+        "video",
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$0.40 a second at 1080p, $0.60 at 4K",
+      "cutoff": "Not published",
+      "notes": "Google's current video model and the successor to Veo 2. It generates dialogue, sound effects and ambience natively alongside the picture rather than leaving them to be dubbed on, and offers scene extension, object insertion and camera control. Cheaper Fast and Lite tiers cost a fraction of the full rate.",
+      "source": "https://deepmind.google/models/veo/"
+    },
+    {
+      "name": "Runway Gen-4.5",
+      "provider": "Runway",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025-12",
+      "does": [
+        "video"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Credits on a subscription, no published per-second rate",
+      "cutoff": "Not published",
+      "notes": "Runway's flagship video model, aimed at film and advertising work rather than short social clips. It is sold through credits on the paid plans rather than a per-second rate. Runway is unusually open about its limits, naming object permanence and causal reasoning as things it still gets wrong.",
+      "source": "https://runway.com/research/introducing-runway-gen-4.5"
+    },
+    {
+      "name": "Kling Video 3.0",
+      "provider": "Kuaishou",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-02",
+      "does": [
+        "video",
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Subscription, no published per-second rate",
+      "cutoff": "Not published",
+      "notes": "Kuaishou's video model, and the main non-Western entrant most readers will meet. It generates speech in several languages and accents with separate control of each speaker, and handles multi-shot sequences of up to fifteen seconds.",
+      "source": "https://www.globenewswire.com/news-release/2026/02/05/3232837/0/en/kling-ai-launches-3-0-model-ushering-in-an-era-where-everyone-can-be-a-director.html"
+    },
+    {
+      "name": "Wan 2.2 T2V",
+      "provider": "Alibaba",
+      "access": "open",
+      "size": "27B total, 14B active",
+      "released": "2025-07",
+      "does": [
+        "video"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Apache-2.0",
+      "notes": "The strongest openly licensed text to video model most people can actually download, generating five seconds at up to 720p. It uses a pair of experts, one for the early layout and one for the later detail, so it holds more capacity without costing more to run. Alibaba's later Wan releases moved behind an API, which makes this the last with published weights.",
+      "source": "https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B"
+    },
+    {
+      "name": "LTX-2.5",
+      "provider": "Lightricks",
+      "access": "open",
+      "size": "22B",
+      "released": "2026-01",
+      "does": [
+        "video",
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "LTX-2.x Community",
+      "notes": "An open-weight model generating synchronised video and audio together, from HD up to 4K, meant to be fine-tuned and run on your own hardware. It can produce several shots that keep the same character, lighting and voice across cuts. The licence is free below a revenue threshold, so it is open weights rather than open source.",
+      "source": "https://huggingface.co/Lightricks/LTX-2.5"
+    },
+    {
+      "name": "Suno v5.5",
+      "provider": "Suno",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-03",
+      "does": [
+        "music",
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Subscription with credits, no published per-song rate",
+      "cutoff": "Not published",
+      "notes": "The music model most general listeners have actually encountered, generating whole songs with vocals from a text description. This version added singing in a subscriber's own verified voice, and custom models trained on a user's own tracks. It is sold by subscription with credits.",
+      "source": "https://suno.com/blog/v5-5"
+    },
+    {
+      "name": "Eleven v3",
+      "provider": "ElevenLabs",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2025",
+      "does": [
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$0.10 per 1,000 characters",
+      "cutoff": "Not published",
+      "notes": "ElevenLabs' flagship speech synthesis model, covering more than seventy languages. It is the counterpart to Whisper here, turning text into speech rather than speech into text, and is chosen for audiobooks and character dialogue where emotional range matters. A separate conversational variant trades some quality for much lower latency.",
+      "source": "https://elevenlabs.io/docs/overview/models"
+    },
+    {
+      "name": "MAI-Thinking-1",
+      "provider": "Microsoft",
+      "access": "hosted",
+      "size": "35B active of about 1T total",
+      "released": "2026-08",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code"
+      ],
+      "status": "current",
+      "context": "256K tokens, up to 64K output",
+      "price": "Not published",
+      "cutoff": "Varies by source, to March 2026",
+      "notes": "Microsoft AI's first reasoning model, text only, aimed at maths, coding and agentic enterprise work. Its distinguishing claim is that it was trained from scratch on licensed and traceable data without distilling from another lab's model, which Microsoft argues matters for provenance. It is in public preview on Microsoft Foundry.",
+      "source": "https://microsoft.ai/models/mai-thinking-1/"
+    },
+    {
+      "name": "MAI-Code-1.1-Flash",
+      "provider": "Microsoft",
+      "access": "hosted",
+      "size": "138B total, 5B active",
+      "released": "2026-08",
+      "does": [
+        "code",
+        "tools",
+        "vision"
+      ],
+      "status": "current",
+      "context": "256K tokens",
+      "price": "Not published",
+      "cutoff": "December 2025",
+      "notes": "A small, fast coding model for everyday developer work rather than the hardest problems, and the model served inside GitHub Copilot and VS Code. It takes images as well as text, so a screenshot or a design can be part of the prompt. It was trained against the production Copilot harness itself.",
+      "source": "https://microsoft.ai/models/mai-code-1-flash/"
+    },
+    {
+      "name": "MAI-Image-2.6",
+      "provider": "Microsoft",
+      "access": "hosted",
+      "size": "20B",
+      "released": "2026-08",
+      "does": [
+        "images",
+        "vision"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "Not published",
+      "cutoff": "Not published",
+      "notes": "A diffusion model for generating images from text and for precise editing of images you already have, with multi-image reference editing. Microsoft reports stronger text rendering inside images than the previous version. A cheaper, faster sibling serves high-throughput work.",
+      "source": "https://microsoft.ai/models/mai-image-2-6/"
+    },
+    {
+      "name": "MAI-Voice-2",
+      "provider": "Microsoft",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-06",
+      "does": [
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$22 per million characters, or $15 for the Flash version",
+      "cutoff": "Not published",
+      "notes": "A text to speech model covering fifteen languages, with emotion tags controlling tone at the sentence level. It can copy a voice from as little as five seconds of reference audio, but only for voices that have passed a gated consent process. It is built to stay stable over long generations such as audiobooks.",
+      "source": "https://microsoft.ai/models/mai-voice-2/"
+    },
+    {
+      "name": "MAI-Transcribe-2",
+      "provider": "Microsoft",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-09",
+      "does": [
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$0.10 an hour of audio, described as a limited-time rate",
+      "cutoff": "Not published",
+      "notes": "A speech to text model covering sixty languages with automatic language identification, so one model can serve a multilingual product. It adds speaker diarisation, word-level timestamps and keyword biasing for domain terms, and offers a verbatim or a cleaned-up style.",
+      "source": "https://microsoft.ai/models/mai-transcribe-2/"
+    },
+    {
+      "name": "MAI-Cyber-1-Flash",
+      "provider": "Microsoft",
+      "access": "hosted",
+      "size": "137B total, 5B active",
+      "released": "2026-08",
+      "does": [
+        "code",
+        "tools"
+      ],
+      "status": "current",
+      "context": "256K tokens",
+      "price": "Not published",
+      "cutoff": "Not published",
+      "notes": "A security-specialised version of the Copilot coding model that finds, triages and patches vulnerabilities in large codebases. It is not sold on its own and runs only inside Microsoft's own scanning harness, handling the cheaper work and passing the hardest on. Because the capability is dual use, access is restricted to defenders who pass a review.",
+      "source": "https://microsoft.ai/models/mai-cyber-1-flash/"
+    }
+  ]
+}

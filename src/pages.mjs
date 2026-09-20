@@ -2,32 +2,13 @@
 // page for each part, each with the shared stylesheet and the values its
 // markup starts at. The build fills the holes and writes the file.
 
-import { renderInline, plainText, esc, smartPlain } from './inline.mjs';
+import { renderInline, plainText, esc, smartPlain, longDate } from './inline.mjs';
 import { renderBlocks, sectionHeading } from './render.mjs';
-import { header, toc, crumbs, moduleCrumbs, pager, modulePager, footer } from './chrome.mjs';
+import { header, toc, crumbs, moduleCrumbs, pageCrumbs, pager, modulePager, footer } from './chrome.mjs';
 import { stylesheet, FONT_LINK } from './styles.mjs';
 import { startingVals } from './logic.mjs';
 import { ICONS } from './icons.mjs';
-
-const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
-function longDate(iso) {
-  const [y, m, d] = iso.split('-').map(Number);
-  return `${d} ${MONTHS[m - 1]} ${y}`;
-}
+import { directory } from './directory.mjs';
 
 // A section of the introduction, by its heading. The home page is built out
 // of these, so a heading the author renames has to say so plainly rather than
@@ -44,9 +25,7 @@ function section(intro, name) {
 }
 
 // A page's own title, as a sentence: the heading gives it in title case and
-// the page title wants it plain. It used to lower-case the lot and put back a
-// capital C, which only worked while every introduction was called "Course
-// Introduction".
+// the page title wants it plain.
 function sentenceCase(text) {
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
@@ -268,7 +247,7 @@ function homeMain(intro, parts) {
     intro.courseTitle,
   )}</h1><div class="hero-rule"></div><p class="home-lede">${lede}</p><div class="hero-side"><ul class="home-meta label" role="list"><li>${ICONS.book}<span>${esc(courseCount(intro.modules))}</span></li><li>${ICONS.clock}<span>About ${esc(hoursOf(written))} of reading</span></li><li>${ICONS.calendar}<span>Written in September 2026${intro.author ? ` by ${esc(intro.author)}` : ''}</span></li></ul><div class="cta-row"><a class="btn-primary" href="page:${first.out}"><span>Start with Part ${first.n}: ${esc(
     first.shortTitle,
-  )}</span>${ICONS.arrowRight}</a>${primerLink}<a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
+  )}</span>${ICONS.arrowRight}</a>${primerLink}<a class="btn-quiet" href="page:Models">Browse the model directory</a><a class="btn-quiet" href="#suggested-routes">Choose a reading route</a></div></div></div>
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="what-this-course-is-for">What this course is for</h2><div class="split-body">${purposeRest}</div></div></section>
 <section class="home-section"><div class="shell grid-12"><h2 class="home-h2" id="the-modules">The modules</h2><div class="section-intro">${paragraphs(
     intro.lead,
@@ -283,6 +262,28 @@ function homeMain(intro, parts) {
 <section class="home-section"><div class="shell grid-12 split"><h2 class="home-h2" id="a-note-on-currency">A note on currency</h2><div class="split-body currency">${paragraphs(
     S['A note on currency'].blocks,
   )}</div></div></section></main>`;
+}
+
+// ------------------------------------------------------------ the directory
+
+// The directory of models. It is reference rather than reading: a reader
+// comes to look something up, so the page opens with what it is and how old
+// it is, and then gets out of the way.
+export function directoryFile(dir, intro) {
+  const course = intro.courseTitle;
+  const checked = longDate(dir.checked);
+  const main = `<main id="main" tabindex="-1"><div class="shell directory-layout grid-12"><div class="hero directory-hero">${pageCrumbs('Models', 'Models')}<p class="eyebrow label">Reference</p><h1 class="title" id="directory-title">Models</h1><ul class="hero-meta label" role="list"><li>${
+    ICONS.models
+  }<span>${dir.models.length} models</span></li><li>${ICONS.calendar}<span>Checked ${esc(checked)}</span></li></ul></div><div class="module-lede directory-lede">${dir.about.map((p) => `<p>${esc(smartPlain(p))}</p>`).join('')}</div>${directory(
+    dir,
+  )}</div></main>`;
+  const body = `${header(intro.modules, null, course, 'models')}${main}${footer(intro.modules, currencyNote(intro), course)}`;
+  return pageFile({
+    title: `Models · ${course}`,
+    description: `A directory of ${dir.models.length} AI models, hosted and open-weight, with what each one does, how big it is and when it appeared.`,
+    body,
+    page: { deepKeys: [] },
+  });
 }
 
 // --------------------------------------------------------------- module page
@@ -373,7 +374,7 @@ function pageFile({ title, description, body, page }) {
 
 export function homeFile(intro, parts, page) {
   const course = intro.courseTitle;
-  const body = `${header(intro.modules, null, course)}${homeMain(intro, parts)}${footer(intro.modules, currencyNote(intro), course)}`;
+  const body = `${header(intro.modules, null, course, 'home')}${homeMain(intro, parts)}${footer(intro.modules, currencyNote(intro), course)}`;
   const written = parts.filter((p) => p.written);
   return pageFile({
     title: `${course}: ${sentenceCase(intro.pageTitle)}`,

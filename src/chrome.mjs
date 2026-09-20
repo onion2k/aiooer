@@ -42,15 +42,19 @@ function partsPanel(modules, current) {
         `<div class="parts-group" style="--hue: var(--hue-${m.hue})"><p class="parts-group-title label" id="parts-group-${m.slug}">${esc(m.name)}</p><ol class="parts-list grid-12" role="list" aria-labelledby="parts-group-${m.slug}">${m.parts.map(item).join('')}</ol></div>`,
     )
     .join('');
-  const introHere = !current;
-  return `<nav class="panel parts-panel" id="parts-panel" aria-label="Parts of the guide" hidden="{{parts.hidden}}" onKeyDown="{{parts.onKeyDown}}"><div class="shell panel-inner"><p class="parts-intro"><a class="parts-home" href="page:Main"${introHere ? ' aria-current="page"' : ''}>${ICONS.book}<span>Introduction</span></a></p>${groups}<div class="panel-actions"><button type="button" class="btn-line" onClick="{{parts.close}}">${ICONS.close}<span>Close the list of parts</span></button></div></div></nav>`;
+  return `<nav class="panel parts-panel" id="parts-panel" aria-label="Parts of the guide" hidden="{{parts.hidden}}" onKeyDown="{{parts.onKeyDown}}"><div class="shell panel-inner"><p class="parts-intro"><a class="parts-home" href="page:Main">${ICONS.book}<span>Introduction</span></a></p>${groups}<div class="panel-actions"><button type="button" class="btn-line" onClick="{{parts.close}}">${ICONS.close}<span>Close the list of parts</span></button></div></div></nav>`;
 }
 
 // The course's name comes from the introduction's heading, so renaming the
 // course is a change to the markdown alone.
-export function header(modules, current, course) {
-  const homeCurrent = !current ? ' aria-current="page"' : '';
-  return `<a class="skip-link" href="#main">Skip to main content</a><header class="site-header"><div class="shell header-bar grid-12"><a class="wordmark" href="page:Main"${homeCurrent}>${esc(course)}</a><div class="header-actions"><button type="button" class="header-btn" aria-expanded="{{parts.expanded}}" aria-controls="parts-panel" onClick="{{parts.toggle}}">${ICONS.parts}<span>Parts</span></button><button type="button" class="header-btn" aria-expanded="{{settingsPanel.expanded}}" aria-controls="settings-panel" onClick="{{settingsPanel.toggle}}">${ICONS.settings}<span>Reading settings</span></button></div></div>${partsPanel(modules, current)}${settingsPanel()}</header>`;
+// `here` says which page the header is on, so that exactly one thing in it
+// is marked as the page the reader is on. It used to be inferred from whether
+// a part was given, which marked the wordmark as current on a module's page
+// as well as on the introduction.
+export function header(modules, current, course, here = null) {
+  const homeCurrent = here === 'home' ? ' aria-current="page"' : '';
+  const modelsCurrent = here === 'models' ? ' aria-current="page"' : '';
+  return `<a class="skip-link" href="#main">Skip to main content</a><header class="site-header"><div class="shell header-bar grid-12"><a class="wordmark" href="page:Main"${homeCurrent}>${esc(course)}</a><div class="header-actions"><a class="header-btn" href="page:Models"${modelsCurrent}>${ICONS.models}<span>Models</span></a><button type="button" class="header-btn" aria-expanded="{{parts.expanded}}" aria-controls="parts-panel" onClick="{{parts.toggle}}">${ICONS.parts}<span>Parts</span></button><button type="button" class="header-btn" aria-expanded="{{settingsPanel.expanded}}" aria-controls="settings-panel" onClick="{{settingsPanel.toggle}}">${ICONS.settings}<span>Reading settings</span></button></div></div>${partsPanel(modules, current)}${settingsPanel()}</header>`;
 }
 
 // The contents list. Each item carries the spy's state for its section
@@ -85,6 +89,13 @@ export function toc(sections, part) {
 export function crumbs(part) {
   const sep = '<span class="crumb-sep" aria-hidden="true">/</span>';
   return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Introduction</a>${sep}</li><li><a href="page:mod-${part.moduleSlug}">${esc(part.module)}</a>${sep}</li><li><a href="page:${part.out}" aria-current="page">Part ${part.n}: ${esc(part.shortTitle)}</a></li></ol></nav>`;
+}
+
+// A page that is not a part: the introduction, then the page itself. The
+// directory uses this, since it sits beside the modules rather than in one.
+export function pageCrumbs(name, key) {
+  const sep = '<span class="crumb-sep" aria-hidden="true">/</span>';
+  return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Introduction</a>${sep}</li><li><a href="page:${key}" aria-current="page">${esc(name)}</a></li></ol></nav>`;
 }
 
 // A module's own breadcrumb: the introduction, then the module itself.
@@ -142,5 +153,5 @@ export function footer(modules, currencyNote, course) {
           .join('')}</ul></div>`,
     )
     .join('');
-  return `<footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Introduction</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
+  return `<footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Introduction</a></li><li><a href="page:Models">Models</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
 }

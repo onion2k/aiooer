@@ -156,3 +156,30 @@ export function plainText(tokens) {
 export function smartPlain(text) {
   return smarten(text, { prev: '' });
 }
+
+// A date as a reader says it: 20 September 2026. The guide writes dates in
+// one shape, so the shape lives in one place.
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+export function longDate(iso) {
+  const [year, month, day] = iso.split('-').map(Number);
+  return `${day} ${MONTHS[month - 1]} ${year}`;
+}
+
+// A month, where that is as precise as the source is: September 2026.
+export function longMonth(iso) {
+  const [year, month] = iso.split('-').map(Number);
+  return month ? `${MONTHS[month - 1]} ${year}` : String(year);
+}

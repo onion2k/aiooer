@@ -37,6 +37,23 @@ export const ICON_NAMES = {
   source: 'link',
   reset: 'reset',
   external: 'arrow--up-right',
+  search: 'search',
+  filter: 'filter',
+  models: 'machine-learning-model',
+  // What a model can do, and how it is got hold of. models.mjs names these.
+  capChat: 'chat',
+  capReasoning: 'idea',
+  capTools: 'api',
+  capCode: 'code',
+  capVision: 'view',
+  capImages: 'image',
+  capAudio: 'microphone',
+  capVideo: 'video',
+  capMusic: 'music',
+  cap3d: 'cube',
+  capEmbedding: 'search',
+  accessHosted: 'cloud',
+  accessOpen: 'download',
 };
 
 // Reads one drawing and keeps only its shapes: the library's titles, style

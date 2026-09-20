@@ -16,6 +16,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { marked } from 'marked';
 import { CONTENT_DIR, RESULTS } from '../src/paths.mjs';
+import { parseModels } from '../src/models.mjs';
 
 const TIMEOUT_MS = 20000;
 const TRIES = 3;
@@ -125,6 +126,14 @@ async function main() {
       cited.get(href).add(file);
     }
   }
+  // The directory's sources are addresses the guide cites too, and the only
+  // thing standing behind a claim about somebody else's product. A dead one
+  // there matters more than a dead one in the prose, not less.
+  for (const m of parseModels(CONTENT_DIR).models) {
+    if (!cited.has(m.source)) cited.set(m.source, new Set());
+    cited.get(m.source).add(`models.json (${m.name})`);
+  }
+
   if (mutate === 'dead') {
     // A page that is not there, and a name that does not resolve: the two
     // ways a source dies. If the run passes with these in, it proves nothing.

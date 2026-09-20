@@ -118,6 +118,44 @@ was written on 19 September 2026 from what the code does at that date.
   says it: they head with the module and the part, not "On this page", which
   told a reader nothing they did not know. A screen reader hears "contents"
   and not the part's title twice.
+- **The directory lists every model in the data.** `/models/` has a row for
+  every entry in `content/models.json`, a details panel for each, and filters
+  that show exactly what the data says: the audit's `directory` check works
+  the expectation out from the file rather than from a list written down, so
+  a model added tomorrow is checked from the day it is added. The table is
+  whole in the HTML and each panel is a native `<details>`, so a reader with
+  JavaScript off still gets every model and everything known about it;
+  searching and filtering are a convenience over a list already complete.
+  `--mutate models` drops a row to prove the check bites.
+  The filters fold away behind a summary, and start folded at every width, so
+  that what a reader meets is the table and not a screen of controls. They are
+  open in the markup and folded by `reader.js`, so a reader without it has
+  them. The count of models showing sits outside the fold, so a reader who has
+  folded the filters can still see that some are on. A model's own row holds
+  the button that opens its details, and what opens is the row beneath,
+  spanning the table; those panels are open in the markup and shut by
+  `reader.js` for the same reason. Shut is its own attribute rather than
+  `hidden`, which the filters use, so a model a filter hides comes back as it
+  was left.
+- **The directory says what is still current.** Every model carries a status,
+  current, superseded or retired, in a column of its own and as a filter. It
+  has a column rather than a label under the name so that saying it never
+  makes one row taller than the rest. Every model also carries a source, and
+  the build refuses a model without one: a claim about somebody else's
+  product needs somewhere a reader can go and check it. `links` checks those
+  sources along with the addresses the prose cites, since a dead source under
+  a claim about somebody else's product matters more, not less. Where a
+  vendor publishes a model card, that is the source in preference to a
+  pricing page: it says what the model is and where it fails, and it does not
+  change when prices do.
+- **The directory says how old it is, and that nobody checked it.** Every
+  entry was written from the drafter's knowledge, not from a provider's
+  documentation, and it is incomplete at the newest end, since that knowledge
+  runs out months before the date on the page. It says both in its own words:
+  the `about` paragraphs in `models.json`, which are content like any other
+  prose and not something the code holds. `models.json` carries a `checked`
+  date, shown in the hero and in every details panel, and the build stops if
+  the `about` paragraphs are missing or empty.
 - **The deploy is in the repository.** `netlify.toml` holds the build
   command, the publish folder and the Node version, and the build stops if
   either the command or the folder disagrees with what is actually here.
@@ -183,28 +221,28 @@ modulecards` proves that check still bites.
 
 Baselines as of 19 September 2026, on this machine:
 
-| Gate                | Holds                                  | Baseline                                                                     | Tolerance      |
-| ------------------- | -------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
-| `contrast`          | 251 colour pairs, four themes          | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1             | none           |
-| `audit`, axe        | 361 runs                               | 0 violations, 0 needing review                                               | none           |
-| `audit`, measure    | 42 pages × 3 setting mixes × 3 lengths | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
-| `audit`, targets    | 42 pages × desktop and phone           | all 44 × 44 or larger                                                        | none           |
-| `audit`, reflow     | 42 pages × 320px and 200% zoom         | no sideways scroll                                                           | none           |
-| `audit`, spacing    | 42 pages × desktop and phone           | nothing clipped                                                              | none           |
-| `audit`, keyboard   | 42 pages × 2 widths, and 3 more themes | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
-| `audit`, headings   | 42 pages × desktop and phone           | one h1, no skipped level                                                     | none           |
-| `audit`, corners    | 42 pages, every panel, deep dive open  | none rounder than 2px                                                        | none           |
-| `audit`, grids      | 42 pages × desktop and phone           | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
-| `audit`, storage    | 5 saved shapes                         | every one loads                                                              | none           |
-| `audit`, numerals   | the home page in four themes           | the four ideas numbered in the text colour                                   | none           |
-| `audit`, spy        | 28 parts × 3 frames × top, middle, end | one current, earlier passed, no jumps                                        | none           |
-| `audit`, modules    | the home page and every written part   | label, breadcrumb, title, ways on, no dead links                             | none           |
-| `audit`, name       | 42 pages                               | the heading's name wherever it is shown                                      | none           |
-| `audit`, hues       | every page, everywhere a hue is drawn  | 17 to 21 a page, each beside the words that say the same                     | none           |
-| `audit`, calculator | the one part that has a calculator     | every example, the keyboard, typing and Start again show what the rule gives | none           |
-| `look`              | 42 pages                               | no errors, no empty page                                                     | none           |
-| `links`             | 151 outside addresses the guide cites  | 150 ok, 1 unverified, 0 gone                                                 | none gone      |
-| `perf`, not a gate  | render, fonts, repaint, scrolling      | see below                                                                    | not held       |
+| Gate                | Holds                                              | Baseline                                                                     | Tolerance      |
+| ------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
+| `contrast`          | 251 colour pairs, four themes                      | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1             | none           |
+| `audit`, axe        | 361 runs                                           | 0 violations, 0 needing review                                               | none           |
+| `audit`, measure    | 43 pages × 3 setting mixes × 3 lengths             | Short's longest line 73; widths 1:1.5:2                                      | 80; 1% widths  |
+| `audit`, targets    | 43 pages × desktop and phone                       | all 44 × 44 or larger                                                        | none           |
+| `audit`, reflow     | 43 pages × 320px and 200% zoom                     | no sideways scroll                                                           | none           |
+| `audit`, spacing    | 43 pages × desktop and phone                       | nothing clipped                                                              | none           |
+| `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes             | 118 to 119 stops, ringed, uncovered, 7:1                                     | none           |
+| `audit`, headings   | 43 pages × desktop and phone                       | one h1, no skipped level                                                     | none           |
+| `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                        | none           |
+| `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                  | 1px on heights |
+| `audit`, storage    | 5 saved shapes                                     | every one loads                                                              | none           |
+| `audit`, numerals   | the home page in four themes                       | the four ideas numbered in the text colour                                   | none           |
+| `audit`, spy        | 28 parts × 3 frames × top, middle, end             | one current, earlier passed, no jumps                                        | none           |
+| `audit`, modules    | the home page and every written part               | label, breadcrumb, title, ways on, no dead links                             | none           |
+| `audit`, name       | 43 pages                                           | the heading's name wherever it is shown                                      | none           |
+| `audit`, hues       | every page, everywhere a hue is drawn              | 17 to 21 a page, each beside the words that say the same                     | none           |
+| `audit`, calculator | the one part that has a calculator                 | every example, the keyboard, typing and Start again show what the rule gives | none           |
+| `look`              | 43 pages                                           | no errors, no empty page                                                     | none           |
+| `links`             | 235 addresses: the prose, and every model's source | 233 ok, 2 unverified, 0 gone                                                 | none gone      |
+| `perf`, not a gate  | render, fonts, repaint, scrolling                  | see below                                                                    | not held       |
 
 `perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
 85 KB, a theme change 32 to 39 ms, opening every deep dive 19 to 33 ms, and
@@ -228,6 +266,35 @@ A gate that is found red is fixed before anything else lands. `perf` prints
 figures for the before-and-after in a report; nothing holds them yet, so a
 slowdown is only caught by reading them.
 
+## Keeping the model directory up to date
+
+The author asks now and then for new models to be looked for. These are the
+providers' own index pages, which is where to start:
+
+- Google DeepMind, model cards: https://deepmind.google/models/model-cards/
+- Anthropic, system cards: https://www.anthropic.com/system-cards
+- OpenAI, every model: https://developers.openai.com/api/docs/models/all
+- Moonshot AI (Kimi), models: https://platform.kimi.ai/docs/models
+- Microsoft, models: https://microsoft.ai/models/
+
+Checked on 20 September 2026: all resolve except microsoft.ai, which refuses
+a plain fetch with a 403 and needs a browser.
+
+Two more that have earned their place: a vendor's `platform` or `developers`
+documentation carries prices, context windows and deprecation dates, which
+the cards do not, and `openai.com/index/*` and `help.openai.com` refuse to be
+fetched at all, so OpenAI facts come from `developers.openai.com`. The list
+of model cards at https://github.com/ivylee/model-cards-and-datasheets is a
+bibliography rather than a catalogue: most of its entries are components and
+enterprise features that do not belong here, but it is a good way to notice a
+model that is missing.
+
+What a new model needs before it can go in `content/models.json` is in
+`src/models.mjs`, and the build refuses anything short of it: a name, a
+provider, how it is got hold of, a size, a release date, what it does, a
+status, notes, and a source. Say "Not published" rather than guessing, and
+prefer the model card as the source where one exists.
+
 ## Commands
 
     npm run dev            build, then the site at http://127.0.0.1:5190
@@ -241,11 +308,11 @@ slowdown is only caught by reading them.
     npm run perf           render and repaint times, five runs each, medians
     npm run links          every outside address the guide cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator,directory`,
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
 the runtime, the packages, the introduction, the list of pages or the flags
@@ -314,6 +381,12 @@ wanted again.
 
 ## How the code is laid out
 
+- **The models** are `content/models.json`, the one piece of content that is
+  data rather than prose, because a tool will keep it up to date and parsing
+  a markdown table safely is harder than reading JSON. It holds the
+  directory's own words too, in `about`, so that what the page says about
+  itself is an edit to the content and not to the code. The build validates
+  it and never writes it.
 - **The guide** is the markdown in `content/`, which the build reads and
   never writes, and which Prettier is told to leave alone as a folder, so a
   new module needs nothing but its prefix in `MODULE_FILES`. `CONTENT_DIR` in
@@ -340,6 +413,12 @@ wanted again.
   it never changes; its label and colours can.
 - `src/icons.mjs` inlines IBM Carbon's 32px icons from `@carbon/icons` by
   name when the site builds, and stops the build if a name is missing.
+- `src/models.mjs` is the model directory without its picture:
+  `content/models.json` into a list the page can draw, with `CAPABILITIES`
+  and `ACCESS` naming what a model can do and how it is got hold of. Nothing
+  trusts the file, since a tool will write it: an unknown field, an unknown
+  capability, a missing value, a duplicate name or open weights without a
+  licence all stop the build. `src/directory.mjs` draws it.
 - `src/logic.mjs` says what a page starts at: the reading settings, the
   header's panels, the deep dives, the contents that follow the reader, and
   the calculator, each at the value the build writes into the markup. Values
@@ -404,6 +483,13 @@ What to copy the shape of, when building something new:
   `--hue-1` to `--hue-7` per theme and draws the bands; the blocks that carry
   one set `--hue` inline; and `hues` in `audit.mjs` holds the rule that the
   words are always there too.
+- **A page of reference rather than reading:** the model directory.
+  `content/models.json` is the data, `parseModels` in `models.mjs` checks it
+  and stops the build on anything it does not know, `directory.mjs` draws the
+  filters and the table, `directoryFile` in `pages.mjs` makes the page,
+  `build.mjs` serves it at `models/`, `.filters` and `.models` in
+  `styles.mjs` style it, the filtering is in `reader.js`, and `directory` in
+  `audit.mjs` holds it against the data with `--mutate models`.
 - **A tool that measures:** the measure check, `longestLine` in
   `audit.mjs`, with its mutation `--mutate measure`.
 
