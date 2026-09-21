@@ -61,7 +61,7 @@ import crypto from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { startSite, openPage, setSetting, AXE_PATH, course, sitePages, pageMap, pageFile } from './harness.mjs';
 import { RESULTS, STATIC_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
-import { STORE_KEY, DEFAULTS } from '../src/logic.mjs';
+import { STORE_KEY, DEFAULTS, SETTINGS } from '../src/logic.mjs';
 import { parseModels, CAPABILITIES } from '../src/models.mjs';
 import { delivery } from '../src/calculator.mjs';
 const quick = process.argv.includes('--quick');
@@ -85,6 +85,8 @@ const MUTATIONS = {
   spacing: { css: '.plain-label{height:1.2em;overflow:hidden}' },
   corners: { css: '.header-btn{border-radius:999px!important}' },
   widths: { css: '.reader{--measure-em:30em!important}' },
+  // Smaller losing its rule, which would leave it reading as Standard.
+  sizes: { css: '.reader.size-smaller{--scale:1!important}' },
   numerals: { css: '.idea-num{color:var(--link)!important}' },
   // A part that claims to be in the other module, a way on that stops short,
   // and an unwritten part linked as if it were there.
@@ -817,9 +819,19 @@ const SAVED_SHAPES = [
     value: { theme: 'contrast', size: 'largest', spacing: 'widest', measure: 'short', font: 'serif', deep: 'open' },
     expect: { theme: 'contrast', size: 'largest', spacing: 'widest', measure: 'short', font: 'serif', deep: 'open' },
   },
+  { name: 'the smaller text size', value: { size: 'smaller' }, expect: { size: 'smaller' } },
   { name: 'unknown values', value: { theme: 'sepia', size: 7, colour: 'red' }, expect: {} },
   { name: 'not JSON', value: '{theme:', expect: {} },
 ];
+
+// What each text size multiplies Standard's text by. Every size the panel
+// offers has to be here, so a new one cannot arrive unmeasured.
+const SIZE_SCALES = { smaller: 0.85, standard: 1, large: 1.15, larger: 1.3, largest: 1.5 };
+{
+  const offered = SETTINGS.size.map(([v]) => v).join(',');
+  if (offered !== Object.keys(SIZE_SCALES).join(','))
+    throw new Error(`The text sizes offered (${offered}) are not the ones SIZE_SCALES measures`);
+}
 
 const SPACING_CSS = `.reader *{line-height:1.5!important;letter-spacing:0.12em!important;word-spacing:0.16em!important}.reader p{margin-bottom:2em!important}`;
 
@@ -850,6 +862,7 @@ async function auditPage(file) {
     ? [
         ['standard', 'sans'],
         ['largest', 'sans'],
+        ['smaller', 'sans'],
         ['standard', 'serif'],
       ]
     : []) {
@@ -878,6 +891,25 @@ async function auditPage(file) {
         'measure',
         `${label}; standard ${(st / s).toFixed(2)} and long ${(l / s).toFixed(2)} times short, wanted 1.5 and 2`,
       );
+  }
+
+  // Text size. Each size scales the whole page from Standard's by its own
+  // factor, and Smaller exists because Standard's 20px is a lot on a large
+  // screen: a size whose rule went missing would silently read as Standard.
+  if (run('measure')) {
+    const px = {};
+    for (const size of Object.keys(SIZE_SCALES)) {
+      const page = await open(file);
+      await setSetting(page, 'size', size);
+      px[size] = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector('.reader')).fontSize));
+      await page.close();
+    }
+    for (const [size, scale] of Object.entries(SIZE_SCALES)) {
+      const got = px[size] / px.standard;
+      const label = `${file} size=${size}: text ${px[size]}px, ${got.toFixed(3)} times Standard's ${px.standard}px`;
+      if (Math.abs(got - scale) > 0.005) fail('measure', `${label}, wanted ${scale}`);
+      else pass('measure', label);
+    }
   }
 
   // Modules. A part page names its module and its place in it, in the label
@@ -1287,6 +1319,19 @@ async function auditPage(file) {
     const label = `${file} @${width} ${theme}`;
     if (k.issues.length) fail('keyboard', `${label}: ${k.issues.slice(0, 5).join('; ')}`);
     else pass('keyboard', `${label}: ${k.seen} tab stops, all ringed, none covered, focused text 7:1 or better`);
+    await page.close();
+  }
+
+  // Targets again at the smallest text, since a control sized in em shrinks
+  // with it and 44 by 44 has to hold at every size a reader can choose.
+  for (const width of run('targets') ? [1440, 390] : []) {
+    const page = await open(file, { width, height: 900 });
+    await setSetting(page, 'size', 'smaller');
+    await setSetting(page, 'deep', 'open');
+    const small = await targetSizes(page);
+    if (small.length)
+      fail('targets', `${file} @${width} size=smaller: ${small.length} small: ${small.slice(0, 6).join('; ')}`);
+    else pass('targets', `${file} @${width} size=smaller: all targets 44x44 or larger`);
     await page.close();
   }
 

@@ -16,6 +16,7 @@ import { delivery } from './calculator.mjs';
 export const SETTINGS = {
   theme: THEME_ORDER.map((key) => [key, THEMES[key].label]),
   size: [
+    ['smaller', 'Smaller'],
     ['standard', 'Standard'],
     ['large', 'Large'],
     ['larger', 'Larger'],

@@ -97,6 +97,11 @@ was written on 19 September 2026 from what the code does at that date.
 - **Accessible.** axe-core's WCAG A, AA and AAA rules and its best
   practices find nothing, on every page, in every theme, with the panels
   and deep dives open. `audit` holds it.
+- **Text a reader can size.** Smaller, Standard, Large, Larger and Largest
+  scale the page by 0.85, 1, 1.15, 1.3 and 1.5. Standard is 20px, which is a
+  lot on a large screen, so Smaller exists to come down from it. `audit`'s
+  measure check reads each size off the page, `--mutate sizes` proves it, and
+  the targets check runs again at Smaller.
 - **Lines a reader can choose.** Short keeps every line of running text
   within 80 characters (1.4.8), at any text size or typeface, and offering
   it is how the site meets that criterion. Standard, the default, is half as
@@ -238,15 +243,15 @@ Baselines as of 19 September 2026, on this machine:
 | ------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------- |
 | `contrast`          | 254 colour pairs, four themes                      | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1, marks 1.61 to 1.68:1 | none           |
 | `audit`, axe        | 361 runs                                           | 0 violations, 0 needing review                                                         | none           |
-| `audit`, measure    | 43 pages × 3 setting mixes × 3 lengths             | Short's longest line 73; widths 1:1.5:2                                                | 80; 1% widths  |
-| `audit`, targets    | 43 pages × desktop and phone                       | all 44 × 44 or larger                                                                  | none           |
+| `audit`, measure    | 43 pages × 4 setting mixes × 3 lengths, 5 sizes    | Short's longest line 73; widths 1:1.5:2; sizes 0.85 to 1.5 times Standard's 20px       | 80; 1% widths  |
+| `audit`, targets    | 43 pages × desktop and phone, Standard and Smaller | all 44 × 44 or larger                                                                  | none           |
 | `audit`, reflow     | 43 pages × 320px and 200% zoom                     | no sideways scroll                                                                     | none           |
 | `audit`, spacing    | 43 pages × desktop and phone                       | nothing clipped                                                                        | none           |
 | `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes             | 118 to 119 stops, ringed, uncovered, 7:1                                               | none           |
 | `audit`, headings   | 43 pages × desktop and phone                       | one h1, no skipped level                                                               | none           |
 | `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                                  | none           |
 | `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                            | 1px on heights |
-| `audit`, storage    | 5 saved shapes                                     | every one loads                                                                        | none           |
+| `audit`, storage    | 6 saved shapes                                     | every one loads                                                                        | none           |
 | `audit`, numerals   | the home page in four themes                       | the four ideas numbered in the text colour                                             | none           |
 | `audit`, spy        | 28 parts × 3 frames × top, middle, end             | one current, earlier passed, no jumps                                                  | none           |
 | `audit`, modules    | the home page and every written part               | label, breadcrumb, title, ways on, no dead links                                       | none           |
@@ -264,7 +269,8 @@ scrolling a part 1.1 to 2.0 ms of main-thread time a step, against 0.5 on
 the home page, which has no contents to follow. A step on which the section
 changes costs about 6 ms (worst 8.7), since the page redraws whole. Runs on
 this machine swing by tens of milliseconds, so compare medians of two runs
-each side before believing a change.
+each side before believing a change. A run walks every page five times and
+takes about ten minutes, and it cannot yet be pointed at a few pages.
 
 The full check, `npm run check`, is not part of the routine. It renders
 every page in every theme and takes minutes, which is too slow to run
@@ -325,7 +331,7 @@ prefer the model card as the source where one exists.
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator,directory,decor`,
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
-`reflow`, `spacing`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
+`reflow`, `spacing`, `sizes`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
 `spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`, `decor`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
@@ -591,7 +597,7 @@ For anything new on a page, check what it does:
 
 - **every theme:** light grey (its key is `paper`), white, dark and high
   contrast
-- **every setting:** text size up to largest, line spacing up to widest,
+- **every setting:** text size from smaller up to largest, line spacing up to widest,
   each line length, the serif typeface, deep dives folded and open. On the
   home page at desktop width the text column is 774px, so Standard (780px)
   and Long both fill it and look the same there; that is by choice, and the

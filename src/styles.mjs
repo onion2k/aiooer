@@ -94,7 +94,9 @@ ${swatches()}
 }
 .reader *,.reader *::before,.reader *::after{box-sizing:border-box}
 @media (max-width:40em){.reader{--base:1.125rem}}
-.size-large{--scale:1.15}.size-larger{--scale:1.3}.size-largest{--scale:1.5}
+/* Standard is 20px, generous for a phone held close and a lot on a large
+   screen read from further away, so Smaller comes down to 17px for that. */
+.size-smaller{--scale:0.85}.size-large{--scale:1.15}.size-larger{--scale:1.3}.size-largest{--scale:1.5}
 .spacing-wide{--lh:1.8}.spacing-widest{--lh:2}
 /* Short keeps every line under 80 characters, and offering it is how the
    site meets 1.4.8; Standard is half as wide again and Long twice as wide,
