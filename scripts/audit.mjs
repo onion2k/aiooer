@@ -16,6 +16,8 @@
 //   grids     every block in a grid the same height, at desktop and phone
 //             widths, and the page's layout on twelve columns at desktop
 //   storage   every shape of saved reading settings still loads
+//   panels    the reading settings' own buttons: Close shuts the panel and
+//             hands the focus back, and Reset puts every setting back
 //   numerals  the home page's four ideas numbered in the text colour
 //   spy       the contents list marks the section the reader is in, bold,
 //             and dims the ones already passed
@@ -120,6 +122,13 @@ const MUTATIONS = {
   models: {
     js: () => {
       document.querySelector('.model-row')?.remove();
+    },
+  },
+  // The settings panel's buttons unbound, as they were once the canvas went:
+  // a copy of a button carries none of its listeners.
+  panels: {
+    js: () => {
+      for (const b of document.querySelectorAll('.settings-close, .settings-reset')) b.replaceWith(b.cloneNode(true));
     },
   },
   // A wordmark that says something other than the introduction's heading.
@@ -233,6 +242,7 @@ const KINDS = [
   'corners',
   'grids',
   'storage',
+  'panels',
   'numerals',
   'spy',
   'name',
@@ -1618,6 +1628,39 @@ for (const shape of run('storage') ? SAVED_SHAPES : []) {
       'storage',
       `${shape.name}: loads as ${Object.keys(shape.expect).length ? JSON.stringify(shape.expect) : 'the defaults'}`,
     );
+  await page.close();
+}
+
+// The settings panel's own buttons. Both were once bound by the canvas,
+// which is gone, and for a while after it neither did anything.
+if (run('panels')) {
+  const page = await open(STORAGE_PAGE);
+  const opener = page.locator('button[aria-controls="settings-panel"]');
+  await setSetting(page, 'theme', 'dark');
+  await page.getByRole('button', { name: 'Close reading settings' }).click();
+  const shut = await page.locator('#settings-panel').isHidden();
+  const expanded = await opener.getAttribute('aria-expanded');
+  const focused = await opener.evaluate((b) => b === document.activeElement);
+  const label = `Close: panel ${shut ? 'shut' : 'still open'}, its button expanded=${expanded}, focus ${focused ? 'back on it' : 'elsewhere'}`;
+  if (shut && expanded === 'false' && focused) pass('panels', label);
+  else fail('panels', label);
+  if ((await opener.getAttribute('aria-expanded')) !== 'true') await opener.click();
+  const reloaded = page.waitForEvent('load', { timeout: 5000 }).then(
+    () => true,
+    () => false,
+  );
+  await page.getByRole('button', { name: 'Reset to defaults' }).click();
+  const didReload = await reloaded;
+  const after = await page.evaluate(
+    (key) => ({
+      theme: document.querySelector('.reader').className.match(/theme-(\w+)/)[1],
+      stored: localStorage.getItem(key),
+    }),
+    STORE_KEY,
+  );
+  const resetLabel = `Reset: ${didReload ? 'reloaded' : 'no reload'}, theme ${after.theme}, saved ${after.stored}`;
+  if (didReload && after.theme === DEFAULTS.theme && after.stored === null) pass('panels', resetLabel);
+  else fail('panels', resetLabel);
   await page.close();
 }
 

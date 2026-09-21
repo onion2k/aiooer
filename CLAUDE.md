@@ -102,6 +102,11 @@ was written on 19 September 2026 from what the code does at that date.
   lot on a large screen, so Smaller exists to come down from it. `audit`'s
   measure check reads each size off the page, `--mutate sizes` proves it, and
   the targets check runs again at Smaller.
+- **The panel's own buttons work.** Close shuts the settings panel and hands
+  the focus back to the button that opened it, and Reset clears every saved
+  setting and reloads. Neither worked from the canvas's removal until 21
+  September 2026, since the canvas had bound them and nothing else did.
+  `audit`'s `panels` holds them, with `--mutate panels`.
 - **Lines a reader can choose.** Short keeps every line of running text
   within 80 characters (1.4.8), at any text size or typeface, and offering
   it is how the site meets that criterion. Standard, the default, is half as
@@ -252,6 +257,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                                  | none           |
 | `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                            | 1px on heights |
 | `audit`, storage    | 6 saved shapes                                     | every one loads                                                                        | none           |
+| `audit`, panels     | Close and Reset in the settings panel              | Close shuts and hands focus back; Reset clears and reloads                             | none           |
 | `audit`, numerals   | the home page in four themes                       | the four ideas numbered in the text colour                                             | none           |
 | `audit`, spy        | 28 parts × 3 frames × top, middle, end             | one current, earlier passed, no jumps                                                  | none           |
 | `audit`, modules    | the home page and every written part               | label, breadcrumb, title, ways on, no dead links                                       | none           |
@@ -341,10 +347,10 @@ prefer the model card as the source where one exists.
     npm run perf           every page's weight, and timings on three pages; ~20 s
     npm run links          every outside address the guide cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator,directory,decor`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,panels,numerals,spy,modules,name,calculator,directory,decor`,
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
-`reflow`, `spacing`, `sizes`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
+`reflow`, `spacing`, `sizes`, `panels`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
 `spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`, `decor`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,

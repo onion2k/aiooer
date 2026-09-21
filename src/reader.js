@@ -136,6 +136,16 @@
     })(expanders[e]);
   }
 
+  // The settings panel's Close button does what Escape does, and puts the
+  // focus back on the button that opened the panel rather than losing it.
+  var settingsClose = document.querySelector('.settings-close');
+  var settingsOpener = document.querySelector('button[aria-controls="settings-panel"]');
+  if (settingsClose && settingsOpener)
+    settingsClose.addEventListener('click', function () {
+      toggleExpanded(settingsOpener);
+      settingsOpener.focus();
+    });
+
   // Escape shuts a panel and puts the focus back on the button that opened it.
   document.addEventListener('keydown', function (event) {
     if (event.key !== 'Escape') return;
