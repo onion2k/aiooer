@@ -261,16 +261,29 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, decor      | 43 pages × 1800, 1440 largest and long, 390        | no mark over any word; nothing tabbable, spoken or raised                              | none           |
 | `look`              | 43 pages                                           | no errors, no empty page                                                               | none           |
 | `links`             | 235 addresses: the prose, and every model's source | 233 ok, 2 unverified, 0 gone                                                           | none gone      |
-| `perf`, not a gate  | render, fonts, repaint, scrolling                  | see below                                                                              | not held       |
+| `perf`, not a gate  | every page's weight; timings on three pages        | see below                                                                              | not held       |
 
-`perf` on this machine, two runs: render with fonts 251 to 395 ms, fonts
-85 KB, a theme change 32 to 39 ms, opening every deep dive 19 to 33 ms, and
-scrolling a part 1.1 to 2.0 ms of main-thread time a step, against 0.5 on
-the home page, which has no contents to follow. A step on which the section
-changes costs about 6 ms (worst 8.7), since the page redraws whole. Runs on
-this machine swing by tens of milliseconds, so compare medians of two runs
-each side before believing a change. A run walks every page five times and
-takes about ten minutes, and it cannot yet be pointed at a few pages.
+`perf` weighs every page from one load, four at a time, and times three
+pages that stand for the rest, five runs each: the home page, the heaviest
+part and the model directory. It takes 15 to 25 seconds. On this machine, on
+21 September 2026, over two runs: fonts 99 KB on every page, downloads 245 KB
+for the home page, 311 KB for the heaviest part and 668 KB for the
+directory; render with fonts 288 to 393 ms; a theme change 35 to 43 ms and
+opening every deep dive 22 to 28 ms, most of each the wait for the next
+frame; and scrolling 0.01 to 0.04 ms a step.
+
+The scroll figure is the page's own script, style and layout, without paint.
+Headless Chromium draws sixty frames a second whether there is work or not,
+and waiting on them made a run take a quarter of an hour; it cannot be made
+to draw on demand on macOS. So the walk runs the page's next-frame callbacks
+at once rather than waiting for a frame, and stops the run if the contents
+did not follow it. Adding 1 ms of work to each step raises the figure by
+1.00 to 1.03 ms, so it sees what it is meant to. What it cannot see is the
+repaint when the section changes, which a run that waited on frames once
+put at about 6 ms. Runs swing by tens of milliseconds, so compare medians
+of two runs each side before believing a change, and run it only for a
+change that could move it: a page's weight, its fonts, its script, or what
+it holds.
 
 The full check, `npm run check`, is not part of the routine. It renders
 every page in every theme and takes minutes, which is too slow to run
@@ -325,7 +338,7 @@ prefer the model card as the source where one exists.
     npm run audit          the accessibility audit; report in test-results/audit-report.md
     npm run audit:quick    two themes and shorter keyboard walks (~2 min; line length takes most of it)
     npm run look           every page rendered: an error or an empty page fails it; pictures in test-results/shots
-    npm run perf           render and repaint times, five runs each, medians
+    npm run perf           every page's weight, and timings on three pages; ~20 s
     npm run links          every outside address the guide cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,numerals,spy,modules,name,calculator,directory,decor`,
@@ -585,7 +598,8 @@ first and mutation-checked with `--mutate`; every path in the checklist
 below; the quick check green, and the audit green on the pages the change
 touched (`npm run audit -- --pages …`), with the full check left to the
 author's occasional run; the pages touched looked at with `look`,
-`look-parts` and `tile`; `perf` before and after; and a publish only after
+`look-parts` and `tile`; `perf` before and after, for a change that could
+move it; and a publish only after
 all of that. There are no unit tests, no type checking and no fuzzer yet,
 so those parts of the nine points have nothing to run until they are added.
 Type-aware linting would need the code in TypeScript, or `checkJs` with
