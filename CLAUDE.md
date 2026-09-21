@@ -101,7 +101,12 @@ was written on 19 September 2026 from what the code does at that date.
   scale the page by 0.85, 1, 1.15, 1.3 and 1.5. Standard is 20px, which is a
   lot on a large screen, so Smaller exists to come down from it. `audit`'s
   measure check reads each size off the page, `--mutate sizes` proves it, and
-  the targets check runs again at Smaller.
+  the targets check runs again at Smaller. A phone, narrow (40em or less) and
+  touched, starts at Smaller, 15.3px, unless its reader chose a size; the
+  touch is what tells it from a desktop window zoomed to that width, whose
+  reader wants the text bigger. `reader.js` applies it as the page loads and
+  never saves it, so Reset comes back to it, and a reader without JavaScript
+  gets Standard. `storage` holds it with `--mutate phonesize`.
 - **The panel's own buttons work.** Close shuts the settings panel and hands
   the focus back to the button that opened it, and Reset clears every saved
   setting and reloads. Neither worked from the canvas's removal until 21
@@ -256,7 +261,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, headings   | 43 pages × desktop and phone                       | one h1, no skipped level                                                               | none           |
 | `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                                  | none           |
 | `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                            | 1px on heights |
-| `audit`, storage    | 6 saved shapes                                     | every one loads                                                                        | none           |
+| `audit`, storage    | 10 saved shapes, and a phone's choice and Reset    | every one loads, at its own screen                                                     | none           |
 | `audit`, panels     | Close and Reset in the settings panel              | Close shuts and hands focus back; Reset clears and reloads                             | none           |
 | `audit`, numerals   | the home page in four themes                       | the four ideas numbered in the text colour                                             | none           |
 | `audit`, spy        | 28 parts × 3 frames × top, middle, end             | one current, earlier passed, no jumps                                                  | none           |
@@ -350,7 +355,7 @@ prefer the model card as the source where one exists.
 The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,panels,numerals,spy,modules,name,calculator,directory,decor`,
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
-`reflow`, `spacing`, `sizes`, `panels`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
+`reflow`, `spacing`, `sizes`, `phonesize`, `panels`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
 `spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`, `decor`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
@@ -545,7 +550,7 @@ What to copy the shape of, when building something new:
 
 `scripts/harness.mjs`: `startSite()` serves `dist/site`, the pages that ship,
 and launches Chromium; it stops the run if the site is not built. `openPage(site, file, { width,
-height, errors, beforeLoad })` opens a page and stops the run if its
+height, touch, errors, beforeLoad })` opens a page, as a phone does with `touch`, and stops the run if its
 typeface did not load, since nothing measured in a fallback font can be
 trusted, and `beforeLoad(page)` runs first, to watch the load or seed the
 page's storage;
@@ -633,7 +638,10 @@ For anything new on a page, check what it does:
 - **every grid:** twelve columns at desktop, six on a tablet, one on a
   phone, and its blocks one height at each
 - **saved settings:** a new setting adds its shape to `SAVED_SHAPES` in
-  `audit.mjs`, and every older shape stays
+  `audit.mjs`, and every older shape stays; a shape can say the screen it
+  loads on, since a phone starts at a different size from a desktop
+- **a phone or a zoomed window:** a narrow touch screen starts at Smaller,
+  and a desktop zoomed to the same width does not
 - **inside a deep dive,** hidden until opened, as well as outside one
 - **the keyboard:** reached by Tab, a visible ring, its text 7:1 or better
   while focused in every theme, and Escape closing a panel back to the

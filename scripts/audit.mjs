@@ -131,6 +131,16 @@ const MUTATIONS = {
       for (const b of document.querySelectorAll('.settings-close, .settings-reset')) b.replaceWith(b.cloneNode(true));
     },
   },
+  // A phone left at Standard's size, as though the page did not know it was
+  // on one.
+  phonesize: {
+    js: () => {
+      if (!matchMedia('(pointer: coarse)').matches) return;
+      document.querySelector('.reader').classList.replace('size-smaller', 'size-standard');
+      const standard = document.querySelector('input[name="setting-size"][value="standard"]');
+      if (standard) standard.checked = true;
+    },
+  },
   // A wordmark that says something other than the introduction's heading.
   name: {
     js: () => {
@@ -832,7 +842,21 @@ const SAVED_SHAPES = [
   { name: 'the smaller text size', value: { size: 'smaller' }, expect: { size: 'smaller' } },
   { name: 'unknown values', value: { theme: 'sepia', size: 7, colour: 'red' }, expect: {} },
   { name: 'not JSON', value: '{theme:', expect: {} },
+  // A phone starts at the smaller text size unless its reader chose another,
+  // and says so in the panel without saving it, so that the choice stays the
+  // reader's. A desktop window zoomed to phone width is not a phone: its
+  // reader zoomed in to make the text bigger.
+  { name: 'nothing saved, on a phone', on: 'phone', value: null, expect: { size: 'smaller' } },
+  {
+    name: 'another setting saved, on a phone',
+    on: 'phone',
+    value: { theme: 'dark' },
+    expect: { theme: 'dark', size: 'smaller' },
+  },
+  { name: 'Standard saved, on a phone', on: 'phone', value: { size: 'standard' }, expect: { size: 'standard' } },
+  { name: 'nothing saved, at 200% zoom', on: 'zoom', value: null, expect: {} },
 ];
+const SCREENS = { desktop: {}, phone: { width: 390, height: 844, touch: true }, zoom: { width: 640, height: 450 } };
 
 // What each text size multiplies Standard's text by. Every size the panel
 // offers has to be here, so a new one cannot arrive unmeasured.
@@ -1602,6 +1626,7 @@ if (run('storage') && !STORAGE_PAGE)
   throw new Error('No part has a deep dive, so the storage check would prove nothing');
 for (const shape of run('storage') ? SAVED_SHAPES : []) {
   const page = await openPage(site, STORAGE_PAGE, {
+    ...SCREENS[shape.on || 'desktop'],
     beforeLoad: (p) =>
       p.addInitScript(
         ([key, value]) => {
@@ -1613,15 +1638,23 @@ for (const shape of run('storage') ? SAVED_SHAPES : []) {
         ],
       ),
   });
+  await mutate(page);
   const want = { ...DEFAULTS, ...shape.expect };
-  const seen = await page.evaluate(() => ({
-    classes: document.querySelector('.reader').className,
-    deepOpen: document.querySelector('.deep-toggle')?.getAttribute('aria-expanded') === 'true',
-  }));
+  const seen = await page.evaluate(
+    (key) => ({
+      classes: document.querySelector('.reader').className,
+      deepOpen: document.querySelector('.deep-toggle')?.getAttribute('aria-expanded') === 'true',
+      ticked: document.querySelector('input[name="setting-size"]:checked')?.value,
+      stored: localStorage.getItem(key),
+    }),
+    STORE_KEY,
+  );
   const missing = ['theme', 'size', 'spacing', 'measure', 'font']
     .map((k) => `${k}-${want[k]}`)
     .filter((c) => !seen.classes.split(' ').includes(c));
   if (seen.deepOpen !== (want.deep === 'open')) missing.push(`deep dives ${want.deep}`);
+  if (seen.ticked !== want.size) missing.push(`${want.size} ticked in the panel, not ${seen.ticked}`);
+  if (shape.value === null && seen.stored !== null) missing.push(`nothing saved, not ${seen.stored}`);
   if (missing.length) fail('storage', `${shape.name}: expected ${missing.join(', ')}; page has "${seen.classes}"`);
   else
     pass(
@@ -1661,6 +1694,25 @@ if (run('panels')) {
   const resetLabel = `Reset: ${didReload ? 'reloaded' : 'no reload'}, theme ${after.theme}, saved ${after.stored}`;
   if (didReload && after.theme === DEFAULTS.theme && after.stored === null) pass('panels', resetLabel);
   else fail('panels', resetLabel);
+  await page.close();
+}
+
+// On a phone, a reader who chooses Standard keeps it after a reload, and
+// Reset takes them back to the phone's own starting size.
+if (run('storage')) {
+  const page = await openPage(site, STORAGE_PAGE, SCREENS.phone);
+  const size = () => page.evaluate(() => document.querySelector('.reader').className.match(/size-(\w+)/)[1]);
+  await setSetting(page, 'size', 'standard');
+  await page.reload();
+  await page.waitForSelector('html[data-reader="on"]');
+  const kept = await size();
+  await page.locator('button[aria-controls="settings-panel"]').click();
+  await Promise.all([page.waitForEvent('load'), page.locator('.settings-reset').click()]);
+  await page.waitForSelector('html[data-reader="on"]');
+  const reset = await size();
+  const label = `on a phone: Standard chosen reads ${kept} after a reload, and ${reset} after Reset`;
+  if (kept === 'standard' && reset === 'smaller') pass('storage', label);
+  else fail('storage', `${label}; wanted standard, then smaller`);
   await page.close();
 }
 

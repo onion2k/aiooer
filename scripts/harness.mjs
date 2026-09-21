@@ -80,8 +80,14 @@ export async function startSite(root = STATIC_SITE) {
 // stops the run instead of producing figures.
 // beforeLoad(page) runs before the page is requested, for a check that has to
 // watch the load itself or seed the page's storage.
-export async function openPage(site, file, { width = 1440, height = 900, errors = [], beforeLoad } = {}) {
-  const page = await site.browser.newPage({ viewport: { width, height } });
+export async function openPage(
+  site,
+  file,
+  { width = 1440, height = 900, touch = false, errors = [], beforeLoad } = {},
+) {
+  // touch opens the page as a phone does, with a coarse pointer, which is half
+  // of what makes the page start at the smaller text size.
+  const page = await site.browser.newPage({ viewport: { width, height }, hasTouch: touch, isMobile: touch });
   page.on('pageerror', (e) => errors.push(e.message));
   if (beforeLoad) await beforeLoad(page);
   await page.goto(site.url(file));

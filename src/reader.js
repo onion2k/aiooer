@@ -82,11 +82,24 @@
   }
 
   var saved = readSaved();
+
+  // A phone starts at the smaller text size, since Standard is set for a
+  // reader further from the screen. A phone is narrow and touched: the width
+  // is the stylesheet's own 40em, and the touch is what tells a phone from a
+  // desktop window zoomed to that width, whose reader zoomed in to make the
+  // text bigger and would not thank the page for shrinking it. This is where
+  // the page starts, not a choice, so it is not saved, and Reset comes back to
+  // it; a reader who picks Standard keeps Standard.
+  var atStart = {};
+  for (var k in saved) atStart[k] = saved[k];
+  if (!atStart.size && window.matchMedia && window.matchMedia('(max-width: 40em) and (pointer: coarse)').matches)
+    atStart.size = 'smaller';
+
   for (var i = 0; i < KEYS.length; i++) {
     var key = KEYS[i];
-    if (saved[key]) {
-      apply(key, saved[key]);
-      var input = document.querySelector('input[name="setting-' + key + '"][value="' + saved[key] + '"]');
+    if (atStart[key]) {
+      apply(key, atStart[key]);
+      var input = document.querySelector('input[name="setting-' + key + '"][value="' + atStart[key] + '"]');
       if (input) input.checked = true;
     }
   }
