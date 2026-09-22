@@ -321,8 +321,6 @@ function learnSection(s) {
 // control for nothing, and the list is whole in the HTML either way.
 export function learningFile(dir, intro) {
   const course = intro.courseTitle;
-  const kinds = dir.sections.map((s) => s.heading.toLowerCase());
-  const list = kinds.length > 1 ? `${kinds.slice(0, -1).join(', ')} and ${kinds.at(-1)}` : kinds[0];
   const main = `<main id="main" tabindex="-1"><div class="shell learning-layout grid-12"><div class="hero directory-hero">${pageCrumbs('Learning', 'Learning')}${decorTag()}<p class="eyebrow label">Reference</p><h1 class="title">Learning</h1><ul class="hero-meta label" role="list"><li>${
     ICONS.learning
   }<span>${dir.count} ${dir.count === 1 ? 'link' : 'links'}</span></li><li>${ICONS.calendar}<span>Checked ${esc(
@@ -333,7 +331,9 @@ export function learningFile(dir, intro) {
   const body = `${header(intro.modules, null, course, 'learning')}${main}${footer(intro.modules, currencyNote(intro), course)}`;
   return pageFile({
     title: `Learning · ${course}`,
-    description: `Hand-picked places to learn more about AI, ${dir.count} so far: ${list}, each a link out to somebody else's work.`,
+    // The counts rather than the sections' names, which would outgrow the
+    // description's ceiling as sections are added.
+    description: `Hand-picked places to learn more about AI: ${dir.count} links out in ${dir.sections.length} sections, each somebody else's work.`,
     body,
     page: { deepKeys: [] },
   });

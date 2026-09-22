@@ -66,6 +66,7 @@ import { RESULTS, STATIC_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS, SETTINGS } from '../src/logic.mjs';
 import { parseModels, CAPABILITIES } from '../src/models.mjs';
 import { parseLearning } from '../src/learning.mjs';
+import { smartPlain } from '../src/inline.mjs';
 import { delivery } from '../src/calculator.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
@@ -1271,7 +1272,9 @@ async function auditPage(file) {
     if (seen.stray !== LEARNING.count) wrong.push(`${seen.stray} cards, wanted ${LEARNING.count}`);
     const byUrl = new Map(LEARNING.sections.flatMap((s) => s.links.map((l) => [l.url, l])));
     for (const l of seen.sections.flatMap((s) => s.links)) {
-      const title = byUrl.get(l.url)?.title;
+      // The page sets a title as a typesetter would, with curly quotes, so
+      // that is what its name is held to.
+      const title = smartPlain(byUrl.get(l.url)?.title ?? '');
       if (l.stops !== 1) wrong.push(`"${title}" has ${l.stops} stops, wanted 1`);
       if (!l.tab) wrong.push(`"${title}" does not open a new tab safely`);
       if (!l.name?.startsWith(title) || !l.name.endsWith('(opens in a new tab)'))
