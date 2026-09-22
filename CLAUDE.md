@@ -154,8 +154,9 @@ was written on 19 September 2026 from what the code does at that date.
   was left.
 - **Learning lists every link in the data, and says each opens a new tab.**
   `/learning/` is a hand-picked directory of places to learn more, all of
-  them somebody else's: a section for each kind (Reference, Videos,
-  Visualisers to begin with) in the order `content/learning.json` declares
+  them somebody else's: a section for each kind (on 22 September 2026,
+  Reference, Videos, Visualisers, Courses, Books, Blogs and newsletters, and
+  Repositories, 38 links in all) in the order `content/learning.json` declares
   them, and a card for each link in the order the file gives it. Each card is
   one Tab stop, the whole card its link, and its name ends "(opens in a new
   tab)". The build refuses an unknown field, a missing value, a link filed
@@ -289,7 +290,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, learning   | the learning page                                  | every link in `learning.json`, in its section and order, one stop, says new tab        | none           |
 | `audit`, decor      | 43 pages × 1800, 1440 largest and long, 390        | no mark over any word; nothing tabbable, spoken or raised                              | none           |
 | `look`              | 43 pages                                           | no errors, no empty page                                                               | none           |
-| `links`             | 239 addresses: prose, model sources, learning      | 237 ok, 2 unverified, 0 gone (22 September 2026)                                       | none gone      |
+| `links`             | 277 addresses: prose, model sources, learning      | 275 ok, 2 unverified, 0 gone (22 September 2026)                                       | none gone      |
 | `perf`, not a gate  | every page's weight; timings on three pages        | see below                                                                              | not held       |
 
 `perf` weighs every page from one load, four at a time, and times three

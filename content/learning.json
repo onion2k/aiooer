@@ -1,8 +1,8 @@
 {
   "checked": "2026-09-22",
   "about": [
-    "Places to go further than this guide does: explanations drawn by hand, videos, and pages that run a model in front of you so you can watch what it does. Every one is somebody else's work, chosen because it made something clearer.",
-    "The list is picked, not gathered, so it is short on purpose and will grow. Each link was checked on the date above, and each opens in a new tab."
+    "Places to go further than this guide does: explanations drawn by hand, videos, pages that run a model in front of you, courses, books, writing that keeps up with the field, and code small enough to read. Every one is somebody else's work, chosen because it made something clearer.",
+    "The list is picked, not gathered, and it will grow. Some of it asks for no more than curiosity and some of it asks for code, so each card says what it is. Each link was checked on the date above, and each opens in a new tab."
   ],
   "sections": [
     {
@@ -19,6 +19,26 @@
       "key": "visualisers",
       "heading": "Visualisers",
       "about": "Pages that run or draw a real model, so you can see each step happen."
+    },
+    {
+      "key": "courses",
+      "heading": "Courses",
+      "about": "Free courses with a beginning, a middle and an end, from no maths at all to building a model yourself."
+    },
+    {
+      "key": "books",
+      "heading": "Books",
+      "about": "Whole textbooks, free to read online, for when a page is not enough."
+    },
+    {
+      "key": "blogs",
+      "heading": "Blogs and newsletters",
+      "about": "People who write about the field as it moves, which this guide cannot do."
+    },
+    {
+      "key": "repositories",
+      "heading": "Repositories",
+      "about": "Code written to be read, where the clearest explanation of a model is one small enough to run yourself."
     }
   ],
   "links": [
@@ -31,11 +51,97 @@
       "url": "https://jalammar.github.io/illustrated-transformer/"
     },
     {
+      "title": "The Illustrated GPT-2",
+      "by": "Jay Alammar",
+      "kind": "reference",
+      "published": "2019-08",
+      "about": "The same hand-drawn approach turned on a model that only predicts the next word, which is the shape of every chat model since.",
+      "url": "https://jalammar.github.io/illustrated-gpt2/"
+    },
+    {
+      "title": "The Illustrated Stable Diffusion",
+      "by": "Jay Alammar",
+      "kind": "reference",
+      "published": "2022-10",
+      "about": "How a picture is made by taking noise away, step by step, steered by the words of a prompt. A companion to the generative media module.",
+      "url": "https://jalammar.github.io/illustrated-stable-diffusion/"
+    },
+    {
+      "title": "What Is ChatGPT Doing … and Why Does It Work?",
+      "by": "Stephen Wolfram",
+      "kind": "reference",
+      "published": "2023-02",
+      "about": "A long essay in plain language on how choosing one likely word after another can add up to something that reads like thought. Older than today's models, and still sound on the idea underneath them.",
+      "url": "https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/"
+    },
+    {
+      "title": "The Big LLM Architecture Comparison",
+      "by": "Sebastian Raschka",
+      "kind": "reference",
+      "about": "What actually differs inside recent open models such as DeepSeek, Qwen, Gemma, Kimi and gpt-oss, drawn side by side. Kept up to date as new models appear.",
+      "url": "https://magazine.sebastianraschka.com/p/the-big-llm-architecture-comparison"
+    },
+    {
+      "title": "The Annotated Transformer",
+      "by": "Harvard NLP",
+      "kind": "reference",
+      "about": "The paper that introduced the transformer, with working code beside each paragraph. For readers who would rather see the idea run than read about it.",
+      "url": "https://nlp.seas.harvard.edu/annotated-transformer/"
+    },
+    {
+      "title": "Tracing the thoughts of a large language model",
+      "by": "Anthropic",
+      "kind": "reference",
+      "published": "2025-03",
+      "about": "What researchers found when they looked inside a model at work: planning a rhyme before writing the line, and doing sums by routes it cannot describe. The most readable way in to interpretability.",
+      "url": "https://www.anthropic.com/research/tracing-thoughts-language-model"
+    },
+    {
       "title": "How DeepSeek Rewrote the Transformer [MLA]",
       "by": "Welch Labs",
       "kind": "videos",
       "about": "How multi-head latent attention shrinks the memory a model keeps for every token it has read, and why that let DeepSeek serve long contexts cheaply.",
       "url": "https://www.youtube.com/watch?v=0VLAoVGf_74"
+    },
+    {
+      "title": "Transformers, the tech behind LLMs",
+      "by": "3Blue1Brown",
+      "kind": "videos",
+      "published": "2024-04",
+      "about": "What a GPT does with a sentence, animated from words to vectors to a prediction. Perhaps the clearest visual explanation there is.",
+      "url": "https://www.3blue1brown.com/lessons/gpt"
+    },
+    {
+      "title": "Attention in transformers, step-by-step",
+      "by": "3Blue1Brown",
+      "kind": "videos",
+      "published": "2024-04",
+      "about": "The chapter after it, on attention alone: how each word takes meaning from the words around it, with every multiplication shown.",
+      "url": "https://www.3blue1brown.com/lessons/attention"
+    },
+    {
+      "title": "Deep Dive into LLMs like ChatGPT",
+      "by": "Andrej Karpathy",
+      "kind": "videos",
+      "published": "2025-02",
+      "about": "Three and a half hours for a general audience on how a chat model is made, from a crawl of the web through training to the assistant, and why it hallucinates.",
+      "url": "https://www.youtube.com/watch?v=7xTGNNLPyMI"
+    },
+    {
+      "title": "[1hr Talk] Intro to Large Language Models",
+      "by": "Andrej Karpathy",
+      "kind": "videos",
+      "published": "2023-11",
+      "about": "The shorter way in: what a model is, how it is trained, and where it is going, in an hour.",
+      "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g"
+    },
+    {
+      "title": "Let's build GPT: from scratch, in code, spelled out.",
+      "by": "Andrej Karpathy",
+      "kind": "videos",
+      "published": "2023-01",
+      "about": "A small GPT written live, one line at a time, and trained on Shakespeare. For readers who code.",
+      "url": "https://www.youtube.com/watch?v=kCc8FmEb1nY"
     },
     {
       "title": "Transformer Explainer",
@@ -50,6 +156,168 @@
       "kind": "visualisers",
       "about": "A model drawn in three dimensions, every weight and sum in place, walked through one layer at a time from a tiny nano-GPT up to the scale of GPT-3.",
       "url": "https://bbycroft.net/llm"
+    },
+    {
+      "title": "Tiktokenizer",
+      "by": "David Duong",
+      "kind": "visualisers",
+      "about": "Type anything and see it cut into the tokens a model actually reads, and how many there are. It makes sense of token prices and limits at a glance.",
+      "url": "https://tiktokenizer.vercel.app/"
+    },
+    {
+      "title": "Diffusion Explainer",
+      "by": "Polo Club of Data Science, Georgia Tech",
+      "kind": "visualisers",
+      "about": "Stable Diffusion in the browser, from prompt to picture, with the noise taken away one step at a time. By the team behind Transformer Explainer.",
+      "url": "https://poloclub.github.io/diffusion-explainer/"
+    },
+    {
+      "title": "AnimatedLLM",
+      "by": "Zdeněk Kasner and Ondřej Dušek",
+      "kind": "visualisers",
+      "about": "Step-by-step animations of open models working on real inputs, from how the next token is chosen down to what each layer does to it. Made for teaching.",
+      "url": "https://animatedllm.github.io/"
+    },
+    {
+      "title": "A Neural Network Playground",
+      "by": "Daniel Smilkov and Shan Carter",
+      "kind": "visualisers",
+      "about": "Train a tiny network by hand and watch it learn to separate two colours of dot. The oldest page here, and still the quickest feel for what training is.",
+      "url": "https://playground.tensorflow.org/"
+    },
+    {
+      "title": "Neuronpedia",
+      "by": "Neuronpedia",
+      "kind": "visualisers",
+      "about": "Browse the features researchers have found inside real models, and what switches each one on. Advanced, and the nearest thing to looking inside a model yourself.",
+      "url": "https://www.neuronpedia.org/"
+    },
+    {
+      "title": "Elements of AI",
+      "by": "University of Helsinki and MinnaLearn",
+      "kind": "courses",
+      "about": "What AI is and is not, for anyone, with no maths and no code. A natural next step after this guide's primer.",
+      "url": "https://www.elementsofai.com/"
+    },
+    {
+      "title": "Anthropic Academy",
+      "by": "Anthropic",
+      "kind": "courses",
+      "about": "Free courses from the maker of Claude, among them AI Fluency, on working with a model well. Its product courses are about Claude alone.",
+      "url": "https://anthropic.skilljar.com/"
+    },
+    {
+      "title": "LLM Course",
+      "by": "Hugging Face",
+      "kind": "courses",
+      "about": "Hands-on, from tokenisers and transformers to fine-tuning a model and training it to reason. It goes further than running AI locally goes.",
+      "url": "https://huggingface.co/learn/llm-course/chapter1/1"
+    },
+    {
+      "title": "AI Agents Course",
+      "by": "Hugging Face",
+      "kind": "courses",
+      "about": "What an agent is and how to build one, with the libraries people use for it. A companion to agentic work in practical AI.",
+      "url": "https://huggingface.co/learn/agents-course/unit0/introduction"
+    },
+    {
+      "title": "Diffusion Models Course",
+      "by": "Hugging Face",
+      "kind": "courses",
+      "about": "How image models are built and trained, and how to shape one of your own, in code.",
+      "url": "https://huggingface.co/learn/diffusion-course/unit0/1"
+    },
+    {
+      "title": "Neural Networks: Zero to Hero",
+      "by": "Andrej Karpathy",
+      "kind": "courses",
+      "about": "A series of videos that starts with how a network learns at all and ends with a GPT, everything written and trained on screen.",
+      "url": "https://karpathy.ai/zero-to-hero.html"
+    },
+    {
+      "title": "Practical Deep Learning for Coders",
+      "by": "fast.ai",
+      "kind": "courses",
+      "about": "Deep learning taught from the top down: build something that works first, then find out why. For readers who can already program.",
+      "url": "https://course.fast.ai/"
+    },
+    {
+      "title": "CS336: Language Modeling from Scratch",
+      "by": "Stanford University",
+      "kind": "courses",
+      "about": "The most serious course here: building a language model yourself, from the tokeniser through training to alignment, with the lectures online.",
+      "url": "https://cs336.stanford.edu/"
+    },
+    {
+      "title": "Understanding Deep Learning",
+      "by": "Simon J. D. Prince",
+      "kind": "books",
+      "about": "A textbook free to read as a PDF, with some of the best diagrams in the subject, covering transformers and diffusion models along the way.",
+      "url": "https://udlbook.github.io/udlbook/"
+    },
+    {
+      "title": "Dive into Deep Learning",
+      "by": "Aston Zhang, Zachary Lipton, Mu Li and Alexander Smola",
+      "kind": "books",
+      "about": "A textbook with code on every page that runs as you read it, used in hundreds of university courses.",
+      "url": "https://d2l.ai/"
+    },
+    {
+      "title": "Simon Willison's Weblog",
+      "by": "Simon Willison",
+      "kind": "blogs",
+      "about": "The most useful day-to-day record of using models well: what each new release is good for, prompt injection, and tools built in an afternoon.",
+      "url": "https://simonwillison.net/"
+    },
+    {
+      "title": "One Useful Thing",
+      "by": "Ethan Mollick",
+      "kind": "blogs",
+      "about": "A professor at Wharton on what AI changes at work and in teaching, written for people who use it rather than build it.",
+      "url": "https://www.oneusefulthing.org/"
+    },
+    {
+      "title": "Lil'Log",
+      "by": "Lilian Weng",
+      "kind": "blogs",
+      "about": "Long technical surveys, each the best single page on its subject, among them agents, hallucination and how models are made to reason.",
+      "url": "https://lilianweng.github.io/"
+    },
+    {
+      "title": "Chip Huyen's blog",
+      "by": "Chip Huyen",
+      "kind": "blogs",
+      "about": "Building real products on models: evaluation, agents, and what goes wrong between a demo and something people rely on.",
+      "url": "https://huyenchip.com/blog/"
+    },
+    {
+      "title": "nanochat",
+      "by": "Andrej Karpathy",
+      "kind": "repositories",
+      "published": "2025-10",
+      "about": "A complete small chat model, from tokeniser and training to a web page to talk to it, in about eight thousand lines meant to be read. It calls itself \"the best ChatGPT that $100 can buy\".",
+      "url": "https://github.com/karpathy/nanochat"
+    },
+    {
+      "title": "nanoGPT",
+      "by": "Andrej Karpathy",
+      "kind": "repositories",
+      "about": "The full version of the model built in the Let's build GPT video: small enough to read in an evening, and able to reproduce the smallest GPT-2. Its author now calls it old and points to nanochat, but it is the shorter read.",
+      "url": "https://github.com/karpathy/nanoGPT"
+    },
+    {
+      "title": "LLMs-from-scratch",
+      "by": "Sebastian Raschka",
+      "kind": "repositories",
+      "about": "The code for his book Build a Large Language Model (From Scratch), a chapter at a time in notebooks: tokenising, attention, pretraining, then fine-tuning to follow instructions. The code is free; the book is not.",
+      "url": "https://github.com/rasbt/LLMs-from-scratch"
+    },
+    {
+      "title": "Prompt Engineering Interactive Tutorial",
+      "by": "Anthropic",
+      "kind": "repositories",
+      "about": "Nine chapters of notebooks with exercises, from the shape of a good prompt to avoiding hallucination. It was written around Claude 3 Haiku, an older model, and needs an API key to run; the lessons still hold.",
+      "url": "https://github.com/anthropics/prompt-eng-interactive-tutorial"
     }
   ]
 }
