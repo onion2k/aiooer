@@ -95,8 +95,9 @@ ${swatches()}
 .reader *,.reader *::before,.reader *::after{box-sizing:border-box}
 @media (max-width:40em){.reader{--base:1.125rem}}
 /* Standard is 20px, generous for a phone held close and a lot on a large
-   screen read from further away, so Smaller comes down to 17px for that. */
-.size-smaller{--scale:0.85}.size-large{--scale:1.15}.size-larger{--scale:1.3}.size-largest{--scale:1.5}
+   screen read from further away, so Smaller comes down to 17px for that and
+   Smallest, a step further by the same 0.15, to 14px. */
+.size-smallest{--scale:0.7}.size-smaller{--scale:0.85}.size-large{--scale:1.15}.size-larger{--scale:1.3}.size-largest{--scale:1.5}
 .spacing-wide{--lh:1.8}.spacing-widest{--lh:2}
 /* Short keeps every line under 80 characters, and offering it is how the
    site meets 1.4.8; Standard is half as wide again and Long twice as wide,
@@ -231,7 +232,7 @@ ${swatches()}
 .module-hero,.directory-hero{--start:1;--span:12}
 .crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:0 0.5em}
 .crumbs li{display:flex;align-items:center;gap:0.5em;margin:0}
-.reader .crumbs a{display:inline-flex;align-items:center;min-height:44px}
+.reader .crumbs a{display:inline-flex;align-items:center;min-height:44px;min-width:44px}
 .reader .crumbs a[aria-current]{color:var(--ink);text-decoration:none}
 .crumb-sep{color:var(--ink-2)}
 .eyebrow{margin:1.2em 0 0.6em}
@@ -609,7 +610,9 @@ ${swatches()}
 .footer-links li{margin:0}
 .footer-group{margin-top:1.2em}
 .footer-group-title{margin:0 0 0.2em;color:var(--footer-ink)}
-.reader .footer-links a{display:inline-flex;align-items:center;min-height:44px;color:var(--footer-link)}
+/* A short word such as Models is narrower than 44px at the smallest text,
+   so the link keeps a floor on its width as well as its height. */
+.reader .footer-links a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;color:var(--footer-link)}
 .reader .footer-links a:hover{color:var(--footer-link);text-decoration-thickness:0.16em}
 .footer-note{--start:5;--span:7;--span-md:6;margin:0;max-width:var(--measure);color:var(--footer-ink)}
 @container page (width < 40em){.footer-links{grid-template-columns:minmax(0,1fr)}}
@@ -633,7 +636,9 @@ ${swatches()}
 .home-meta{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.75em;color:var(--ink-2)}
 .home-meta li{display:flex;align-items:center;gap:0.5em;margin:0}
 .cta-row{display:flex;flex-direction:column;align-items:stretch;gap:0.7em}
-.reader .btn-primary,.reader .btn-quiet{display:inline-flex;align-items:center;justify-content:space-between;gap:0.8em;min-height:3.1em;padding:0.7em 1.1em;border:var(--bw) solid var(--edge);border-radius:var(--r);font-weight:800;text-decoration:none}
+/* The height is in em so it grows with the text, and never under 48px so
+   that it still holds 44 at Smallest on a phone. */
+.reader .btn-primary,.reader .btn-quiet{display:inline-flex;align-items:center;justify-content:space-between;gap:0.8em;min-height:max(3.1em,48px);padding:0.7em 1.1em;border:var(--bw) solid var(--edge);border-radius:var(--r);font-weight:800;text-decoration:none}
 .reader .btn-primary{background:var(--link);border-color:var(--link);color:var(--on-accent)}
 .reader .btn-primary:hover{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .reader .btn-quiet{background:transparent;color:var(--ink)}

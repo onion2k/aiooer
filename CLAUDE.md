@@ -97,11 +97,15 @@ was written on 19 September 2026 from what the code does at that date.
 - **Accessible.** axe-core's WCAG A, AA and AAA rules and its best
   practices find nothing, on every page, in every theme, with the panels
   and deep dives open. `audit` holds it.
-- **Text a reader can size.** Smaller, Standard, Large, Larger and Largest
-  scale the page by 0.85, 1, 1.15, 1.3 and 1.5. Standard is 20px, which is a
-  lot on a large screen, so Smaller exists to come down from it. `audit`'s
-  measure check reads each size off the page, `--mutate sizes` proves it, and
-  the targets check runs again at Smaller. A phone, narrow (40em or less) and
+- **Text a reader can size.** Smallest, Smaller, Standard, Large, Larger and
+  Largest scale the page by 0.7, 0.85, 1, 1.15, 1.3 and 1.5. Standard is 20px,
+  which is a lot on a large screen, so Smaller and Smallest (14px, added 22
+  September 2026) exist to come down from it. `audit`'s measure check reads
+  each size off the page, `--mutate sizes` proves it, the targets check runs
+  again at Smallest, the hardest case for 44 by 44 since a control sized in em
+  shrinks with the text, and `decor` looks at Smallest on a 1280 window, where
+  the rails appear with the least room beside the words. A control sized in
+  em keeps a floor in px, as `max(3.1em, 48px)`. A phone, narrow (40em or less) and
   touched, starts at Smaller, 15.3px, unless its reader chose a size; the
   touch is what tells it from a desktop window zoomed to that width, whose
   reader wants the text bigger. `reader.js` applies it as the page loads and
@@ -267,31 +271,31 @@ modulecards` proves that check still bites.
 
 Baselines as of 19 September 2026, on this machine:
 
-| Gate                | Holds                                              | Baseline                                                                               | Tolerance      |
-| ------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------- |
-| `contrast`          | 254 colour pairs, four themes                      | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1, marks 1.61 to 1.68:1 | none           |
-| `audit`, axe        | 361 runs                                           | 0 violations, 0 needing review                                                         | none           |
-| `audit`, measure    | 43 pages × 4 setting mixes × 3 lengths, 5 sizes    | Short's longest line 73; widths 1:1.5:2; sizes 0.85 to 1.5 times Standard's 20px       | 80; 1% widths  |
-| `audit`, targets    | 43 pages × desktop and phone, Standard and Smaller | all 44 × 44 or larger                                                                  | none           |
-| `audit`, reflow     | 43 pages × 320px and 200% zoom                     | no sideways scroll                                                                     | none           |
-| `audit`, spacing    | 43 pages × desktop and phone                       | nothing clipped                                                                        | none           |
-| `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes             | 118 to 120 stops, ringed, uncovered, 7:1 (one more on every page since Learning)       | none           |
-| `audit`, headings   | 43 pages × desktop and phone                       | one h1, no skipped level                                                               | none           |
-| `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                                  | none           |
-| `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                            | 1px on heights |
-| `audit`, storage    | 10 saved shapes, and a phone's choice and Reset    | every one loads, at its own screen                                                     | none           |
-| `audit`, panels     | Close and Reset in the settings panel              | Close shuts and hands focus back; Reset clears and reloads                             | none           |
-| `audit`, numerals   | the home page in four themes                       | the four ideas numbered in the text colour                                             | none           |
-| `audit`, spy        | 28 parts × 3 frames × top, middle, end             | one current, earlier passed, no jumps                                                  | none           |
-| `audit`, modules    | the home page and every written part               | label, breadcrumb, title, ways on, no dead links                                       | none           |
-| `audit`, name       | 43 pages                                           | the heading's name wherever it is shown                                                | none           |
-| `audit`, hues       | every page, everywhere a hue is drawn              | 17 to 21 a page, each beside the words that say the same                               | none           |
-| `audit`, calculator | the one part that has a calculator                 | every example, the keyboard, typing and Start again show what the rule gives           | none           |
-| `audit`, learning   | the learning page                                  | every link in `learning.json`, in its section and order, one stop, says new tab        | none           |
-| `audit`, decor      | 43 pages × 1800, 1440 largest and long, 390        | no mark over any word; nothing tabbable, spoken or raised                              | none           |
-| `look`              | 43 pages                                           | no errors, no empty page                                                               | none           |
-| `links`             | 277 addresses: prose, model sources, learning      | 275 ok, 2 unverified, 0 gone (22 September 2026)                                       | none gone      |
-| `perf`, not a gate  | every page's weight; timings on three pages        | see below                                                                              | not held       |
+| Gate                | Holds                                             | Baseline                                                                               | Tolerance      |
+| ------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------- |
+| `contrast`          | 254 colour pairs, four themes                     | lowest text pair 7.33:1, lowest edge 8.38:1, hues 1.19 to 1.75:1, marks 1.61 to 1.68:1 | none           |
+| `audit`, axe        | 361 runs                                          | 0 violations, 0 needing review                                                         | none           |
+| `audit`, measure    | 43 pages × 4 setting mixes × 3 lengths, 6 sizes   | Short's longest line 73; widths 1:1.5:2; sizes 0.7 to 1.5 times Standard's 20px        | 80; 1% widths  |
+| `audit`, targets    | 43 pages × desktop and phone, Standard, Smallest  | all 44 × 44 or larger                                                                  | none           |
+| `audit`, reflow     | 43 pages × 320px and 200% zoom                    | no sideways scroll                                                                     | none           |
+| `audit`, spacing    | 43 pages × desktop and phone                      | nothing clipped                                                                        | none           |
+| `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes            | 118 to 120 stops, ringed, uncovered, 7:1 (one more on every page since Learning)       | none           |
+| `audit`, headings   | 43 pages × desktop and phone                      | one h1, no skipped level                                                               | none           |
+| `audit`, corners    | 43 pages, every panel, deep dive open             | none rounder than 2px                                                                  | none           |
+| `audit`, grids      | 43 pages × desktop and phone                      | blocks equal; 23 or 9 containers on 12 cols                                            | 1px on heights |
+| `audit`, storage    | 12 saved shapes, and a phone's choice and Reset   | every one loads, at its own screen                                                     | none           |
+| `audit`, panels     | Close and Reset in the settings panel             | Close shuts and hands focus back; Reset clears and reloads                             | none           |
+| `audit`, numerals   | the home page in four themes                      | the four ideas numbered in the text colour                                             | none           |
+| `audit`, spy        | 28 parts × 3 frames × top, middle, end            | one current, earlier passed, no jumps                                                  | none           |
+| `audit`, modules    | the home page and every written part              | label, breadcrumb, title, ways on, no dead links                                       | none           |
+| `audit`, name       | 43 pages                                          | the heading's name wherever it is shown                                                | none           |
+| `audit`, hues       | every page, everywhere a hue is drawn             | 17 to 21 a page, each beside the words that say the same                               | none           |
+| `audit`, calculator | the one part that has a calculator                | every example, the keyboard, typing and Start again show what the rule gives           | none           |
+| `audit`, learning   | the learning page                                 | every link in `learning.json`, in its section and order, one stop, says new tab        | none           |
+| `audit`, decor      | 43 pages × 1800, 1440 largest, 1280 smallest, 390 | no mark over any word; nothing tabbable, spoken or raised                              | none           |
+| `look`              | 43 pages                                          | no errors, no empty page                                                               | none           |
+| `links`             | 277 addresses: prose, model sources, learning     | 275 ok, 2 unverified, 0 gone (22 September 2026)                                       | none gone      |
+| `perf`, not a gate  | every page's weight; timings on three pages       | see below                                                                              | not held       |
 
 `perf` weighs every page from one load, four at a time, and times three
 pages that stand for the rest, five runs each: the home page, the heaviest
@@ -655,7 +659,7 @@ For anything new on a page, check what it does:
 
 - **every theme:** light grey (its key is `paper`), white, dark and high
   contrast
-- **every setting:** text size from smaller up to largest, line spacing up to widest,
+- **every setting:** text size from smallest up to largest, line spacing up to widest,
   each line length, the serif typeface, deep dives folded and open. On the
   home page at desktop width the text column is 774px, so Standard (780px)
   and Long both fill it and look the same there; that is by choice, and the

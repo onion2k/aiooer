@@ -89,8 +89,9 @@ const MUTATIONS = {
   spacing: { css: '.plain-label{height:1.2em;overflow:hidden}' },
   corners: { css: '.header-btn{border-radius:999px!important}' },
   widths: { css: '.reader{--measure-em:30em!important}' },
-  // Smaller losing its rule, which would leave it reading as Standard.
-  sizes: { css: '.reader.size-smaller{--scale:1!important}' },
+  // Smallest and Smaller losing their rules, which would leave both reading
+  // as Standard.
+  sizes: { css: '.reader.size-smallest,.reader.size-smaller{--scale:1!important}' },
   numerals: { css: '.idea-num{color:var(--link)!important}' },
   // A part that claims to be in the other module, a way on that stops short,
   // and an unwritten part linked as if it were there.
@@ -867,6 +868,8 @@ const SAVED_SHAPES = [
     expect: { theme: 'contrast', size: 'largest', spacing: 'widest', measure: 'short', font: 'serif', deep: 'open' },
   },
   { name: 'the smaller text size', value: { size: 'smaller' }, expect: { size: 'smaller' } },
+  { name: 'the smallest text size', value: { size: 'smallest' }, expect: { size: 'smallest' } },
+  { name: 'Smallest saved, on a phone', on: 'phone', value: { size: 'smallest' }, expect: { size: 'smallest' } },
   { name: 'unknown values', value: { theme: 'sepia', size: 7, colour: 'red' }, expect: {} },
   { name: 'not JSON', value: '{theme:', expect: {} },
   // A phone starts at the smaller text size unless its reader chose another,
@@ -887,7 +890,7 @@ const SCREENS = { desktop: {}, phone: { width: 390, height: 844, touch: true }, 
 
 // What each text size multiplies Standard's text by. Every size the panel
 // offers has to be here, so a new one cannot arrive unmeasured.
-const SIZE_SCALES = { smaller: 0.85, standard: 1, large: 1.15, larger: 1.3, largest: 1.5 };
+const SIZE_SCALES = { smallest: 0.7, smaller: 0.85, standard: 1, large: 1.15, larger: 1.3, largest: 1.5 };
 {
   const offered = SETTINGS.size.map(([v]) => v).join(',');
   if (offered !== Object.keys(SIZE_SCALES).join(','))
@@ -923,7 +926,7 @@ async function auditPage(file) {
     ? [
         ['standard', 'sans'],
         ['largest', 'sans'],
-        ['smaller', 'sans'],
+        ['smallest', 'sans'],
         ['standard', 'serif'],
       ]
     : []) {
@@ -1452,12 +1455,12 @@ async function auditPage(file) {
   // with it and 44 by 44 has to hold at every size a reader can choose.
   for (const width of run('targets') ? [1440, 390] : []) {
     const page = await open(file, { width, height: 900 });
-    await setSetting(page, 'size', 'smaller');
+    await setSetting(page, 'size', 'smallest');
     await setSetting(page, 'deep', 'open');
     const small = await targetSizes(page);
     if (small.length)
-      fail('targets', `${file} @${width} size=smaller: ${small.length} small: ${small.slice(0, 6).join('; ')}`);
-    else pass('targets', `${file} @${width} size=smaller: all targets 44x44 or larger`);
+      fail('targets', `${file} @${width} size=smallest: ${small.length} small: ${small.slice(0, 6).join('; ')}`);
+    else pass('targets', `${file} @${width} size=smallest: all targets 44x44 or larger`);
     await page.close();
   }
 
@@ -1540,21 +1543,29 @@ async function auditPage(file) {
   // only appear on a wide window, and the marks grow with the reader's text,
   // so a collision would show at one of these and not at the others.
   if (run('decor')) {
-    for (const [width, big] of [
-      [1800, false],
-      [1440, true],
-      [390, false],
+    // Largest and Long push the words out towards the marks. Smallest does
+    // the opposite: the rails appear once a window is 87em wide, which at 14px
+    // text is 1218px, so a 1280 window gets them with the least room beside
+    // the text that any setting leaves.
+    for (const [width, big, tiny] of [
+      [1800, false, false],
+      [1440, true, false],
+      [1280, false, true],
+      [390, false, false],
     ]) {
       const page = await open(file, { width });
       if (big) {
         await setSetting(page, 'size', 'largest');
         await setSetting(page, 'spacing', 'widest');
         await setSetting(page, 'measure', 'long');
+      }
+      if (tiny) await setSetting(page, 'size', 'smallest');
+      if (big || tiny) {
         await page.locator('button[aria-controls="settings-panel"]').click();
         await mutate(page);
       }
       const seen = await decorClashes(page);
-      const where = `${file} @${width}${big ? ', largest and long' : ''}`;
+      const where = `${file} @${width}${big ? ', largest and long' : tiny ? ', smallest' : ''}`;
       if (!seen.marks) fail('decor', `${where}: the page draws no decoration`);
       else if (seen.over.length) fail('decor', `${where}: ${seen.over.length} marks over words, first ${seen.over[0]}`);
       else if (seen.loud.length) fail('decor', `${where}: ${seen.loud[0]}`);
