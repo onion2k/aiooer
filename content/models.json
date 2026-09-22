@@ -1,5 +1,5 @@
 {
-  "checked": "2026-09-20",
+  "checked": "2026-09-22",
   "about": [
     "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
     "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
@@ -1428,6 +1428,87 @@
       "cutoff": "Not published",
       "notes": "A security-specialised version of the Copilot coding model that finds, triages and patches vulnerabilities in large codebases. It is not sold on its own and runs only inside Microsoft's own scanning harness, handling the cheaper work and passing the hardest on. Because the capability is dual use, access is restricted to defenders who pass a review.",
       "source": "https://microsoft.ai/models/mai-cyber-1-flash/"
+    },
+    {
+      "name": "Grok 4.7",
+      "provider": "xAI",
+      "access": "hosted",
+      "size": "2.1T parameters",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "500K tokens",
+      "price": "$2 / $6 per million tokens up to 200K, $4 / $12 above",
+      "cutoff": "Not published",
+      "notes": "xAI's new flagship, built on a larger base model than Grok 4.6 and trained with a longer reinforcement learning run weighted toward problems that take many hours, aimed at coding, engineering and long office work. Its training mix was supplemented with SpaceX's own engineering records. It reaches Cursor, Grok Build, GitHub Copilot and the xAI API at once, without a waitlist, at an unchanged price.",
+      "source": "https://media.x.ai/v1/website/4p7card-5eccc980.pdf"
+    },
+    {
+      "name": "DeepSeek-V4.1-Flash",
+      "provider": "DeepSeek",
+      "access": "open",
+      "size": "552B total",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens",
+      "price": "$0.15 / $0.60 per million tokens off-peak, doubling to $0.30 / $1.20 in DeepSeek's daily peak windows",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "The small, fast model in DeepSeek's V4 family, rebuilt on a new causal encoder-decoder architecture and now reading images natively, which the V4 Flash it replaces could not. It supports tool calls, JSON output, and both an OpenAI- and an Anthropic-shaped API endpoint. The old model names still resolve, but requests to them are now served by this model and billed at its price.",
+      "source": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+    },
+    {
+      "name": "MiMo-V2.6-Pro",
+      "provider": "Xiaomi",
+      "access": "open",
+      "size": "1.02T total, 42B active",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision",
+        "audio",
+        "video"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 128K output",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "Xiaomi's largest open model yet, and by its own benchmarks the strongest open-weights model at release, close to Claude Opus 5 and GPT-5.6 Sol on agent tasks. It reads text, images, video and audio, though it answers only in text, and comes from one mixed reinforcement learning run across coding, general agent, visual and cybersecurity tasks rather than a separate run per domain. A cheaper Flash sibling and an UltraSpeed variant, about twenty times faster, were released alongside it, and Xiaomi also opened over 7,000 of its RL training environments.",
+      "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL"
+    },
+    {
+      "name": "GPT Image 2.5",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-09",
+      "does": [
+        "images",
+        "vision"
+      ],
+      "status": "current",
+      "context": "400K tokens",
+      "price": "$5 per million text-input tokens, $8 per million image-input tokens, $30 per million image-output tokens",
+      "cutoff": "Not published",
+      "notes": "OpenAI's image generation and editing model, replacing GPT Image 2 in ChatGPT, Codex and the API, with image generation latency cut by up to half. It comes in two API variants: Flare for fast, everyday generation, and Sunburst for slower, more precise work. ChatGPT also gained Sketch, which turns a drawing made in the app into a reference for the final image.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst"
     }
   ]
 }
