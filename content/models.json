@@ -26,6 +26,26 @@
       "source": "https://platform.claude.com/docs/en/models/fable-5-1/overview"
     },
     {
+      "name": "Claude Opus 5.5",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 128K output",
+      "price": "$4 / $20 per million tokens",
+      "cutoff": "June 2026",
+      "notes": "Anthropic's replacement for Opus 5, at the same context window but a fifth cheaper: Anthropic reports it costs about 40% less to run and answers more than 30% faster, while matching or beating Fable 5.1 on several agentic coding benchmarks. Thinking is always on and cannot be disabled, one of several breaking changes for code written against Opus 5.",
+      "source": "https://platform.claude.com/docs/en/models/opus-5-5/overview"
+    },
+    {
       "name": "Claude Opus 5",
       "provider": "Anthropic",
       "access": "hosted",
@@ -38,11 +58,11 @@
         "code",
         "vision"
       ],
-      "status": "current",
+      "status": "superseded",
       "context": "1M tokens, up to 128K output",
       "price": "$5 / $25 per million tokens",
       "cutoff": "May 2026",
-      "notes": "Anthropic's model for agentic coding and long enterprise work, sitting below Fable 5.1 and above Sonnet 5. Its thinking adapts to an effort setting rather than a manual budget. It arrived at the same price as the Opus 4.8 it replaced.",
+      "notes": "Anthropic's model for agentic coding and long enterprise work, sitting below Fable 5.1 and above Sonnet 5. Its thinking adapts to an effort setting rather than a manual budget. It arrived at the same price as the Opus 4.8 it replaced. Anthropic now lists it as legacy, with Opus 5.5 the current Opus model.",
       "source": "https://www.anthropic.com/news/claude-opus-5"
     },
     {
