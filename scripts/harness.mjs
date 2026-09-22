@@ -33,6 +33,7 @@ export function pageMap() {
   const c = course();
   const map = new Map([
     ['Main', ''],
+    ['Learning', 'learning/'],
     ['Models', 'models/'],
   ]);
   for (const m of c.modules.filter((x) => x.parts.some((p) => p.written))) map.set(`mod-${m.slug}`, m.url);

@@ -17,6 +17,7 @@ import path from 'node:path';
 import { marked } from 'marked';
 import { CONTENT_DIR, RESULTS } from '../src/paths.mjs';
 import { parseModels } from '../src/models.mjs';
+import { parseLearning } from '../src/learning.mjs';
 
 const TIMEOUT_MS = 20000;
 const TRIES = 3;
@@ -133,6 +134,13 @@ async function main() {
     if (!cited.has(m.source)) cited.set(m.source, new Set());
     cited.get(m.source).add(`models.json (${m.name})`);
   }
+  // The learning directory is nothing but addresses, so a dead one there is a
+  // card that leads a reader nowhere.
+  for (const s of parseLearning(CONTENT_DIR).sections)
+    for (const l of s.links) {
+      if (!cited.has(l.url)) cited.set(l.url, new Set());
+      cited.get(l.url).add(`learning.json (${l.title})`);
+    }
 
   if (mutate === 'dead') {
     // A page that is not there, and a name that does not resolve: the two

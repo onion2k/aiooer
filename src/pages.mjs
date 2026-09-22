@@ -2,7 +2,7 @@
 // page for each part, each with the shared stylesheet and the values its
 // markup starts at. The build fills the holes and writes the file.
 
-import { renderInline, plainText, esc, smartPlain, longDate } from './inline.mjs';
+import { renderInline, plainText, esc, smartPlain, longDate, longMonth } from './inline.mjs';
 import { renderBlocks, sectionHeading } from './render.mjs';
 import { header, toc, crumbs, moduleCrumbs, pageCrumbs, pager, modulePager, footer } from './chrome.mjs';
 import { stylesheet, FONT_LINK } from './styles.mjs';
@@ -287,6 +287,53 @@ export function directoryFile(dir, intro) {
   return pageFile({
     title: `Models · ${course}`,
     description: `A directory of ${dir.models.length} AI models, hosted and open-weight, with what each one does, how big it is and when it appeared.`,
+    body,
+    page: { deepKeys: [] },
+  });
+}
+
+// ------------------------------------------------------ the learning directory
+
+// One way out. The whole card is the link, as a part's card is, so it is one
+// Tab stop; the words say it opens a new tab, since a reader who is sent away
+// without warning loses their place in the guide (3.2.5).
+function learnCard(l) {
+  const when = l.published ? ` · ${esc(longMonth(l.published))}` : '';
+  return `<li class="learn-card"><h3 class="learn-title"><a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(
+    smartPlain(l.title),
+  )}<span class="sr-only"> (opens in a new tab)</span></a></h3><p class="learn-by">${esc(smartPlain(l.by))}${when}</p><p class="learn-about">${esc(
+    smartPlain(l.about),
+  )}</p><p class="learn-host label">${ICONS.external}<span>${esc(l.host)}</span></p></li>`;
+}
+
+function learnSection(s) {
+  const id = `learn-${s.key}`;
+  return `<section class="learn-section" aria-labelledby="${id}"><h2 class="learn-h2" id="${id}">${esc(
+    s.heading,
+  )}</h2><p class="learn-intro">${esc(smartPlain(s.about))}</p><ul class="learn-cards grid-12" role="list">${s.links
+    .map(learnCard)
+    .join('')}</ul></section>`;
+}
+
+// Places to learn more, each somebody else's. It is reference like the model
+// directory, so it opens with what it is and how old it is, and then lists.
+// There is no searching yet: with a handful of links a search box would be a
+// control for nothing, and the list is whole in the HTML either way.
+export function learningFile(dir, intro) {
+  const course = intro.courseTitle;
+  const kinds = dir.sections.map((s) => s.heading.toLowerCase());
+  const list = kinds.length > 1 ? `${kinds.slice(0, -1).join(', ')} and ${kinds.at(-1)}` : kinds[0];
+  const main = `<main id="main" tabindex="-1"><div class="shell learning-layout grid-12"><div class="hero directory-hero">${pageCrumbs('Learning', 'Learning')}${decorTag()}<p class="eyebrow label">Reference</p><h1 class="title">Learning</h1><ul class="hero-meta label" role="list"><li>${
+    ICONS.learning
+  }<span>${dir.count} ${dir.count === 1 ? 'link' : 'links'}</span></li><li>${ICONS.calendar}<span>Checked ${esc(
+    longDate(dir.checked),
+  )}</span></li></ul></div><div class="module-lede directory-lede">${dir.about
+    .map((p) => `<p>${esc(smartPlain(p))}</p>`)
+    .join('')}</div>${dir.sections.map(learnSection).join('')}</div></main>`;
+  const body = `${header(intro.modules, null, course, 'learning')}${main}${footer(intro.modules, currencyNote(intro), course)}`;
+  return pageFile({
+    title: `Learning · ${course}`,
+    description: `Hand-picked places to learn more about AI, ${dir.count} so far: ${list}, each a link out to somebody else's work.`,
     body,
     page: { deepKeys: [] },
   });

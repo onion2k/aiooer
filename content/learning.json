@@ -1,0 +1,55 @@
+{
+  "checked": "2026-09-22",
+  "about": [
+    "Places to go further than this guide does: explanations drawn by hand, videos, and pages that run a model in front of you so you can watch what it does. Every one is somebody else's work, chosen because it made something clearer.",
+    "The list is picked, not gathered, so it is short on purpose and will grow. Each link was checked on the date above, and each opens in a new tab."
+  ],
+  "sections": [
+    {
+      "key": "reference",
+      "heading": "Reference",
+      "about": "Writing that explains one idea thoroughly, with the pictures to go with it."
+    },
+    {
+      "key": "videos",
+      "heading": "Videos",
+      "about": "Explanations that move, for when an idea is easier watched than read."
+    },
+    {
+      "key": "visualisers",
+      "heading": "Visualisers",
+      "about": "Pages that run or draw a real model, so you can see each step happen."
+    }
+  ],
+  "links": [
+    {
+      "title": "The Illustrated Transformer",
+      "by": "Jay Alammar",
+      "kind": "reference",
+      "published": "2018-06",
+      "about": "The transformer drawn one step at a time, from a single word's vector through self-attention and many heads to the decoder. Still the gentlest way in to the diagrams every later explanation borrows.",
+      "url": "https://jalammar.github.io/illustrated-transformer/"
+    },
+    {
+      "title": "How DeepSeek Rewrote the Transformer [MLA]",
+      "by": "Welch Labs",
+      "kind": "videos",
+      "about": "How multi-head latent attention shrinks the memory a model keeps for every token it has read, and why that let DeepSeek serve long contexts cheaply.",
+      "url": "https://www.youtube.com/watch?v=0VLAoVGf_74"
+    },
+    {
+      "title": "Transformer Explainer",
+      "by": "Polo Club of Data Science, Georgia Tech",
+      "kind": "visualisers",
+      "about": "GPT-2 small running in the browser. Type a prompt and watch it become tokens, attention and a choice of next word, with temperature and sampling to play with.",
+      "url": "https://poloclub.github.io/transformer-explainer/"
+    },
+    {
+      "title": "LLM Visualization",
+      "by": "Brendan Bycroft",
+      "kind": "visualisers",
+      "about": "A model drawn in three dimensions, every weight and sum in place, walked through one layer at a time from a tiny nano-GPT up to the scale of GPT-3.",
+      "url": "https://bbycroft.net/llm"
+    }
+  ]
+}

@@ -65,6 +65,7 @@ import { startSite, openPage, setSetting, AXE_PATH, course, sitePages, pageMap, 
 import { RESULTS, STATIC_SITE, ROOT, CONTENT_DIR } from '../src/paths.mjs';
 import { STORE_KEY, DEFAULTS, SETTINGS } from '../src/logic.mjs';
 import { parseModels, CAPABILITIES } from '../src/models.mjs';
+import { parseLearning } from '../src/learning.mjs';
 import { delivery } from '../src/calculator.mjs';
 const quick = process.argv.includes('--quick');
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
@@ -79,7 +80,7 @@ const mutation = process.argv.includes('--mutate') ? process.argv[process.argv.i
 const MUTATIONS = {
   contrast: { css: '.reader{--ink-2:#8f8a80!important}' },
   focus: {
-    css: '.reader :focus-visible{outline:none!important}.part-card:focus-within,.choice:has(input:focus-visible){outline:none!important}',
+    css: '.reader :focus-visible{outline:none!important}.part-card:focus-within,.learn-card:focus-within,.choice:has(input:focus-visible){outline:none!important}',
   },
   targets: { css: '.header-btn{min-height:0!important;padding-block:1px!important;line-height:1!important}' },
   measure: { css: '.reader{--measure-em:40em!important}' },
@@ -122,6 +123,15 @@ const MUTATIONS = {
   models: {
     js: () => {
       document.querySelector('.model-row')?.remove();
+    },
+  },
+  // A link dropped from the learning directory, and another marked as the
+  // header's current page, which would say the reader is somewhere they are
+  // not.
+  learning: {
+    js: () => {
+      document.querySelector('.learn-card')?.remove();
+      document.querySelector('.header-actions a:not([aria-current])')?.setAttribute('aria-current', 'page');
     },
   },
   // The settings panel's buttons unbound, as they were once the canvas went:
@@ -226,6 +236,10 @@ const fileOf = (board) => pageFile(WHERE.get(board));
 // contents to follow and is neither the home page nor a part.
 const CATALOGUE = parseModels(CONTENT_DIR);
 const DIRECTORY = 'models/index.html';
+// The learning directory: links out, grouped by kind. Reference like the
+// models, so it has no contents to follow either.
+const LEARNING = parseLearning(CONTENT_DIR);
+const LEARNING_PAGE = 'learning/index.html';
 const MODULE_PAGES = new Map(
   course()
     .modules.filter((m) => m.parts.some((p) => p.written))
@@ -260,6 +274,7 @@ const KINDS = [
   'calculator',
   'hues',
   'directory',
+  'learning',
   'decor',
 ];
 const emptyResults = () => Object.fromEntries(KINDS.map((k) => [k, []]));
@@ -476,7 +491,8 @@ async function targetSizes(page) {
       if (el.tagName === 'INPUT' && el.closest('label')) box = el.closest('label').getBoundingClientRect();
       if (el.classList.contains('skip-link')) continue;
       // A stretched link covers its whole card.
-      if (el.closest('.part-card')) box = el.closest('.part-card').getBoundingClientRect();
+      const card = el.closest('.part-card, .learn-card');
+      if (card) box = card.getBoundingClientRect();
       if (box.width < 44 || box.height < 44)
         small.push(
           `${el.tagName.toLowerCase()}.${[...el.classList].join('.')} "${(el.textContent || el.value || '').trim().slice(0, 40)}" ${Math.round(box.width)}x${Math.round(box.height)}`,
@@ -552,7 +568,7 @@ async function keyboardWalk(page, steps) {
       let ring = parseFloat(cs.outlineWidth) || 0;
       let style = cs.outlineStyle;
       // Some controls show focus on a parent (the radio's label, the card).
-      const holder = el.closest('.choice, .part-card');
+      const holder = el.closest('.choice, .part-card, .learn-card');
       if ((style === 'none' || ring === 0) && holder) {
         const hs = getComputedStyle(holder);
         ring = parseFloat(hs.outlineWidth) || 0;
@@ -765,7 +781,16 @@ async function decorClashes(page) {
 
 // The grids of blocks, and how far apart the tallest and shortest block in
 // each are. A grid that is shut away in a closed panel is not measured.
-const GRIDS = ['.part-cards', '.ideas', '.legend', '.routes', '.pager', '.parts-list', '.settings-grid'];
+const GRIDS = [
+  '.part-cards',
+  '.ideas',
+  '.legend',
+  '.routes',
+  '.pager',
+  '.parts-list',
+  '.settings-grid',
+  '.learn-cards',
+];
 async function gridSpreads(page, selectors = GRIDS) {
   return page.evaluate((selectors) => {
     const out = [];
@@ -799,6 +824,7 @@ const TWELVE = {
   part: ['.header-bar', '.layout', '.site-footer > .shell'],
   module: ['.header-bar', '.module-layout', '.site-footer > .shell'],
   directory: ['.header-bar', '.directory-layout', '.site-footer > .shell'],
+  learning: ['.header-bar', '.learning-layout', '.learn-cards', '.site-footer > .shell'],
   panels: ['.parts-list', '.settings-grid'],
 };
 // A container is on twelve columns when its grid has exactly twelve tracks
@@ -973,6 +999,11 @@ async function auditPage(file) {
         coming: g.querySelectorAll('.parts-item.is-coming').length,
       })),
       h1: document.querySelector('h1')?.textContent.trim() ?? null,
+      // What the header says is the page the reader is on. Only the two
+      // directories have a button of their own to mark.
+      headerHere: [...document.querySelectorAll('.header-actions [aria-current="page"]')].map((a) =>
+        a.textContent.trim(),
+      ),
       cards: document.querySelectorAll('.part-card').length,
       comingCards: document.querySelectorAll('.part-card.is-coming').length,
       comingCardLinks: document.querySelectorAll('.part-card.is-coming a').length,
@@ -997,6 +1028,11 @@ async function auditPage(file) {
     }));
     if (JSON.stringify(seen.groups) !== JSON.stringify(wantGroups))
       wrong.push(`the parts panel groups ${JSON.stringify(seen.groups)}, wanted ${JSON.stringify(wantGroups)}`);
+    const wantHere = file === DIRECTORY ? ['Models'] : file === LEARNING_PAGE ? ['Learning'] : [];
+    if (JSON.stringify(seen.headerHere) !== JSON.stringify(wantHere))
+      wrong.push(
+        `the header marks ${JSON.stringify(seen.headerHere)} as this page, wanted ${JSON.stringify(wantHere)}`,
+      );
     if (part) {
       const i = written.indexOf(part);
       const label = `${part.module} · Part ${part.n} of ${part.of}`;
@@ -1018,6 +1054,12 @@ async function auditPage(file) {
         wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
       if (seen.h1 !== 'Models') wrong.push(`heading "${seen.h1}"`);
       if (!seen.title.startsWith('Models · ')) wrong.push(`page title "${seen.title}"`);
+    } else if (file === LEARNING_PAGE) {
+      const crumbs = ['Introduction', 'Learning'];
+      if (JSON.stringify(seen.crumbs) !== JSON.stringify(crumbs))
+        wrong.push(`breadcrumb ${JSON.stringify(seen.crumbs)}`);
+      if (seen.h1 !== 'Learning') wrong.push(`heading "${seen.h1}"`);
+      if (!seen.title.startsWith('Learning · ')) wrong.push(`page title "${seen.title}"`);
     } else if (MODULE_PAGES.has(file)) {
       // A module's page names the module in its breadcrumb, its heading and
       // its page title, lists every one of its parts, and leads on to the
@@ -1057,8 +1099,8 @@ async function auditPage(file) {
         'modules',
         part
           ? `${file}: ${part.module}, part ${part.n} of ${part.of}, in its label, breadcrumb and title; ways on and back right`
-          : file === DIRECTORY
-            ? `${file}: the directory, named in its breadcrumb, heading and title; no dead links`
+          : file === DIRECTORY || file === LEARNING_PAGE
+            ? `${file}: ${seen.h1}, named in its breadcrumb, heading, title and header; no dead links`
             : MODULE_PAGES.has(file)
               ? `${file}: ${MODULE_PAGES.get(file).name}, ${seen.cards} parts listed, named in its breadcrumb, heading and title; ways on and back right`
               : `${file}: ${seen.home.map((m) => `${m.name} ${m.cards} cards (${m.coming} coming)`).join(', ')}; no dead links`,
@@ -1197,6 +1239,53 @@ async function auditPage(file) {
       );
   }
 
+  // The learning directory shows every link in learning.json, under the
+  // heading of the section it is filed in, in the file's order, each card a
+  // single way out that says it opens a new tab. The expectation is worked
+  // out from the data, so a link added tomorrow is checked the day it is.
+  if (run('learning') && file === LEARNING_PAGE) {
+    const page = await open(file);
+    const seen = await page.evaluate(() => ({
+      sections: [...document.querySelectorAll('.learn-section')].map((s) => ({
+        heading: s.querySelector('h2')?.textContent.trim() ?? null,
+        links: [...s.querySelectorAll('.learn-card')].map((c) => {
+          const outs = [...c.querySelectorAll('a[href], button, input, [tabindex]')];
+          const a = c.querySelector('a[href]');
+          return {
+            url: a?.getAttribute('href') ?? null,
+            name: a?.textContent.replace(/\s+/g, ' ').trim() ?? null,
+            stops: outs.length,
+            tab: a?.target === '_blank' && /noopener/.test(a.rel),
+            level: c.querySelector('.learn-title')?.tagName ?? null,
+          };
+        }),
+      })),
+      stray: document.querySelectorAll('.learn-card').length,
+    }));
+    await page.close();
+    const wrong = [];
+    const want = LEARNING.sections.map((s) => ({ heading: s.heading, urls: s.links.map((l) => l.url) }));
+    const got = seen.sections.map((s) => ({ heading: s.heading, urls: s.links.map((l) => l.url) }));
+    if (JSON.stringify(got) !== JSON.stringify(want))
+      wrong.push(`sections ${JSON.stringify(got)}, wanted ${JSON.stringify(want)}`);
+    if (seen.stray !== LEARNING.count) wrong.push(`${seen.stray} cards, wanted ${LEARNING.count}`);
+    const byUrl = new Map(LEARNING.sections.flatMap((s) => s.links.map((l) => [l.url, l])));
+    for (const l of seen.sections.flatMap((s) => s.links)) {
+      const title = byUrl.get(l.url)?.title;
+      if (l.stops !== 1) wrong.push(`"${title}" has ${l.stops} stops, wanted 1`);
+      if (!l.tab) wrong.push(`"${title}" does not open a new tab safely`);
+      if (!l.name?.startsWith(title) || !l.name.endsWith('(opens in a new tab)'))
+        wrong.push(`"${title}" is named "${l.name}"`);
+      if (l.level !== 'H3') wrong.push(`"${title}" is titled with ${l.level}, wanted H3 under its section`);
+    }
+    if (wrong.length) fail('learning', `${file}: ${wrong.join('; ')}`);
+    else
+      pass(
+        'learning',
+        `${file}: ${LEARNING.count} links in ${LEARNING.sections.length} sections, in the file's order, each one stop that says it opens a new tab`,
+      );
+  }
+
   // The contents list follows the reader: at the top, in the middle and at
   // the bottom of a part, at desktop and phone size, and in a tall
   // 1440 by 3200 frame, where a short last section never reaches the line.
@@ -1205,7 +1294,7 @@ async function auditPage(file) {
     [390, 844],
     [1440, 3200],
   ];
-  const follows = file !== 'index.html' && file !== DIRECTORY && !MODULE_PAGES.has(file);
+  const follows = file !== 'index.html' && file !== DIRECTORY && file !== LEARNING_PAGE && !MODULE_PAGES.has(file);
   for (const [width, height] of run('spy') && follows ? frames : []) {
     const page = await open(file, { width, height });
     const count = await page.evaluate(() => document.querySelectorAll('.article > section > h2').length);
@@ -1555,7 +1644,15 @@ async function auditPage(file) {
     else pass('grids', `${file} @${width}: every block the same height (${label})`);
     if (width === 1440) {
       const kind =
-        file === 'index.html' ? 'home' : file === DIRECTORY ? 'directory' : MODULE_PAGES.has(file) ? 'module' : 'part';
+        file === 'index.html'
+          ? 'home'
+          : file === DIRECTORY
+            ? 'directory'
+            : file === LEARNING_PAGE
+              ? 'learning'
+              : MODULE_PAGES.has(file)
+                ? 'module'
+                : 'part';
       const counts = [...(await columnCounts(page, TWELVE[kind])), ...panelTracks];
       const wrong = counts.filter((c) => c.tracks !== 12 || !c.equal);
       if (wrong.length)

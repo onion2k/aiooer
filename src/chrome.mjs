@@ -55,7 +55,8 @@ function partsPanel(modules, current) {
 export function header(modules, current, course, here = null) {
   const homeCurrent = here === 'home' ? ' aria-current="page"' : '';
   const modelsCurrent = here === 'models' ? ' aria-current="page"' : '';
-  return `<a class="skip-link" href="#main">Skip to main content</a><header class="site-header"><div class="shell header-bar grid-12"><a class="wordmark" href="page:Main"${homeCurrent}>${esc(course)}</a><div class="header-actions"><a class="header-btn" href="page:Models"${modelsCurrent}>${ICONS.models}<span>Models</span></a><button type="button" class="header-btn" aria-expanded="{{parts.expanded}}" aria-controls="parts-panel" onClick="{{parts.toggle}}">${ICONS.parts}<span>Parts</span></button><button type="button" class="header-btn" aria-expanded="{{settingsPanel.expanded}}" aria-controls="settings-panel" onClick="{{settingsPanel.toggle}}">${ICONS.settings}<span>Reading settings</span></button></div></div>${partsPanel(modules, current)}${settingsPanel()}</header>`;
+  const learningCurrent = here === 'learning' ? ' aria-current="page"' : '';
+  return `<a class="skip-link" href="#main">Skip to main content</a><header class="site-header"><div class="shell header-bar grid-12"><a class="wordmark" href="page:Main"${homeCurrent}>${esc(course)}</a><div class="header-actions"><a class="header-btn" href="page:Learning"${learningCurrent}>${ICONS.learning}<span>Learning</span></a><a class="header-btn" href="page:Models"${modelsCurrent}>${ICONS.models}<span>Models</span></a><button type="button" class="header-btn" aria-expanded="{{parts.expanded}}" aria-controls="parts-panel" onClick="{{parts.toggle}}">${ICONS.parts}<span>Parts</span></button><button type="button" class="header-btn" aria-expanded="{{settingsPanel.expanded}}" aria-controls="settings-panel" onClick="{{settingsPanel.toggle}}">${ICONS.settings}<span>Reading settings</span></button></div></div>${partsPanel(modules, current)}${settingsPanel()}</header>`;
 }
 
 // The contents list. Each item carries the spy's state for its section
@@ -93,7 +94,8 @@ export function crumbs(part) {
 }
 
 // A page that is not a part: the introduction, then the page itself. The
-// directory uses this, since it sits beside the modules rather than in one.
+// two directories use this, since they sit beside the modules rather than in
+// one.
 export function pageCrumbs(name, key) {
   const sep = '<span class="crumb-sep" aria-hidden="true">/</span>';
   return `<nav class="crumbs label" aria-label="Breadcrumb"><ol role="list"><li><a href="page:Main">Introduction</a>${sep}</li><li><a href="page:${key}" aria-current="page">${esc(name)}</a></li></ol></nav>`;
@@ -156,5 +158,5 @@ export function footer(modules, currencyNote, course) {
           .join('')}</ul></div>`,
     )
     .join('');
-  return `<div class="shell decor-strip-wrap">${decorStrip()}</div><footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Introduction</a></li><li><a href="page:Models">Models</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
+  return `<div class="shell decor-strip-wrap">${decorStrip()}</div><footer class="site-footer"><div class="shell grid-12"><p class="footer-title">${esc(course)}</p><nav class="footer-nav" aria-label="All pages"><ul class="footer-links footer-home" role="list"><li><a href="page:Main">Introduction</a></li><li><a href="page:Learning">Learning</a></li><li><a href="page:Models">Models</a></li></ul>${groups}</nav><p class="footer-note">${currencyNote}</p></div></footer>`;
 }

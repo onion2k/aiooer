@@ -152,6 +152,23 @@ was written on 19 September 2026 from what the code does at that date.
   `reader.js` for the same reason. Shut is its own attribute rather than
   `hidden`, which the filters use, so a model a filter hides comes back as it
   was left.
+- **Learning lists every link in the data, and says each opens a new tab.**
+  `/learning/` is a hand-picked directory of places to learn more, all of
+  them somebody else's: a section for each kind (Reference, Videos,
+  Visualisers to begin with) in the order `content/learning.json` declares
+  them, and a card for each link in the order the file gives it. Each card is
+  one Tab stop, the whole card its link, and its name ends "(opens in a new
+  tab)". The build refuses an unknown field, a missing value, a link filed
+  under a section that is not declared, a section with no links, and an
+  address that is not https or is listed twice. It has no search or filters
+  yet, which the author decided on 22 September 2026 while it holds a handful
+  of links; it is whole in the HTML either way. `audit`'s `learning` works the
+  expectation out from the file, `modules` holds its breadcrumb, heading and
+  title and that the header marks it, and nothing else, as the page, and
+  `--mutate learning` drops a card and marks a second header button to prove
+  both bite. `links` checks its addresses. The header's four buttons sit on
+  one line at desktop width and take a row of their own under the wordmark
+  on six columns.
 - **The directory says what is still current.** Every model carries a status,
   current, superseded or retired, in a column of its own and as a filter. It
   has a column rather than a label under the name so that saying it never
@@ -257,7 +274,7 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, targets    | 43 pages × desktop and phone, Standard and Smaller | all 44 × 44 or larger                                                                  | none           |
 | `audit`, reflow     | 43 pages × 320px and 200% zoom                     | no sideways scroll                                                                     | none           |
 | `audit`, spacing    | 43 pages × desktop and phone                       | nothing clipped                                                                        | none           |
-| `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes             | 118 to 119 stops, ringed, uncovered, 7:1                                               | none           |
+| `audit`, keyboard   | 43 pages × 2 widths, and 3 more themes             | 118 to 120 stops, ringed, uncovered, 7:1 (one more on every page since Learning)       | none           |
 | `audit`, headings   | 43 pages × desktop and phone                       | one h1, no skipped level                                                               | none           |
 | `audit`, corners    | 43 pages, every panel, deep dive open              | none rounder than 2px                                                                  | none           |
 | `audit`, grids      | 43 pages × desktop and phone                       | blocks equal; 23 or 9 containers on 12 cols                                            | 1px on heights |
@@ -269,9 +286,10 @@ Baselines as of 19 September 2026, on this machine:
 | `audit`, name       | 43 pages                                           | the heading's name wherever it is shown                                                | none           |
 | `audit`, hues       | every page, everywhere a hue is drawn              | 17 to 21 a page, each beside the words that say the same                               | none           |
 | `audit`, calculator | the one part that has a calculator                 | every example, the keyboard, typing and Start again show what the rule gives           | none           |
+| `audit`, learning   | the learning page                                  | every link in `learning.json`, in its section and order, one stop, says new tab        | none           |
 | `audit`, decor      | 43 pages × 1800, 1440 largest and long, 390        | no mark over any word; nothing tabbable, spoken or raised                              | none           |
 | `look`              | 43 pages                                           | no errors, no empty page                                                               | none           |
-| `links`             | 235 addresses: the prose, and every model's source | 233 ok, 2 unverified, 0 gone                                                           | none gone      |
+| `links`             | 239 addresses: prose, model sources, learning      | 237 ok, 2 unverified, 0 gone (22 September 2026)                                       | none gone      |
 | `perf`, not a gate  | every page's weight; timings on three pages        | see below                                                                              | not held       |
 
 `perf` weighs every page from one load, four at a time, and times three
@@ -352,11 +370,11 @@ prefer the model card as the source where one exists.
     npm run perf           every page's weight, and timings on three pages; ~20 s
     npm run links          every outside address the guide cites: gone fails it, refused or slow is listed (~2 min, needs the network)
 
-The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,panels,numerals,spy,modules,name,calculator,directory,decor`,
+The audit takes `--only axe,measure,targets,reflow,spacing,keyboard,headings,corners,grids,storage,panels,numerals,spy,modules,name,calculator,directory,learning,decor`,
 `--pages practical-ai/1-ai-chat/index.html,...`, `--jobs 4` for how many pages it audits at once, `--all` to audit pages it would skip, and `--mutate <name>`, which puts a known defect
 into every page (`contrast`, `focus`, `targets`, `measure`, `widths`,
 `reflow`, `spacing`, `sizes`, `phonesize`, `panels`, `headings`, `corners`, `grids`, `twelve`, `numerals`,
-`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`, `decor`) to
+`spy`, `spybold`, `spydim`, `spyjump`, `pastfocus`, `focustext`, `modulelabel`, `modulecards`, `models`, `learning`, `pagerchain`, `cominglink`, `name`, `calc`, `hues`, `decor`) to
 prove the check that should catch it still does.
 A page that passed is skipped until its built file, the audit, the harness,
 the runtime, the packages, the introduction, the list of pages or the flags
@@ -463,6 +481,14 @@ wanted again.
   trusts the file, since a tool will write it: an unknown field, an unknown
   capability, a missing value, a duplicate name or open weights without a
   licence all stop the build. `src/directory.mjs` draws it.
+- **The learning links** are `content/learning.json`: the page's own words
+  in `about`, its `sections` in page order (a key, a heading and a sentence),
+  and its `links`, each with a title, who made it, the section it is filed
+  under, a sentence on what a reader gets from it, an https address and,
+  optionally, when it was published. `src/learning.mjs` checks it and groups
+  the links into their sections; `learningFile` in `pages.mjs` draws the page
+  and `build.mjs` serves it at `learning/`. A new kind of link is a new
+  section in the file and nothing else.
 - `src/decor.mjs` is the page's decoration: the marks themselves, and the four
   places they go. It knows nothing of the guide's content, every mark leaves
   through a guard that refuses words set as text, and `styles.mjs` places and
@@ -538,6 +564,12 @@ What to copy the shape of, when building something new:
   `build.mjs` serves it at `models/`, `.filters` and `.models` in
   `styles.mjs` style it, the filtering is in `reader.js`, and `directory` in
   `audit.mjs` holds it against the data with `--mutate models`.
+- **A list of ways out:** the learning directory. `content/learning.json` is
+  the data, `parseLearning` in `learning.mjs` refuses anything it does not
+  know, `learningFile` in `pages.mjs` draws a section per kind and a card per
+  link, `.learn-*` in `styles.mjs` styles them from existing tokens, the
+  cards are in `GRIDS` and `TWELVE`, and `learning` in `audit.mjs` holds the
+  page against the file with `--mutate learning`.
 - **Something that is only a look:** the page's decoration. `decor.mjs` draws
   the marks and says where they go, `pages.mjs` and `chrome.mjs` put them on
   the page, `.decor-*` in `styles.mjs` places them, `mark` in `tokens.mjs` is
@@ -558,7 +590,7 @@ page's storage;
 as a reader would (`theme`, `size`, `spacing`, `measure`, `font`, `deep`);
 `togglePanel(page, 'settings' | 'parts')` opens or shuts a header panel;
 `guide()` is the guide as the introduction declares it, and `sitePages()`
-the home page, every module with a written part and every written part as
+the home page, the learning and model directories, every module with a written part and every written part as
 they are served (`index.html`, `practical-ai/index.html`,
 `practical-ai/1-ai-chat/index.html`, and so on), which is what the audit,
 `look` and `perf` walk, so a new part is checked from the day it is written.

@@ -40,6 +40,7 @@ export const ICON_NAMES = {
   search: 'search',
   filter: 'filter',
   models: 'machine-learning-model',
+  learning: 'education',
   // What a model can do, and how it is got hold of. models.mjs names these.
   capChat: 'chat',
   capReasoning: 'idea',

@@ -13,7 +13,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parsePart, parseIntro } from './content.mjs';
 import { parseModels } from './models.mjs';
-import { homeFile, partFile, moduleFile, directoryFile } from './pages.mjs';
+import { parseLearning } from './learning.mjs';
+import { homeFile, partFile, moduleFile, directoryFile, learningFile } from './pages.mjs';
 import { DIAGRAMS } from './diagrams.mjs';
 import { expand } from './template.mjs';
 import { CONTENT_DIR, STATIC_SITE as OUT, ROOT } from './paths.mjs';
@@ -25,6 +26,7 @@ const intro = parseIntro(CONTENT_DIR);
 const parts = intro.parts;
 const models = parts.filter((p) => p.written).map((src) => parsePart(CONTENT_DIR, src));
 const catalogue = parseModels(CONTENT_DIR);
+const learning = parseLearning(CONTENT_DIR);
 
 // Every diagram in the course must have a drawing, and every drawing a diagram.
 const used = new Set();
@@ -44,12 +46,14 @@ for (const key of Object.keys(DIAGRAMS)) if (!used.has(key)) throw new Error('Dr
 const liveModules = intro.modules.filter((m) => m.parts.some((p) => p.written));
 const pages = [
   { url: '', make: () => homeFile(intro, parts, {}) },
+  { url: 'learning/', make: () => learningFile(learning, intro) },
   { url: 'models/', make: () => directoryFile(catalogue, intro) },
   ...liveModules.map((m) => ({ url: m.url, make: () => moduleFile(m, intro) })),
   ...models.map((m) => ({ url: m.url, make: () => partFile(m, parts, intro, {}) })),
 ];
 const addresses = new Map([
   ['Main', ''],
+  ['Learning', 'learning/'],
   ['Models', 'models/'],
   ...liveModules.map((m) => [`mod-${m.slug}`, m.url]),
   ...models.map((m) => [m.out, m.url]),

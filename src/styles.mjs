@@ -159,14 +159,22 @@ ${swatches()}
 /* Header */
 .site-header{position:relative;background:var(--bg);border-top:var(--bw-heavy) solid var(--ink);border-bottom:var(--bw) solid var(--ink)}
 .header-bar{align-items:center;min-height:4.75em;padding-block:0.6em;row-gap:0.6em}
-.reader .wordmark{--span:6;--span-md:3;justify-self:start;display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-weight:900;font-size:1.45em;line-height:1;letter-spacing:-0.025em;color:var(--ink);text-decoration:none}
+.reader .wordmark{--span:4;--span-md:3;justify-self:start;display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-weight:900;font-size:1.45em;line-height:1;letter-spacing:-0.025em;color:var(--ink);text-decoration:none}
 .reader .wordmark:hover{color:var(--ink);text-decoration:underline;text-decoration-thickness:0.08em}
 /* One of the header's items is a link and the others are buttons, and they
    have to look like each other: without this the link takes the link colour
    and an underline, and sits among two things that take neither. */
 .reader a.header-btn{color:var(--ink);text-decoration:none}
 .reader a.header-btn:hover{color:var(--bg);text-decoration:none}
-.header-actions{--start:7;--span:6;--start-md:4;--span-md:3;justify-self:end;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:0.6em}
+/* Four buttons need two thirds of the row to sit on one line at desktop
+   width. On six columns there is no half of the row that holds them, and a
+   right-hand stack of three rows left the wordmark marooned beside it, so
+   they take a row of their own under the wordmark instead. */
+.header-actions{--start:5;--span:8;--start-md:1;--span-md:6;justify-self:end;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:0.6em}
+@container page (width < 62em){
+  .reader .wordmark{--span-md:6}
+  .header-actions{justify-self:start;justify-content:flex-start}
+}
 @container page (width < 40em){
   .header-actions{justify-self:stretch}
   .header-btn{flex:1 1 0;justify-content:center;padding-inline:0.7em;text-align:left}
@@ -365,7 +373,7 @@ ${swatches()}
 
 /* The model directory. A table of reference, so it is denser than the prose
    pages and sits across the whole grid rather than in a reading column. */
-.directory-layout .directory-lede{--start:1;--span:9}
+.directory-layout .directory-lede,.learning-layout .directory-lede{--start:1;--span:9}
 /* The filters fold away, and start folded at every width: a reader comes to
    the directory to look at models, and meets the table rather than a screen
    of controls. */
@@ -452,8 +460,34 @@ ${swatches()}
 .model-facts dt{font-family:var(--font-mono);font-size:0.82em;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-2);line-height:1.45}
 .model-facts dd{margin:0}
 @container page (width < 62em){
-  .directory-layout .directory-lede{--span:12}
+  .directory-layout .directory-lede,.learning-layout .directory-lede{--span:12}
 }
+
+/* The learning directory. A section for each kind of place, and a card for
+   each place, shaped like a part's card so that a way out of the guide looks
+   like a way on in it. Every card is the same height across the page, and
+   three to a row at every count: a list that will grow should not reshuffle
+   its rows each time a link is added. */
+.learn-section{--start:1;--span:12;margin-top:3em;padding-top:1.2em;border-top:var(--bw-heavy) solid var(--ink)}
+.learn-h2{margin:0;font-family:var(--font-display);font-weight:900;font-size:2.4em;line-height:0.95;letter-spacing:-0.035em}
+.learn-intro{margin:0.7em 0 0;max-width:var(--measure)}
+.learn-cards{list-style:none;margin:1.4em 0 0;padding:0;row-gap:var(--gutter);grid-auto-rows:1fr}
+/* A card takes its own start, since the section's --start would otherwise
+   reach it through inheritance and stack every card in the first column. */
+.learn-card{--start:auto;--start-md:auto;--span:4;--span-md:3;position:relative;margin:0;display:flex;flex-direction:column;gap:0.5em;padding:1.2em 1.3em 1.3em;background:var(--surface);border:var(--bw) solid var(--edge)}
+.learn-card:hover{background:var(--link);border-color:var(--link);color:var(--on-accent)}
+.learn-card:focus-within{outline:3px solid var(--focus);outline-offset:3px}
+.learn-title{margin:0;font-family:var(--font-display);font-weight:800;font-size:1.45em;line-height:1.08;letter-spacing:-0.02em}
+.reader .learn-title a{color:inherit;text-decoration-thickness:0.07em}
+.reader .learn-title a::after{content:'';position:absolute;inset:0}
+.reader .learn-title a:hover{background:none;color:inherit}
+.reader .learn-title a:focus-visible{outline:none;background:none!important;box-shadow:none;color:inherit!important}
+.learn-by{margin:0;font-weight:700}
+.learn-about{margin:0}
+/* The address sits at the foot of the card, where a reader looks last for
+   where they will land. */
+.learn-host{margin:auto 0 0;padding-top:0.5em;display:flex;align-items:center;gap:0.4em;overflow-wrap:anywhere}
+.learn-host .icon{flex:none;width:1em;height:1em}
 
 /* Code */
 .code-block{margin:1.5em 0 2.25em;max-width:var(--wide)}
@@ -774,7 +808,7 @@ ${swatches()}
 @media (forced-colors:active){
   .calc-bar-after{background:CanvasText;forced-color-adjust:none}
   .calc-bar-now,.calc-days,.calc-result{border-color:CanvasText}
-  .header-btn,.choice,.btn-line,.toc-toggle,.deep-state,.pager-link,.part-card,.flow-box,.plain,.deep,.myth,.figure,.setting,.parts-item,.route,.legend li{border-color:CanvasText}
+  .header-btn,.choice,.btn-line,.toc-toggle,.deep-state,.pager-link,.part-card,.learn-card,.flow-box,.plain,.deep,.myth,.figure,.setting,.parts-item,.route,.legend li{border-color:CanvasText}
   .reader :focus-visible{outline-color:Highlight}
   .seq-step{border-bottom-color:CanvasText}
 }
