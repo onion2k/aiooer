@@ -1,5 +1,5 @@
 {
-  "checked": "2026-09-22",
+  "checked": "2026-09-27",
   "about": [
     "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
     "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
@@ -105,6 +105,26 @@
       "source": "https://assets.anthropic.com/m/99128ddd009bdcb/original/Claude-Haiku-4-5-System-Card.pdf"
     },
     {
+      "name": "GPT-6 Sol",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1.05M tokens, up to 128K output",
+      "price": "$2 / $10 per million tokens up to 272K, $4 / $15 above",
+      "cutoff": "April 2026",
+      "notes": "OpenAI's workhorse tier below GPT-6 Astra, replacing GPT-5.6 Sol at half its price and behind most paid ChatGPT conversations. OpenAI reports about half as many factual mistakes as its predecessor on its internal accuracy evaluation, closing much of the gap with Astra. It arrived alongside a cheaper, faster sibling, GPT-6 Luna, sharing the same window; both keep a selectable reasoning effort, down to none for latency-sensitive calls.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-sol"
+    },
+    {
       "name": "GPT-5.6 Sol",
       "provider": "OpenAI",
       "access": "hosted",
@@ -117,12 +137,12 @@
         "code",
         "vision"
       ],
-      "status": "current",
+      "status": "superseded",
       "context": "1.05M tokens, up to 128K output",
       "price": "$4 / $20 per million tokens",
       "cutoff": "February 2026",
-      "notes": "The top of OpenAI's workhorse tier, below GPT-6 Astra, and the model behind most paid ChatGPT conversations. It came with two cheaper siblings, Terra as the balanced default and Luna as the fast one, whose prices were cut in July 2026. Sol has the highest reasoning ceiling of the three.",
-      "source": "https://developers.openai.com/api/docs/models"
+      "notes": "The top of OpenAI's workhorse tier from July to September 2026, and the model behind most paid ChatGPT conversations in that time. It came with two cheaper siblings, Terra as the balanced default and Luna as the fast one, whose prices were cut in July 2026. GPT-6 Sol replaced it at half the price.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.6-sol"
     },
     {
       "name": "o3",
