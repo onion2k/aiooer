@@ -1,5 +1,5 @@
 {
-  "checked": "2026-09-27",
+  "checked": "2026-10-04",
   "about": [
     "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
     "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
@@ -78,11 +78,11 @@
         "code",
         "vision"
       ],
-      "status": "current",
+      "status": "superseded",
       "context": "1M tokens, up to 128K output",
       "price": "$2 / $10 per million tokens",
       "cutoff": "January 2026",
-      "notes": "The middle of Anthropic's range and the default on the free and Pro plans, meant as the balance of speed and intelligence. It shares Opus 5's million-token window and adaptive thinking at less than half the price.",
+      "notes": "The middle of Anthropic's range and the default on the free and Pro plans, meant as the balance of speed and intelligence. It shares Opus 5's million-token window and adaptive thinking at less than half the price. Claude Sonnet 5.5 replaced it as the current Sonnet model on 28 September 2026.",
       "source": "https://www-cdn.anthropic.com/9e6a1044980d8c4ed85669faf9c2a8342e2e9f1e/Claude%20Sonnet%205%20System%20Card.pdf"
     },
     {
@@ -1549,6 +1549,69 @@
       "cutoff": "Not published",
       "notes": "OpenAI's image generation and editing model, replacing GPT Image 2 in ChatGPT, Codex and the API, with image generation latency cut by up to half. It comes in two API variants: Flare for fast, everyday generation, and Sunburst for slower, more precise work. ChatGPT also gained Sketch, which turns a drawing made in the app into a reference for the final image.",
       "source": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst"
+    },
+    {
+      "name": "Claude Sonnet 5.5",
+      "provider": "Anthropic",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens, up to 128K output",
+      "price": "$2 / $10 per million tokens",
+      "cutoff": "June 2026",
+      "notes": "Anthropic's fast everyday tier, replacing Sonnet 5 at the same prices and generating output more than 30% faster by Anthropic's account. Thinking is adaptive, and a new setting turns off up-front thinking. It carries several breaking changes for code written against Sonnet 5: forced tool use returns an error, thinking blocks are tied to the model that produced them, and text between tool calls now comes back inside thinking blocks.",
+      "source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview"
+    },
+    {
+      "name": "GPT-6.1 Sol",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-10",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1.05M tokens",
+      "price": "$2 / $10 per million tokens up to 272K, $4 / $15 above",
+      "cutoff": "April 2026",
+      "notes": "OpenAI's workhorse tier, released on 2 October 2026 as a step up from GPT-6 Sol. OpenAI says it comes close to GPT-6 Astra on complex work, with better coding and computer use, at about a fifth of Astra's standard token price. Figures here come from third-party summaries, as OpenAI's model page could not be fetched.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+    },
+    {
+      "name": "MiMo-V2.6-Flash",
+      "provider": "Xiaomi",
+      "access": "open",
+      "size": "309B total, 15B active",
+      "released": "2026-09",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision",
+        "audio",
+        "video"
+      ],
+      "status": "current",
+      "context": "1M tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "The smaller sibling of MiMo-V2.6-Pro, released with it on 21 September 2026 as open weights. It is a mixture of experts model that reads text, images, video and audio and answers in text, with only 15B parameters active per token, so it is far cheaper to serve than Pro, though still needing roughly 256GB of memory to run locally.",
+      "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL"
     }
   ]
 }
