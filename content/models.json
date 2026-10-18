@@ -1,5 +1,5 @@
 {
-  "checked": "2026-10-04",
+  "checked": "2026-10-18",
   "about": [
     "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
     "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
@@ -1612,6 +1612,28 @@
       "licence": "MIT",
       "notes": "The smaller sibling of MiMo-V2.6-Pro, released with it on 21 September 2026 as open weights. It is a mixture of experts model that reads text, images, video and audio and answers in text, with only 15B parameters active per token, so it is far cheaper to serve than Pro, though still needing roughly 256GB of memory to run locally.",
       "source": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL"
+    },
+    {
+      "name": "Muse Spark Open",
+      "provider": "Meta",
+      "access": "open",
+      "size": "816B total, 42B active",
+      "released": "2026-10",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision",
+        "audio"
+      ],
+      "status": "current",
+      "context": "1M tokens",
+      "price": "Free to run",
+      "cutoff": "Not published",
+      "licence": "Muse Model License",
+      "notes": "Meta's first large open-weight model since Llama 4, after Muse Spark itself stayed behind an API. It is a mixture of experts model that reads text, images, video and audio and answers in text, aimed at coding agents and tool use. The licence carries commercial limits, and the repository was gated at release. The benchmark figures so far are Meta's own, and independent indices place it behind Kimi K3 and GLM 5.3.",
+      "source": "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B"
     }
   ]
 }
