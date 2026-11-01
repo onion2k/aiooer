@@ -1,5 +1,5 @@
 {
-  "checked": "2026-10-18",
+  "checked": "2026-11-01",
   "about": [
     "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
     "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
@@ -1634,6 +1634,26 @@
       "licence": "Muse Model License",
       "notes": "Meta's first large open-weight model since Llama 4, after Muse Spark itself stayed behind an API. It is a mixture of experts model that reads text, images, video and audio and answers in text, aimed at coding agents and tool use. The licence carries commercial limits, and the repository was gated at release. The benchmark figures so far are Meta's own, and independent indices place it behind Kimi K3 and GLM 5.3.",
       "source": "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B"
+    },
+    {
+      "name": "GPT-6.1 Terra",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-10",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1.05M tokens",
+      "price": "$1 / $5 per million tokens",
+      "cutoff": "Not published",
+      "notes": "OpenAI's mid tier, released on 26 October 2026 as the replacement for GPT-5.6 Terra, in ChatGPT Work, Codex and the API. OpenAI says it is more than three times faster than GPT-6.1 Sol and GPT-6 Astra at half the price of Sol, and still recommends those two for the hardest coding. Maximum output is 128K tokens. Figures here come from third-party summaries of OpenAI's announcement, as OpenAI's model page could not be fetched, and the benchmark figures are OpenAI's own.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
     }
   ]
 }
