@@ -1,5 +1,5 @@
 {
-  "checked": "2026-10-18",
+  "checked": "2026-11-08",
   "about": [
     "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
     "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
@@ -1589,6 +1589,26 @@
       "cutoff": "April 2026",
       "notes": "OpenAI's workhorse tier, released on 2 October 2026 as a step up from GPT-6 Sol. OpenAI says it comes close to GPT-6 Astra on complex work, with better coding and computer use, at about a fifth of Astra's standard token price. Figures here come from third-party summaries, as OpenAI's model page could not be fetched.",
       "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+    },
+    {
+      "name": "GPT-6.1 Terra",
+      "provider": "OpenAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-10",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1.05M tokens, up to 128K output",
+      "price": "$1 / $5 per million tokens up to 272K, higher above",
+      "cutoff": "Not published",
+      "notes": "OpenAI's mid tier, released on 26 October 2026 as the successor to GPT-5.6 Terra, aimed at computer use, visual reasoning and coding in ChatGPT Work and Codex rather than ordinary Chat conversations. OpenAI says it costs about half as much and runs faster than its predecessor, with fewer errors on its benchmarks. Figures here come from third-party summaries, as OpenAI's model page could not be fetched.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
     },
     {
       "name": "MiMo-V2.6-Flash",
