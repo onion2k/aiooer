@@ -1,5 +1,5 @@
 {
-  "checked": "2026-10-18",
+  "checked": "2026-10-25",
   "about": [
     "A directory of the models a reader of this guide is most likely to meet: the ones rented from a provider, and the ones whose weights can be downloaded and run. Search it, or filter by what a model does.",
     "Every entry carries a link to where its facts came from, and says whether the model is current, has been passed by a successor, or has been switched off. This field moves fast: of the models here, several were retired during 2026, so check the date above and follow the source before relying on anything."
@@ -1502,7 +1502,7 @@
         "code",
         "vision"
       ],
-      "status": "current",
+      "status": "superseded",
       "context": "1M tokens",
       "price": "$0.15 / $0.60 per million tokens off-peak, doubling to $0.30 / $1.20 in DeepSeek's daily peak windows",
       "cutoff": "Not published",
@@ -1634,6 +1634,63 @@
       "licence": "Muse Model License",
       "notes": "Meta's first large open-weight model since Llama 4, after Muse Spark itself stayed behind an API. It is a mixture of experts model that reads text, images, video and audio and answers in text, aimed at coding agents and tool use. The licence carries commercial limits, and the repository was gated at release. The benchmark figures so far are Meta's own, and independent indices place it behind Kimi K3 and GLM 5.3.",
       "source": "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B"
+    },
+    {
+      "name": "Muse Wonder",
+      "provider": "Meta",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-10",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens",
+      "price": "$4 / $20 per million tokens",
+      "cutoff": "Not published",
+      "notes": "Meta's first closed frontier model, aimed at agent work. It is offered through Meta's Model API and its Muse Code product, and carries memory across conversations and a habit of asking before consequential actions. A larger sibling, Muse Wonder Full, is limited to Muse Code subscribers and is not in the API. The benchmark claims so far are Meta's own.",
+      "source": "https://letsdatascience.com/news/meta-launches-muse-wonder-and-muse-wonder-full-for-agentic-t-41113cca"
+    },
+    {
+      "name": "Grok Voice 3.0",
+      "provider": "xAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-10",
+      "does": [
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$0.08 per minute",
+      "cutoff": "Not published",
+      "notes": "A speech to speech model for voice agents, which hears and answers in one pass instead of chaining transcription, a language model and speech synthesis. xAI claims under a second of latency. It is reached over a realtime WebSocket API shaped like OpenAI's, and the latest alias moved to it automatically. The figures so far are xAI's own and secondary coverage of them.",
+      "source": "https://techenclave.com/news/items/xai-releases-grok-voice-3-and-upgrades-the-latest-api-alias"
+    },
+    {
+      "name": "DeepSeek-V4.1-Flash-1017",
+      "provider": "DeepSeek",
+      "access": "open",
+      "size": "552B total",
+      "released": "2026-10",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens",
+      "price": "$0.30 / $1.20 per million tokens at peak",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "A post-training update to V4.1 Flash, served under the same API name. DeepSeek reports gains on all eleven benchmarks it lists, faster task completion and shorter outputs. Its Terminal-Bench score was measured with a different harness from the earlier one, so the two are not directly comparable.",
+      "source": "https://www.llmreference.com/model/deepseek-v4.1-flash-1017"
     }
   ]
 }
