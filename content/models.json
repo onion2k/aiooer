@@ -1502,7 +1502,7 @@
         "code",
         "vision"
       ],
-      "status": "current",
+      "status": "superseded",
       "context": "1M tokens",
       "price": "$0.15 / $0.60 per million tokens off-peak, doubling to $0.30 / $1.20 in DeepSeek's daily peak windows",
       "cutoff": "Not published",
@@ -1636,8 +1636,8 @@
       "source": "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B"
     },
     {
-      "name": "GPT-6.1 Terra",
-      "provider": "OpenAI",
+      "name": "Muse Wonder",
+      "provider": "Meta",
       "access": "hosted",
       "size": "Not published",
       "released": "2026-10",
@@ -1649,11 +1649,48 @@
         "vision"
       ],
       "status": "current",
-      "context": "1.05M tokens",
-      "price": "$1 / $5 per million tokens",
+      "context": "1M tokens",
+      "price": "$4 / $20 per million tokens",
       "cutoff": "Not published",
-      "notes": "OpenAI's mid tier, released on 26 October 2026 as the replacement for GPT-5.6 Terra, in ChatGPT Work, Codex and the API. OpenAI says it is more than three times faster than GPT-6.1 Sol and GPT-6 Astra at half the price of Sol, and still recommends those two for the hardest coding. Maximum output is 128K tokens. Figures here come from third-party summaries of OpenAI's announcement, as OpenAI's model page could not be fetched, and the benchmark figures are OpenAI's own.",
-      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+      "notes": "Meta's first closed frontier model, aimed at agent work. It is offered through Meta's Model API and its Muse Code product, and carries memory across conversations and a habit of asking before consequential actions. A larger sibling, Muse Wonder Full, is limited to Muse Code subscribers and is not in the API. The benchmark claims so far are Meta's own.",
+      "source": "https://letsdatascience.com/news/meta-launches-muse-wonder-and-muse-wonder-full-for-agentic-t-41113cca"
+    },
+    {
+      "name": "Grok Voice 3.0",
+      "provider": "xAI",
+      "access": "hosted",
+      "size": "Not published",
+      "released": "2026-10",
+      "does": [
+        "audio"
+      ],
+      "status": "current",
+      "context": "Not applicable",
+      "price": "$0.08 per minute",
+      "cutoff": "Not published",
+      "notes": "A speech to speech model for voice agents, which hears and answers in one pass instead of chaining transcription, a language model and speech synthesis. xAI claims under a second of latency. It is reached over a realtime WebSocket API shaped like OpenAI's, and the latest alias moved to it automatically. The figures so far are xAI's own and secondary coverage of them.",
+      "source": "https://techenclave.com/news/items/xai-releases-grok-voice-3-and-upgrades-the-latest-api-alias"
+    },
+    {
+      "name": "DeepSeek-V4.1-Flash-1017",
+      "provider": "DeepSeek",
+      "access": "open",
+      "size": "552B total",
+      "released": "2026-10",
+      "does": [
+        "chat",
+        "reasoning",
+        "tools",
+        "code",
+        "vision"
+      ],
+      "status": "current",
+      "context": "1M tokens",
+      "price": "$0.30 / $1.20 per million tokens at peak",
+      "cutoff": "Not published",
+      "licence": "MIT",
+      "notes": "A post-training update to V4.1 Flash, served under the same API name. DeepSeek reports gains on all eleven benchmarks it lists, faster task completion and shorter outputs. Its Terminal-Bench score was measured with a different harness from the earlier one, so the two are not directly comparable.",
+      "source": "https://www.llmreference.com/model/deepseek-v4.1-flash-1017"
     }
   ]
 }
